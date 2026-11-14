@@ -1,0 +1,137 @@
+Архитектура ЭВМ. Тема 14 — вопросы из новой базы (Все темы 1–15), формат Тестера
+
+<question>Максимальный объем адресуемой ОП зависит от:
+<variant>Размера ячейки ОП
+<variantright>Разрядности адресной шины
+<variant>Длины системной шины
+<variant>Количества регистров
+<variant>Размера жесткого диска
+
+<question>Разрядность адресной шины процессора i8086 составляет
+<variant>28
+<variant>32
+<variant>24
+<variant>16
+<variantright>20
+
+<question>Разрядность адресной шины процессора i80286 составляет
+<variant>28
+<variant>20
+<variant>16
+<variantright>24
+<variant>32
+
+<question>Разрядность адресной шины процессоров i80386 и выше составляет
+<variant>16
+<variantright>32
+<variant>24
+<variant>20
+<variant>28
+
+<question>Рассчитайте скорость шины шириной 32 бита при 100 МГц и одной передаче за такт.
+<variantright>400 МБ/с
+<variant>3200 МБ/с
+<variant>800 МБ/с
+<variant>100 МБ/с
+
+<question>Что такое DMA?
+<variant>Режим работы процессора с повышенной частотой
+<variant>Динамическая память с автоматической регенерацией
+<variantright>Обмен устройства с памятью без участия процессора
+<variant>Диспетчер прерываний с аппаратными приоритетами
+
+<question>Какой интерфейс применяется для подключения накопителей SSD и HDD форм-фактора 2,5 дюйма?
+<variant>VGA
+<variant>PCI
+<variantright>SATA
+<variant>PS/2
+
+<question>Какой объём памяти адресуется шиной адреса из 16 линий?
+<variant>1 МБ
+<variantright>64 КБ
+<variant>256 МБ
+<variant>16 МБ
+
+<question>Какой объём памяти адресуется шиной адреса из 20 линий?
+<variant>256 МБ
+<variantright>1 МБ
+<variant>16 МБ
+<variant>64 КБ
+
+<question>Какой объём памяти адресуется шиной адреса из 24 линий?
+<variantright>16 МБ
+<variant>256 МБ
+<variant>1 МБ
+<variant>64 КБ
+
+<question>Какой объём памяти адресуется шиной адреса из 32 линий?
+<variant>16 МБ
+<variant>1 МБ
+<variant>64 КБ
+<variantright>4 ГБ
+
+<question>Какой объём памяти адресуется шиной адреса из 34 линий?
+<variant>64 КБ
+<variantright>16 ГБ
+<variant>16 МБ
+<variant>1 МБ
+
+<question>Сколько линий адреса нужно, чтобы адресовать 1 МБ (побайтово)?
+<variant>19
+<variant>22
+<variant>21
+<variantright>20
+
+<question>Сколько линий адреса нужно, чтобы адресовать 16 МБ (побайтово)?
+<variantright>24
+<variant>25
+<variant>26
+<variant>23
+
+<question>Сколько линий адреса нужно, чтобы адресовать 4 ГБ (побайтово)?
+<variantright>32
+<variant>31
+<variant>33
+<variant>34
+
+<question>Сколько линий адреса нужно, чтобы адресовать 8 ГБ (побайтово)?
+<variant>34
+<variant>32
+<variant>35
+<variantright>33
+
+<question>Сколько линий адреса нужно, чтобы адресовать 64 КБ (побайтово)?
+<variant>15
+<variant>17
+<variantright>16
+<variant>18
+
+<question>Шина данных 64 бит, частота 66 МГц, передач за такт: 1. Какова пропускная способность?
+<variantright>528 МБ/с
+<variant>1056 МБ/с
+<variant>4224 МБ/с
+<variant>264 МБ/с
+
+<question>Шина данных 16 бит, частота 8 МГц, передач за такт: 1. Какова пропускная способность?
+<variantright>16 МБ/с
+<variant>128 МБ/с
+<variant>8 МБ/с
+<variant>32 МБ/с
+
+<question>Шина данных 128 бит, частота 100 МГц, передач за такт: 1. Какова пропускная способность?
+<variant>3200 МБ/с
+<variant>800 МБ/с
+<variantright>1600 МБ/с
+<variant>12800 МБ/с
+
+<question>Шина данных 8 бит, частота 10 МГц, передач за такт: 1. Какова пропускная способность?
+<variant>5 МБ/с
+<variant>20 МБ/с
+<variantright>10 МБ/с
+<variant>80 МБ/с
+
+<question>Какова теоретическая пропускная способность PCIe 3,0 x1?
+<variant>1,97 ГБ/с
+<variant>3,94 ГБ/с
+<variant>492 МБ/с
+<variantright>985 МБ/с

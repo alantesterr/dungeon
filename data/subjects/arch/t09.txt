@@ -1,0 +1,143 @@
+Архитектура ЭВМ. Тема 9 — вопросы из новой базы (Все темы 1–15), формат Тестера
+
+<question>Сколько сегментных регистров входит в состав процессора?
+<variant>8
+<variantright>6
+<variant>14
+<variant>10
+<variant>12
+
+<question>Для программиста доступна:
+<variant>внутренняя память процессора недоступна
+<variant>внутренняя память доступна через информационную магистраль
+<variant>только внешняя память
+<variantright>внутренняя память доступна через регистры
+<variant>вся рабочая память процессора
+
+<question>Базовый адрес является:
+<variantright>начальной точкой массива данных
+<variant>промежуточной точкой массива данных
+<variant>конечной точкой массива данных
+<variant>массивом данных
+<variant>массивом адресов
+
+<question>Сколько сегментных регистров входит в состав процессора?
+<variantright>6
+<variant>8
+<variant>10
+<variant>12
+<variant>14
+
+<question>Какие уровни включает типичная иерархия памяти от быстрого к медленному?
+<variant>Оперативная память, регистры, кэш, внешняя память
+<variant>Кэш, внешняя память, регистры, оперативная память
+<variant>Регистры, оперативная память, кэш, внешняя память
+<variantright>Регистры, кэш, оперативная память, внешняя память
+
+<question>Какую функцию выполняет указатель стека SP?
+<variant>Указывает на начало сегмента данных
+<variant>Указывает на следующую выполняемую команду
+<variant>Указывает на последнюю свободную ячейку памяти
+<variantright>Указывает на вершину стека
+
+<question>Что означает флаг ZF после арифметической операции?
+<variant>Результат операции получился отрицательным
+<variantright>Результат операции равен нулю
+<variant>Возникло знаковое переполнение результата
+<variant>Произошёл перенос из старшего разряда
+
+<question>Что хранит счётчик команд (IP/PC)?
+<variantright>Адрес следующей выполняемой команды
+<variant>Число выполненных команд программы
+<variant>Адрес вершины стека программы
+<variant>Результат последней арифметической операции
+
+<question>Какой регистр x86 традиционно используется как счётчик в командах цикла LOOP?
+<variantright>CX
+<variant>DX
+<variant>AX
+<variant>SP
+
+<question>Чем характеризуется кэш-память по сравнению с оперативной?
+<variantright>Меньше по объёму, но быстрее оперативной памяти
+<variant>Больше по объёму и медленнее оперативной памяти
+<variant>Хранит только команды без данных
+<variant>Той же скорости, но энергонезависимая
+
+<question>Что такое внешняя (вторичная) память?
+<variant>Быстрая память внутри кристалла процессора
+<variantright>Энергонезависимые накопители: SSD, HDD
+<variant>Регистры общего назначения одного ядра
+<variant>Постоянная память только для чтения данных
+
+<question>Какая команда уменьшает SP при записи слова в стек в архитектуре x86?
+<variant>POP
+<variant>CALL
+<variant>MOV
+<variantright>PUSH
+
+<question>Какие регистры традиционно называют сегментными в x86?
+<variant>SP, BP, SI, DI
+<variantright>CS, DS, SS, ES
+<variant>IP и FLAGS
+<variant>AX, BX, CX, DX
+
+<question>В регистре AX записано 1234h. Каковы значения AH и AL?
+<variant>AH = 12h, AL = CBh
+<variant>AH = 13h, AL = 34h
+<variantright>AH = 12h, AL = 34h
+<variant>AH = 34h, AL = 12h
+
+<question>В регистре AX записано ABCDh. Каковы значения AH и AL?
+<variant>AH = ABh, AL = 32h
+<variant>AH = ACh, AL = CDh
+<variantright>AH = ABh, AL = CDh
+<variant>AH = CDh, AL = ABh
+
+<question>В регистре AX записано 00FFh. Каковы значения AH и AL?
+<variant>AH = FFh, AL = 00h
+<variant>AH = 00h, AL = 00h
+<variantright>AH = 00h, AL = FFh
+<variant>AH = 01h, AL = FFh
+
+<question>В регистре AX записано 7F80h. Каковы значения AH и AL?
+<variant>AH = 80h, AL = 7Fh
+<variant>AH = 80h, AL = 80h
+<variant>AH = 7Fh, AL = 7Fh
+<variantright>AH = 7Fh, AL = 80h
+
+<question>SP = 0100h. Чему равен SP после операции PUSH AX?
+<variant>00FCh
+<variant>00FFh
+<variantright>00FEh
+<variant>0102h
+
+<question>SP = 0100h. Чему равен SP после операции POP BX?
+<variant>0104h
+<variantright>0102h
+<variant>0101h
+<variant>00FEh
+
+<question>SP = 0FFEh. Чему равен SP после операции CALL (near)?
+<variant>1000h
+<variant>0FFDh
+<variant>0FFAh
+<variantright>0FFCh
+
+<question>SP = 0200h. Чему равен SP после операции два раза PUSH AX?
+<variant>01FEh
+<variant>0204h
+<variant>01F8h
+<variantright>01FCh
+
+<question>SP = 00FCh. Чему равен SP после операции PUSH EAX (32 бита)?
+<variantright>00F8h
+<variant>00FAh
+<variant>0100h
+<variant>00F4h
+
+<question>После 8-разрядной операции FFh + 01h (результат 00h): каковы флаги ZF, CF, SF, OF?
+<variant>ZF = 1, CF = 0, SF = 0, OF = 0
+<variant>ZF = 1, CF = 1, SF = 1, OF = 1
+<variant>ZF = 0, CF = 1, SF = 0, OF = 0
+<variantright>ZF = 1, CF = 1, SF = 0, OF = 0

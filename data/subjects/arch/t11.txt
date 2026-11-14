@@ -1,0 +1,151 @@
+Архитектура ЭВМ. Тема 11 — вопросы из новой базы (Все темы 1–15), формат Тестера
+
+<question>Какой из видов памяти не требует регенерации?
+<variant>dram
+<variant>ddr sdram
+<variant>sdram
+<variantright>sram
+<variant>rdram
+
+<question>Если изображение находится на экране, где хранится информация о нем?
+<variant>на экране монитора
+<variant>в ВЗУ
+<variant>на НЖМД
+<variantright>в видео ОЗУ
+<variant>в ОЗУ
+
+<question>Динамическое запоминающее устройство с произвольным порядком выборки:
+<variant>ROM
+<variantright>DRAM
+<variant>RAM
+<variant>SRAM
+<variant>SDRAM
+
+<question>Модуль памяти с двухрядным расположением выводов:
+<variant>Нет верного ответа
+<variantright>DIMM
+<variant>RIMM
+<variant>SIMM
+<variant>ROM
+
+<question>Модуль памяти с однорядным расположением выводов:
+<variant>DIMM
+<variant>ROM
+<variantright>SIMM
+<variant>Нет верного ответа
+<variant>RIMM
+
+<question>Тип памяти, скорость которой удваивается за счет передачи данных дважды за цикл:
+<variant>SDRAM
+<variant>RAM
+<variant>SRAM
+<variantright>DDR SDRAM
+<variant>DRAM
+
+<question>Что обозначает «DDR4-3200»?
+<variantright>Память DDR4 с 3200 млн передач в секунду
+<variant>Память DDR4 с частотой шины ровно 3200 МГц
+<variant>Память DDR4 с задержкой 3200 нс
+<variant>Память DDR4 объёмом 3200 мегабайт на модуль
+
+<question>Что такое ECC-память?
+<variant>Память с повышенной тактовой частотой для игр
+<variantright>Память с кодом коррекции ошибок
+<variant>Память с двойной пропускной способностью
+<variant>Память только для чтения, без питания
+
+<question>Что такое строка и столбец в организации микросхемы DRAM?
+<variant>Расположение микросхем на модуле по строкам
+<variant>Организация регистров внутри ядра процессора
+<variant>Расположение контактов на модуле DIMM
+<variantright>Матрица ячеек с адресом из двух частей
+
+<question>Какова пиковая пропускная способность одного 64-битного канала DDR3-1600?
+<variant>1,6 ГБ/с
+<variantright>12,8 ГБ/с
+<variant>25,6 ГБ/с
+<variant>6,4 ГБ/с
+
+<question>Какова пиковая пропускная способность одного 64-битного канала DDR4-2400?
+<variant>9,6 ГБ/с
+<variantright>19,2 ГБ/с
+<variant>38,4 ГБ/с
+<variant>2,4 ГБ/с
+
+<question>Какова пиковая пропускная способность одного 64-битного канала DDR4-3200?
+<variant>3,2 ГБ/с
+<variantright>25,6 ГБ/с
+<variant>51,2 ГБ/с
+<variant>12,8 ГБ/с
+
+<question>Какова пиковая пропускная способность одного 64-битного канала DDR5-4800?
+<variant>76,8 ГБ/с
+<variant>19,2 ГБ/с
+<variant>4,8 ГБ/с
+<variantright>38,4 ГБ/с
+
+<question>Какова пиковая пропускная способность одного 64-битного канала DDR5-6400?
+<variantright>51,2 ГБ/с
+<variant>6,4 ГБ/с
+<variant>102,4 ГБ/с
+<variant>25,6 ГБ/с
+
+<question>Какова пиковая пропускная способность одного 64-битного канала DDR4-2666?
+<variant>2,7 ГБ/с
+<variantright>21,3 ГБ/с
+<variant>42,7 ГБ/с
+<variant>10,7 ГБ/с
+
+<question>Какова пиковая пропускная способность двухканального режима DDR4-3200?
+<variant>12,8 ГБ/с
+<variant>102,4 ГБ/с
+<variantright>51,2 ГБ/с
+<variant>25,6 ГБ/с
+
+<question>Какова пиковая пропускная способность двухканального режима DDR4-2400?
+<variant>9,6 ГБ/с
+<variant>76,8 ГБ/с
+<variant>19,2 ГБ/с
+<variantright>38,4 ГБ/с
+
+<question>Какова пиковая пропускная способность двухканального режима DDR5-4800?
+<variantright>76,8 ГБ/с
+<variant>19,2 ГБ/с
+<variant>153,6 ГБ/с
+<variant>38,4 ГБ/с
+
+<question>Модуль имеет маркировку PC4-25600. Какой это тип памяти?
+<variant>DDR4-6400
+<variant>DDR4-3600
+<variantright>DDR4-3200
+<variant>DDR4-1600
+
+<question>Модуль имеет маркировку PC3-12800. Какой это тип памяти?
+<variantright>DDR3-1600
+<variant>DDR3-3200
+<variant>DDR3-800
+<variant>DDR3-2000
+
+<question>Модуль имеет маркировку PC4-19200. Какой это тип памяти?
+<variant>DDR4-1200
+<variant>DDR4-2800
+<variantright>DDR4-2400
+<variant>DDR4-4800
+
+<question>Модуль имеет маркировку PC5-38400. Какой это тип памяти?
+<variantright>DDR5-4800
+<variant>DDR5-2400
+<variant>DDR5-5200
+<variant>DDR5-9600
+
+<question>Какова реальная тактовая частота шины памяти DDR4-3200?
+<variant>6400 МГц
+<variant>800 МГц
+<variant>3200 МГц
+<variantright>1600 МГц
+
+<question>Какова реальная тактовая частота шины памяти DDR3-1600?
+<variant>400 МГц
+<variantright>800 МГц
+<variant>1600 МГц
+<variant>3200 МГц
