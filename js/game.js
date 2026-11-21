@@ -28,7 +28,7 @@
   function floater(text, x, y, color) {
     var el = document.createElement('div'); el.className = 'floater'; el.textContent = text; el.style.color = color || '#FFD25A';
     el.style.left = (x / A.W * 100) + '%'; el.style.top = (y / A.H * 100) + '%'; $('floaters').appendChild(el);
-    setTimeout(function () { el.remove(); }, 1900);
+    setTimeout(function () { el.remove(); }, 3700);
   }
   function labels(list) {
     $('floaters').querySelectorAll('.lbl').forEach(function (e) { e.remove(); });
@@ -422,7 +422,7 @@
     }
     D.persist(); hud();
     panel.insertAdjacentHTML('beforeend', '<div class="verdict ' + (ok ? 'ok' : 'bad') + '">' + esc(msg) + '</div>');
-    setTimeout(function () { if (G.intruder === I) { G.intruder = null; hideBubble(); if (G.scene === 'house') enterHouse(); } }, 3200);
+    setTimeout(function () { if (G.intruder === I) { G.intruder = null; hideBubble(); if (G.scene === 'house') enterHouse(); } }, 6400);
   }
   /* подсказка про дверь: показывается, только если стоишь в домике 2 минуты и никуда не идёшь */
   function doorHint() {
@@ -890,7 +890,7 @@
     var E = G.ev; G.buttons = []; setPanel('<p class="msg">Ты идёшь по мосту…</p>');
     walkTo(430, function () {
       E.chestOpen = now(); sfx('chest'); var L = X.loot('chest');
-      if (E.cage) { E.cage.openT = now() + 900; setTimeout(function () { sfx('door'); }, 900); setTimeout(function () { petRescue(function () { evEnd('🌉 Мост пройден!', 'Ты перешёл пропасть, открыл сундук и спас питомца из клетки!', L); }, E.cage.kind); }, 2400); return; }
+      if (E.cage) { E.cage.openT = now() + 900; setTimeout(function () { sfx('door'); }, 900); setTimeout(function () { petRescue(function () { evEnd('🌉 Мост пройден!', 'Ты перешёл пропасть, открыл сундук и спас питомца из клетки!', L); }, E.cage.kind); }, 4200); return; }
       setTimeout(function () { evEnd('🌉 Мост пройден!', 'Ты перешёл пропасть' + (E.fallen ? ', хотя ' + E.fallen + ' ' + plural(E.fallen, 'доска упала', 'доски упали', 'досок упало') + ' вниз' : ' без единой упавшей доски') + '. На той стороне — сундук.', L); }, 500); });
   }
 
@@ -942,7 +942,7 @@
     if (T.item === 'cage') {
       T.openT = now() + 700; G.buttons = []; setPanel('<p class="msg">🐾 Свет упал на <b>клетку</b> — внутри кто-то пищит! Замок поддаётся…</p>');
       setTimeout(function () { sfx('door'); }, 700);
-      setTimeout(function () { petRescue(function () { if (G.ev === E) darkIdle('<p class="msg">Питомец спасён!' + (last ? '' : ' Осталось зажечь остальные факелы.') + '</p>'); }, E.cageKind); }, 2200);
+      setTimeout(function () { petRescue(function () { if (G.ev === E) darkIdle('<p class="msg">Питомец спасён!' + (last ? '' : ' Осталось зажечь остальные факелы.') + '</p>'); }, E.cageKind); }, 4000);
       return { mirror: true };
     }
     return { next: nx };
@@ -959,9 +959,9 @@
         if (!qs.length) qs = evPick(2);
         M.qs = qs; M.cracks = 0;
         setPanel('<div class="qtext">😈 Злой двойник</div><p class="msg">Факелы гаснут. Из зеркала выходит <b>твоя копия</b> с пустыми глазами и шепчет твоим голосом: «Помнишь, как ты тут ошибся?..» Он спросит то, на чём ты ошибался (' + qs.length + '). Ответь верно на всё — и он разлетится.</p>');
-        setTimeout(function () { if (G.ev === E) { M.state = 'fight'; evButtons(panel, [btn('Сразиться', 'primary', 'Enter', mirrorAsk)]); } }, 1500);
+        setTimeout(function () { if (G.ev === E) { M.state = 'fight'; evButtons(panel, [btn('Сразиться', 'primary', 'Enter', mirrorAsk)]); } }, 3500);
       })]);
-    }, 2200);
+    }, 4500);   /* дать прочитать: отражение поворачивает голову */
   }
   function mirrorAsk() {
     var E = G.ev, M = E.m, q = M.qs[0];
@@ -1053,9 +1053,9 @@
   /* все буквы собраны: они по одной встают в ячейки двери, слово складывается само */
   function boxAssemble() {
     var E = G.ev; G.buttons = []; labels([]); E.solved = [];
-    setPanel('<div class="qtext">🚪 Все буквы собраны!</div><p class="msg">Буквы сами встают на свои места в двери…</p><div class="ltiles word-fill">' + E.word.split('').map(function (L, i) { return '<span class="ltile" style="animation-delay:' + (i * 260) + 'ms">' + esc(L) + '</span>'; }).join('') + '</div>');
-    E.word.split('').forEach(function (_, i) { setTimeout(function () { if (G.ev !== E) return; E.solved[i] = 1; sfx('ok'); }, 300 + i * 260); });
-    setTimeout(function () { if (G.ev === E) boxGuess(E.word); }, 600 + E.word.length * 260);
+    setPanel('<div class="qtext">🚪 Все буквы собраны!</div><p class="msg">Буквы сами встают на свои места в двери…</p><div class="ltiles word-fill">' + E.word.split('').map(function (L, i) { return '<span class="ltile" style="animation-delay:' + (i * 450) + 'ms">' + esc(L) + '</span>'; }).join('') + '</div>');
+    E.word.split('').forEach(function (_, i) { setTimeout(function () { if (G.ev !== E) return; E.solved[i] = 1; sfx('ok'); }, 400 + i * 450); });
+    setTimeout(function () { if (G.ev === E) boxGuess(E.word); }, 1400 + E.word.length * 450);
   }
   function boxGuess(v) {
     var E = G.ev, g = String(v || '').trim().toUpperCase().replace(/Ё/g, 'Е');
@@ -1188,7 +1188,7 @@
   function roomCage() {
     var R = G.room; R.cage.openT = now(); sfx('door'); G.buttons = [];
     setPanel('<p class="msg">🔓 Замок клетки с лязгом падает…</p>');
-    setTimeout(function () { if (G.room !== R) return; petRescue(function () { if (G.room === R) goNext(); }, R.cage.kind); }, 1500);
+    setTimeout(function () { if (G.room !== R) return; petRescue(function () { if (G.room === R) goNext(); }, R.cage.kind); }, 3000);
   }
   function petsLibSpots() {
     return (G.libPets || []).map(function (e) { return { x0: e.x - 14, x1: e.x + 14, y0: A.FLOOR_Y - 18, y1: A.FLOOR_Y + 14, tip: { text: '🐾 ' + e.p.name, sub: PET_AB[e.p.ab].ic + ' ' + PET_AB[e.p.ab].name + ' · нажми', x: e.x, y: A.FLOOR_Y - 20 }, fn: function () { petCard(e.p); } }; })
@@ -1325,7 +1325,7 @@
     var done = function () { if (E.sid) { G.ev = { sid: E.sid, cid: E.cid }; evNext(); } else { G.ev = null; go('path'); } };
     if (E.def) { E.def.jail = false; D.persist(); }
     setPanel('<div class="court-title ok">🌙 СВОБОДА!</div><p class="msg">' + (E.def ? '<b>' + esc(E.def.name) + '</b> вылез из-под земли, отряхнулся и бежит домой — в библиотеку.' : 'Бездомный питомец выбрался — и решил остаться с тобой!') + '</p>');
-    setTimeout(function () { if (G.ev !== E) return; if (E.stray) evButtons(panel, [btn('🐾 Забрать его', 'primary', 'Enter', function () { petRescue(done, E.defKind); })]); else evButtons(panel, [btn('▶ Дальше', 'primary', 'Enter', done)]); }, 1200);
+    setTimeout(function () { if (G.ev !== E) return; if (E.stray) evButtons(panel, [btn('🐾 Забрать его', 'primary', 'Enter', function () { petRescue(done, E.defKind); })]); else evButtons(panel, [btn('▶ Дальше', 'primary', 'Enter', done)]); }, 2400);
   }
   function jailHtml() {
     var j = myPets().filter(function (p) { return p.jail; }); if (!j.length) return '';
@@ -1776,7 +1776,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     var txt = String(q.q || '').replace(/```[\s\S]*?```/g, function (m) { return m.slice(0, 120); }).replace(/[`*_#>]/g, '').replace(/\s+/g, ' ').trim();
     var ms = 1500 + txt.length * 65 + (q.img ? 2000 : 0), rec = D.save.srs[q.id];
     if (rec && rec.n >= 2 && !D.isBad(q.id)) ms *= 0.6;   /* уже видел и отвечал — читается быстрее */
-    ms = Math.max(2500, Math.min(11000, ms));
+    ms = Math.max(4000, Math.min(16000, ms * 2));   /* читать спокойно: в 2 раза дольше */
     return fast() ? ms * 0.5 : ms;
   }
   function recallFirst(R, q) {
@@ -1825,9 +1825,11 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
      ошибка — ещё дольше (понять ответ, а то и загуглить). Открыл Гугл / «Объясни» / книжку / печатаешь —
      пауза, вернулся — отсчёт заново. Нажал сам любую основную кнопку — отсчёт сброшен.
      ===================================================================== */
+  /* READ_K — во сколько раз дольше всё держится на экране (автор попросил в 2 раза: «я так быстро не читаю») */
+  var READ_K = 2;
   var AUTO_MS = { ok: 2600, event: 5000, bad: 7500, read: 6500, quick: 1600 };
   var AUTO = { fn: null, ms: 0, btn: null, t: null, paused: false };
-  function autoMs(kind) { var ms = AUTO_MS[kind] || kind || AUTO_MS.event; return fast() ? Math.round(ms * 0.6) : ms; }
+  function autoMs(kind) { var ms = AUTO_MS[kind] || kind || AUTO_MS.event; if (kind !== 'quick') ms *= READ_K; return fast() ? Math.round(ms * 0.6) : ms; }
   function autoArm(fn, kind, btnEl) {
     autoStop(); if (!autoOn() || !fn) return;
     AUTO.fn = fn; AUTO.ms = autoMs(kind); AUTO.btn = btnEl || null; AUTO.paused = false;
@@ -2199,7 +2201,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
   function line(norm, rudeSet) { return rude() && rudeSet && Math.random() < 0.5 ? pick(rudeSet) : pick(norm); }
 
   /* после ответа панель ненадолго гаснет, чтобы было видно удар героя или атаку монстра */
-  var WATCH_MS = 2200;   /* пауза «посмотреть, что случилось» после ответа (было 1,5 с — слишком быстро) */
+  var WATCH_MS = 4400;   /* пауза «посмотреть, что случилось» после ответа (было 1,5 с — слишком быстро) */
   function fast() { return S.cfg.fast === true; }   /* быстрый режим: короткие паузы и анимации */
   function wms() { return fast() ? 550 : WATCH_MS; }
   function watchHit(ms) {

@@ -114,7 +114,7 @@
     if (M.state === 'idle' || M.state === 'turn') {
       c.save(); c.beginPath(); c.rect(x - w / 2, top, w, h); c.clip();
       c.globalAlpha = 0.55; c.filter = 'brightness(0.6)';
-      var turn = M.state === 'turn' ? Math.min(1, (t - M.t0) / 1800) : 0;
+      var turn = M.state === 'turn' ? Math.min(1, (t - M.t0) / 3600) : 0;
       if (turn > 0.5) { c.translate(x * 2, 0); c.scale(-1, 1); }
       A.drawHero(c, 'idle', Math.floor(t / 450), x, fy - 2, 1.2);
       c.restore(); c.filter = 'none';
@@ -183,7 +183,7 @@
     if (M && (M.state === 'out' || M.state === 'fight' || M.state === 'shatter')) twin(c, t, E, fy);
   };
   function twin(c, t, E, fy) {
-    var M = E.m, tx = M.x - 34, k = M.state === 'out' ? Math.min(1, (t - M.t0) / 1400) : 1, x = M.x + (tx - M.x) * k;
+    var M = E.m, tx = M.x - 34, k = M.state === 'out' ? Math.min(1, (t - M.t0) / 2800) : 1, x = M.x + (tx - M.x) * k;
     if (M.state === 'shatter') {
       var st = (t - M.t0) / 1200; if (st > 1.3) return;
       for (var i = 0; i < 40; i++) { var a = hash(i, 9) * 6.28, v = 20 + hash(i, 10) * 70; px(c, x + Math.cos(a) * v * st, fy - 30 + Math.sin(a) * v * st + st * st * 40, 3, 2, 'rgba(200,215,240,' + Math.max(0, 1 - st).toFixed(2) + ')'); }
