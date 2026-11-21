@@ -630,3 +630,6 @@ details.brief[open]>.rich{animation:richIn .45s ease-out}
 .btn.auto{position:relative;overflow:hidden}
 .btn.auto::after{content:"";position:absolute;left:0;bottom:0;height:4px;width:100%;background:rgba(255,255,255,.75);transform-origin:left;animation:autoBar var(--auto,3000ms) linear forwards;pointer-events:none}
 @keyframes autoBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.tr-under{color:#9FE1CB;font-size:15px;margin:2px 0 8px;padding:6px 10px;border-left:3px solid #5DCAA5;background:rgba(93,202,165,.07);border-radius:0 8px 8px 0}
+.ca .o-tr{display:block;font-weight:400}
+.btn.on{border-color:#5DCAA5;color:#9FE1CB}

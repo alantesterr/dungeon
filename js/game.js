@@ -789,14 +789,9 @@
       '<div class="opts' + (o.match ? ' matches' : '') + '">' + order.map(function (oi, n) { return '<button class="opt' + (o.match ? ' match' : '') + '" data-o="' + oi + '"><span class="n">' + (o.match ? '🔥' : n + 1) + '</span><span>' + D.md(q.opts[oi].t) + '</span></button>'; }).join('') + '</div>' +
       '<div class="qlinks"><button class="linkbtn dunno" data-evdunno>🤷 Не знаю</button></div><div id="evAfter"></div>';
     setPanel(h); G.buttons = [];
-    panel.querySelector('[data-evtr]').onclick = function () {
-      var b = this; b.disabled = true;
-      X.trQuestion(q, S.cfg.trLang || 'ru').then(function (d) {
-        if (!G.ev || G.ev.cur !== cur) return;
-        panel.querySelector('.qtext').innerHTML = D.md(d.q) + '<div class="tr-note">перевод</div>';
-        panel.querySelectorAll('.opt').forEach(function (el) { var oi = +el.getAttribute('data-o'); el.lastElementChild.innerHTML = D.md(d.o[oi] != null ? d.o[oi] : q.opts[oi].t); });
-      }).catch(function () { b.disabled = false; floater('Перевод недоступен — нет интернета?', 240, 60, '#F09595'); });
-    };
+    var trb = panel.querySelector('[data-evtr]');
+    trb.onclick = function () { var b = this; if (b.classList.contains('on')) { trHide(panel); b.classList.remove('on'); return; } b.disabled = true; trShow(q, panel, function () { return G.ev && G.ev.cur === cur; }).then(function (ok) { b.disabled = false; if (ok) b.classList.add('on'); }); };
+    if (D.subjId === 'cpp' && cppTrOn()) trb.click();   /* C++: готовый перевод — сразу, как в бою */
     var bk = panel.querySelector('[data-evbook]'); if (bk) bk.onclick = function () { var fq = floorOfQ(q), ref = exRef(q, fq), tf = ref ? ref.f : fq, idx = ref && ref.sec ? tf.texts.indexOf(ref.sec) : 0; openBook({ f: tf, start: Math.max(0, idx), mark: [], cur: ref && ref.sec ? ref.sec.id : null }); };
     panel.querySelector('[data-evggl]').onclick = function () { if (!cur.done) { cur.assisted = true; this.classList.add('used'); } window.open('https://www.google.com/search?udm=50&q=' + encodeURIComponent(aiPrompt(q, floorOfQ(q), cur.done)), '_blank', 'noopener'); };
     var finish = function (ok, oi, dunno) {
@@ -831,6 +826,23 @@
     });
     panel.querySelector('[data-evdunno]').onclick = function () { finish(false, -1, true); };
   }
+  /* перевод вопроса в особых комнатах и в суде — как в бою: оригинал (с кодом!) остаётся,
+     перевод текста — ниже, у вариантов — мелкая строка с переводом (код в вариантах не переводим) */
+  function trShow(q, root, alive) {
+    return X.trQuestion(q, S.cfg.trLang || 'ru').then(function (d) {
+      if (alive && !alive()) return false;
+      var prose = q.q.replace(/```[\s\S]*?```/g, ' ').trim(), text = String(d.q || '').replace(/```[\s\S]*?```/g, ' ').replace(/\n{2,}/g, '\n').trim();
+      var qt = root.querySelector('.qtext, .cq');
+      if (qt && text && text !== prose && !root.querySelector('.tr-under')) qt.insertAdjacentHTML('afterend', '<div class="tr-under">🌐 ' + D.md(text) + '</div>');
+      root.querySelectorAll('.opt').forEach(function (b) {
+        var oi = +b.getAttribute('data-o'), o = q.opts[oi], t = d.o && d.o[oi];
+        if (!o || !t || t === o.t || X.isCodeLike(o.t) || b.querySelector('.o-tr')) return;
+        b.lastElementChild.insertAdjacentHTML('beforeend', '<small class="o-tr">' + D.md(t) + '</small>');
+      });
+      return true;
+    }).catch(function () { floater('Перевод недоступен — нет интернета?', 240, 60, '#F09595'); return false; });
+  }
+  function trHide(root) { root.querySelectorAll('.tr-under, .o-tr').forEach(function (e) { e.remove(); }); }
   function evKnowBox(q, root) {
     root.insertAdjacentHTML('beforeend', '<div class="know-box"><span>📕 Этот вопрос лежит на <b>полке ошибок</b>. Точно запомнил?</span><button class="btn primary sm" data-kn>✓ Знаю — убрать</button><button class="btn ghost sm" data-kl>Оставить</button></div>');
     var box = root.querySelector('.know-box');
@@ -1238,7 +1250,8 @@
       '<div class="claim"><span class="who">😈 Прокурор:</span><div class="cq">«' + D.md(q.q) + '»</div>' + (q.img ? '<div class="qimg"><img src="' + esc(q.img) + '" alt=""></div>' : '') + '<div class="ca">Ответ: <b>' + D.md(q.opts[shown].t) + '</b></div></div>' +
       '<div class="row court-btns"><button class="btn ghost big" data-agree>✋ Соглашаюсь</button><button class="btn danger big" data-obj>☝ ВОЗРАЖАЮ!</button></div><div id="evAfter"></div>');
     G.buttons = [];
-    panel.querySelector('[data-ctr]').onclick = function () { var b = this; b.disabled = true; X.trQuestion(q, S.cfg.trLang || 'ru').then(function (d) { if (G.ev !== E || E.st !== S2) return; panel.querySelector('.cq').innerHTML = '«' + D.md(d.q) + '»'; panel.querySelector('.ca b').innerHTML = D.md(d.o[shown] != null ? d.o[shown] : q.opts[shown].t); }).catch(function () { b.disabled = false; }); };
+    var ctr = panel.querySelector('[data-ctr]'); ctr.onclick = function () { var b = this; if (b.classList.contains('on')) { trHide(panel); b.classList.remove('on'); return; } b.disabled = true; trShow(q, panel, function () { return G.ev === E && E.st === S2; }).then(function (ok) { b.disabled = false; if (!ok) return; b.classList.add('on'); X.trQuestion(q, S.cfg.trLang || 'ru').then(function (d) { var t = d.o && d.o[shown], ca = panel.querySelector('.ca'); if (ca && t && t !== q.opts[shown].t && !X.isCodeLike(q.opts[shown].t) && !ca.querySelector('.o-tr')) ca.insertAdjacentHTML('beforeend', '<small class="o-tr">' + D.md(t) + '</small>'); }); }); };
+    if (D.subjId === 'cpp' && cppTrOn()) ctr.click();
     var cf = panel.querySelector('[data-cfile]'); if (cf) cf.onclick = function () { S2.file = true; E.fileOpen = true; var fq = floorOfQ(q), ref = exRef(q, fq), tf = ref ? ref.f : fq; openBook({ f: tf, start: ref && ref.sec ? Math.max(0, tf.texts.indexOf(ref.sec)) : 0, mark: [], cur: ref && ref.sec ? ref.sec.id : null }); };
     panel.querySelector('[data-cggl]').onclick = function () { if (!S2.done) { S2.assisted = true; this.classList.add('used'); } window.open('https://www.google.com/search?udm=50&q=' + encodeURIComponent(aiPrompt(q, floorOfQ(q), S2.done)), '_blank', 'noopener'); };
     panel.querySelector('[data-agree]').onclick = function () { courtJudge(S2.truth, false); };
