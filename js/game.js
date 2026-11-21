@@ -48,7 +48,7 @@
     if (scene !== 'room') G.room = null;
     G.intruder = null;
     clearTimeout(G.watchT); $('app').classList.remove('watch'); hideBubble();
-    ({ house: enterHouse, subject: enterSubject, exam: enterExam, hall: enterHall, path: enterLib, event: enterEvent, floor: enterFloor, room: enterRoom })[scene](arg);
+    ({ house: enterHouse, subject: enterSubject, exam: enterExam, hall: enterHall, path: enterLib, event: enterEvent, lake: enterLake, floor: enterFloor, room: enterRoom })[scene](arg);
     hud(); window.scrollTo(0, 0);
   }
   /* «Тема 3» у предметов по силлабусу, «Этаж 3» у C++ */
@@ -284,7 +284,7 @@
      Слева одна кнопка «назад», на ней всегда написано, КУДА она ведёт (в домике — «StudyPlay»).
      Справа «☰» — меню-пауза (и клавиша Esc): продолжить, карта тем, домик, рюкзак, лавка,
      настройки и отдельно — выйти в StudyPlay. */
-  var BACK = { house: null, subject: 'house', exam: 'house', hall: 'house', path: 'hall', event: 'path', floor: 'path', room: 'floor' };
+  var BACK = { house: null, subject: 'house', exam: 'house', hall: 'house', path: 'hall', event: 'path', lake: 'house', floor: 'path', room: 'floor' };
   function backLabel(to) { return { sp: 'StudyPlay', house: 'Домик', hall: 'Зал', path: 'Библиотека', floor: 'Комнаты', level: 'Уровень' }[to] || 'Назад'; }
   function updBack() {
     var to = BACK[G.scene], b = $('hudBack'); if (to === 'floor' && G.room && (G.room.f.rep || caveOn(G.room.f))) to = 'path'; if (to === 'floor' && G.room && (G.room.f.exam || G.room.f.arena)) to = 'path'; if (to === 'floor' && G.room && G.room.f.drill) to = 'level';
@@ -367,13 +367,13 @@
   function enterHouse() {
     show(true); where('Домик героя'); G.hero.x = 240; G.hero.dir = 1;
     var intro = !S.seenIntro;
-    labels([{ text: 'Мудрец · лавка', x: SAGE_X, y: 136, color: '#CECBF6' }]);
+    labels([{ text: 'Мудрец · лавка', x: SAGE_X, y: 136, color: '#CECBF6' }, { text: '🎣 к озеру →', x: 450, y: 84, color: '#9FE1CB' }]);
     setPanel(
       (intro ? '<div class="qtext">Добро пожаловать в Подземелье знаний!</div>' +
         '<p class="msg">Игра для подготовки к РК и экзамену. В комнатах монстры задают вопросы: верно — монстр теряет сердечко, ошибся — бьёт тебя (−1 ♥) и спросит этот вопрос ещё раз. IQ — награда за ответы, на него Мудрец продаёт предметы.</p>'
         : '<div class="qtext">Домик</div><p class="hint">Продолжай с того места, где остановился.</p>') +
         '',
-      [contBtn() || btn('▶ Начать', 'primary', 'Enter', toDungeon), btn('🎒 Рюкзак', 'ghost', null, openBag)]);
+      [contBtn() || btn('▶ Начать', 'primary', 'Enter', toDungeon), btn('🎣 Рыбалка', 'ghost', null, toLake), btn('🎒 Рюкзак', 'ghost', null, openBag)]);
     clearTimeout(G.idleT); G.idleT = setTimeout(doorHint, 120000);   /* стоишь дома 2 минуты — подсказка про дверь */
     if (S.maxHp > 5) { S.maxHp = 5; S.hp = Math.min(S.hp, 5); }   /* уровней больше нет — 5 сердечек у всех */
     if (S.hp < S.maxHp) { S.hp = S.maxHp; D.persist(); }
@@ -426,13 +426,13 @@
   /* подсказка про дверь: показывается, только если стоишь в домике 2 минуты и никуда не идёшь */
   function doorHint() {
     if (G.scene !== 'house' || G.modal) return;
-    labels([{ text: 'Мудрец · лавка', x: SAGE_X, y: 136, color: '#CECBF6' }]);
+    labels([{ text: 'Мудрец · лавка', x: SAGE_X, y: 136, color: '#CECBF6' }, { text: '🎣 к озеру →', x: 450, y: 84, color: '#9FE1CB' }]);
     var el = document.createElement('div'); el.className = 'door-hint'; el.innerHTML = '<span class="dh-arrow">⬅</span> Нажми на дверь — спустишься в подземелье';
     el.style.left = (54 / A.W * 100) + '%'; el.style.top = (150 / A.H * 100) + '%'; $('floaters').appendChild(el);
   }
   /* что можно нажать на сцене (в координатах холста 480×270) */
   function hotspots() {
-    if (G.scene === 'house') return [{ x0: 4, x1: 52, y0: 126, y1: 216, fn: toDungeon }, { x0: SAGE_X - 22, x1: SAGE_X + 22, y0: 150, y1: 216, fn: openShop }];
+    if (G.scene === 'house') return [{ x0: 4, x1: 52, y0: 126, y1: 216, fn: toDungeon }, { x0: SAGE_X - 22, x1: SAGE_X + 22, y0: 150, y1: 216, fn: openShop }, { x0: 424, x1: 476, y0: 86, y1: 132, fn: toLake }];
     if (G.scene === 'hall') return DOORS.filter(function (d) { return D.SUBJ[d[0]]; }).map(function (d) {
       var w = d[0] === 'cpp' ? 48 : 39; return { x0: d[1] - w, x1: d[1] + w, y0: A.FLOOR_Y - w * 2 - 8, y1: A.FLOOR_Y + 4, fn: function () { enterDoor(d); } };
     });
@@ -680,7 +680,8 @@
     setPanel('<div class="lib-top"><div class="qtext">📚 ' + esc(A.libName(sid)) + '</div><span class="tag teal">книг на полках: ' + tot + ' из ' + all.length + ' · ' + pAll + '%</span></div>' + tip +
       '<div class="lib-dock"><button class="btn primary lib-all" data-all>▶ ' + (sj.drill ? 'Хаос-забег' : 'Всё подряд') + '<small>' + (sj.drill ? 'случайные вопросы уровня' : 'вопросы из всех тем вперемешку') + '</small></button>' +
       '<button class="btn ghost lib-ex" data-exam>🎓 Как на экзамене<small>' + EXAM_N + ' вопросов · ' + EXAM_MIN + ' мин</small></button></div>' +
-      '<p class="hint">Полки — это темы: нажми на полку в шкафу (или ниже), чтобы пройти тему, открыть лекцию или повторить пыльные книги.</p>' + chips);
+      jailHtml() + '<p class="hint">Полки — это темы: нажми на полку в шкафу (или ниже), чтобы пройти тему, открыть лекцию или повторить пыльные книги.</p>' + chips);
+    wireJail();
     panel.querySelector('[data-all]').onclick = goAll;
     panel.querySelector('[data-exam]').onclick = goExam;
     panel.querySelectorAll('[data-tipok]').forEach(function (b) { b.onclick = function () { S.tips[b.getAttribute('data-tipok')] = 1; D.persist(); b.parentNode.remove(); }; });
@@ -734,7 +735,8 @@
      Сердечки в особых комнатах не тратятся: цена ошибки — книга на полке ошибок (и упавшая доска, мокрая спичка…).
      Гугл, перевод и книжка есть везде. После каждого события игра ждёт кнопку.
      ===================================================================== */
-  var EVS = [{ k: 'bridge', base: 0.055, name: '🌉 Мост через пропасть' }, { k: 'dark', base: 0.045, name: '🔦 Тёмная комната' }, { k: 'boxes', base: 0.04, name: '🔤 Комната со шкатулками' }];
+  var EVS = [{ k: 'bridge', base: 0.047, name: '🌉 Мост через пропасть' }, { k: 'dark', base: 0.04, name: '🔦 Тёмная комната' }, { k: 'boxes', base: 0.034, name: '🔤 Комната со шкатулками' }, { k: 'court', base: 0.04, name: '⚖ Суд' }];
+  var EV_NAMES = { escape: '⛏ Побег из тюрьмы' };
   function evRoll() {
     S.evs = S.evs || {};
     if (S.evPrev) { S.evPrev = false; D.persist(); return null; }
@@ -764,9 +766,9 @@
   function enterEvent() {
     var E = G.ev; if (!E) return go('path');
     show(true); E.hover = null;
-    var nm = EVS.filter(function (x) { return x.k === E.kind; })[0].name;
+    var nm = (EVS.filter(function (x) { return x.k === E.kind; })[0] || { name: EV_NAMES[E.kind] || '' }).name;
     where(nm + ' · ' + subjTitle());
-    ({ bridge: bridgeStart, dark: darkStart, boxes: boxesStart }[E.kind])(E);
+    ({ bridge: bridgeStart, dark: darkStart, boxes: boxesStart, court: courtStart, escape: escapeStart }[E.kind])(E);
   }
   /* ---------- общий вопрос особой комнаты ----------
      o.title — подпись, o.match — варианты как спички (неверная «мокнет» и исчезает, ищешь дальше),
@@ -1054,12 +1056,12 @@
     heal: { name: 'Лечит', ic: '❤', desc: 'иногда за верный ответ лечит 1 ♥', ch: [0.06, 0.1, 0.15] },
     coin: { name: 'Монетка', ic: '🪙', desc: 'иногда за верный ответ приносит +3 IQ', ch: [0.08, 0.12, 0.18] },
     second: { name: 'Второй шанс', ic: '🛡', desc: 'редко спасает от удара после ошибки (сердечко цело)', ch: [0.04, 0.06, 0.09] },
-    fifty: { name: 'Подсказка', ic: '✂', desc: 'очень редко убирает один неверный вариант (это считается подсказкой)', ch: [0.03, 0.05, 0.08] }
+    fifty: { name: 'Убирает вариант', ic: '✂', desc: 'очень редко убирает один неверный вариант (ответ засчитывается как обычный)', ch: [0.03, 0.05, 0.08] }
   };
   var PET_RAR = [{ n: 'обычный', col: '#B4B2C4' }, { n: 'редкий', col: '#85B7EB' }, { n: 'легендарный', col: '#FAC775' }];
   var PET_NAMES = ['Мурка', 'Барсик', 'Пушок', 'Снежок', 'Уголёк', 'Рыжик', 'Кекс', 'Тиша', 'Бублик', 'Ириска', 'Пиксель', 'Байт', 'Сократ', 'Кэш', 'Бит', 'Тостер', 'Плюшка', 'Компот', 'Шрёдингер', 'Борщ'];
   function myPets(sid) { S.pets = S.pets || {}; return S.pets[sid || D.subjId] = S.pets[sid || D.subjId] || []; }
-  function followPet(sid) { S.petFollow = S.petFollow || {}; var id = S.petFollow[sid || D.subjId]; return myPets(sid).filter(function (p) { return p.id === id; })[0] || null; }
+  function followPet(sid) { S.petFollow = S.petFollow || {}; var id = S.petFollow[sid || D.subjId]; return myPets(sid).filter(function (p) { return p.id === id && !p.jail; })[0] || null; }
   function petChance(p) { return PET_AB[p.ab].ch[p.rar] * (1 + 0.25 * ((p.lv || 1) - 1)); }
   function newPetKind() {
     var r = Math.random();
@@ -1105,8 +1107,8 @@
   /* ---------- питомцы в библиотеке: бродят, сидят, спят, мяукают ---------- */
   function libPetsSync() {
     var list = myPets(), fol = followPet();
-    G.libPets = (G.libPets || []).filter(function (e) { return list.indexOf(e.p) >= 0 && (!fol || fol.id !== e.p.id); });
-    list.forEach(function (p) { if (fol && fol.id === p.id) return; if (!G.libPets.some(function (e) { return e.p === p; })) G.libPets.push({ p: p, x: 80 + Math.random() * 320, target: null, anim: 'idle', until: 0, dir: Math.random() < 0.5 ? -1 : 1, st: now() }); });
+    G.libPets = (G.libPets || []).filter(function (e) { return list.indexOf(e.p) >= 0 && !e.p.jail && (!fol || fol.id !== e.p.id); });
+    list.forEach(function (p) { if (p.jail || (fol && fol.id === p.id)) return; if (!G.libPets.some(function (e) { return e.p === p; })) G.libPets.push({ p: p, x: 80 + Math.random() * 320, target: null, anim: 'idle', until: 0, dir: Math.random() < 0.5 ? -1 : 1, st: now() }); });
   }
   function petBrain(e, t) {
     if (t < e.until) return;
@@ -1127,6 +1129,7 @@
     }
     /* питомец, который ходит за тобой */
     var p = followPet(); if (!p || !(G.scene === 'path' || G.scene === 'room' || G.scene === 'event')) return;
+    if (G.scene === 'event' && G.ev && (G.ev.kind === 'court' || G.ev.kind === 'escape') && G.ev.def === p) return;   /* он сейчас подзащитный */
     var F = G.petF && G.petF.p === p ? G.petF : (G.petF = { p: p, x: G.hero.x - 30, dir: 1, anim: 'idle', st: t });
     var h = G.hero, want = h.x - 30 * (h.dir < 0 ? -1 : 1), d2 = want - F.x;
     if (Math.abs(d2) > 2) { F.x += Math.sign(d2) * Math.min(Math.abs(d2), dt * (Math.abs(d2) > 40 ? 0.2 : 0.11)); F.dir = Math.sign(d2); var na = Math.abs(d2) > 40 ? 'run' : 'walk'; if (F.anim !== na) { F.anim = na; F.st = t; } }
@@ -1149,7 +1152,7 @@
       if (G.room !== R || R.q !== q || R.answered) return;
       var wr = [].slice.call(panel.querySelectorAll('.opt')).filter(function (b) { return !q.opts[+b.getAttribute('data-o')].right && !b.disabled; });
       if (!wr.length) return; var b = wr[Math.floor(Math.random() * wr.length)]; b.disabled = true; b.classList.add('gone');
-      R.assisted = true; markAssisted();
+      /* помощь питомца — НЕ подсказка: ответ засчитывается как обычный */
     }, 900);
   }
   /* клетка в обычной комнате: висит над комнатой; когда все монстры повержены — открывается */
@@ -1162,6 +1165,247 @@
   function petsLibSpots() {
     return (G.libPets || []).map(function (e) { return { x0: e.x - 14, x1: e.x + 14, y0: A.FLOOR_Y - 18, y1: A.FLOOR_Y + 14, tip: { text: '🐾 ' + e.p.name, sub: PET_AB[e.p.ab].ic + ' ' + PET_AB[e.p.ab].name + ' · нажми', x: e.x, y: A.FLOOR_Y - 20 }, fn: function () { petCard(e.p); } }; })
       .concat((function () { var p = followPet(), F = G.petF; return p && F ? [{ x0: F.x - 14, x1: F.x + 14, y0: A.FLOOR_Y - 18, y1: A.FLOOR_Y + 14, tip: { text: '🐾 ' + p.name + ' (ходит с тобой)', sub: 'нажми', x: F.x, y: A.FLOOR_Y - 20 }, fn: function () { petCard(p); } }] : []; })());
+  }
+  /* =====================================================================
+     ШАГ 3 (ноябрь 2026): ⚖ СУД (случайное событие «Всё подряд») + ⛏ ПОБЕГ, 🎭 ЛЖЕЦ (монстр), 🎣 РЫБАЛКА (озеро у домика).
+     ===================================================================== */
+  function subjFloor() {   /* все вопросы текущего предмета одним «этажом» — для событий вне забега */
+    var pool = [], byId = {}, texts = [];
+    D.floors.forEach(function (f) { f.pool.forEach(function (q) { if (!byId[q.id]) { byId[q.id] = q; pool.push(q); } }); texts = texts.concat(f.texts || []); });
+    return { pool: pool, byId: byId, texts: texts };
+  }
+  /* ---------- ⚖ СУД ---------- */
+  var COURT_N = 6, BAIL = 60;
+  var CHARGES = ['путает регистр с кэшем', 'считает, что цикл for — это вид кофе', 'выдал чужой ответ за свой', 'перепутал все варианты ответа', 'спал на лекции и храпел в такт', 'съел конспект соседа', 'утверждает, что ответ всегда «В»', 'перепутал Платона с Плутоном'];
+  function courtStart(E) {
+    var pets = myPets().filter(function (p) { return !p.jail; }), fol = followPet();
+    E.def = fol || (pets.length ? pets[Math.floor(Math.random() * pets.length)] : null);
+    E.defKind = E.def ? E.def.kind : newPetKind(); E.stray = !E.def;
+    E.defName = E.def ? E.def.name : 'бездомный ' + A.PET_KINDS[E.defKind].name.toLowerCase();
+    var big = ['goblin', 'skeleton', 'mushroom', 'angel', 'doc', 'knight', 'lizard', 'delf'].filter(function (k) { return A.MON[k] && A.MON[k].lm; }); if (!big.length) big = ['goblin']; E.proKey = G.lastMonKey && big.indexOf(G.lastMonKey) >= 0 ? G.lastMonKey : big[Math.floor(Math.random() * big.length)];   /* прокурор — монстр покрупнее */
+    E.you = 0; E.pro = 0; E.n = 0; E.tug = 0; E.verdict = null;
+    G.hero.x = A.COURT.hero; G.hero.dir = -1; E.gavelT = now() + 300; setTimeout(function () { sfx('gavel'); }, 300); setTimeout(function () { E.gavelT = now(); sfx('gavel'); }, 800);
+    labels([{ text: '🦉 Судья', x: A.COURT.judge, y: 66, color: '#FAC775' }, { text: '😈 Прокурор', x: A.COURT.pro, y: 150, color: '#F09595' }, { text: '🐾 ' + E.defName, x: A.COURT.def, y: 172, color: '#9FE1CB' }]);
+    setPanel('<div class="court-title">📜 ПОВЕСТКА В СУД!</div><p class="msg">Вместо монстров тебя вызвали в суд. Подзащитный — <b>' + esc(E.defName) + '</b>. Прокурор обвиняет его в том, что он ' + CHARGES[Math.floor(Math.random() * CHARGES.length)] + '!</p>' +
+      '<p class="msg">Прокурор скажет <b>' + COURT_N + ' заявлений</b>: вопрос и ответ. Ответ бывает верный, а бывает неверный. Жми <b>«Соглашаюсь»</b> или <b>«ВОЗРАЖАЮ!»</b> — и выбери верный ответ. Без «материалов дела» — 2 очка, с ними — 1. Ошибка — 2 очка прокурору. Последнее заявление — <b>решающее</b> (×2). Набери больше прокурора — подзащитного оправдают.</p>',
+      [btn('⚖ Начать заседание', 'primary', 'Enter', courtNext)]);
+  }
+  function tugHtml(E) {
+    var d = E.you - E.pro, pos = Math.max(4, Math.min(96, 50 + d * 6));
+    return '<div class="tug-wrap"><div class="tug"><span class="tg-l">ВИНОВЕН</span><div class="tg-bar"><i style="left:' + pos + '%"></i></div><span class="tg-r">ОПРАВДАН</span></div><div class="tug-sc">Ты: <b>' + E.you + '</b> · Прокурор: <b>' + E.pro + '</b></div></div>';
+  }
+  function courtNext() {
+    var E = G.ev; if (E.n >= COURT_N) return courtVerdict();
+    var last = E.n === COURT_N - 1, q = null;
+    if (last) { var errs = D.errIds(D.subj).map(function (id) { return E.f.byId[id]; }).filter(function (x) { return evOk(x) && !E.used[x.id]; }); if (errs.length) { q = errs[0]; E.used[q.id] = 1; } }
+    if (!q) q = evPick(1)[0]; if (!q) return courtVerdict();
+    var ri = q.opts.findIndex(function (o) { return o.right; }), wr = q.opts.map(function (_, i) { return i; }).filter(function (i) { return i !== ri; });
+    var truth = Math.random() < 0.5, shown = truth ? ri : wr[Math.floor(Math.random() * wr.length)];
+    var S2 = E.st = { q: q, shown: shown, truth: truth, file: false, assisted: false, mult: last ? 2 : 1, done: false, wasErr: D.isErr(q.id) };
+    E.fileOpen = false;
+    var hasBook = (floorOfQ(q) || {}).texts && floorOfQ(q).texts.length;
+    setPanel(tugHtml(E) + '<div class="row ev-head"><span class="tag gold">⚖ Заявление ' + (E.n + 1) + ' из ' + COURT_N + (last ? ' · РЕШАЮЩЕЕ ×2' : '') + '</span><span class="grow"></span>' +
+      '<button class="btn ghost sm" data-ctr>🌐 Перевод</button>' + (hasBook ? '<button class="btn ghost sm" data-cfile title="Раздел лекции по этому вопросу. Тогда за верный ответ — 1 очко вместо 2">📂 Материалы дела</button>' : '') + '<button class="btn ghost sm" data-cggl>🔎 Загуглить</button></div>' +
+      '<div class="claim"><span class="who">😈 Прокурор:</span><div class="cq">«' + D.md(q.q) + '»</div>' + (q.img ? '<div class="qimg"><img src="' + esc(q.img) + '" alt=""></div>' : '') + '<div class="ca">Ответ: <b>' + D.md(q.opts[shown].t) + '</b></div></div>' +
+      '<div class="row court-btns"><button class="btn ghost big" data-agree>✋ Соглашаюсь</button><button class="btn danger big" data-obj>☝ ВОЗРАЖАЮ!</button></div><div id="evAfter"></div>');
+    G.buttons = [];
+    panel.querySelector('[data-ctr]').onclick = function () { var b = this; b.disabled = true; X.trQuestion(q, S.cfg.trLang || 'ru').then(function (d) { if (G.ev !== E || E.st !== S2) return; panel.querySelector('.cq').innerHTML = '«' + D.md(d.q) + '»'; panel.querySelector('.ca b').innerHTML = D.md(d.o[shown] != null ? d.o[shown] : q.opts[shown].t); }).catch(function () { b.disabled = false; }); };
+    var cf = panel.querySelector('[data-cfile]'); if (cf) cf.onclick = function () { S2.file = true; E.fileOpen = true; var fq = floorOfQ(q), ref = exRef(q, fq), tf = ref ? ref.f : fq; openBook({ f: tf, start: ref && ref.sec ? Math.max(0, tf.texts.indexOf(ref.sec)) : 0, mark: [], cur: ref && ref.sec ? ref.sec.id : null }); };
+    panel.querySelector('[data-cggl]').onclick = function () { if (!S2.done) { S2.assisted = true; this.classList.add('used'); } window.open('https://www.google.com/search?udm=50&q=' + encodeURIComponent(aiPrompt(q, floorOfQ(q), S2.done)), '_blank', 'noopener'); };
+    panel.querySelector('[data-agree]').onclick = function () { courtJudge(S2.truth, false); };
+    panel.querySelector('[data-obj]').onclick = function () {
+      if (S2.done) return; objection();
+      if (S2.truth) return courtJudge(false, true);
+      /* возразил — выбери, какой ответ верный */
+      var order = q.opts.map(function (_, i) { return i; }).sort(function () { return Math.random() - 0.5; });
+      panel.querySelector('.court-btns').outerHTML = '<p class="hint"><b>Возражаю, ведь ответ — …</b> выбери верный:</p><div class="opts">' + order.map(function (oi, n) { return '<button class="opt" data-o="' + oi + '"><span class="n">' + (n + 1) + '</span><span>' + D.md(q.opts[oi].t) + '</span></button>'; }).join('') + '</div>';
+      panel.querySelectorAll('.opt').forEach(function (b) { b.onclick = function () { var oi = +b.getAttribute('data-o'); panel.querySelectorAll('.opt').forEach(function (x) { var k = +x.getAttribute('data-o'); x.disabled = true; if (q.opts[k].right) x.classList.add('right'); else if (k === oi) x.classList.add('wrong'); }); courtJudge(!!q.opts[oi].right, true, oi); }; });
+    };
+  }
+  function objection() {
+    var el = document.createElement('div'); el.className = 'objection'; el.textContent = 'ВОЗРАЖАЮ!'; $('floaters').appendChild(el); setTimeout(function () { el.remove(); }, 1500);
+    var sw = $('sceneWrap'); sw.classList.remove('rage'); void sw.offsetWidth; sw.classList.add('rage'); sfx('objection');
+  }
+  function courtJudge(ok, objected, oi) {
+    var E = G.ev, S2 = E.st, q = S2.q; if (S2.done) return; S2.done = true;
+    D.record(q.id, ok, S2.assisted); D.persist();
+    var pts = (S2.file ? 1 : 2) * S2.mult;
+    if (ok) { E.you += pts; E.right++; E.proMood = -1; E.jury = 1; sfx('ok'); }
+    else { E.pro += 2 * S2.mult; E.wrong++; E.proMood = 1; E.jury = -1; E.gavelT = now(); sfx('gavel'); }
+    E.proT = now(); E.juryT = now(); E.tug = E.you - E.pro; E.n++;
+    var cb = panel.querySelector('.court-btns'); if (cb) cb.remove();
+    var right = rightText(q), msg;
+    if (ok && objected) msg = '☝ «Возражаю, ведь ответ — ' + right + '!» Прокурор вспотел и пятится. <b>+' + pts + '</b>';
+    else if (ok) msg = '✋ Ты согласился — и это правда. Присяжные кивают. <b>+' + pts + '</b>';
+    else if (objected && S2.truth) msg = '🔨 «Протест отклонён!» Прокурор говорил правду: ответ — ' + right + '. Прокурору <b>+' + 2 * S2.mult + '</b>.';
+    else if (objected) msg = '🔨 Возражение верное, но ответ ты выбрал неправильно. Правильно: ' + right + '. Прокурору <b>+' + 2 * S2.mult + '</b>.';
+    else msg = '🔨 Ты согласился с неправдой! Правильно: ' + right + '. Прокурор злорадствует: <b>+' + 2 * S2.mult + '</b>.';
+    var aft = $('evAfter');
+    aft.innerHTML = '<div class="verdict ' + (ok ? 'ok' : 'bad') + '">' + msg + (ok ? '' : ' 📕 Книга — на полку ошибок.') + '</div><div class="row"><button class="btn ghost sm" data-evex>📖 Объясни</button></div>';
+    aft.querySelector('[data-evex]').onclick = function () { openExplain(q); };
+    if (ok && !S2.assisted && S2.wasErr) evKnowBox(q, aft);
+    var tg = panel.querySelector('.tug-wrap'); if (tg) { tg.outerHTML = tugHtml(E); }
+    evButtons(aft, [btn(E.n >= COURT_N ? '⚖ Выслушать приговор' : 'Следующее заявление', 'primary', 'Enter', courtNext)]);
+  }
+  function courtVerdict() {
+    var E = G.ev, free = E.you > E.pro; E.verdict = free ? 'free' : 'jail'; E.vT = now(); E.gavelT = now(); sfx('gavel'); setTimeout(function () { sfx(free ? 'win' : 'wawa'); }, 400);
+    labels([]);
+    if (free) {
+      var L = X.loot('chest'); if (E.def) { /* оправданный питомец рад */ }
+      setPanel('<div class="court-title ok">🔨 ОПРАВДАН!</div>' + tugHtml(E) + '<p class="msg">Суд признал <b>' + esc(E.defName) + '</b> невиновным! Конфетти, присяжные аплодируют, прокурор уходит ни с чем. Награда — сундук.</p>' + lootHtml(L));
+      if (E.stray) { panel.insertAdjacentHTML('beforeend', '<p class="hint">Бездомный питомец так обрадовался, что пошёл за тобой!</p>'); return evButtons(panel, [btn('🐾 Забрать его', 'primary', 'Enter', function () { petRescue(courtDone, E.defKind); })]); }
+      return evButtons(panel, [btn('▶ Дальше', 'primary', 'Enter', courtDone)]);
+    }
+    if (E.def) { E.def.jail = true; if (S.petFollow && S.petFollow[D.subjId] === E.def.id) { S.petFollow[D.subjId] = null; G.petF = null; } D.persist(); }
+    setPanel('<div class="court-title bad">🔨 ВИНОВЕН!</div>' + tugHtml(E) + '<p class="msg">Сверху с грохотом падает решётка. Стражники уводят <b>' + esc(E.defName) + '</b> в тюрьму' + (E.def ? ' — в библиотеке на его месте теперь пусто' : '') + '.</p>' +
+      '<p class="msg">Можно устроить <b>побег</b>: подкоп, нужно <b>' + A.ESC_STEPS + ' верных ответов</b> (ошибки не мешают). ' + (E.def ? 'Или заплатить <b>залог ' + BAIL + ' IQ</b>.' : '') + '</p>');
+    var bs = [btn('⛏ Устроить побег', 'primary', 'Enter', function () { startEscape(E.def, E.defKind, E.stray, true); })];
+    if (E.def && S.iq >= BAIL) bs.push(btn('💰 Залог ' + BAIL + ' IQ', 'ghost', null, function () { S.iq -= BAIL; E.def.jail = false; D.persist(); hud(); sfx('chest'); toast('💰 ' + E.def.name + ' на свободе!', '#9FE1CB'); courtDone(); }));
+    bs.push(btn(E.def ? 'Потом (освободить можно в библиотеке)' : 'Оставить', 'ghost', null, courtDone));
+    evButtons(panel, bs);
+  }
+  function courtDone() { if (G.ev && G.ev.sid) evNext(); else { G.ev = null; go('path'); } }
+  /* ---------- ⛏ ПОБЕГ: подкоп, 5 верных ответов ---------- */
+  function startEscape(def, kind, stray, fromCourt) {
+    var prev = G.ev, sid = prev && prev.sid, cid = prev && prev.cid;
+    G.ev = { kind: 'escape', sid: fromCourt ? sid : null, cid: cid, f: prev && prev.f ? prev.f : subjFloor(), used: {}, right: 0, wrong: 0, t0: now(), def: def, defKind: kind || (def && def.kind), stray: !!stray, dug: 0 };
+    go('event');
+  }
+  function escapeStart(E) {
+    G.hero.x = -300; labels([{ text: '🔒 Тюрьма', x: 90, y: 6, color: '#F09595' }, { text: '🚪 Свобода', x: 420, y: 52, color: '#9FE1CB' }]);
+    var nm = E.def ? E.def.name : 'бездомный ' + A.PET_KINDS[E.defKind].name.toLowerCase();
+    setPanel('<div class="qtext">⛏ Побег из тюрьмы</div><p class="msg">Ночь. <b>' + esc(nm) + '</b> роет подкоп из камеры. Каждый <b>верный ответ</b> — шаг тоннеля, нужно <b>' + A.ESC_STEPS + '</b>. Ошибся — не страшно: земля осыпалась, копай дальше (вопрос уйдёт на полку ошибок).</p>',
+      [btn('⛏ Копать', 'primary', 'Enter', escapeAsk)]);
+  }
+  function escapeAsk() {
+    var E = G.ev, q = evPick(1)[0]; if (!q) return escapeWin();
+    evAsk(q, {
+      title: '⛏ Подкоп · ' + E.dug + ' из ' + A.ESC_STEPS,
+      verdict: function (ok) { return ok ? '⛏ Ещё шаг тоннеля!' : '🪨 Земля осыпалась — но копать можно дальше.'; },
+      done: function (ok, first, aft) {
+        if (ok) { E.dug++; E.digT = now(); sfx('thud'); }
+        if (E.dug >= A.ESC_STEPS) return evButtons(aft, [btn('🌙 Вылезти на свободу', 'primary', 'Enter', escapeWin)]);
+        evButtons(aft, [btn('⛏ Копать дальше', 'primary', 'Enter', escapeAsk)]);
+      }
+    });
+  }
+  function escapeWin() {
+    var E = G.ev; E.free = true; E.freeT = now(); sfx('win'); labels([]);
+    var done = function () { if (E.sid) { G.ev = { sid: E.sid, cid: E.cid }; evNext(); } else { G.ev = null; go('path'); } };
+    if (E.def) { E.def.jail = false; D.persist(); }
+    setPanel('<div class="court-title ok">🌙 СВОБОДА!</div><p class="msg">' + (E.def ? '<b>' + esc(E.def.name) + '</b> вылез из-под земли, отряхнулся и бежит домой — в библиотеку.' : 'Бездомный питомец выбрался — и решил остаться с тобой!') + '</p>');
+    setTimeout(function () { if (G.ev !== E) return; if (E.stray) evButtons(panel, [btn('🐾 Забрать его', 'primary', 'Enter', function () { petRescue(done, E.defKind); })]); else evButtons(panel, [btn('▶ Дальше', 'primary', 'Enter', done)]); }, 1200);
+  }
+  function jailHtml() {
+    var j = myPets().filter(function (p) { return p.jail; }); if (!j.length) return '';
+    return '<div class="jail-row">🔒 В тюрьме: ' + j.map(function (p, i) { return '<b>' + esc(p.name) + '</b> <button class="btn ghost sm" data-jesc="' + i + '">⛏ Побег</button>' + (S.iq >= BAIL ? '<button class="btn ghost sm" data-jbail="' + i + '">💰 Залог ' + BAIL + ' IQ</button>' : ''); }).join(' · ') + '</div>';
+  }
+  function wireJail() {
+    var j = myPets().filter(function (p) { return p.jail; });
+    panel.querySelectorAll('[data-jesc]').forEach(function (b) { b.onclick = function () { var p = j[+b.getAttribute('data-jesc')]; G.ev = null; startEscape(p, p.kind, false, false); }; });
+    panel.querySelectorAll('[data-jbail]').forEach(function (b) { b.onclick = function () { var p = j[+b.getAttribute('data-jbail')]; S.iq -= BAIL; p.jail = false; D.persist(); hud(); sfx('chest'); enterLib(); }; });
+  }
+
+  /* ---------- 🎭 ЛЖЕЦ: 4 утверждения «вопрос — ответ», одно ложное ---------- */
+  var LIAR_CHANCE = 0.22;
+  function askLiar(head, it) {
+    var R = G.room, q = R.f.byId[it.id]; R.q = q; R.recent.push(q.id); if (R.recent.length > 6) R.recent.shift();
+    var ri = q.opts.findIndex(function (o) { return o.right; }), wr = q.opts.map(function (_, i) { return i; }).filter(function (i) { return i !== ri; });
+    var lie = { q: q, a: q.opts[wr[Math.floor(Math.random() * wr.length)]].t, lie: true };
+    var others = R.f.pool.filter(function (x) { return x.id !== q.id && evOk(x) && x.q.length < 260; }).sort(function () { return Math.random() - 0.5; }).slice(0, 3)
+      .map(function (x) { return { q: x, a: x.opts.filter(function (o) { return o.right; })[0].t }; });
+    var all = others.concat([lie]).sort(function () { return Math.random() - 0.5; }); R.liar = all;
+    var hasBook = R.f.texts && R.f.texts.length;
+    setPanel(head + '<div class="qtext">🎭 «Я скажу четыре вещи. Одна из них — ложь. Найдёшь?»</div>' +
+      '<div class="opts stmts">' + all.map(function (s, i) { return '<button class="opt stmt" data-s="' + i + '"><span class="n">' + (i + 1) + '</span><span><span class="sq">' + D.md(s.q.q) + '</span><span class="sa">→ ' + D.md(s.a) + '</span></span></button>'; }).join('') + '</div>' +
+      '<div class="qlinks">' + (hasBook ? '<button class="book-btn" data-ql="book">📖 Открыть книгу <small>проверить по лекции</small></button>' : '') + '</div>');
+    var bk = panel.querySelector('[data-ql="book"]'); if (bk) bk.onclick = openBookRoom;
+    bubbleAt('<b>Найди мою ложь…</b> <small>одно из утверждений внизу — неправда</small>', R.mon, 'q');
+    panel.querySelectorAll('.stmt').forEach(function (b) { b.onclick = function () { liarPick(+b.getAttribute('data-s')); }; });
+    G.buttons = [];
+  }
+  function liarPick(i) {
+    var R = G.room, q = R.q; if (R.answered) return; R.answered = true;
+    var ok = !!R.liar[i].lie, li = R.liar.findIndex(function (s) { return s.lie; });
+    D.record(q.id, ok, R.assisted); G.sessAns = (G.sessAns || 0) + 1;
+    panel.querySelectorAll('.stmt').forEach(function (b) { var k = +b.getAttribute('data-s'); b.disabled = true; if (k === li) b.classList.add(ok ? 'right' : 'lie'); else if (k === i) b.classList.add('wrong'); });
+    if (!ok && !R.mistakes.some(function (x) { return x.md === q.q; })) R.mistakes.push({ q: shortQ(q.q), md: q.q, a: D.strip(D.md((q.opts.filter(function (o) { return o.right; })[0] || {}).t || '')) });
+    panel.querySelector('.stmts').insertAdjacentHTML('afterend', '<div class="verdict ' + (ok ? 'ok' : 'bad') + '">' + (ok ? '🎭 Маска слетела! Это и была ложь. На самом деле: <b>' + rightText(q) + '</b>.' : '🎭 Это была правда! Ложь — утверждение ' + (li + 1) + '. На самом деле: <b>' + rightText(q) + '</b>. 📕 Книга — на полку ошибок.') + '</div>');
+    resolve(ok, 1, 'q');
+  }
+
+  /* ---------- 🎣 РЫБАЛКА: озеро у домика ---------- */
+  var FISH = { carp: 'Карась', perch: 'Окунь', pike: 'Щука', roach: 'Плотва', gold: 'Золотая рыбка ⭐', ghost: 'Рыба-призрак' };
+  /* табличка «к озеру» на стене домика: доска с удочкой и рыбкой */
+  function lakeSign(c, t) {
+    var x = 430, y = 92, sw = Math.sin(t / 900) * 0.04;
+    c.save(); c.translate(x + 20, y); c.rotate(sw);
+    c.fillStyle = '#5a3a1e'; c.fillRect(-1, -8, 2, 8);
+    c.fillStyle = '#8a5a2e'; c.fillRect(-22, 0, 44, 30); c.fillStyle = '#b07a44'; c.fillRect(-22, 0, 44, 2); c.fillStyle = '#5a3a1e'; c.fillRect(-22, 28, 44, 2);
+    c.strokeStyle = '#3a2412'; c.lineWidth = 2; c.beginPath(); c.moveTo(-16, 24); c.lineTo(4, 6); c.stroke();
+    c.strokeStyle = 'rgba(240,240,240,.8)'; c.lineWidth = 1; c.beginPath(); c.moveTo(4, 6); c.lineTo(8, 16); c.stroke();
+    if (A.fishSprite) A.fishSprite(c, 'carp', 12, 19, false, 1);
+    c.restore();
+  }
+  function toLake() { walkTo(470, function () { go('lake'); }); }
+  function enterLake() {
+    show(true); where('🎣 Озеро · рыбалка'); G.hero.x = A.LAKE.pier; G.hero.dir = 1;
+    G.ev = { kind: 'fish', state: 'idle', used: {}, right: 0, wrong: 0, f: null, rod: null, t0: now() };
+    labels([{ text: '🧰 Удочки', x: 151, y: A.FLOOR_Y - 46, color: '#FAC775' }]);
+    lakeIdle('<div class="qtext">🎣 Озеро</div><p class="msg">Тихо, квакают лягушки, над водой туман. Возьми в сундуке <b>удочку</b> — каждая удочка это тема любого предмета. Садись и лови: клюёт — вопрос. Верно — рыба твоя, неверно — сорвалась. Пойманные рыбы плавают в садке.</p>');
+  }
+  function lakeIdle(lead) {
+    var E = G.ev;
+    setPanel((lead || '') + (E.rod ? '<p class="hint">Удочка: <b>' + esc(E.rod.label) + '</b></p>' : ''),
+      (E.rod ? [btn('🎣 Закинуть', 'primary', 'Enter', lakeCast)] : []).concat([btn('🧰 ' + (E.rod ? 'Сменить удочку' : 'Выбрать удочку'), E.rod ? 'ghost' : 'primary', E.rod ? null : 'Enter', rodChest), btn('🪣 Садок', 'ghost', null, keepnet)]));
+  }
+  function rodChest() {
+    var subs = subjList().filter(function (sj) { return !sj.drill || true; }), cur = (G.ev.rod && G.ev.rod.sid) || D.subjId || subs[0].id;
+    var h = '<header class="md-top"><b>🧰 Сундук с удочками</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body">' +
+      '<div class="seg">' + subs.map(function (sj) { return '<label><input type="radio" name="rS" value="' + sj.id + '"' + (sj.id === cur ? ' checked' : '') + '><span>' + esc(sj.short || sj.title) + '</span></label>'; }).join('') + '</div><div class="rods" id="rods"></div></div>';
+    modal(h, function (el) {
+      el.querySelectorAll('[data-close]').forEach(function (b) { b.onclick = closeModal; });
+      var fill = function () {
+        var sid = el.querySelector('input[name="rS"]:checked').value, sj = D.SUBJ[sid];
+        el.querySelector('#rods').innerHTML = sj.floors.filter(function (f) { return f.pool.some(evOk); }).map(function (f) { return '<button class="mode-card rod" data-rod="' + f.n + '"><span class="mi">🎣</span><b>' + esc(shelfLabel(f)) + '</b><span>' + esc(f.drill ? (f.sub || '') : f.title) + '</span></button>'; }).join('');
+        el.querySelectorAll('[data-rod]').forEach(function (b) { b.onclick = function () {
+          D.useSubject(sid); var f = floorBy(+b.getAttribute('data-rod'));
+          G.ev.f = { pool: f.pool, byId: f.byId || (function () { var o = {}; f.pool.forEach(function (q) { o[q.id] = q; }); return o; })(), texts: f.texts }; G.ev.used = {};
+          G.ev.rod = { sid: sid, n: f.n, label: (sj.short || sj.title) + ' · ' + shelfLabel(f) }; closeModal(); sfx('ok'); lakeCast();
+        }; });
+      };
+      el.querySelectorAll('input[name="rS"]').forEach(function (i) { i.onchange = fill; }); fill();
+    });
+  }
+  function lakeCast() {
+    var E = G.ev; if (!E.rod) return rodChest();
+    E.state = 'wait'; E.bite = false; E.snapT = 0; E.catchT = 0; E.floatX = 330 + Math.random() * 80; sfx('splash');
+    var tok = E.tok = Math.random();
+    setPanel('<p class="msg">🎣 Поплавок покачивается на воде… Жди поклёвку.</p><p class="hint">Удочка: <b>' + esc(E.rod.label) + '</b></p>', [btn('🧰 Сменить удочку', 'ghost', null, rodChest), btn('🪣 Садок', 'ghost', null, keepnet)]);
+    setTimeout(function () {
+      if (G.ev !== E || E.tok !== tok || G.scene !== 'lake') return;
+      E.bite = true; E.state = 'bite'; sfx('bite');
+      setPanel('<div class="court-title ok">🐟 КЛЮЁТ!</div>', [btn('🎣 Подсечь!', 'primary', 'Enter', lakeHook)]);
+    }, 1800 + Math.random() * 3500);
+  }
+  function lakeHook() {
+    var E = G.ev, q = evPick(1)[0]; if (!q) return lakeIdle();
+    var kind = D.isErr(q.id) ? 'ghost' : /⭐/.test(q.ex || '') ? 'gold' : ['carp', 'perch', 'pike', 'roach'][Math.floor(Math.random() * 4)];
+    E.fishKind = kind;
+    evAsk(q, {
+      title: '🐟 На крючке: ' + (kind === 'gold' ? 'что-то золотое…' : kind === 'ghost' ? 'что-то призрачное…' : 'рыба'),
+      verdict: function (ok) { return ok ? '🎣 Поймал: <b>' + FISH[kind] + '</b>!' : '💦 Леска дёрнулась — рыба сорвалась и ушла в глубину.'; },
+      done: function (ok, first, aft) {
+        E.bite = false; E.state = 'idle';
+        if (ok) { E.catchT = now(); sfx('splash'); setTimeout(function () { sfx('chest'); }, 900); S.fish = S.fish || {}; var sid = E.rod.sid; (S.fish[sid] = S.fish[sid] || {})[kind] = (S.fish[sid][kind] || 0) + 1; S.iq += kind === 'gold' ? 6 : 2; D.persist(); hud(); }
+        else { E.snapT = now(); sfx('splash'); }
+        evButtons(aft, [btn('🎣 Закинуть снова', 'primary', 'Enter', lakeCast), btn('🪣 Садок', 'ghost', null, keepnet)]);
+      }
+    });
+  }
+  function keepnet() {
+    var all = S.fish || {}, rows = Object.keys(all).map(function (sid) { var sj = D.SUBJ[sid]; return '<h4>' + esc(sj ? sj.title : sid) + '</h4><div class="fish-row">' + Object.keys(FISH).filter(function (k) { return all[sid][k]; }).map(function (k) { return '<span class="fish-it ' + k + '">🐟 ' + FISH[k] + ' × <b>' + all[sid][k] + '</b></span>'; }).join('') + '</div>'; }).join('');
+    modal('<header class="md-top"><b>🪣 Садок</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body">' + (rows || '<p class="msg">Пока пусто — закинь удочку!</p>') + '<p class="hint">Золотая рыбка — вопрос из базы экзамена ⭐, рыба-призрак — вопрос с полки ошибок.</p></div>', function (el) { el.querySelectorAll('[data-close]').forEach(function (b) { b.onclick = closeModal; }); });
   }
   /* ---------- ПУТЬ C++ (как ветка Duolingo) ---------- */
   var UNITS = [[1, 3, 'Раздел 1 · к РК1', 'Основы: алгоритмы, операции, ветвления'], [4, 6, 'Раздел 2 · к РК1', 'Циклы, массивы, функции, строки'], [7, 9, 'Раздел 3 · к РК2', 'ООП: принципы, классы, среда C++ Builder'], [10, 12, 'Раздел 4 · к РК2', 'Формы, события, иерархия классов'], [13, 15, 'Раздел 5 · к экзамену', 'Конструкторы, свойства, компоненты'], [16, 16, 'Финал', 'Смешанные сложные вопросы по всему курсу'], [17, 17, 'Практика', 'Пишем код: задания по темам, по порядку']];
@@ -1297,6 +1541,11 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
         out.push(mkMon('sophist', rev.map(function (x) { return { t: 'r', id: x.id }; }), { sophist: true }));
       }
     }
+    /* 🎭 Лжец: 1–2 вопроса «найди ложь среди четырёх утверждений» (в теме и во «Всё подряд») */
+    if ((f.arena || caveOn(f)) && qs.length >= 4 && target - out.length >= 2 && (G.liarForce || r() < LIAR_CHANCE)) {
+      var lq = qs.filter(function (x) { return evOk(f.byId[x.id]); }).slice(0, 1 + (r() < 0.4 ? 1 : 0)); G.liarForce = null;
+      if (lq.length) { qs = qs.filter(function (x) { return lq.indexOf(x) < 0; }); out.push(mkMon('doc', lq.map(function (x) { return { t: 'l', id: x.id }; }), { liar: true })); }
+    }
     var all = qs.concat(ts), n = Math.max(1, Math.min(all.length, target - out.length));
     for (var i = 0; i < n; i++) {
       var part = all.slice(Math.floor(i * all.length / n), Math.floor((i + 1) * all.length / n));   /* задания — у последних монстров */
@@ -1412,7 +1661,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
   function nextObj() { var R = G.room; for (var i = 0; i < R.objs.length; i++) { var o = R.objs[i]; if ((o.type === 'mon' && !o.dead) || (o.type === 'chest' && !o.open) || (o.type === 'altar' && !o.used) || o.type === 'exit') return i; } return R.objs.length - 1; }
   /* редкость босса в Хаос-забеге: чем реже, тем злее (чаще ярость, больше пешек и сердец у пешек) */
   var BOSS_RAR = [{ n: 'Обычный', rage: 0.12, pawn: [1, 1], max: 1, col: '#B4B2C4' }, { n: 'Редкий', rage: 0.22, pawn: [1, 2], max: 1, col: '#85B7EB' }, { n: 'Эпический', rage: 0.32, pawn: [2, 3], max: 2, col: '#AFA9EC' }, { n: 'Легендарный', rage: 0.45, pawn: [3, 3], max: 3, col: '#FAC775' }];
-  function monName(o) { return o.guard ? 'Страж выхода' : (o.rar != null ? BOSS_RAR[o.rar].n + ' ' : o.tier === 'mini' ? 'Мини-босс ' : o.tier === 'epic' ? 'Эпический ' : '') + A.MON[o.key].name; }
+  function monName(o) { return o.liar ? 'Лжец' : o.guard ? 'Страж выхода' : (o.rar != null ? BOSS_RAR[o.rar].n + ' ' : o.tier === 'mini' ? 'Мини-босс ' : o.tier === 'epic' ? 'Эпический ' : '') + A.MON[o.key].name; }
   /* страж: появляется, когда все монстры повержены, если были ошибки или подсказки */
   /* что спросит страж: ВСЕ вопросы, где брал подсказку (чит) + случайно 1–5 из ошибок комнаты
      (чаще ошибался — выше в очереди). Нет ни подсказок, ни ошибок — стража нет. */
@@ -1655,6 +1904,8 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     focusOn(true);
     var head = '<div class="row"><span class="tag ' + (m.boss || m.strong || m.guard ? 'gold' : 'red') + '">' + esc(monName(m)) + (m.boss ? ' · босс' : m.guard ? ' · твои ошибки' : m.twin ? ' · похожие понятия' : m.sophist ? ' · вопрос наоборот' : m.strong ? ' · сильный' : '') + '</span><span class="tag">' + m.hp + ' ♥</span><span class="grow"></span>' + (isTask ? icoBtns(false) : trBtn()) + '</div>';
     R.assisted = false; R.ggl = false; R.dunno = false; R.hold = false; R.holdFn = null; R.fiftyUsed = false; R.hinted = false; R.tr = null; R.answered = false;
+    G.lastMonKey = m.key;
+    if (it.t === 'l') return askLiar(head.replace(esc(monName(m)), '🎭 Лжец'), it);
     if (isTask) return askTask(head, t);
     var q = it.t === 'r' ? reverseQ(R.f, R.f.byId[it.id]) : R.f.byId[it.id]; R.q = q; R.recent.push(q.id); if (R.recent.length > 6) R.recent.shift();
     var right = q.type === 'keyboard' ? q.answer : (q.opts.filter(function (o) { return o.right; })[0] || {}).t;
@@ -2427,6 +2678,10 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
   var AC = null;
   var SFX = {
     ok: [[660, 0, 0.08, 'square'], [990, 0.07, 0.1, 'square']],
+    gavel: [[180, 0, 0.06, 'square'], [90, 0.02, 0.18, 'sine']],
+    objection: [[520, 0, 0.12, 'square'], [780, 0.1, 0.25, 'square']],
+    splash: [[900, 0, 0.05, 'sawtooth'], [500, 0.04, 0.1, 'sawtooth'], [300, 0.1, 0.15, 'triangle']],
+    bite: [[660, 0, 0.05, 'sine'], [660, 0.12, 0.05, 'sine'], [880, 0.24, 0.08, 'sine']],
     thud: [[120, 0, 0.12, 'square'], [80, 0.05, 0.12, 'sine']],
     crack: [[1200, 0, 0.03, 'square'], [400, 0.03, 0.06, 'sawtooth'], [900, 0.09, 0.03, 'square'], [300, 0.12, 0.08, 'sawtooth']],
     whistle: [[900, 0, 0.1, 'sine'], [800, 0.1, 0.1, 'sine'], [700, 0.2, 0.1, 'sine'], [600, 0.3, 0.1, 'sine'], [500, 0.4, 0.1, 'sine'], [420, 0.5, 0.1, 'sine'], [350, 0.6, 0.12, 'sine'], [300, 0.72, 0.14, 'sine']],
@@ -2579,10 +2834,10 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
       var d = h.target - h.x; if (Math.abs(d) < 1.5) { h.x = h.target; h.target = null; var cb = h.onArrive; h.onArrive = null; if (cb) cb(); }
       else { h.x += Math.sign(d) * Math.min(Math.abs(d), dt * 0.12); h.dir = Math.sign(d); walking = true; }
     }
-    if (G.scene === 'house') { A.bgHouse(c, t); c.fillStyle = 'rgba(0,0,0,.35)'; c.beginPath(); c.ellipse(SAGE_X, A.FLOOR_Y + 8, 16, 4, 0, 0, 7); c.fill(); A.drawMonster(c, 'sage', 'idle', t, SAGE_X, A.FLOOR_Y + 8); drawIntruder(c, t); }
+    if (G.scene === 'house') { A.bgHouse(c, t); c.fillStyle = 'rgba(0,0,0,.35)'; c.beginPath(); c.ellipse(SAGE_X, A.FLOOR_Y + 8, 16, 4, 0, 0, 7); c.fill(); A.drawMonster(c, 'sage', 'idle', t, SAGE_X, A.FLOOR_Y + 8); drawIntruder(c, t); lakeSign(c, t); }
     else if (G.scene === 'hall') A.bgHall(c, t);
     else if (G.scene === 'path' && G.lib) A.bgLib(c, t, G.lib);
-    else if (G.scene === 'event' && G.ev) A.bgEv(c, t, G.ev);
+    else if ((G.scene === 'event' || G.scene === 'lake') && G.ev) A.bgEv(c, t, G.ev);
     else if (G.scene === 'room' && G.room) A.bgRoom(c, t, { theme: themeOf(G.room.f), exit: true, exitOpen: G.room.objs.every(function (o) { return o.type !== 'mon' || o.dead; }), seed: G.room.k, goo: G.room.floor % 3 === 0, hole: G.room.floor % 2 === 0 });
     else return;
     var fy = A.FLOOR_Y + 8;
@@ -2637,13 +2892,13 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
       c.restore();
       /* дуга удара */
       if (anim === 'attack' && f === 1) { c.strokeStyle = 'rgba(255,243,176,.9)'; c.lineWidth = 2; c.beginPath(); c.arc(h.x + 34, fy - 32, 26, -1.1, 0.9); c.stroke(); }
-      if (G.scene === 'event' && G.ev && A.evOver) A.evOver(c, t, G.ev, h);
+      if ((G.scene === 'event' || G.scene === 'lake') && G.ev && A.evOver) A.evOver(c, t, G.ev, h);
     }
   }
   /* ошибка в одном кадре не должна останавливать всю игру */
   function loop(t) { requestAnimationFrame(loop); try { draw(t); } catch (e) { if (!loop.warned) { loop.warned = 1; console.error(e); } } }
   /* для проверки: мгновенно довести героя до цели (вкладка в фоне не анимируется) */
-  window.DGame = { G: G, pet: function (cb) { petRescue(cb || function () {}); }, cage: function () { G.cageForce = 1; }, ev: function (k, sid) { G.evForce = k; buildArena(sid || D.subjId, 'all', 1); }, go: function (s, a) { go(s, a); }, next: function () { goNext(); }, skip: function () { var h = G.hero; if (h.target != null) { h.x = h.target; h.target = null; var cb = h.onArrive; h.onArrive = null; if (cb) cb(); } } };
+  window.DGame = { G: G, liar: function () { G.liarForce = 1; }, pet: function (cb) { petRescue(cb || function () {}); }, cage: function () { G.cageForce = 1; }, ev: function (k, sid) { G.evForce = k; buildArena(sid || D.subjId, 'all', 1); }, go: function (s, a) { go(s, a); }, next: function () { goNext(); }, skip: function () { var h = G.hero; if (h.target != null) { h.x = h.target; h.target = null; var cb = h.onArrive; h.onArrive = null; if (cb) cb(); } } };
 
   /* ---------- старт ---------- */
   if (A.loadPets) A.loadPets();

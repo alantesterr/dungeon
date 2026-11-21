@@ -126,8 +126,10 @@
   /* ================= ШКАТУЛКИ ================= */
   function boxes(c, t, E) {
     var fy = FY();
+    px(c, 0, 0, W, H, '#221a28');
     for (var y = 0; y < A.FLOOR_Y; y += 12) for (var x = 0; x < W + 48; x += 48) px(c, x + ((y / 12) % 2 ? 24 : 0) - 24, y, 47, 11, ((x / 48 + y / 12) % 2) ? '#3a2a40' : '#352640');
     px(c, 0, 0, W, 30, 'rgba(0,0,0,.35)');
+    px(c, 0, A.FLOOR_Y, W, H - A.FLOOR_Y, '#2e1e14');
     for (var y2 = A.FLOOR_Y; y2 < H; y2 += 8) for (var x2 = -16; x2 < W; x2 += 32) px(c, x2 + ((y2 - A.FLOOR_Y) % 16 ? 16 : 0), y2, 31, 7, '#4a3222');
     /* люстра со свечами */
     px(c, 239, 0, 2, 20, '#555'); px(c, 200, 20, 80, 3, '#8a6a2a');
@@ -161,11 +163,11 @@
     });
   }
 
-  A.bgEv = function (c, t, E) { ({ bridge: bridge, dark: dark, boxes: boxes }[E.kind] || bridge)(c, t, E); };
+  A.bgEv = function (c, t, E) { ({ bridge: bridge, dark: dark, boxes: boxes }[E.kind] || (A.EV3 && A.EV3[E.kind]) || bridge)(c, t, E); };
 
   /* поверх героя: темнота тёмной комнаты, двойник, осколки зеркала */
   A.evOver = function (c, t, E, h) {
-    if (E.kind !== 'dark') return;
+    if (E.kind !== 'dark') { if (A.EV3over && A.EV3over[E.kind]) A.EV3over[E.kind](c, t, E, h); return; }
     var fy = FY(), M = E.m;
     if (!E.allLit || (E.dim && M && M.state !== 'gone')) {
       var cv = E._cv || (E._cv = document.createElement('canvas')); cv.width = W; cv.height = H; var d = cv.getContext('2d');

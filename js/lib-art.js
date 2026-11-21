@@ -65,6 +65,7 @@
     for (var j = 30; j < W; j += 90) px(c, j, 4, 6, 8, '#22263a');
   }
   function wallPhil(c, P, t) {
+    px(c, 0, 0, W, A.FLOOR_Y, '#9a845e');
     for (var y = 0; y < A.FLOOR_Y; y += 16) for (var x = -16; x < W; x += 32) {
       var o = (y / 16) % 2 ? 16 : 0, sh = hash(x, y) * 14 | 0;
       px(c, x + o, y, 31, 15, 'rgb(' + (200 - sh) + ',' + (178 - sh) + ',' + (138 - sh) + ')');
@@ -119,7 +120,8 @@
   function floor(c, P, sid) {
     var y0 = A.FLOOR_Y;
     if (sid === 'phil') { for (var y = y0; y < H; y += 10) for (var x = 0; x < W; x += 20) px(c, x, y, 20, 10, ((x / 20 + (y - y0) / 10) % 2) ? P.floorA : P.floorB); px(c, 0, y0, W, H - y0, 'rgba(40,22,8,.35)'); }
-    else for (var y2 = y0; y2 < H; y2 += 8) for (var x2 = -16; x2 < W; x2 += 32) { px(c, x2 + ((y2 - y0) % 16 ? 16 : 0), y2, 31, 7, ((x2 / 32 + y2 / 8) % 2) ? P.floorA : P.floorB); }
+    else { px(c, 0, y0, W, H - y0, '#15171a'); }
+    if (sid !== 'phil') for (var y2 = y0; y2 < H; y2 += 8) for (var x2 = -16; x2 < W; x2 += 32) { px(c, x2 + ((y2 - y0) % 16 ? 16 : 0), y2, 31, 7, ((x2 / 32 + y2 / 8) % 2) ? P.floorA : P.floorB); }
     px(c, 0, y0, W, 4, 'rgba(0,0,0,.4)');
     /* ковёр */
     var cx0 = 120, cx1 = 360, cy0 = y0 + 14, cy1 = H - 8;
