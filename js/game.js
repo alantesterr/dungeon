@@ -216,7 +216,7 @@
      Вопросы — «зубрёжкой» (как у ИКТ): новые часто, ошибки чаще всего (не сразу), выученные почти не попадаются.
      Набор: предмет и РК1 / РК2 / всё (у ИКТ — уровни). Каждые 10 вопросов — итог и «Ещё 10» (сам через 3 с). */
   function arenaScopes(sj) {
-    if (sj.drill) return sj.floors.map(function (f) { return { id: 'lv' + f.n, label: f.title, floors: [f] }; }).concat([{ id: 'exam', label: '🎓 Как на экзамене (40 вопросов, 50 мин)', floors: sj.floors.slice(-1), exam: true }]);
+    if (sj.drill) return [{ id: 'all', label: 'Всё подряд (все вопросы)', floors: sj.floors.slice(-1) }, { id: 'exam', label: '🎓 Как на экзамене (40 вопросов, 50 мин)', floors: sj.floors.slice(-1), exam: true }];   /* ИКТ: без деления на РК1 / РК2 / экзамен */
     /* РК1 / РК2 больше не выбираем: только «всё подряд» (все темы) и «как на экзамене» */
     var all = sj.floors.filter(function (f) { return f.pool.length; });
     return [{ id: 'all', label: 'Всё подряд (все темы)', floors: all }, { id: 'exam', label: '🎓 Как на экзамене (40 вопросов, 50 мин)', floors: all, exam: true }];
@@ -256,11 +256,11 @@
     var pool = [], byId = {}, texts = [];
     x.floors.forEach(function (f) { f.pool.forEach(function (q) { if (!byId[q.id]) { byId[q.id] = q; pool.push(q); } }); texts = texts.concat(f.texts); });
     var prev = G.arena && G.arena.subj === sid && G.arena.cid === cid ? G.arena : null;
-    G.arena = { n: 'arena', arena: true, cid: cid, id: sid + '-arena-' + cid, label: sj.drill ? 'Хаос-забег' : 'Всё подряд', title: (sj.drill ? 'Хаос-забег · ' + sj.short + ' · ' + x.label : 'Всё подряд · ' + sj.short), texts: texts, pool: pool, byId: byId, tasks: [], taskById: {},
+    G.arena = { n: 'arena', arena: true, cid: cid, id: sid + '-arena-' + cid, label: 'Всё подряд', title: 'Всё подряд · ' + sj.short, texts: texts, pool: pool, byId: byId, tasks: [], taskById: {},
       rooms: [{ k: 0, sec: null, secs: [], boss: false, tasks: [], label: 'Арена', qs: [] }], final: false, subj: sid, syll: !!sj.syll,
       batch: batch != null ? batch : prev ? prev.batch + 1 : 0, l0: prev ? prev.l0 : pool.filter(function (q) { return D.learned(q.id); }).length };
     /* умная рулетка: иногда вместо монстров — особая комната (не в самой первой десятке забега) */
-    if (!noRoll && G.arena.batch > 0 && !sj.drill) { var ek = G.evForce || evRoll(); G.evForce = null; if (ek) return startEvent(ek, sid, cid); }
+    if (!noRoll && (G.arena.batch > 0 || EV_BOOST > 1)) { var ek = G.evForce || evRoll(); G.evForce = null; if (ek) return startEvent(ek, sid, cid); }
     go('room', { f: 'arena', k: 0, again: 1 });
   }
   function arenaLine(f) { var l = f.pool.filter(function (q) { return D.learned(q.id); }).length; return f.title + ' · выучено ' + l + ' из ' + f.pool.length; }
@@ -614,14 +614,14 @@
      на полку ошибок в углу и возвращается только по «✓ Знаю». Давно не видел выученный вопрос — книга пыльная.
      Внизу всегда большая кнопка «▶ Всё подряд» — сразу в забег по всем темам. */
   var PER_ROW = A.LIB.PER_ROW;
-  function libFloors() { return D.floors.filter(function (f) { return poolIds(f).length; }); }
+  function libFloors() { var fl = D.floors.filter(function (f) { return poolIds(f).length; }); return D.subj && D.subj.drill ? fl.slice(-1) : fl; }   /* ИКТ — одна полка «Все вопросы» */
   function shelfStat(f) {
     var ids = poolIds(f), books = ids.filter(D.onShelf).length, err = ids.filter(D.isErr).length, dust = ids.filter(D.dusty).length;
     return { ids: ids, total: ids.length, books: books, err: err, dust: dust, pct: ids.length ? Math.round(books / ids.length * 100) : 0 };
   }
   /* сколько книжных «мест» на полке занято (на полке 9 мест; хоть одна книга — видна) */
   function slotsOf(n, total) { return !n ? 0 : Math.max(1, Math.round(n / Math.max(1, total) * PER_ROW)); }
-  function shelfLabel(f) { return f.drill ? f.title : f.practice ? 'Практика' : f.lab ? 'Лабы' : 'Тема ' + f.n; }
+  function shelfLabel(f) { return f.drill ? 'Все вопросы' : f.practice ? 'Практика' : f.lab ? 'Лабы' : 'Тема ' + f.n; }
   /* раскладка комнаты: шкаф ошибок в углу, шкафы тем по 4 полки, по центру свободной стены */
   function libLayout(anim) {
     var sid = D.subjId, fl = libFloors(), LB = A.LIB, nCase = Math.max(1, Math.ceil(fl.length / LB.ROWS));
@@ -634,7 +634,7 @@
         var f = fl[ci * LB.ROWS + r];
         if (!f) { cs.rows.push({ fill: 0 }); continue; }
         var st = shelfStat(f), fill = slotsOf(st.books, st.total), key = 'v2:' + sid + ':' + f.n, prev = S.libSeen[key];
-        cs.rows.push({ n: f.drill ? f.n : f.practice ? 'П' : f.lab ? 'Л' : f.n, f: f, st: st, fill: fill, dust: Math.min(fill, slotsOf(st.dust, st.total)), gold: st.pct >= 100, newFrom: anim && prev != null && prev < fill ? prev : null });
+        cs.rows.push({ n: f.drill ? 1 : f.practice ? 'П' : f.lab ? 'Л' : f.n, f: f, st: st, fill: fill, dust: Math.min(fill, slotsOf(st.dust, st.total)), gold: st.pct >= 100, newFrom: anim && prev != null && prev < fill ? prev : null });
         S.libSeen[key] = fill;
       }
       cases.push(cs);
@@ -668,17 +668,17 @@
     var caseLbl = L.cases.map(function (cs) {
       var ns = cs.rows.filter(function (r) { return r.f; }).map(function (r) { return r.n; });
       var nar = window.innerWidth < 600, pre = sj.drill ? '' : nar ? '' : ns.length > 1 ? 'Темы ' : 'Тема ';
-      return { text: sj.drill ? (nar ? 'Ур.' : 'Уровни') : pre + ns[0] + (ns.length > 1 ? '–' + ns[ns.length - 1] : ''), x: cs.x + cs.w / 2, y: A.LIB.CASE_TOP - 8, color: '#FAC775' };
+      return { text: sj.drill ? (nar ? 'ИКТ' : 'Все вопросы ИКТ') : pre + ns[0] + (ns.length > 1 ? '–' + ns[ns.length - 1] : ''), x: cs.x + cs.w / 2, y: A.LIB.CASE_TOP - 8, color: '#FAC775' };
     });
     labels([{ text: window.innerWidth < 600 ? '📕 ' + L.err.n : L.err.n ? '📕 Ошибки · ' + L.err.n : '📕 Ошибок нет', x: Math.max(L.err.x + L.err.w / 2, window.innerWidth < 600 ? 30 : 48), y: A.LIB.CASE_TOP - 22, color: L.err.n ? '#F09595' : '#9FE1CB' }].concat(caseLbl));
     S.tips = S.tips || {};
     var chips = '<div class="lib-chips">' + '<button class="lchip err' + (L.err.n ? '' : ' ok') + '" data-sh="err">📕 Ошибки <b>' + L.err.n + '</b></button>' +
       libFloors().map(function (f) { var st = shelfStat(f); return '<button class="lchip' + (st.pct >= 100 ? ' gold' : '') + '" data-sh="' + f.n + '" title="' + esc(f.title) + '"><span>' + esc(shelfLabel(f)) + '</span><i style="--p:' + st.pct + '%"></i><b>' + st.pct + '%</b></button>'; }).join('') + '</div>';
     var tip = !S.tips.lib1 ? '<div class="tip lib-tip"><b>Как тут всё устроено</b><span>👇 Нажми <b>«▶ Всё подряд»</b> — и сразу начнёшь отвечать на вопросы по всем темам. Каждая полка в шкафу — тема: верный ответ ставит на неё книгу. Ошибки летят в красный шкаф в углу. Нажми на полку — герой подойдёт к ней.</span><button class="btn ghost" data-tipok="lib1">Понятно</button></div>' : '';
-    var goAll = function () { S.tips.lib1 = 1; D.persist(); if (sj.drill) return openArena(sid); S.arenaLast = { s: sid, c: 'all' }; D.persist(); buildArena(sid, 'all', 0); };
+    var goAll = function () { S.tips.lib1 = 1; D.persist(); S.arenaLast = { s: sid, c: 'all' }; D.persist(); buildArena(sid, 'all', 0); };
     var goExam = function () { D.useSubject(sid); startExamHall(); };
     setPanel('<div class="lib-top"><div class="qtext">📚 ' + esc(A.libName(sid)) + '</div><span class="tag teal">книг на полках: ' + tot + ' из ' + all.length + ' · ' + pAll + '%</span></div>' + tip +
-      '<div class="lib-dock"><button class="btn primary lib-all" data-all>▶ ' + (sj.drill ? 'Хаос-забег' : 'Всё подряд') + '<small>' + (sj.drill ? 'случайные вопросы уровня' : 'вопросы из всех тем вперемешку') + '</small></button>' +
+      '<div class="lib-dock"><button class="btn primary lib-all" data-all>▶ Всё подряд<small>вопросы из всех тем вперемешку</small></button>' +
       '<button class="btn ghost lib-ex" data-exam>🎓 Как на экзамене<small>' + EXAM_N + ' вопросов · ' + EXAM_MIN + ' мин</small></button></div>' +
       jailHtml() + '<p class="hint">Полки — это темы: нажми на полку в шкафу (или ниже), чтобы пройти тему, открыть лекцию или повторить пыльные книги.</p>' + chips);
     wireJail();
@@ -698,14 +698,14 @@
       '<div class="sh-big"><div class="bar"><i style="width:' + st.pct + '%"></i></div><span>На полке <b>' + st.books + '</b> из ' + st.total + ' книг (' + st.pct + '%)' + (st.err ? ' · <b class="bad">на полке ошибок: ' + st.err + '</b>' : '') + (st.dust ? ' · <span class="dusty">пыльных: ' + st.dust + '</span>' : '') + '</span></div>' +
       '<p class="hint">Книга ложится на полку, когда ты верно отвечаешь на вопрос этой темы без подсказки — неважно где: здесь, во «Всё подряд» или на экзамене.</p>' +
       '<div class="modes">' +
-      '<button class="mode-card" data-fill><span class="mi">⚔</span><b>' + (f.drill ? 'Тренировка' : 'Добрать полку') + '</b><span>' + (f.drill ? '10 вопросов уровня: новые и ошибки чаще.' : 'Пройти тему: комнаты с монстрами по порядку, внизу босс темы.') + '</span></button>' +
+      '<button class="mode-card" data-fill><span class="mi">⚔</span><b>' + (f.drill ? 'Всё подряд' : 'Добрать полку') + '</b><span>' + (f.drill ? 'Вопросы ИКТ вперемешку, по 10: новые и ошибки чаще.' : 'Пройти тему: комнаты с монстрами по порядку, внизу босс темы.') + '</span></button>' +
       (hasBook ? '<button class="mode-card" data-lec><span class="mi">📖</span><b>Лекция</b><span>Открыть книжку этой темы и почитать.</span></button>' : '') +
       (st.dust ? '<button class="mode-card" data-dust><span class="mi">🌫</span><b>Повторить пыльные (' + st.dust + ')</b><span>Вопросы, которые ты давно не видел (больше недели). Ответишь — пыль сдуется.</span></button>' : '') +
       '</div></div>';
     modal(h, function (el) {
       el.querySelector('.md-wrap').classList.add('menu-md');
       el.querySelectorAll('[data-close]').forEach(function (b) { b.onclick = closeModal; });
-      var fill = function () { closeModal(); go('floor', f.n); };
+      var fill = function () { closeModal(); if (f.drill) { S.arenaLast = { s: D.subjId, c: 'all' }; return buildArena(D.subjId, 'all', 0); } go('floor', f.n); };
       el.querySelector('[data-fill]').onclick = fill; G.modalEnter = fill;
       var lc = el.querySelector('[data-lec]'); if (lc) lc.onclick = function () { closeModal(); openBook({ f: f, start: 0, mark: [], cur: null }); };
       var ds = el.querySelector('[data-dust]'); if (ds) ds.onclick = function () { closeModal(); libRun(st.ids.filter(D.dusty).slice(0, 10), '🌫 Пыльные книги · ' + label, 'dust'); };
@@ -737,10 +737,13 @@
      ===================================================================== */
   var EVS = [{ k: 'bridge', base: 0.047, name: '🌉 Мост через пропасть' }, { k: 'dark', base: 0.04, name: '🔦 Тёмная комната' }, { k: 'boxes', base: 0.034, name: '🔤 Комната со шкатулками' }, { k: 'court', base: 0.04, name: '⚖ Суд' }];
   var EV_NAMES = { escape: '⛏ Побег из тюрьмы' };
+  /* ВРЕМЕННО (ноябрь 2026, по просьбе автора): особые комнаты чаще и уже с первой десятки, чтобы их увидеть.
+     Вернуть как было — поставить EV_BOOST = 1 (тогда примерно каждая 5-я десятка и не в первой). */
+  var EV_BOOST = 2.5;
   function evRoll() {
     S.evs = S.evs || {};
     if (S.evPrev) { S.evPrev = false; D.persist(); return null; }
-    var ch = EVS.map(function (e) { var since = S.evs[e.k] == null ? 2 : S.evs[e.k], w = since === 0 ? 0.33 : Math.min(2.6, 1 + since * 0.25); return e.base * w; });
+    var ch = EVS.map(function (e) { var since = S.evs[e.k] == null ? 2 : S.evs[e.k], w = since === 0 ? 0.33 : Math.min(2.6, 1 + since * 0.25); return e.base * w * EV_BOOST; });
     var r = Math.random(), acc = 0, pick = null;
     for (var i = 0; i < EVS.length; i++) { acc += ch[i]; if (r < acc) { pick = EVS[i].k; break; } }
     EVS.forEach(function (e) { S.evs[e.k] = e.k === pick ? 0 : (S.evs[e.k] == null ? 2 : S.evs[e.k]) + 1; });
@@ -1362,22 +1365,18 @@
     setPanel((lead || '') + (E.rod ? '<p class="hint">Удочка: <b>' + esc(E.rod.label) + '</b></p>' : ''),
       (E.rod ? [btn('🎣 Закинуть', 'primary', 'Enter', lakeCast)] : []).concat([btn('🧰 ' + (E.rod ? 'Сменить удочку' : 'Выбрать удочку'), E.rod ? 'ghost' : 'primary', E.rod ? null : 'Enter', rodChest), btn('🪣 Садок', 'ghost', null, keepnet)]));
   }
+  /* сундук с удочками: удочка = предмет; дальше вопросы вперемешку по всему предмету */
   function rodChest() {
-    var subs = subjList().filter(function (sj) { return !sj.drill || true; }), cur = (G.ev.rod && G.ev.rod.sid) || D.subjId || subs[0].id;
-    var h = '<header class="md-top"><b>🧰 Сундук с удочками</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body">' +
-      '<div class="seg">' + subs.map(function (sj) { return '<label><input type="radio" name="rS" value="' + sj.id + '"' + (sj.id === cur ? ' checked' : '') + '><span>' + esc(sj.short || sj.title) + '</span></label>'; }).join('') + '</div><div class="rods" id="rods"></div></div>';
+    var subs = subjList();
+    var h = '<header class="md-top"><b>🧰 Сундук с удочками</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body"><p class="hint">Выбери удочку — предмет. Клевать будут вопросы из всех его тем вперемешку.</p><div class="rods">' +
+      subs.map(function (sj) { return '<button class="mode-card rod" data-rod="' + sj.id + '"><span class="mi">🎣</span><b>' + esc(sj.title) + '</b><span>вопросы всех тем вперемешку</span></button>'; }).join('') + '</div></div>';
     modal(h, function (el) {
       el.querySelectorAll('[data-close]').forEach(function (b) { b.onclick = closeModal; });
-      var fill = function () {
-        var sid = el.querySelector('input[name="rS"]:checked').value, sj = D.SUBJ[sid];
-        el.querySelector('#rods').innerHTML = sj.floors.filter(function (f) { return f.pool.some(evOk); }).map(function (f) { return '<button class="mode-card rod" data-rod="' + f.n + '"><span class="mi">🎣</span><b>' + esc(shelfLabel(f)) + '</b><span>' + esc(f.drill ? (f.sub || '') : f.title) + '</span></button>'; }).join('');
-        el.querySelectorAll('[data-rod]').forEach(function (b) { b.onclick = function () {
-          D.useSubject(sid); var f = floorBy(+b.getAttribute('data-rod'));
-          G.ev.f = { pool: f.pool, byId: f.byId || (function () { var o = {}; f.pool.forEach(function (q) { o[q.id] = q; }); return o; })(), texts: f.texts }; G.ev.used = {};
-          G.ev.rod = { sid: sid, n: f.n, label: (sj.short || sj.title) + ' · ' + shelfLabel(f) }; closeModal(); sfx('ok'); lakeCast();
-        }; });
-      };
-      el.querySelectorAll('input[name="rS"]').forEach(function (i) { i.onchange = fill; }); fill();
+      el.querySelectorAll('[data-rod]').forEach(function (b) { b.onclick = function () {
+        var sid = b.getAttribute('data-rod'), sj = D.SUBJ[sid]; D.useSubject(sid);
+        G.ev.f = sj.drill ? (function () { var f = sj.floors[sj.floors.length - 1], o = {}; f.pool.forEach(function (q) { o[q.id] = q; }); return { pool: f.pool, byId: o, texts: f.texts || [] }; })() : subjFloor();
+        G.ev.used = {}; G.ev.rod = { sid: sid, label: sj.title }; closeModal(); sfx('ok'); lakeCast();
+      }; });
     });
   }
   function lakeCast() {
