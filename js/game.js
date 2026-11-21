@@ -48,7 +48,7 @@
     if (scene !== 'room') G.room = null;
     G.intruder = null;
     clearTimeout(G.watchT); $('app').classList.remove('watch'); hideBubble();
-    ({ house: enterHouse, subject: enterSubject, exam: enterExam, hall: enterHall, path: enterLib, floor: enterFloor, room: enterRoom })[scene](arg);
+    ({ house: enterHouse, subject: enterSubject, exam: enterExam, hall: enterHall, path: enterLib, event: enterEvent, floor: enterFloor, room: enterRoom })[scene](arg);
     hud(); window.scrollTo(0, 0);
   }
   /* «Тема 3» у предметов по силлабусу, «Этаж 3» у C++ */
@@ -250,7 +250,7 @@
     });
   }
   function arenaIds(floors) { var seen = {}, out = []; floors.forEach(function (f) { f.pool.forEach(function (q) { if (!seen[q.id]) { seen[q.id] = 1; out.push(q.id); } }); }); return out; }
-  function buildArena(sid, cid, batch) {
+  function buildArena(sid, cid, batch, noRoll) {
     var sj = D.SUBJ[sid]; D.useSubject(sid);
     var x = arenaScopes(sj).filter(function (y) { return y.id === cid; })[0] || arenaScopes(sj)[0];
     var pool = [], byId = {}, texts = [];
@@ -259,6 +259,8 @@
     G.arena = { n: 'arena', arena: true, cid: cid, id: sid + '-arena-' + cid, label: sj.drill ? 'Хаос-забег' : 'Всё подряд', title: (sj.drill ? 'Хаос-забег · ' + sj.short + ' · ' + x.label : 'Всё подряд · ' + sj.short), texts: texts, pool: pool, byId: byId, tasks: [], taskById: {},
       rooms: [{ k: 0, sec: null, secs: [], boss: false, tasks: [], label: 'Арена', qs: [] }], final: false, subj: sid, syll: !!sj.syll,
       batch: batch != null ? batch : prev ? prev.batch + 1 : 0, l0: prev ? prev.l0 : pool.filter(function (q) { return D.learned(q.id); }).length };
+    /* умная рулетка: иногда вместо монстров — особая комната (не в самой первой десятке забега) */
+    if (!noRoll && G.arena.batch > 0 && !sj.drill) { var ek = G.evForce || evRoll(); G.evForce = null; if (ek) return startEvent(ek, sid, cid); }
     go('room', { f: 'arena', k: 0, again: 1 });
   }
   function arenaLine(f) { var l = f.pool.filter(function (q) { return D.learned(q.id); }).length; return f.title + ' · выучено ' + l + ' из ' + f.pool.length; }
@@ -282,7 +284,7 @@
      Слева одна кнопка «назад», на ней всегда написано, КУДА она ведёт (в домике — «StudyPlay»).
      Справа «☰» — меню-пауза (и клавиша Esc): продолжить, карта тем, домик, рюкзак, лавка,
      настройки и отдельно — выйти в StudyPlay. */
-  var BACK = { house: null, subject: 'house', exam: 'house', hall: 'house', path: 'hall', floor: 'path', room: 'floor' };
+  var BACK = { house: null, subject: 'house', exam: 'house', hall: 'house', path: 'hall', event: 'path', floor: 'path', room: 'floor' };
   function backLabel(to) { return { sp: 'StudyPlay', house: 'Домик', hall: 'Зал', path: 'Библиотека', floor: 'Комнаты', level: 'Уровень' }[to] || 'Назад'; }
   function updBack() {
     var to = BACK[G.scene], b = $('hudBack'); if (to === 'floor' && G.room && (G.room.f.rep || caveOn(G.room.f))) to = 'path'; if (to === 'floor' && G.room && (G.room.f.exam || G.room.f.arena)) to = 'path'; if (to === 'floor' && G.room && G.room.f.drill) to = 'level';
@@ -435,12 +437,13 @@
       var w = d[0] === 'cpp' ? 48 : 39; return { x0: d[1] - w, x1: d[1] + w, y0: A.FLOOR_Y - w * 2 - 8, y1: A.FLOOR_Y + 4, fn: function () { enterDoor(d); } };
     });
     if (G.scene === 'path') return libSpots();
+    if (G.scene === 'event') return evSpots();
     return [];
   }
   function sceneXY(e) { var r = $('scene').getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * A.W, y: (e.clientY - r.top) / r.height * A.H }; }
   function hotAt(e) { var p = sceneXY(e); return hotspots().filter(function (h) { return p.x >= h.x0 && p.x <= h.x1 && p.y >= h.y0 && p.y <= h.y1; })[0]; }
   $('scene').addEventListener('click', function (e) { if (G.modal || BK || G.hero.target != null) return; var h = hotAt(e); if (h) h.fn(); });
-  $('scene').addEventListener('mousemove', function (e) { var h = hotAt(e); $('scene').style.cursor = h ? 'pointer' : ''; if (G.lib) { G.lib.hover = G.scene === 'path' && h && h.hv ? h.hv : null; libTip(G.scene === 'path' && h ? h.tip : null); } });
+  $('scene').addEventListener('mousemove', function (e) { var h = hotAt(e); $('scene').style.cursor = h ? 'pointer' : ''; if (G.lib) { G.lib.hover = G.scene === 'path' && h && h.hv ? h.hv : null; libTip(G.scene === 'path' && h ? h.tip : null); } if (G.ev) G.ev.hover = h && h.hvBox != null ? h.hvBox : null; });
   $('scene').addEventListener('mouseleave', function () { if (G.lib) G.lib.hover = null; libTip(null); });
   /* подсказка над полкой под курсором: какая тема, сколько собрано */
   function libTip(tp) {
@@ -723,6 +726,310 @@
     go('room', { f: 'rep', k: 0, again: 1 });
   }
 
+  /* =====================================================================
+     ОСОБЫЕ КОМНАТЫ во «Всё подряд» (ноябрь 2026): мост, тёмная комната (+ зеркальный двойник), шкатулки.
+     Умная рулетка: перед очередной десяткой иногда вместо монстров — особая комната.
+     Только что была — шанс ниже (×0.33); давно не было — выше (до ×3.5). Всё равно случайность:
+     может выпасть и подряд через пару десяток. Две особые комнаты подряд не бывает.
+     Сердечки в особых комнатах не тратятся: цена ошибки — книга на полке ошибок (и упавшая доска, мокрая спичка…).
+     Гугл, перевод и книжка есть везде. После каждого события игра ждёт кнопку.
+     ===================================================================== */
+  var EVS = [{ k: 'bridge', base: 0.055, name: '🌉 Мост через пропасть' }, { k: 'dark', base: 0.045, name: '🔦 Тёмная комната' }, { k: 'boxes', base: 0.04, name: '🔤 Комната со шкатулками' }];
+  function evRoll() {
+    S.evs = S.evs || {};
+    if (S.evPrev) { S.evPrev = false; D.persist(); return null; }
+    var ch = EVS.map(function (e) { var since = S.evs[e.k] == null ? 2 : S.evs[e.k], w = since === 0 ? 0.33 : Math.min(2.6, 1 + since * 0.25); return e.base * w; });
+    var r = Math.random(), acc = 0, pick = null;
+    for (var i = 0; i < EVS.length; i++) { acc += ch[i]; if (r < acc) { pick = EVS[i].k; break; } }
+    EVS.forEach(function (e) { S.evs[e.k] = e.k === pick ? 0 : (S.evs[e.k] == null ? 2 : S.evs[e.k]) + 1; });
+    if (pick) S.evPrev = true;
+    D.persist(); return pick;
+  }
+  /* вопросы для комнаты: один верный вариант (так понятнее спички/доски), веса — как у «Всё подряд» */
+  function evOk(q) { return q && q.type === 'choice' && q.opts.length >= 2 && q.opts.filter(function (o) { return o.right; }).length === 1; }
+  function evPick(n, exclude) {
+    var E = G.ev, ex = exclude || {}, pool = E.f.pool.filter(function (q) { return evOk(q) && !ex[q.id] && !E.used[q.id]; });
+    if (pool.length < n) pool = E.f.pool.filter(evOk);
+    var fake = { pool: pool }, ids = D.drillPick(fake, n), out = [];
+    ids.forEach(function (id) { var q = E.f.byId[id]; if (q) { out.push(q); E.used[q.id] = 1; } });
+    return out;
+  }
+  function floorOfQ(q) { return D.floors.filter(function (f) { return f.pool.indexOf(q) >= 0; })[0] || (G.ev && G.ev.f); }
+  function startEvent(kind, sid, cid) {
+    var f = G.arena;
+    G.ev = { kind: kind, sid: sid, cid: cid, f: f, used: {}, right: 0, wrong: 0, iq: 0, t0: now() };
+    go('event');
+  }
+  function evNext() { var E = G.ev; G.ev = null; buildArena(E.sid, E.cid, null, true); }
+  function enterEvent() {
+    var E = G.ev; if (!E) return go('path');
+    show(true); E.hover = null;
+    var nm = EVS.filter(function (x) { return x.k === E.kind; })[0].name;
+    where(nm + ' · ' + subjTitle());
+    ({ bridge: bridgeStart, dark: darkStart, boxes: boxesStart }[E.kind])(E);
+  }
+  /* ---------- общий вопрос особой комнаты ----------
+     o.title — подпись, o.match — варианты как спички (неверная «мокнет» и исчезает, ищешь дальше),
+     o.done(ok, firstTry) — после ответа. Записываем в прогресс один раз: первая попытка. */
+  function evAsk(q, o) {
+    var E = G.ev, cur = E.cur = { q: q, assisted: false, tries: 0, done: false, wasErr: D.isErr(q.id) };
+    var order = q.opts.map(function (_, i) { return i; }); for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), tt = order[i]; order[i] = order[j]; order[j] = tt; }
+    var hasBook = (floorOfQ(q) || {}).texts && floorOfQ(q).texts.length;
+    var h = '<div class="row ev-head"><span class="tag gold">' + esc(o.title) + '</span><span class="grow"></span>' +
+      '<button class="btn ghost sm" data-evtr title="Перевести вопрос">🌐 Перевод</button>' + (hasBook ? '<button class="btn ghost sm" data-evbook title="Открыть лекцию по теме вопроса">📖 Книга</button>' : '') +
+      '<button class="btn ghost sm" data-evggl title="Объяснит ответ — но тогда ответ засчитается как «с подсказкой»">🔎 Загуглить</button></div>' +
+      (o.lead ? '<p class="ev-lead">' + o.lead + '</p>' : '') +
+      '<div class="qtext">' + D.md(q.q) + '</div>' + (q.img ? '<div class="qimg"><img src="' + esc(q.img) + '" alt="Картинка к вопросу"></div>' : '') +
+      '<div class="opts' + (o.match ? ' matches' : '') + '">' + order.map(function (oi, n) { return '<button class="opt' + (o.match ? ' match' : '') + '" data-o="' + oi + '"><span class="n">' + (o.match ? '🔥' : n + 1) + '</span><span>' + D.md(q.opts[oi].t) + '</span></button>'; }).join('') + '</div>' +
+      '<div class="qlinks"><button class="linkbtn dunno" data-evdunno>🤷 Не знаю</button></div><div id="evAfter"></div>';
+    setPanel(h); G.buttons = [];
+    panel.querySelector('[data-evtr]').onclick = function () {
+      var b = this; b.disabled = true;
+      X.trQuestion(q, S.cfg.trLang || 'ru').then(function (d) {
+        if (!G.ev || G.ev.cur !== cur) return;
+        panel.querySelector('.qtext').innerHTML = D.md(d.q) + '<div class="tr-note">перевод</div>';
+        panel.querySelectorAll('.opt').forEach(function (el) { var oi = +el.getAttribute('data-o'); el.lastElementChild.innerHTML = D.md(d.o[oi] != null ? d.o[oi] : q.opts[oi].t); });
+      }).catch(function () { b.disabled = false; floater('Перевод недоступен — нет интернета?', 240, 60, '#F09595'); });
+    };
+    var bk = panel.querySelector('[data-evbook]'); if (bk) bk.onclick = function () { var fq = floorOfQ(q), ref = exRef(q, fq), tf = ref ? ref.f : fq, idx = ref && ref.sec ? tf.texts.indexOf(ref.sec) : 0; openBook({ f: tf, start: Math.max(0, idx), mark: [], cur: ref && ref.sec ? ref.sec.id : null }); };
+    panel.querySelector('[data-evggl]').onclick = function () { if (!cur.done) { cur.assisted = true; this.classList.add('used'); } window.open('https://www.google.com/search?udm=50&q=' + encodeURIComponent(aiPrompt(q, floorOfQ(q), cur.done)), '_blank', 'noopener'); };
+    var finish = function (ok, oi, dunno) {
+      if (cur.done) return; cur.done = true;
+      var first = cur.tries === 0;
+      if (first) { D.record(q.id, ok, cur.assisted); D.persist(); }
+      if (ok && first) E.right++; else if (first) E.wrong++;
+      panel.querySelectorAll('.opt').forEach(function (b) { var k = +b.getAttribute('data-o'); b.disabled = true; if (q.opts[k].right) b.classList.add('right'); else if (k === oi) b.classList.add('wrong'); });
+      var dn = panel.querySelector('[data-evdunno]'); if (dn) dn.remove();
+      var aft = $('evAfter'), clean = ok && first && !cur.assisted;
+      aft.innerHTML = '<div class="verdict ' + (ok && first ? 'ok' : 'bad') + '">' + (dunno ? '🤷 Не знаю — вот ответ. ' : '') + (o.verdict ? o.verdict(ok && first, first) : (ok ? 'Верно!' : 'Неверно.')) +
+        (!first || !ok ? ' Правильно: <b>' + rightText(q) + '</b>. 📕 Книга — на полку ошибок.' : '') + (ok && first && cur.assisted ? ' С подсказкой — вопрос вернётся позже.' : '') + '</div>' +
+        (dunno && q.ex ? '<div class="ex-text dunno-ex">' + exHtml(q.ex) + '</div>' : '') +
+        '<div class="row"><button class="btn ghost sm" data-evex>📖 Объясни</button></div>';
+      aft.querySelector('[data-evex]').onclick = function () { openExplain(q); };
+      if (clean && cur.wasErr && !o.noKnow) evKnowBox(q, aft);
+      o.done(ok && first, first, aft);
+    };
+    panel.querySelectorAll('.opt').forEach(function (b) {
+      b.onclick = function () {
+        if (cur.done) return;
+        var oi = +b.getAttribute('data-o'), ok = !!q.opts[oi].right;
+        if (o.match && !ok) {   /* мокрая спичка: шипит, исчезает; ищешь дальше. Ошибка записана сразу (первая попытка). */
+          if (cur.tries === 0) { D.record(q.id, false, cur.assisted); D.persist(); E.wrong++; }
+          cur.tries++; b.classList.add('wet'); b.disabled = true; sfx('fizz');
+          if (o.onWet) o.onWet(cur.tries);
+          var left = panel.querySelectorAll('.opt:not([disabled])'); if (left.length === 1 && !q.opts[+left[0].getAttribute('data-o')].right) finish(false, oi);
+          return;
+        }
+        finish(ok, oi);
+      };
+    });
+    panel.querySelector('[data-evdunno]').onclick = function () { finish(false, -1, true); };
+  }
+  function evKnowBox(q, root) {
+    root.insertAdjacentHTML('beforeend', '<div class="know-box"><span>📕 Этот вопрос лежит на <b>полке ошибок</b>. Точно запомнил?</span><button class="btn primary sm" data-kn>✓ Знаю — убрать</button><button class="btn ghost sm" data-kl>Оставить</button></div>');
+    var box = root.querySelector('.know-box');
+    box.querySelector('[data-kn]').onclick = function () { D.knowErr(q.id); sfx('chest'); box.innerHTML = '<span>📗 Убрано с полки ошибок.</span>'; box.classList.add('decided'); };
+    box.querySelector('[data-kl]').onclick = function () { box.innerHTML = '<span>📕 Оставлено на полке ошибок.</span>'; box.classList.add('decided'); };
+  }
+  function evButtons(root, list) {
+    var row = document.createElement('div'); row.className = 'row'; row.style.marginTop = '10px';
+    row.innerHTML = list.map(function (b, i) { return '<button class="btn ' + b.cls + '" data-eb="' + i + '">' + esc(b.label) + (b.key ? '<kbd>' + b.key + '</kbd>' : '') + '</button>'; }).join('');
+    root.appendChild(row); G.buttons = list;
+    row.querySelectorAll('[data-eb]').forEach(function (el) { el.onclick = function () { list[+el.getAttribute('data-eb')].fn(); }; });
+  }
+  function evEnd(title, msg, loot) {
+    var E = G.ev; sfx('win');
+    var h = '<div class="qtext">' + esc(title) + '</div><p class="msg">' + msg + '</p>' +
+      '<div class="sum-cards"><div><b>' + E.right + '</b><span>верно</span></div><div><b>' + E.wrong + '</b><span>ошибок</span></div></div>' + (loot ? lootHtml(loot) : '');
+    setPanel(h); evButtons(panel, [btn('▶ Дальше — ещё 10 вопросов', 'primary', 'Enter', evNext), btn('📚 В библиотеку', 'ghost', null, function () { G.ev = null; go('path'); })]);
+    D.persist(); hud();
+  }
+  function evSpots() {
+    var E = G.ev; if (!E) return [];
+    if (E.kind === 'dark') return E.torches.filter(function (T) { return !T.lit; }).map(function (T) { return { x0: T.x - 22, x1: T.x + 22, y0: 70, y1: A.FLOOR_Y + 6, fn: function () { if (!E.busy) darkTorch(T); } }; });
+    if (E.kind === 'boxes') return E.boxes.map(function (bx, i) { return bx.open ? null : { x0: bx.x - 20, x1: bx.x + 20, y0: A.FLOOR_Y - 40, y1: A.FLOOR_Y + 8, hvBox: i, fn: function () { if (!E.busy) boxOpen(i); } }; }).filter(Boolean);
+    return [];
+  }
+
+  /* ---------- 🌉 МОСТ: 6 досок; верно — прочная, неверно — рассыпается и падает ---------- */
+  function bridgeStart(E) {
+    E.planks = []; E.falls = []; E.fallen = 0; E.placed = 0; G.hero.x = 52; G.hero.dir = 1;
+    labels([]);
+    setPanel('<div class="qtext">🌉 Мост через пропасть</div><p class="msg">Вместо монстров — пропасть. Чтобы перейти, нужно положить <b>6 досок</b>. Каждая доска — вопрос.<br>Верно — доска <b>прочная</b>, шагаешь вперёд. Неверно — доска <b>рассыпается и падает</b>, нужна новая. На той стороне — сундук. Сердечки здесь не тратятся.</p>',
+      [btn('🪵 Положить доску', 'primary', 'Enter', bridgeAsk)]);
+  }
+  function bridgeAsk() {
+    var E = G.ev, q = evPick(1)[0]; if (!q) return evNext();
+    evAsk(q, {
+      title: '🌉 Доска ' + (E.placed + 1) + ' из 6' + (E.fallen ? ' · упало: ' + E.fallen : ''),
+      verdict: function (ok) { return ok ? '🪵 Прочная доска! Ты шагаешь вперёд.' : '💥 Доска рассыпалась и упала в пропасть…'; },
+      done: function (ok, first, aft) {
+        var i = E.placed;
+        if (ok) { E.planks[i] = now(); E.placed++; sfx('thud'); setTimeout(function () { walkTo(A.EV.bridgePlankX(i), null); }, 380); }
+        else {
+          E.fallen++; E.falls.push({ i: i, t0: now() }); setTimeout(function () { sfx('crack'); }, 300); setTimeout(function () { sfx('whistle'); }, 900); setTimeout(function () { sfx('boom'); }, 1900); setTimeout(function () { sfx('wawa'); }, 2300);
+          setTimeout(function () { floater('доска упала! (' + E.fallen + ')', A.EV.bridgePlankX(i), 150, '#F09595'); }, 1000);
+        }
+        var last = E.placed >= 6;
+        evButtons(aft, [btn(last ? '🏁 Перейти на ту сторону' : ok ? '🪵 Следующая доска' : '🪵 Положить новую доску', 'primary', 'Enter', last ? bridgeWin : bridgeAsk)]);
+      }
+    });
+  }
+  function bridgeWin() {
+    var E = G.ev; G.buttons = []; setPanel('<p class="msg">Ты идёшь по мосту…</p>');
+    walkTo(430, function () { E.chestOpen = now(); sfx('chest'); var L = X.loot('chest'); setTimeout(function () { evEnd('🌉 Мост пройден!', 'Ты перешёл пропасть' + (E.fallen ? ', хотя ' + E.fallen + ' ' + plural(E.fallen, 'доска упала', 'доски упали', 'досок упало') + ' вниз' : ' без единой упавшей доски') + '. На той стороне — сундук.', L); }, 500); });
+  }
+
+  /* ---------- 🔦 ТЁМНАЯ КОМНАТА: факелы, спички; иногда зеркало и злой двойник ---------- */
+  function darkStart(E) {
+    var xs = [96, 190, 290, 386], items = ['chest', 'coins', 'potion', 'bat'].sort(function () { return Math.random() - 0.5; });
+    var errs = D.errIds(D.subj); E.mirrorOn = errs.length > 0 && Math.random() < 0.34;
+    if (E.mirrorOn) items[2] = 'mirror';
+    E.torches = xs.map(function (x, i) { return { x: x, lit: false, item: items[i] }; });
+    E.m = E.mirrorOn ? { state: 'idle', x: xs[2] } : null; E.allLit = false; E.dim = false;
+    G.hero.x = 40; G.hero.dir = 1; sfx('door');
+    darkIdle('<div class="qtext">🔦 Тёмная комната</div><p class="msg">Дверь захлопнулась. Темно — видно только круг от твоего факела. На стенах <b>4 потухших факела</b>.<br>Подойди к факелу: варианты ответа — <b>спички</b>. Сухая (верная) зажжёт факел, мокрая (неверная) зашипит и пропадёт — ищи дальше. Свет откроет, что прячется в темноте.</p>');
+  }
+  function darkIdle(lead) {
+    var E = G.ev, left = E.torches.filter(function (T) { return !T.lit; });
+    labels(left.map(function (T, i) { return { text: '🔥 ' + (E.torches.indexOf(T) + 1), x: T.x, y: 78, color: '#FAC775' }; }));
+    if (!left.length) return darkWin();
+    setPanel((lead || '<p class="msg">Нажми на потухший факел (или кнопку ниже).</p>') + '<div class="row">' + left.map(function (T) { return '<button class="btn ghost" data-tr="' + E.torches.indexOf(T) + '">🔥 Факел ' + (E.torches.indexOf(T) + 1) + '</button>'; }).join('') + '</div>');
+    panel.querySelectorAll('[data-tr]').forEach(function (b) { b.onclick = function () { darkTorch(E.torches[+b.getAttribute('data-tr')]); }; });
+    G.buttons = [btn('Факел', 'primary', 'Enter', function () { darkTorch(left[0]); })];
+  }
+  function darkTorch(T) {
+    var E = G.ev; if (E.busy) return; E.busy = true; labels([]);
+    walkTo(T.item === 'mirror' ? T.x - 84 : T.x - 26, function () {
+      var q = evPick(1)[0]; if (!q) { E.busy = false; return; }
+      evAsk(q, {
+        title: '🔥 Факел ' + (E.torches.indexOf(T) + 1) + ' · выбери сухую спичку', match: true,
+        lead: 'Каждая спичка — вариант ответа. Сухая — верная.',
+        onWet: function (n) { floater(n === 1 ? 'пшшш… мокрая!' : 'и эта мокрая…', T.x, 110, '#85B7EB'); if (T.item === 'mirror' || Math.random() < 0.4) setTimeout(function () { floater('хи-хи…', T.x + 40, 150, '#B4B2C4'); }, 500); },
+        verdict: function (ok, first) { return first ? '🔥 Чирк — сухая! Факел горит.' : '🔥 Наконец-то сухая — факел горит. Но с первой попытки не вышло.'; },
+        done: function (ok, first, aft) {
+          T.lit = true; T.litT = now(); sfx('strike'); E.busy = false;
+          var after = function () { var res = darkReveal(T); if (res && res.mirror) return; evButtons(aft, [btn(res.next, 'primary', 'Enter', function () { darkIdle(); })]); if (res.msg) aft.insertAdjacentHTML('afterbegin', '<div class="wave-msg ok">' + res.msg + '</div>'); };
+          setTimeout(after, 500);
+        }
+      });
+    });
+  }
+  function darkReveal(T) {
+    var E = G.ev, last = E.torches.every(function (x) { return x.lit; }), nx = last ? 'Осмотреть комнату' : 'К следующему факелу';
+    if (last) E.allLit = true;
+    if (T.item === 'chest') { T.taken = true; sfx('chest'); var L = X.loot('chest'); E.loot = L; return { msg: 'Свет упал на <b>сундук</b>! ' + lootHtml(L), next: nx }; }
+    if (T.item === 'coins') { T.taken = true; S.iq += 8; hud(); floater('+8 IQ', T.x, 150, '#CECBF6'); return { msg: 'На полу блестят <b>монеты</b>: +8 IQ.', next: nx }; }
+    if (T.item === 'potion') { T.taken = true; X.add('potion'); return { msg: 'В углу стояло <b>зелье</b> — оно теперь в рюкзаке.', next: nx }; }
+    if (T.item === 'bat') { T.taken = true; sfx('laugh'); floater('ЛЕТУЧАЯ МЫШЬ!', T.x, 90, '#F09595'); return { msg: 'Из темноты с визгом вылетела <b>летучая мышь</b>… и улетела. Фух.', next: nx }; }
+    if (T.item === 'mirror') { mirrorStart(T); return { mirror: true }; }
+    return { next: nx };
+  }
+  /* ---------- 🪞 ЗЕРКАЛЬНЫЙ ДВОЙНИК ---------- */
+  function mirrorStart(T) {
+    var E = G.ev, M = E.m; M.state = 'turn'; M.t0 = now(); G.buttons = [];
+    setPanel('<div class="qtext">🪞 Старое зеркало</div><p class="msg">Свет упал на зеркало. В нём — ты. Только отражение почему-то не повторяет твои движения… Оно медленно поворачивает голову. И улыбается.</p>');
+    setTimeout(function () {
+      if (G.ev !== E) return;
+      evButtons(panel, [btn('…подойти ближе', 'primary', 'Enter', function () {
+        M.state = 'out'; M.t0 = now(); E.dim = true; sfx('glass'); var sw = $('sceneWrap'); sw.classList.remove('rage'); void sw.offsetWidth; sw.classList.add('rage');
+        var qs = D.errIds(D.subj).map(function (id) { return E.f.byId[id]; }).filter(evOk).slice(0, 3);
+        if (!qs.length) qs = evPick(2);
+        M.qs = qs; M.cracks = 0;
+        setPanel('<div class="qtext">😈 Злой двойник</div><p class="msg">Факелы гаснут. Из зеркала выходит <b>твоя копия</b> с пустыми глазами и шепчет твоим голосом: «Помнишь, как ты тут ошибся?..» Он спросит то, на чём ты ошибался (' + qs.length + '). Ответь верно на всё — и он разлетится.</p>');
+        setTimeout(function () { if (G.ev === E) { M.state = 'fight'; evButtons(panel, [btn('Сразиться', 'primary', 'Enter', mirrorAsk)]); } }, 1500);
+      })]);
+    }, 2200);
+  }
+  function mirrorAsk() {
+    var E = G.ev, M = E.m, q = M.qs[0];
+    if (!q) return mirrorWin();
+    evAsk(q, {
+      title: '😈 Двойник · ' + (M.cracks || 0) + ' трещ. · осталось ' + M.qs.length,
+      lead: '«Помнишь этот вопрос?» — шепчет двойник.', noKnow: true,
+      verdict: function (ok) { return ok ? '💥 По двойнику пошла трещина!' : '😈 Двойник смеётся твоим голосом. Он спросит это снова.'; },
+      done: function (ok, first, aft) {
+        if (ok) { M.qs.shift(); M.cracks = (M.cracks || 0) + 1; M.hitT = now(); sfx('glass'); (M.fixed = M.fixed || []).push(q); }
+        else { M.qs.push(M.qs.shift()); M.laughT = now(); sfx('laugh'); var sw = $('sceneWrap'); sw.classList.remove('rage'); void sw.offsetWidth; sw.classList.add('rage'); }
+        evButtons(aft, [btn(M.qs.length ? 'Дальше' : '💥 Добить двойника', 'primary', 'Enter', mirrorAsk)]);
+      }
+    });
+  }
+  function mirrorWin() {
+    var E = G.ev, M = E.m; M.state = 'shatter'; M.t0 = now(); E.dim = false; sfx('glass'); setTimeout(function () { sfx('win'); }, 400);
+    setTimeout(function () { if (G.ev === E) M.state = 'gone'; }, 1500);
+    var fixed = (M.fixed || []).filter(function (q) { return D.isErr(q.id); });
+    var h = '<div class="qtext">💥 Двойник разбит!</div><p class="msg">Он разлетелся осколками со звоном стекла, факелы снова горят. Это были твои ошибки — отметь те, что теперь точно знаешь, и они уйдут с полки ошибок.</p>' +
+      (fixed.length ? '<div class="know-list">' + fixed.map(function (q, i) { return '<label class="kn-it"><input type="checkbox" data-kq="' + i + '" checked><span>' + D.md(shortQ(q.q)) + '<em>Ответ: ' + rightText(q) + '</em></span></label>'; }).join('') + '</div>' : '');
+    setPanel(h);
+    evButtons(panel, [btn(fixed.length ? '✓ Знаю отмеченные' : 'Дальше', 'primary', 'Enter', function () {
+      panel.querySelectorAll('[data-kq]').forEach(function (cb) { if (cb.checked) D.knowErr(fixed[+cb.getAttribute('data-kq')].id); });
+      if (fixed.length) toast('📗 Книги вернулись на свои полки', '#9FE1CB');
+      darkIdle('<p class="msg">Зеркало пусто. Осталось зажечь остальные факелы.</p>');
+    })]);
+  }
+  function darkWin() { var E = G.ev; E.allLit = true; labels([]); evEnd('🔦 Комната освещена!', 'Все факелы горят — тьма отступила.' + (E.m ? ' Даже зеркальный двойник не помог ей.' : ''), null); }
+
+  /* ---------- 🔤 ШКАТУЛКИ: верный ответ открывает шкатулку и даёт букву; буквы → слово на двери ---------- */
+  function boxWord(E) {
+    var cand = E.f.pool.filter(function (q) {
+      if (!evOk(q)) return false; var r = D.strip(D.md(q.opts.filter(function (o) { return o.right; })[0].t)).trim();
+      return /^[A-Za-zА-Яа-яЁё]{3,8}$/.test(r) && !/[`]/.test(q.q) && q.q.length < 220;
+    });
+    if (!cand.length) return null;
+    var q = cand[Math.floor(Math.random() * cand.length)];
+    return { q: q, word: D.strip(D.md(q.opts.filter(function (o) { return o.right; })[0].t)).trim().toUpperCase().replace(/Ё/g, 'Е') };
+  }
+  function boxesStart(E) {
+    var w = boxWord(E); if (!w) { E.kind = 'bridge'; return bridgeStart(E); }
+    E.word = w.word; E.wq = w.q; E.used[w.q.id] = 1; E.got = []; E.solved = null; E.doorOpen = false;
+    var letters = w.word.split('').sort(function () { return Math.random() - 0.5; }), n = letters.length, x0 = 50, x1 = 390;
+    E.boxes = letters.map(function (L, i) { return { x: Math.round(x0 + (x1 - x0) * (n === 1 ? 0.5 : i / (n - 1))), letter: L, open: false }; });
+    G.hero.x = 24; G.hero.dir = 1; labels([]);
+    boxesIdle('<div class="qtext">🔤 Комната со шкатулками</div><p class="msg">Дверь заперта. На ней <b>' + n + ' пустых ячеек</b> и надпись-загадка. В шкатулках — буквы. Нажми на шкатулку: верный ответ откроет её и даст букву. Собери слово — и дверь откроется. Угадаешь слово раньше — бонус!</p>');
+  }
+  function boxesIdle(lead) {
+    var E = G.ev, closed = E.boxes.filter(function (b) { return !b.open; });
+    labels(E.boxes.map(function (b) { return b.open ? { text: b.letter, x: b.x, y: A.FLOOR_Y - 34, color: '#FAC775' } : null; }).filter(Boolean));
+    var riddle = '<div class="riddle"><b>🚪 Загадка на двери:</b> ' + D.md(E.wq.q) + '</div>';
+    var tiles = '<div class="ltiles">' + E.got.map(function (L, i) { return '<button class="ltile" data-lt="' + i + '">' + esc(L) + '</button>'; }).join('') + '</div>';
+    setPanel((lead || '') + riddle + '<p class="hint">Собранные буквы (' + E.got.length + ' из ' + E.word.length + '):</p>' + tiles +
+      '<div class="guess"><input id="evGuess" autocomplete="off" placeholder="Угадать слово…" maxlength="12"><button class="btn primary" id="evGo">Открыть дверь</button></div>' +
+      (closed.length ? '<div class="row">' + E.boxes.map(function (b, i) { return b.open ? '' : '<button class="btn ghost" data-bx="' + i + '">🎁 Шкатулка ' + (i + 1) + '</button>'; }).join('') + '</div>' : ''));
+    var inp = $('evGuess');
+    panel.querySelectorAll('[data-lt]').forEach(function (b) { b.onclick = function () { inp.value += b.textContent; inp.focus(); }; });
+    panel.querySelectorAll('[data-bx]').forEach(function (b) { b.onclick = function () { boxOpen(+b.getAttribute('data-bx')); }; });
+    var go2 = function () { boxGuess(inp.value); };
+    $('evGo').onclick = go2; inp.onkeydown = function (e) { if (e.key === 'Enter') { e.preventDefault(); go2(); } };
+    G.buttons = closed.length ? [btn('Шкатулка', 'primary', 'Enter', function () { boxOpen(E.boxes.indexOf(closed[0])); })] : [];
+  }
+  function boxOpen(i) {
+    var E = G.ev, bx = E.boxes[i]; if (!bx || bx.open || E.busy) return; E.busy = true; labels([]);
+    walkTo(bx.x - 24, function () {
+      var q = evPick(1, (function () { var o = {}; o[E.wq.id] = 1; return o; })())[0]; if (!q) { E.busy = false; return; }
+      evAsk(q, {
+        title: '🎁 Шкатулка ' + (i + 1),
+        verdict: function (ok) { return ok ? '🔓 Щёлк! Шкатулка открылась — внутри буква <b>' + esc(bx.letter) + '</b>.' : '🔒 Шкатулка дёрнулась и осталась закрытой.'; },
+        done: function (ok, first, aft) {
+          E.busy = false;
+          if (ok) { bx.open = true; bx.openT = now(); E.got.push(bx.letter); sfx('chest'); floater(bx.letter, bx.x, 150, '#FAC775'); }
+          else { bx.shakeT = now(); sfx('hurt'); }
+          evButtons(aft, [btn('К двери и шкатулкам', 'primary', 'Enter', function () { boxesIdle(); })]);
+        }
+      });
+    });
+  }
+  function boxGuess(v) {
+    var E = G.ev, g = String(v || '').trim().toUpperCase().replace(/Ё/g, 'Е');
+    if (!g) return;
+    if (g !== E.word) { sfx('hurt'); floater('Не то слово!', 440, 120, '#F09595'); var inp = $('evGuess'); if (inp) { inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); } return; }
+    var closed = E.boxes.filter(function (b) { return !b.open; }).length, bonus = closed * 10;
+    E.solved = E.word.split('').map(function () { return 1; }); E.doorOpen = true; sfx('door'); setTimeout(function () { sfx('win'); }, 300);
+    D.record(E.wq.id, true, false); D.persist();
+    if (bonus) { S.iq += bonus; hud(); }
+    labels([]); G.buttons = []; setPanel('<p class="msg">Ключ повернулся… дверь открывается!</p>');
+    walkTo(445, function () { var L = X.loot('chest'); evEnd('🔤 Слово «' + E.word + '» — дверь открыта!', (bonus ? 'Угадал раньше, чем открыл все шкатулки: бонус <b>+' + bonus + ' IQ</b>. ' : '') + 'За дверью — сундук.', L); });
+  }
   /* ---------- ПУТЬ C++ (как ветка Duolingo) ---------- */
   var UNITS = [[1, 3, 'Раздел 1 · к РК1', 'Основы: алгоритмы, операции, ветвления'], [4, 6, 'Раздел 2 · к РК1', 'Циклы, массивы, функции, строки'], [7, 9, 'Раздел 3 · к РК2', 'ООП: принципы, классы, среда C++ Builder'], [10, 12, 'Раздел 4 · к РК2', 'Формы, события, иерархия классов'], [13, 15, 'Раздел 5 · к экзамену', 'Конструкторы, свойства, компоненты'], [16, 16, 'Финал', 'Смешанные сложные вопросы по всему курсу'], [17, 17, 'Практика', 'Пишем код: задания по темам, по порядку']];
   function floorMastery(f) { return D.mastery(f.pool.map(function (q) { return q.id; })); }
@@ -1983,6 +2290,16 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
   var AC = null;
   var SFX = {
     ok: [[660, 0, 0.08, 'square'], [990, 0.07, 0.1, 'square']],
+    thud: [[120, 0, 0.12, 'square'], [80, 0.05, 0.12, 'sine']],
+    crack: [[1200, 0, 0.03, 'square'], [400, 0.03, 0.06, 'sawtooth'], [900, 0.09, 0.03, 'square'], [300, 0.12, 0.08, 'sawtooth']],
+    whistle: [[900, 0, 0.1, 'sine'], [800, 0.1, 0.1, 'sine'], [700, 0.2, 0.1, 'sine'], [600, 0.3, 0.1, 'sine'], [500, 0.4, 0.1, 'sine'], [420, 0.5, 0.1, 'sine'], [350, 0.6, 0.12, 'sine'], [300, 0.72, 0.14, 'sine']],
+    boom: [[70, 0, 0.45, 'sine'], [50, 0.05, 0.55, 'sine'], [90, 0, 0.12, 'square']],
+    wawa: [[392, 0, 0.32, 'triangle'], [370, 0.38, 0.32, 'triangle'], [349, 0.76, 0.32, 'triangle'], [330, 1.14, 0.9, 'triangle']],
+    fizz: [[3200, 0, 0.05, 'sawtooth'], [2600, 0.05, 0.06, 'sawtooth'], [2000, 0.11, 0.08, 'sawtooth'], [1500, 0.19, 0.12, 'sawtooth']],
+    strike: [[1800, 0, 0.04, 'square'], [600, 0.04, 0.14, 'triangle'], [900, 0.1, 0.2, 'sine']],
+    glass: [[2600, 0, 0.08, 'triangle'], [3100, 0.05, 0.1, 'triangle'], [2200, 0.12, 0.15, 'triangle'], [3500, 0.2, 0.22, 'triangle']],
+    laugh: [[300, 0, 0.1, 'sawtooth'], [260, 0.15, 0.1, 'sawtooth'], [300, 0.3, 0.1, 'sawtooth'], [230, 0.45, 0.25, 'sawtooth']],
+    door: [[160, 0, 0.18, 'square'], [110, 0.15, 0.3, 'square']],
     hit: [[220, 0, 0.06, 'sawtooth'], [140, 0.04, 0.08, 'square']],
     hurt: [[180, 0, 0.12, 'sawtooth'], [110, 0.1, 0.16, 'sawtooth']],
     kill: [[392, 0, 0.08, 'square'], [523, 0.08, 0.08, 'square'], [784, 0.16, 0.14, 'square']],
@@ -2128,6 +2445,7 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
     if (G.scene === 'house') { A.bgHouse(c, t); c.fillStyle = 'rgba(0,0,0,.35)'; c.beginPath(); c.ellipse(SAGE_X, A.FLOOR_Y + 8, 16, 4, 0, 0, 7); c.fill(); A.drawMonster(c, 'sage', 'idle', t, SAGE_X, A.FLOOR_Y + 8); drawIntruder(c, t); }
     else if (G.scene === 'hall') A.bgHall(c, t);
     else if (G.scene === 'path' && G.lib) A.bgLib(c, t, G.lib);
+    else if (G.scene === 'event' && G.ev) A.bgEv(c, t, G.ev);
     else if (G.scene === 'room' && G.room) A.bgRoom(c, t, { theme: themeOf(G.room.f), exit: true, exitOpen: G.room.objs.every(function (o) { return o.type !== 'mon' || o.dead; }), seed: G.room.k, goo: G.room.floor % 3 === 0, hole: G.room.floor % 2 === 0 });
     else return;
     var fy = A.FLOOR_Y + 8;
@@ -2179,12 +2497,13 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
       c.restore();
       /* дуга удара */
       if (anim === 'attack' && f === 1) { c.strokeStyle = 'rgba(255,243,176,.9)'; c.lineWidth = 2; c.beginPath(); c.arc(h.x + 34, fy - 32, 26, -1.1, 0.9); c.stroke(); }
+      if (G.scene === 'event' && G.ev && A.evOver) A.evOver(c, t, G.ev, h);
     }
   }
   /* ошибка в одном кадре не должна останавливать всю игру */
   function loop(t) { requestAnimationFrame(loop); try { draw(t); } catch (e) { if (!loop.warned) { loop.warned = 1; console.error(e); } } }
   /* для проверки: мгновенно довести героя до цели (вкладка в фоне не анимируется) */
-  window.DGame = { G: G, go: function (s, a) { go(s, a); }, next: function () { goNext(); }, skip: function () { var h = G.hero; if (h.target != null) { h.x = h.target; h.target = null; var cb = h.onArrive; h.onArrive = null; if (cb) cb(); } } };
+  window.DGame = { G: G, ev: function (k, sid) { G.evForce = k; buildArena(sid || D.subjId, 'all', 1); }, go: function (s, a) { go(s, a); }, next: function () { goNext(); }, skip: function () { var h = G.hero; if (h.target != null) { h.x = h.target; h.target = null; var cb = h.onArrive; h.onArrive = null; if (cb) cb(); } } };
 
   /* ---------- старт ---------- */
   Promise.all([A.load(), D.load()]).then(function () {

@@ -571,3 +571,22 @@ details.brief[open]>.rich{animation:richIn .45s ease-out}
 #libTip{position:absolute;transform:translate(-50%,-100%);z-index:4;pointer-events:none;background:rgba(10,8,16,.92);border:1px solid #FAC775;border-radius:8px;padding:4px 10px;display:flex;flex-direction:column;align-items:center;white-space:nowrap;max-width:70%;box-shadow:0 0 12px rgba(250,199,117,.35)}
 #libTip b{color:#FAC775;font-size:clamp(12px,1.6vw,15px);overflow:hidden;text-overflow:ellipsis;max-width:100%}
 #libTip span{color:#e8e4f8;font-size:clamp(11px,1.3vw,13px)}
+/* ---------- ОСОБЫЕ КОМНАТЫ ---------- */
+.btn.sm{padding:5px 10px;font-size:13px}
+.ev-head{flex-wrap:wrap;gap:6px}
+.btn.used{border-color:#FAC775;color:#FAC775}
+.ev-lead{color:var(--mute);font-style:italic;margin:6px 0}
+.opt.match{border-color:#7a5a2a;background:linear-gradient(90deg,#2a1e14,#221a26)}
+.opt.match .n{background:#3a2412}
+.opt.match.wet{opacity:.35;filter:grayscale(1) hue-rotate(180deg);text-decoration:line-through;animation:wetOut .6s ease-out}
+@keyframes wetOut{0%{transform:none}30%{transform:translateX(-4px)}60%{transform:translateX(4px)}100%{transform:none}}
+.riddle{background:#22182a;border:1px solid #7a5a2a;border-radius:10px;padding:8px 12px;margin:8px 0}
+.ltiles{display:flex;flex-wrap:wrap;gap:6px;min-height:40px;margin-bottom:8px}
+.ltile{all:unset;cursor:pointer;width:34px;height:38px;display:flex;align-items:center;justify-content:center;font:800 20px/1 monospace;color:#2a1a0a;background:linear-gradient(#fff1b8,#d9b25a);border-radius:6px;box-shadow:0 3px 0 #8a6a2a;animation:tileIn .5s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes tileIn{from{transform:translateY(-20px) scale(.6);opacity:0}to{transform:none;opacity:1}}
+.guess{display:flex;gap:8px;margin:6px 0 10px}
+.guess input{flex:1;min-width:0;background:var(--card);border:2px solid var(--line);border-radius:10px;color:var(--text);font:700 18px/1 monospace;padding:8px 12px;text-transform:uppercase}
+.guess input.shake{animation:wetOut .4s;border-color:#E24B4A}
+.know-list{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.kn-it{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer}
+.kn-it em{display:block;color:#9FE1CB;font-style:normal;font-size:13px;margin-top:2px}
