@@ -1,0 +1,144 @@
+Лекция 11. Работа с формами: свойства и методы. События
+
+## Цель и план лекции (УМКД)
+Цель: выработать практические навыки работы со свойствами, методами и событиями формы в C++Builder.
+
+**Основные пункты лекции:**
+- Понятие свойства объекта
+- Понятие метода
+- Работа с Object Inspector
+- Основные свойства формы: Caption, Name, Width, Height, Color, Position, Visible, Enabled
+- Изменение свойств при проектировании
+- Изменение свойств программно
+- Методы форм и компонентов
+- Понятие события
+- Обработчики событий
+- Связь событий с методами
+- Обработка основных событий формы
+- Создание интерактивных графических приложений
+
+## Свойства формы
+
+Свойство (property) — характеристика объекта, определяющая, как он выглядит и работает. Метод — действие, которое объект умеет выполнять. Разница: свойство — «какой», его читают и присваивают (Form1->Width = 300;), метод — «что делает», его вызывают со скобками (Form1->Close();).
+
+| Свойство | Смысл | Пример в коде |
+| Caption | текст в заголовке окна | Form1->Caption = "Калькулятор"; |
+| Name | имя объекта в программе (меняют только в Object Inspector) | Form1 |
+| Width, Height | ширина и высота в пикселях | Width = Width + 50; |
+| Left, Top | положение на экране | Left = 0; |
+| Color | цвет фона (TColor) | Color = clYellow; |
+| Position | где появится окно: poDesigned (как в дизайнере), poScreenCenter (по центру экрана), poDesktopCenter… |
+| Visible | видимо ли окно/компонент | Label1->Visible = false; |
+| Enabled | доступно ли (false — серое, не реагирует) | Button1->Enabled = false; |
+| BorderStyle, FormStyle, AlphaBlend… | рамка, «поверх всех», прозрачность |
+
+Изменение свойств: при проектировании — в Object Inspector (вкладка Properties), во время работы — программно, присваиванием в обработчике. Внутри методов формы можно писать просто Color = clRed; (это свойство своей формы) или Form1->Color = clRed;.
+
+Методы форм и компонентов: Show(), ShowModal(), Hide(), Close() у формы; Clear() у Memo и Edit; SetFocus() — передать фокус ввода; Lines->Add(…), Items->Add(…) у списков.
+
+## События и обработчики
+
+Событие (event) — сообщение операционной системы приложению о том, что что-то произошло: щелчок, нажатие клавиши, движение мыши, срабатывание таймера, изменение размера окна. Обработчик события — специальная функция, которая выполняется в ответ на событие.
+
+Связь события с методом: в Object Inspector на вкладке Events напротив события стоит имя метода. Двойной щелчок создаёт новый метод; из выпадающего списка можно выбрать уже существующий — так одна функция обслуживает несколько кнопок и пунктов меню (параметр Sender подскажет, кто вызвал).
+
+| Событие | Когда |
+| OnCreate | форма создаётся при запуске (начальные настройки) |
+| OnShow / OnActivate | форма показана / стала активной |
+| OnClick, OnDblClick | щелчок / двойной щелчок |
+| OnMouseMove, OnMouseDown, OnMouseUp | движение мыши, нажатие и отпускание кнопки мыши (X, Y, Shift) |
+| OnKeyPress, OnKeyDown | нажатие клавиши (Key) |
+| OnResize | изменился размер формы |
+| OnClose | форма закрывается |
+| OnChange | у Edit/Memo изменился текст, у ScrollBar — позиция |
+
+Обработка действий пользователя: программа «ничего не делает», пока не произойдёт событие; весь код — в обработчиках. Так строится событийно-управляемое интерактивное приложение.
+
+## Определения для теста (англ.)
+Properties (свойства) — attributes which determine how a component is displayed and how it operates (как выглядит и как работает).
+Methods (методы) — the actions performed by the component (что компонент умеет делать).
+Event (событие) — a message which occurs when certain conditions are performed. Event handler (обработчик) — a special procedure used to react to some actions.
+Name — главное свойство: имя компонента в коде. Name и Tag есть абсолютно у всех компонентов (Tag — любое целое число для своих целей).
+Width, Height, Left, Top — тип int, в пикселях (pixels). Left — расстояние от левого края формы (координата X), Top — от верха (Y). Эти свойства все визуальные компоненты получают от класса TControl. ClientWidth/ClientHeight — полезная область внутри рамок.
+Размер текста — Font->Size, цвет текста — Font->Color.
+
+## Свойства Button, Edit, Label
+| Свойство | У кого | Что делает |
+| Caption | Button, Label, Form | текст на кнопке / надписи / в заголовке окна. Caption = "" — текста нет. |
+| Text | Edit | текст в поле ввода (у Button и Label вместо Text — Caption) |
+| Enabled | все | false — элемент серый и не нажимается |
+| Visible | все | показан ли на форме |
+| Font | все | шрифт, размер, начертание (fsBold, fsItalic) |
+| ParentFont | все | true — взять шрифт от родителя (формы или панели) |
+| Cancel / Default | Button | кнопка срабатывает по Esc / по Enter |
+| ReadOnly | Edit, Memo | true — смотреть можно, печатать нельзя (из кода менять Text можно всегда) |
+| MaxLength | Edit | максимум символов |
+| PasswordChar | Edit | символ вместо букв, например '*' для пароля |
+| TabOrder | Edit, Button | порядок перехода фокуса по Tab (важен для Edit и Button, у Label фокуса нет) |
+| Transparent | Label | прозрачный фон надписи |
+| Alignment | Label, StaticText | выравнивание текста: taLeftJustify, taCenter, taRightJustify |
+| AutoSize | Label, Edit | true — размер по тексту: заданные вручную Width/Height не учитываются. У Edit высота зависит от шрифта. |
+| Hint + ShowHint | все | всплывающая подсказка (ShowHint = true) |
+| Cursor | все | вид курсора над элементом: crHandPoint (рука), crIBeam (текстовый), crDefault |
+
+События Edit: OnChange — при каждом изменении текста; OnKeyPress — каждая нажатая клавиша (можно запретить цифры: if (Key >= '0' && Key <= '9') Key = 0;).
+
+## Мышь и клавиатура
+| Событие | Когда |
+| OnMouseDown | кнопку мыши нажали (ещё не отпустили) над элементом |
+| OnMouseUp | кнопку мыши отпустили |
+| OnMouseMove | мышь двигается над элементом (вызывается много раз подряд) |
+| OnMouseLeave | мышь ушла с элемента (вернуть обычный цвет) |
+| OnKeyDown | клавишу нажали (ещё не отпустили) |
+| OnKeyUp | клавишу отпустили |
+| OnKeyPress | клавишу нажали и отпустили (символ) |
+| OnCreate / OnActivate / OnDeactivate | форма создана в памяти / стала активной / потеряла фокус |
+void __fastcall TForm1::Button1MouseMove(TObject *Sender, TShiftState Shift, int X, int Y)
+```
+{
+  // X, Y — координаты мыши ОТ ЛЕВОГО ВЕРХНЕГО УГЛА самого компонента (при Width = 100 X бывает 0…99)
+  if (Shift.Contains(ssShift)) Caption = "Зажат Shift";    // ssShift, ssAlt, ssCtrl — клавиши
+  if (Shift.Contains(ssLeft))  Caption = "Зажата левая кнопка мыши";
+  Button1->Font->Color = clRed;       // цвет текста
+  Label1->Font->Color = clRed;        // у надписи цвет текста — тоже через Font
+  Button1->Cursor = crHandPoint;
+  TControl *c = dynamic_cast<TControl*>(Sender);    // общий обработчик: кто вызвал?
+```
+if (dynamic_cast<TEdit*>(Sender)) { /* это Edit */ }
+```
+}
+```
+Цвет фона: Button1->Color = clYellow; (в C++ всегда через ->, не через точку).
+Repaint() — сразу перерисовать элемент. От мерцания в VCL помогает DoubleBuffered = true.
+Перетаскивание: Button1->Left = Button1->Left + X; Button1->Top = Button1->Top + Y; (точнее — разница с точкой, где нажали мышь).
+В тестах заголовки событий иногда записаны на языке Delphi: OnMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer) — это то же самое.
+
+## Дополнение к тестам: Sender, перерисовка, выделение, перетаскивание
+Этот раздел дописан к лекции, чтобы закрыть вопросы из базы тестов, которых нет в основном тексте.
+**Один обработчик на несколько компонентов.** В Object Inspector на вкладке Events можно выбрать уже готовый обработчик для разных кнопок, меток и полей. Какой именно компонент вызвал событие, подскажет параметр Sender. Чтобы работать с ним как с кнопкой, его приводят к нужному классу: dynamic_cast<TButton*>(Sender). Если Sender не кнопка, dynamic_cast вернёт NULL — так различают TEdit и TLabel:
+```
+void __fastcall TForm1::AnyMouseMove(TObject *Sender, TShiftState Shift, int X, int Y)
+{
+  if (TEdit *e = dynamic_cast<TEdit*>(Sender))  e->Font->Color = clRed;   // это поле ввода
+  if (TLabel *l = dynamic_cast<TLabel*>(Sender)) l->Font->Color = clBlue;  // это надпись
+}
+```
+**Координаты X и Y** в событиях мыши считаются от левого верхнего угла самого компонента, а не формы. У кнопки шириной 100 пикселей X идёт от 0 до 99. Поэтому Button1->Height = 50 - Y; делает кнопку ниже, когда мышь опускается.
+**Перетаскивание мышью.** В OnMouseMove проверяют, зажата ли левая кнопка — Shift.Contains(ssLeft) — и сдвигают компонент: Button1->Left = Button1->Left + X; Button1->Top = Button1->Top + Y;. Плавнее — запомнить точку нажатия в OnMouseDown (или брать Screen->CursorPos — позицию курсора на экране) и сдвигать на разницу.
+**Перерисовка.** Repaint() — перерисовать элемент немедленно; Invalidate() — пометить «нужно перерисовать» (сделается чуть позже); Refresh() — то же, что Repaint. Против мерцания в VCL ставят DoubleBuffered = true; пары BeginUpdate() / EndUpdate() «замораживают» перерисовку списков (Memo1->Lines, ListBox1->Items) на время большого изменения. В базе тестов на вопрос «как убрать мерцание» ответ — BeginUpdate() и EndUpdate().
+**Выделение текста в Edit и Memo.** SelStart — с какого символа (с 0), SelLength — сколько символов, SelText — выделенный текст. Выделить первые 5 букв: Edit1->SelStart = 0; Edit1->SelLength = 5;. SelectAll() — выделить всё; CutToClipboard(), CopyToClipboard(), PasteFromClipboard() — работа с буфером обмена (перед CutToClipboard проверяют SelLength > 0).
+**Подсказки.** Hint — текст подсказки, ShowHint = true — показывать. Свою подсказку можно показать из кода: Application->Hint = Format("X:%d Y:%d", ARRAYOFCONST((X, Y))); Application->ActivateHint(Screen->CursorPos);
+**Вопросы про FireMonkey (FMX) и новые версии Builder.** Часть вопросов базы взята из новых версий C++Builder с библиотекой FireMonkey (FMX): Fill->Color (цвет заливки), Opacity (прозрачность), TStyleManager (стили), ParentBackground, BorderColor, OnPaint у кнопки. В Builder 6 их нет — эти ответы просто запоминают.
+
+## Вопросы УМКД к теме 11 — с ответами
+- **Что такое свойство объекта?** — Характеристика объекта (переменная), определяющая его вид и поведение: Caption, Width, Color.
+- **Что такое метод?** — Функция объекта — действие, которое он умеет выполнять: Show(), Close(), Clear().
+- **Разница между свойством и методом?** — Свойство описывает состояние, его читают и присваивают; метод выполняет действие, его вызывают со скобками.
+- **Как менять свойства формы в Object Inspector?** — Выделить форму, на вкладке Properties выбрать свойство и ввести/выбрать новое значение.
+- **Как менять свойства формы программно?** — Присваиванием в коде во время работы: Form1->Color = clRed;, Width = 500;
+- **Основные свойства формы?** — Caption, Name, Width, Height, Left, Top, Color, Position, Visible, Enabled, BorderStyle, FormStyle, Font.
+- **Что такое событие?** — Сообщение ОС приложению о произошедшем действии (щелчок, клавиша, таймер, изменение размера).
+- **Что такое обработчик события?** — Метод формы, который выполняется в ответ на событие: void __fastcall TForm1::Button1Click(TObject *Sender).
+- **Как события связываются с методами?** — В Object Inspector на вкладке Events напротив события указывается имя метода-обработчика (двойной щелчок создаёт новый, можно выбрать существующий).
+- **Типичные события формы?** — OnCreate, OnShow, OnActivate, OnClick, OnDblClick, OnMouseMove, OnKeyPress, OnResize, OnClose, OnPaint.
+- **Как обрабатываются действия пользователя в визуальном приложении?** — Каждое действие порождает событие; программа реагирует, выполняя связанный с ним обработчик (событийно-управляемое программирование).

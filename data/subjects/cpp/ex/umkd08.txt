@@ -1,0 +1,111 @@
+<question> (УМКД) What is a class in C++?
+<tr>(УМКД) Что такое класс в C++?</tr>
+<variantright> a user-defined type that combines data (fields) and functions (methods) <tr>пользовательский тип, объединяющий данные (поля) и функции (методы)</tr>
+<variant> a built-in function for input and output <tr>встроенная функция ввода-вывода</tr>
+<variant> an array of elements of different types <tr>массив элементов разных типов</tr>
+<variant> a block of code inside a loop <tr>блок кода внутри цикла</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: класс — пользовательский тип: поля хранят данные, методы задают поведение; объявляется словом class.
+По лекции: тема 8, раздел «1. Объявление класса».</explain>
+
+<question> (УМКД) What is the relationship between a class and an object?
+<tr>(УМКД) Как связаны класс и объект?</tr>
+<variantright> a class is a description (type); an object is a concrete instance created from it <tr>класс — описание (тип), объект — конкретный экземпляр, созданный по нему</tr>
+<variant> an object describes a class <tr>объект описывает класс</tr>
+<variant> a class can have only one object <tr>у класса может быть только один объект</tr>
+<variant> they are two names for the same thing <tr>это два названия одного и того же</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: класс — «чертёж», объект — экземпляр по этому чертежу; объектов одного класса может быть сколько угодно.
+По лекции: тема 8, раздел «Вопросы УМКД к теме 8» (вопрос 3).</explain>
+
+<question> (УМКД) What are data members and member functions?
+<tr>(УМКД) Что такое поля и методы класса?</tr>
+<variantright> data members store the object's state; member functions define its behavior <tr>поля хранят состояние объекта, методы задают его поведение</tr>
+<variant> data members are functions, member functions are variables <tr>поля — это функции, методы — переменные</tr>
+<variant> both are global variables <tr>и то и другое — глобальные переменные</tr>
+<variant> they exist only in derived classes <tr>они есть только в производных классах</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: поля (data members) — переменные класса, методы (member functions) — функции класса.
+По лекции: тема 8, раздел «1. Объявление класса».</explain>
+
+<question> (УМКД) How is a class declared in C++?
+<tr>(УМКД) Как объявить класс в C++?</tr>
+<variantright> class Name { private: …; public: …; }; <tr>class Имя { private: …; public: …; }; — с точкой с запятой в конце</tr>
+<variant> class Name ( … ) <tr>class Имя ( … )</tr>
+<variant> Name class { … } <tr>Имя class { … }</tr>
+<variant> struct class Name; <tr>struct class Имя;</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: class Имя { … }; — тело в фигурных скобках, после закрывающей скобки обязательна «;».
+По лекции: тема 8, раздел «1. Объявление класса».</explain>
+
+<question> (УМКД) Which access specifier allows access only to member functions of the class itself?
+<tr>(УМКД) Какой спецификатор доступа разрешает доступ только методам самого класса?</tr>
+<variantright> private
+<variant> public
+<variant> protected
+<variant> published
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: private — только методы самого класса. public — всем, protected — классу и его наследникам.
+По лекции: тема 8, раздел «1. Объявление класса», УМКД-вопрос 6.</explain>
+
+<question> (УМКД) What is encapsulation in a C++ class?
+<tr>(УМКД) Что такое инкапсуляция в классе C++?</tr>
+<variantright> fields are private and are accessed only through public methods that check the data <tr>поля private, работа с ними — только через public-методы, которые проверяют данные</tr>
+<variant> all fields are public <tr>все поля public</tr>
+<variant> one class inherits from another <tr>один класс наследуется от другого</tr>
+<variant> a method has several versions <tr>у метода несколько версий</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: инкапсуляция — закрыть данные (private) и дать к ним доступ через проверяющие методы.
+Почему не другие: наследование и полиморфизм — другие принципы ООП.
+По лекции: тема 8, раздел «1. Объявление класса», УМКД-вопрос 7.</explain>
+
+<question> (УМКД) Which line creates an object of the class Rect dynamically?
+<tr>(УМКД) Какая строка создаёт объект класса Rect динамически?</tr>
+<variantright> Rect *p = new Rect(3, 4);
+<variant> Rect r(3, 4);
+<variant> Rect r;
+<variant> class Rect r = 3;
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: new создаёт объект в динамической памяти и возвращает указатель. Rect r; и Rect r(3,4); — обычные (автоматические) объекты.
+По лекции: тема 8, раздел «2. Создание объектов и доступ к членам».</explain>
+
+<question> (УМКД) How are class members accessed through a pointer to an object?
+<tr>(УМКД) Как обратиться к членам класса через указатель на объект?</tr>
+<variantright> with the arrow: p->area() <tr>через стрелку: p->area()</tr>
+<variant> with a dot: p.area() <tr>через точку: p.area()</tr>
+<variant> with ::  p::area() <tr>через :: — p::area()</tr>
+<variant> with brackets: p[area] <tr>через скобки: p[area]</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: у объекта — точка (r.area()), у указателя — стрелка (p->area()), то же, что (*p).area().
+По лекции: тема 8, раздел «2. Создание объектов и доступ к членам»; тема 2, раздел 5 (операции . и ->).</explain>
+
+<question> (УМКД) What is the purpose of the this pointer?
+<tr>(УМКД) Для чего нужен указатель this?</tr>
+<variantright> it points to the current object inside a method <tr>указывает на текущий объект внутри метода</tr>
+<variant> it points to the base class <tr>указывает на базовый класс</tr>
+<variant> it creates a new object <tr>создаёт новый объект</tr>
+<variant> it deletes the object <tr>удаляет объект</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: this — скрытый указатель на объект, для которого вызван метод; помогает отличить поле от параметра с тем же именем: this->x = x;
+По лекции: тема 8, раздел «3. Указатель this, статические члены…».</explain>
+
+<question> (УМКД) What are static members of a class?
+<tr>(УМКД) Что такое статические члены класса?</tr>
+<variantright> members shared by all objects of the class <tr>члены, общие для всех объектов класса</tr>
+<variant> members that cannot be changed <tr>члены, которые нельзя менять</tr>
+<variant> members that exist only in one object <tr>члены, которые есть только у одного объекта</tr>
+<variant> private members <tr>закрытые члены</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: static-поле одно на весь класс (например, счётчик созданных объектов); static-метод вызывают через Класс::метод() без объекта.
+Ловушка: «нельзя менять» — это const, а не static.
+По лекции: тема 8, раздел «3. Указатель this, статические члены…».</explain>
+
+<question> (УМКД) How can objects of the same class interact with each other?
+<tr>(УМКД) Как объекты одного класса взаимодействуют друг с другом?</tr>
+<variantright> a method of one object receives another object (usually by reference) and uses its methods and fields <tr>метод одного объекта получает другой объект (обычно по ссылке) и использует его методы и поля</tr>
+<variant> they cannot interact <tr>никак не могут</tr>
+<variant> only through global variables <tr>только через глобальные переменные</tr>
+<variant> only through inheritance <tr>только через наследование</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: например, bool Rect::bigger(const Rect &other) сравнивает себя с другим прямоугольником; внутри класса доступны даже private-поля другого объекта того же класса.
+По лекции: тема 8, раздел «3. Указатель this, статические члены, объекты в функциях».</explain>

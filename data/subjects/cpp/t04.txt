@@ -1,0 +1,279 @@
+<question> What is an array?
+<tr>Что такое массив?</tr>
+<variantright> a sequence of values of the same type under one name <tr>последовательность значений одного типа под одним именем</tr>
+<variant> data located in cells <tr>данные, расположенные в ячейках</tr>
+<variant> a type that defines the size <tr>тип, определяющий размер</tr>
+<variant> a pointer that uses dynamic memory <tr>указатель, использующий динамическую память</tr>
+<variant> a set of types that defines a reference <tr>набор типов, определяющий ссылку</tr>
+<explain>Ответ: массив — последовательность значений одного типа под одним именем; к элементам обращаются по индексу.
+По лекции: тема 4, раздел «4. Одномерные массивы».</explain>
+
+<question> Which option correctly declares an array of 10 real numbers?
+<tr>Какой вариант правильно объявляет массив из 10 вещественных чисел?</tr>
+<variantright> float a[10];
+<variant> int a[10];
+<variant> float a(10);
+<variant> float a[1..10];
+<variant> int a[1..10];
+<explain>Ответ: float a[10]; — 10 вещественных чисел, размер в квадратных скобках.
+Почему не другие: int — целые; a(10) — круглые скобки для массива не годятся; [1..10] — запись из Pascal.
+По лекции: тема 4, раздел «4. Одномерные массивы».</explain>
+
+<question> The correct declaration of an array a of 12 integers:
+<tr>Правильное объявление массива a из 12 целых чисел:</tr>
+<variantright> int a[12];
+<variant> float a[12];
+<variant> char a[12];
+<variant> int a(12);
+<variant> float a[10];
+<explain>Ответ: int a[12]; — массив из 12 целых чисел.
+По лекции: тема 4, раздел «4. Одномерные массивы».</explain>
+
+<question> What does `float a[10];` mean?
+<tr>Что означает `float a[10];`?</tr>
+<variantright> declaration of an array a of 10 real numbers <tr>объявление массива a из 10 вещественных чисел</tr>
+<variant> declaration of a sequence of integers from 1 to 10 <tr>объявление последовательности целых чисел от 1 до 10</tr>
+<variant> declaration of a 10x10 matrix a <tr>объявление матрицы a размером 10x10</tr>
+<variant> declaration of a sequence of real numbers from 1 to 10 <tr>объявление последовательности вещественных чисел от 1 до 10</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: объявление массива a из 10 вещественных чисел (a[0] … a[9]).
+Ловушка: это не «числа от 1 до 10» — объявление задаёт только размер, значения пока не заданы.
+По лекции: тема 4, раздел «4. Одномерные массивы».</explain>
+
+<question> How many times will the loop repeat?
+```cpp
+x=2; while (x<10) {y=x*x; x=x+2;}
+```
+<tr>Сколько раз повторится цикл?</tr>
+<variantright> 4
+<variant> 5
+<variant> 10
+<variant> 3
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 4 раза. x = 2, 4, 6, 8; при x = 10 условие x < 10 ложно.
+По лекции: тема 4, раздел «1. Цикл с предусловием while».</explain>
+
+<question> How many times will the loop repeat?
+```cpp
+x=7; while (x <=10) { cout<<x; x++; }
+```
+<tr>Сколько раз повторится цикл?</tr>
+<variantright> 4
+<variant> 5
+<variant> 6
+<variant> 7
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 4 раза. x = 7, 8, 9, 10 (условие x <= 10 включает 10).
+По лекции: тема 4, раздел «1. Цикл с предусловием while».</explain>
+
+<question> How many times will the loop repeat?
+```cpp
+x=7; while (x <10) { cout<<x; x++; }
+```
+<tr>Сколько раз повторится цикл?</tr>
+<variantright> 3
+<variant> 4
+<variant> 5
+<variant> 6
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 3 раза. x = 7, 8, 9; при x = 10 условие x < 10 уже ложно.
+По лекции: тема 4, раздел «1. Цикл с предусловием while».</explain>
+
+<question> The loop with a precondition in C is written as:
+<tr>Запись цикла с предусловием в C:</tr>
+<variantright> while (condition) {loop body} <tr>while (условие) {тело цикла}</tr>
+<variant> do {loop body} while (condition) <tr>do {тело цикла} while (условие)</tr>
+<variant> for <tr>initial value; final value; step — начальное значение; конечное значение; шаг</tr>
+<variant> for <tr>final value; initial value; step — конечное значение; начальное значение; шаг</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: while (условие) { тело } — условие проверяется ДО тела (предусловие).
+По лекции: тема 4, раздел «1. Цикл с предусловием while».</explain>
+
+<question> The loop with a postcondition in C is written as:
+<tr>Запись цикла с постусловием в C:</tr>
+<variantright> do {loop body} while (condition) <tr>do {тело цикла} while (условие)</tr>
+<variant> while (condition) {loop body} <tr>while (условие) {тело цикла}</tr>
+<variant> for <tr>initial value; final value; step — начальное значение; конечное значение; шаг</tr>
+<variant> for <tr>final value; initial value; step — конечное значение; начальное значение; шаг</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: do { тело } while (условие); — условие проверяется ПОСЛЕ тела (постусловие), тело выполнится хотя бы раз.
+По лекции: тема 4, раздел «2. Цикл с постусловием do…while».</explain>
+
+<question> How many kinds of loop statements are there in C?
+<tr>Сколько видов операторов цикла в C?</tr>
+<variantright> 3
+<variant> 2
+<variant> 1
+<variant> 4
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 3 — for, while и do…while.
+По лекции: тема 4, раздел «2. Цикл с постусловием do…while» (абзац про три вида циклов).</explain>
+
+<question> An array in C is
+<tr>Массив в C — это</tr>
+<variantright> a set of elements of the same type <tr>набор элементов одного типа</tr>
+<variant> a set of elements of different types <tr>набор элементов разных типов</tr>
+<variant> a sequence of variables <tr>последовательность переменных</tr>
+<variant> a set of any elements <tr>набор любых элементов</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: массив — набор элементов одного типа.
+Ловушка: «разные типы» — это структура или класс, не массив.
+По лекции: тема 4, раздел «4. Одномерные массивы».</explain>
+
+<question> In which loop statement does the loop end when the condition is true?
+<tr>В каком операторе цикла выход из цикла происходит, когда условие истинно?</tr>
+<variantright> do {} while(condition) <tr>do {} while(условие)</tr>
+<variant> while (condition) { } <tr>while (условие) { }</tr>
+<variant> for
+<variant> switch
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: do {} while(условие) — так отмечено в базе.
+Строго в C++ и while, и do…while заканчиваются, когда условие ЛОЖНО; выход «по истине» — у repeat…until в Pascal. Запомни пару из базы: «истинно → do-while», «не истинно → while».
+По лекции: тема 4, раздел «2. Цикл с постусловием do…while» — абзац «Про базу тестов».</explain>
+
+<question> In which loop statement does the loop end when the condition is not true?
+<tr>В каком операторе цикла выход из цикла происходит, когда условие не истинно?</tr>
+<variantright> while (condition) { } <tr>while (условие) { }</tr>
+<variant> do {} while(condition) <tr>do {} while(условие)</tr>
+<variant> for
+<variant> switch
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: while (условие) { } — цикл заканчивается, когда условие становится не истинным (ложным).
+По лекции: тема 4, разделы 1 и 2.</explain>
+
+<question> What number do array indexes start from?
+<tr>С какого числа начинаются индексы массива?</tr>
+<variantright> 0
+<variant> 1
+<variant> 2
+<variant> -1
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: с 0. Первый элемент — a[0], последний в массиве из n элементов — a[n−1].
+По лекции: тема 4, раздел «4. Одномерные массивы».</explain>
+
+<question> What does the program give?
+```cpp
+int a[3][3];
+for(int i=0;i<3;i++)
+for(int j=0;j<3;j++)
+cin>>a[i][j];
+int m=a[1][1],s=0;
+for(int i=0;i<3;i++)
+s+=a[i][i];
+cout<<s;
+```
+<tr>Что даёт программа?</tr>
+<variantright> the sum of the elements of the main diagonal of the matrix <tr>сумму элементов главной диагонали матрицы</tr>
+<variant> the sum of the even elements of the array <tr>сумму чётных элементов массива</tr>
+<variant> the sum of all elements of the matrix <tr>сумму всех элементов матрицы</tr>
+<variant> the sum of the odd elements of the array <tr>сумму нечётных элементов массива</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: сумму элементов главной диагонали. a[i][i] — элементы, у которых номер строки равен номеру столбца.
+По лекции: тема 4, раздел «5. Двумерные массивы (матрицы)».</explain>
+
+<question> What does the program calculate?
+```cpp
+s=0;
+for(i=0; i<3; i++)
+for(j=0; j<3; j++)
+if (j<i) s+=a[i][j];
+printf("\ns=%i",s);
+getch();
+```
+<tr>Что вычисляет программа?</tr>
+<variantright> the sum of the elements below the main diagonal of the array <tr>сумму элементов ниже главной диагонали массива</tr>
+<variant> the sum of the elements above the main diagonal of the array <tr>сумму элементов выше главной диагонали массива</tr>
+<variant> the sum of the elements of the main diagonal of the array <tr>сумму элементов главной диагонали массива</tr>
+<variant> the sum of the elements of the secondary diagonal of the array <tr>сумму элементов побочной диагонали массива</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: сумму элементов ниже главной диагонали. Условие j < i — номер столбца меньше номера строки.
+Почему не другие: выше диагонали — j > i, на диагонали — i == j, побочная диагональ — j == n−1−i.
+По лекции: тема 4, раздел «5. Двумерные массивы (матрицы)».</explain>
+
+<question> What does the program fragment calculate?
+```cpp
+for (i=0; i<=n; i++)
+cin>>a[i];
+s2=0;
+for (i=0; i<=n; i++)
+if (i %2== 0) s2=s2+a[i];
+cout<<s2;
+```
+<tr>Что вычисляет фрагмент программы?</tr>
+<variantright> the sum of only the elements with even numbers (indexes) <tr>сумму только элементов с чётными номерами</tr>
+<variant> the sum of only the elements with odd numbers (indexes) <tr>сумму только элементов с нечётными номерами</tr>
+<variant> the sum of all elements <tr>сумму всех элементов</tr>
+<variant> the number of elements equal to 0 <tr>количество элементов, равных 0</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: сумму элементов с чётными номерами (индексами). Проверяется i%2==0 — сам индекс, а не значение a[i].
+По лекции: тема 4, раздел «4. Одномерные массивы».</explain>
+
+<question> What does the program fragment calculate?
+```cpp
+for (i=0; i<=n; i++)
+cin>>a[i];
+s2=0;
+for (i=0; i<=n; i++)
+if (i %2!= 0) s2=s2+a[i];
+cout<<s2;
+```
+<tr>Что вычисляет фрагмент программы?</tr>
+<variantright> the sum of only the elements with odd numbers (indexes) <tr>сумму только элементов с нечётными номерами</tr>
+<variant> the sum of only the elements with even numbers (indexes) <tr>сумму только элементов с чётными номерами</tr>
+<variant> the number of elements not equal to 0 <tr>количество элементов, не равных 0</tr>
+<variant> the sum of all elements <tr>сумму всех элементов</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: сумму элементов с нечётными номерами (индексами): i%2 != 0.
+По лекции: тема 4, раздел «4. Одномерные массивы».</explain>
+
+<question> Which statement is NOT a loop statement in C++?
+<tr>Какой оператор НЕ является оператором цикла в C++?</tr>
+<variantright> repeat until
+<variant> while
+<variant> do while
+<variant> for
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: repeat…until — цикл из Pascal, в C++ его нет.
+В C++ циклы: for, while, do…while.
+По лекции: тема 4, раздел «2. Цикл с постусловием do…while».</explain>
+
+<question> What else is an array with two indexes called?
+<tr>Как ещё называют массив с двумя индексами?</tr>
+<variantright> matrix <tr>матрица</tr>
+<variant> one-dimensional array <tr>одномерный массив</tr>
+<variant> dynamic array <tr>динамический массив</tr>
+<variant> non-uniform array <tr>неоднородный массив</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: матрица. Двумерный массив — таблица из строк и столбцов: int m[3][4];
+По лекции: тема 4, раздел «5. Двумерные массивы (матрицы)».</explain>
+
+<question> The number used to access one element of an array is called ....
+<tr>Число, по которому обращаются к одному элементу массива, называется ....</tr>
+<variantright> index <tr>индекс</tr>
+<variant> type <tr>тип</tr>
+<variant> matrix <tr>матрица</tr>
+<variant> arithmetic mean <tr>среднее арифметическое</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: индекс — номер элемента в квадратных скобках: a[3].
+По лекции: тема 4, раздел «4. Одномерные массивы».</explain>
+
+<question> The elements of an array are connected by having the same ...
+<tr>Элементы массива связаны тем, что у них одинаковые ...</tr>
+<variantright> types <tr>типы</tr>
+<variant> sizes <tr>размеры</tr>
+<variant> names <tr>имена</tr>
+<variant> values <tr>значения</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: одинаковый тип. Все элементы массива — одного типа (все int, все float…).
+По лекции: тема 4, раздел «4. Одномерные массивы».</explain>
+
+<question> The process of ordering the elements of an array is called ....
+<tr>Процесс упорядочивания элементов массива называется ....</tr>
+<variantright> sorting <tr>сортировка</tr>
+<variant> searching <tr>поиск</tr>
+<variant> checking <tr>проверка</tr>
+<variant> changing <tr>изменение</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: сортировка — упорядочивание элементов (например, по возрастанию).
+Почему не другие: поиск — нахождение элемента, проверка и изменение — не упорядочивают.
+По лекции: тема 4, раздел «4. Одномерные массивы» — пример сортировки пузырьком.</explain>

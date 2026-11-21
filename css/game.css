@@ -317,6 +317,7 @@ b.bad,.bad{color:#F7A3A3}
 .ex-text{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:8px}
 .ex-text p{margin:5px 0}
 .ex-text .ex-li{margin-left:10px}
+.ex-text .ex-ref{color:var(--muted,#AFA9EC);font-size:.92em;border-top:1px dashed var(--line);padding-top:5px;margin-top:7px}
 .opt.sel{border-color:#7F77DD;background:#2a2540}
 /* ===== этап 2: вход с режимом, экзамен ===== */
 .seg{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 10px}

@@ -1,0 +1,362 @@
+<question> What is an identifier?
+<tr>Что такое идентификатор?</tr>
+<variantright> the name of an object in a program <tr>имя объекта в программе</tr>
+<variant> dynamic memory <tr>динамическая память</tr>
+<variant> an array consisting of a set of elements <tr>массив, состоящий из набора элементов</tr>
+<variant> a way of passing a program <tr>способ передачи программы</tr>
+<variant> words intended for the compiler <tr>слова, предназначенные для компилятора</tr>
+<explain>Ответ: идентификатор — это имя объекта программы (переменной, константы, функции, типа, класса).
+Почему не другие: «слова для компилятора» — это ключевые слова, «массив» и «динамическая память» — совсем другие понятия.
+По лекции: тема 1, раздел «6. Идентификаторы и ключевые слова».</explain>
+
+<question> Which function does the execution of any C program start with?
+<tr>С какой функции начинается выполнение любой программы на C?</tr>
+<variantright> main()
+<variant> random
+<variant> randomize()
+<variant> clrscr()
+<variant> it is different in every program <tr>в каждой программе по-разному</tr>
+<explain>Ответ: main(). Выполнение любой программы на C/C++ начинается с функции main(), и она одна на программу.
+Почему не другие: random/randomize() — функции случайных чисел, clrscr() — очистка экрана; их только вызывают из main.
+По лекции: тема 1, раздел «8. Структура программы в Borland C++».</explain>
+
+<question> A sequence of Latin letters and digits that must start with a letter is called ...
+<tr>Последовательность символов из латинских букв и цифр, которая обязательно начинается с буквы, называется ...</tr>
+<variantright> identifier <tr>идентификатор</tr>
+<variant> constant <tr>константа</tr>
+<variant> function <tr>функция</tr>
+<variant> comment <tr>комментарий</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: идентификатор — имя из латинских букв, цифр и _, которое начинается с буквы (или _), но не с цифры.
+Почему не другие: константа — неизменяемое значение (25, 'A'), комментарий — текст для человека, функция — подпрограмма.
+По лекции: тема 1, раздел «6. Идентификаторы и ключевые слова» — правила составления имён.</explain>
+
+<question> Which keyword is used to declare constants in C?
+<tr>Какое ключевое слово используется для объявления констант в C?</tr>
+<variantright> const
+<variant> var
+<variant> int
+<variant> procedure
+<variant> All of the above are correct <tr>Все перечисленные верны</tr>
+<explain>Ответ: const. Запись const double PI = 3.14; создаёт именованную константу, её значение менять нельзя.
+Почему не другие: var и procedure — слова из Pascal, int — просто тип, а не «константа».
+По лекции: тема 1, раздел «7. Константы, escape-последовательности, комментарии».</explain>
+
+<question> What is a variable?
+<tr>Что такое переменная?</tr>
+<variantright> a named memory area that stores data of a certain type <tr>область памяти с определённым именем, в которой хранятся данные определённого типа</tr>
+<variant> storing data of an undefined type in memory <tr>хранение в памяти данных неопределённого типа</tr>
+<variant> dividing memory classes into several parts <tr>деление классов памяти на несколько частей</tr>
+<variant> an expression of operands, operation signs and brackets that gives a value of a certain type <tr>выражение из операндов, знаков операций и скобок, задающее значение определённого типа</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: переменная — именованная область памяти, в которой хранится значение определённого типа.
+Почему не другие: «выражение из операндов и знаков операций» — это определение выражения (тема 2), тип у переменной всегда определён.
+По лекции: тема 1, раздел «Ввод-вывод и переменные».</explain>
+
+<question> What is the `#define` directive used for?
+<tr>Для чего используется директива `#define`?</tr>
+<variantright> to set the value of a constant <tr>чтобы задать значение константы</tr>
+<variant> for macros <tr>для макросов</tr>
+<variant> for a symbol that controls conditional compilation <tr>для символа, управляющего условной компиляцией</tr>
+<variant> an expression of operands, operation signs and brackets that gives a value of a certain type <tr>выражение из операндов, знаков операций и скобок, задающее значение определённого типа</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: #define задаёт значение константы (макрос): #define N 10 — перед компиляцией все N заменятся на 10.
+Почему не другие: в этом тесте «правильным» считается именно «задать значение константы»; «выражение из операндов…» — определение выражения.
+По лекции: тема 1, раздел «7. Константы…» — пример #define N 10.</explain>
+
+<question> What is a variable?
+<tr>Что такое переменная?</tr>
+<variantright> a value that takes different values while the program runs <tr>величина, которая принимает разные значения во время работы программы</tr>
+<variant> dividing a memory class into several areas <tr>деление класса памяти на несколько областей</tr>
+<variant> a sequence of programs <tr>последовательность программ</tr>
+<variant> fulfilling a certain condition of an algorithm <tr>выполнение определённого условия алгоритма</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: переменная — величина, которая может принимать разные значения во время работы программы.
+Это второе определение того же понятия: в отличие от константы, значение переменной меняется (x = 5; потом x = 7;).
+По лекции: тема 1, раздел «Ввод-вывод и переменные».</explain>
+
+<question> The correct declaration of an integer variable a:
+<tr>Правильное объявление целой переменной a:</tr>
+<variantright> int a;
+<variant> a int;
+<variant> integer a;
+<variant> float a;
+<variant> char a;
+<explain>Ответ: int a; — сначала тип, потом имя, в конце точка с запятой.
+Почему не другие: «a int;» — неверный порядок, integer — слово из Pascal, float и char — не целые типы.
+По лекции: тема 1, разделы «9. Типы данных» и «Ввод-вывод и переменные».</explain>
+
+<question> Which symbols enclose the body of a function?
+<tr>В какие символы заключается тело функции?</tr>
+<variantright> { }
+<variant> / /
+<variant> ( )
+<variant> * *
+<variant> /* */
+<explain>Ответ: { } — фигурные скобки. Тело функции (и любой блок операторов) заключается в них: int main() { … }.
+Почему не другие: ( ) — для параметров, /* */ — комментарий, / / и * * не используются.
+По лекции: тема 1, раздел «8. Структура программы в Borland C++».</explain>
+
+<question> Inside which symbols is a comment written in C?
+<tr>Внутри каких символов пишется комментарий в C?</tr>
+<variantright> /* */
+<variant> < >
+<variant> (* *)
+<variant> * *
+<variant> { }
+<explain>Ответ: /* … */ — многострочный комментарий в C (в C++ есть ещё // до конца строки).
+Почему не другие: { } — тело функции, (* *) — комментарий в Pascal, < > — для #include.
+По лекции: тема 1, раздел «7. Константы, escape-последовательности, комментарии».</explain>
+
+<question> What is a token (lexeme)?
+<tr>Что такое лексема?</tr>
+<variantright> the smallest meaningful unit of the language <tr>наименьшая смысловая единица языка</tr>
+<variant> phrases <tr>словосочетания</tr>
+<variant> sentences <tr>предложения</tr>
+<variant> the body of the program <tr>тело программы</tr>
+<variant> a page break <tr>смена страницы</tr>
+<explain>Ответ: лексема (token) — наименьшая смысловая единица языка, «слово» программы.
+Например, строка sum = a + 15; состоит из 6 лексем: sum, =, a, +, 15, ;.
+По лекции: тема 1, раздел «5. Алфавит C++ и лексемы».</explain>
+
+<question> What does `int n;` mean?
+<tr>Что означает запись `int n;`?</tr>
+<variantright> the variable n takes integer values <tr>переменная n принимает целые значения</tr>
+<variant> the specifier n is set <tr>задан спецификатор n</tr>
+<variant> the variable n takes real values <tr>переменная n принимает вещественные значения</tr>
+<variant> the body of the program <tr>тело программы</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: int n; объявляет переменную n целого типа — она принимает целые значения.
+Почему не другие: вещественные значения хранит float/double, «спецификатор n» — бессмыслица.
+По лекции: тема 1, раздел «9. Типы данных».</explain>
+
+<question> Uppercase and lowercase letters that denote the same character in C ...
+<tr>Заглавные и строчные буквы, обозначающие один и тот же символ, в C ...</tr>
+<variantright> are considered different <tr>считаются разными</tr>
+<variant> are considered the same <tr>считаются одинаковыми</tr>
+<variant> depend on the compiler <tr>меняются в зависимости от компилятора</tr>
+<variant> depend on the language version <tr>меняются в зависимости от версии языка</tr>
+<variant> All of the above are correct <tr>Все перечисленные верны</tr>
+<explain>Ответ: заглавные и строчные буквы считаются разными: Sum, sum и SUM — три разных имени (C/C++ чувствительны к регистру).
+По лекции: тема 1, раздел «6. Идентификаторы…» — правило «большие и маленькие буквы различаются».</explain>
+
+<question> Names given to variables, constants, data types and functions are called ...
+<tr>Имена, которые дают переменным, константам, типам данных и функциям, называются ...</tr>
+<variantright> identifiers <tr>идентификаторы</tr>
+<variant> keywords <tr>ключевые слова</tr>
+<variant> directives <tr>директивы</tr>
+<variant> pointers <tr>указатели</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: идентификаторы — так называют имена переменных, констант, типов и функций.
+Почему не другие: ключевые слова — зарезервированные слова языка (int, if), директивы — команды препроцессора (#include), указатели — переменные с адресом.
+По лекции: тема 1, раздел «6. Идентификаторы и ключевые слова».</explain>
+
+<question> How is a single-precision real type declared?
+<tr>Как объявляется вещественный тип одинарной точности?</tr>
+<variantright> float
+<variant> double
+<variant> char
+<variant> int
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: float — вещественный тип одинарной точности (4 байта, около 7 цифр).
+Почему не другие: double — двойная точность, char — символ, int — целое.
+По лекции: тема 1, раздел «9. Типы данных» — таблица простых типов.</explain>
+
+<question> How is a double-precision real type declared?
+<tr>Как объявляется вещественный тип двойной точности?</tr>
+<variantright> double
+<variant> float
+<variant> char
+<variant> int
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: double — вещественный тип двойной точности (8 байт, около 15 цифр).
+Почему не другие: float — одинарная точность, char и int — не вещественные.
+По лекции: тема 1, раздел «9. Типы данных».</explain>
+
+<question> How is the character data type declared?
+<tr>Как объявляется символьный тип данных?</tr>
+<variantright> char
+<variant> double
+<variant> float
+<variant> int
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: char — символьный тип (1 байт): char c = 'A';
+Почему не другие: double и float — вещественные, int — целый.
+По лекции: тема 1, раздел «9. Типы данных».</explain>
+
+<question> What are keywords?
+<tr>Что такое ключевые слова?</tr>
+<variantright> words from a special reserved set <tr>слова из специального зарезервированного набора</tr>
+<variant> ordinary identifiers <tr>обычные идентификаторы</tr>
+<variant> operations <tr>операции</tr>
+<variant> functions <tr>функции</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: ключевые слова — слова из специального зарезервированного набора (int, if, for, return…), их нельзя использовать как имена.
+Почему не другие: это не обычные идентификаторы, не операции и не функции.
+По лекции: тема 1, раздел «6. Идентификаторы и ключевые слова».</explain>
+
+<question> The first system software product written in C?
+<tr>Первый системный программный продукт, написанный на C?</tr>
+<variantright> UNIX
+<variant> MS-DOS
+<variant> NC
+<variant> Windows XP
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: UNIX. Язык C создал Деннис Ритчи (1972) именно для написания операционной системы UNIX — это первый большой системный продукт на C.
+Почему не другие: MS-DOS, Norton Commander (NC) и Windows XP появились позже и писались не первыми на C.
+По лекции: тема 1, раздел «2. Классификация языков программирования» — история C и C++.</explain>
+
+<question> Which fragment of variable declarations in C is correct?
+<tr>Какой фрагмент объявления переменных в C правильный?</tr>
+<variantright> main () { int x, y; float a, b; char c;}
+<variant> main ()  int x, y; {float a, b; char c;}
+<variant> {main ();  int x, y; float, a, b;  char c;}
+<variant> main ()  int x, y;  float a, b; char x;
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: main () { int x, y; float a, b; char c;} — все объявления стоят внутри фигурных скобок тела функции, через запятую, каждое заканчивается «;».
+Почему не другие: в остальных объявления вынесены за скобки, лишняя запятая после float или имя x объявлено дважды.
+По лекции: тема 1, раздел «8. Структура программы в Borland C++».</explain>
+
+<question> How is the logical (Boolean) type set in C?
+<tr>Как задаётся логический тип в C?</tr>
+<variantright> bool
+<variant> there is no logical type in C <tr>в C логический тип не задаётся</tr>
+<variant> char
+<variant> string
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: bool — логический тип (true/false).
+Строго говоря, в старом C его не было (появился в C99 через stdbool.h), но в C++ и в этом тесте правильный ответ — bool.
+По лекции: тема 1, раздел «9. Типы данных» — строка bool в таблице.</explain>
+
+<question> What values can a logical value take in C?
+<tr>Какие значения может принимать логическая величина в C?</tr>
+<variantright> true, false
+<variant> + and - <tr>+ и -</tr>
+<variant> 0 and 1 <tr>0 и 1</tr>
+<variant> 0, 255
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: true и false — два значения логического типа bool.
+Ловушка: «0 и 1» — это то, как true/false хранятся (true = 1, false = 0), но сами значения bool называются true и false.
+По лекции: тема 1, раздел «9. Типы данных».</explain>
+
+<question> Who created the C language?
+<tr>Кто создал язык C?</tr>
+<variantright> Dennis Ritchie <tr>Деннис Ритчи</tr>
+<variant> Bill Gates <tr>Билл Гейтс</tr>
+<variant> J. von Neumann <tr>Дж. Нейман</tr>
+<variant> Bjarne Stroustrup <tr>Бьёрн Страуструп</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: Деннис Ритчи (Dennis Ritchie) создал язык C в 1972 году.
+Ловушка: Бьёрн Страуструп создал C++ (1983) — не путать. Билл Гейтс — Microsoft, фон Нейман — архитектура ЭВМ.
+По лекции: тема 1, раздел «2. Классификация языков программирования».</explain>
+
+<question> The escape character `\n` in C:
+<tr>Управляющий символ `\n` в C:</tr>
+<variantright> go to a new line <tr>переход на новую строку</tr>
+<variant> go to the next page <tr>переход на следующую страницу</tr>
+<variant> write the \ character n times <tr>написать символ \ n раз</tr>
+<variant> space <tr>пробел</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: \n — переход на новую строку (new line).
+Почему не другие: новая страница — \f, пробел пишется просто пробелом, «n раз \» — бессмыслица.
+По лекции: тема 1, раздел «Escape-последовательности» — таблица.</explain>
+
+<question> The escape character `\t` in C:
+<tr>Управляющий символ `\t` в C:</tr>
+<variantright> horizontal tab <tr>горизонтальная табуляция</tr>
+<variant> go to a new line <tr>переход на новую строку</tr>
+<variant> go to the next page <tr>переход на следующую страницу</tr>
+<variant> write the \ character t times <tr>написать символ \ t раз</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: \t — горизонтальная табуляция: курсор прыгает к следующей позиции, кратной 8.
+Почему не другие: новая строка — \n, новая страница — \f.
+По лекции: тема 1, раздел «Escape-последовательности».</explain>
+
+<question> What is NOT part of the C alphabet?
+<tr>Что НЕ входит в алфавит языка C?</tr>
+<variantright> uppercase letters of the Russian alphabet <tr>заглавные буквы русского алфавита</tr>
+<variant> special characters <tr>специальные символы</tr>
+<variant> lowercase and uppercase Latin letters <tr>строчные и заглавные буквы латинского алфавита</tr>
+<variant> Arabic digits 0-9 <tr>арабские цифры 0-9</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: русские (кириллические) буквы НЕ входят в алфавит C/C++ — их можно писать только в строках "…" и комментариях.
+В алфавит входят латинские буквы, арабские цифры 0–9 и специальные символы.
+По лекции: тема 1, раздел «5. Алфавит C++ и лексемы».</explain>
+
+<question> The range of values of the `char` type in C:
+<tr>Диапазон значений типа `char` в C:</tr>
+<variantright> -128…127
+<variant> 0…65365
+<variant> -65365…65365
+<variant> -256…255
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: −128…127. char занимает 1 байт = 8 бит со знаком: 2⁸ = 256 значений, от −128 до 127.
+Почему не другие: 0…255 было бы у unsigned char; числа 65365 — неверно записанный диапазон 2-байтовых типов.
+По лекции: тема 1, раздел «9. Типы данных» — таблица диапазонов.</explain>
+
+<question> Why is the phrase in quotes needed in the `cout<<` statement?
+<tr>Для чего в операторе `cout<<` нужна фраза в кавычках?</tr>
+<variantright> for clarity, it can be omitted <tr>для наглядности, её можно и не писать</tr>
+<variant> so as not to go to the next line <tr>чтобы не переходить на следующую строку</tr>
+<variant> to go to the next line <tr>чтобы перейти на следующую строку</tr>
+<variant> to print a question mark <tr>чтобы вывести вопросительный знак</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: текст в кавычках в cout << "x = " << x; нужен только для наглядности — его можно и не писать, программа всё равно выведет значение.
+Почему не другие: переход на новую строку делает endl или \n, а не фраза в кавычках.
+По лекции: тема 1, раздел «Ввод-вывод и переменные».</explain>
+
+<question> Which function does the execution of any C program start with?
+<tr>С какой функции начинается выполнение любой программы на C?</tr>
+<variantright> main()
+<variant> random
+<variant> randomize()
+<variant> clrscr()
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: main() — с неё начинается выполнение любой программы на C/C++.
+По лекции: тема 1, раздел «8. Структура программы в Borland C++».</explain>
+
+<question> Which symbols enclose the body of a function?
+<tr>В какие символы заключается тело функции?</tr>
+<variantright> {}
+<variant> ()
+<variant> []
+<variant> <>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: {} — тело функции заключается в фигурные скобки.
+Почему не другие: () — параметры, [] — индекс массива, <> — имя файла в #include.
+По лекции: тема 1, раздел «8. Структура программы в Borland C++».</explain>
+
+<question> In which part of a C program are variables declared?
+<tr>В какой части программы на C объявляются переменные?</tr>
+<variantright> anywhere, but before the first use of the variable <tr>в любом месте, но до первого использования переменной</tr>
+<variant> at the end <tr>в конце</tr>
+<variant> only at the beginning <tr>только в начале</tr>
+<variant> nowhere <tr>нигде</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: переменные объявляют в любом месте программы, но обязательно до первого использования.
+Почему не другие: «только в начале» — правило старого C и Pascal; в C++ объявлять можно и посреди блока.
+По лекции: тема 1, раздел «8. Структура программы…» — последний пункт списка.</explain>
+
+<question> What will the code print?
+```cpp
+int const a = 5; a++; cout << a;
+```
+<tr>Что выведет код?</tr>
+<variantright> the code will give an error <tr>код выдаст ошибку</tr>
+<variant> 6
+<variant> 5
+<variant> 0
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: код выдаст ошибку. a объявлена константой (int const a = 5;), а a++ пытается её изменить — компилятор пишет «Cannot modify a const object».
+По лекции: тема 1, раздел «7. Константы…» — пример const int a = 5; a++;.</explain>
+
+<question> Which data type does NOT belong to C++?
+<tr>Какой тип данных НЕ относится к C++?</tr>
+<variantright> real
+<variant> int
+<variant> float
+<variant> double
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: real — это тип из Pascal, в C++ его нет.
+int, float, double — стандартные типы C++.
+По лекции: тема 1, раздел «9. Типы данных».</explain>

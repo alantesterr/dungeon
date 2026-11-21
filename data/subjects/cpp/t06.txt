@@ -1,0 +1,201 @@
+<question> Which function determines the length of a string?
+<tr>Какая функция определяет длину строки?</tr>
+<variantright> strlen
+<variant> strcpy
+<variant> strcat
+<variant> strcmp
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: strlen — string length, длина строки без завершающего '\0': strlen("abc") = 3.
+Почему не другие: strcpy копирует, strcat соединяет, strcmp сравнивает.
+По лекции: тема 6, раздел «2. Строка как массив char» — таблица функций string.h.</explain>
+
+<question> In which header file is the prototype of the `strlen()` function?
+<tr>В каком заголовочном файле прототип функции `strlen()`?</tr>
+<variantright> string.h
+<variant> conio.h
+<variant> iostream.h
+<variant> stdlib.h
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: string.h — заголовок строковых функций (strlen, strcpy, strcat, strcmp…).
+По лекции: тема 6, раздел «2. Строка как массив char», и тема 2, раздел 7.</explain>
+
+<question> string.h is a library of:
+<tr>string.h — это библиотека:</tr>
+<variantright> string functions <tr>строковых функций</tr>
+<variant> basic input / output <tr>основного ввода / вывода</tr>
+<variant> graphics functions <tr>графических функций</tr>
+<variant> math functions <tr>математических функций</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: string.h — библиотека функций для работы со строками.
+Почему не другие: ввод-вывод — stdio.h/iostream.h, математика — math.h, графика — graphics.h.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> What does the function `strcat(stroka1, stroka2)` do?
+<tr>Что делает функция `strcat(stroka1, stroka2)`?</tr>
+<variantright> joins the strings stroka1 and stroka2 and writes the result to stroka1 <tr>соединяет строки stroka1 и stroka2 и записывает результат в stroka1</tr>
+<variant> compares the strings stroka1 and stroka2 <tr>сравнивает строки stroka1 и stroka2</tr>
+<variant> searches the first string for any character of the second string <tr>ищет в первой строке любой символ второй строки</tr>
+<variant> searches for the second string inside the first <tr>ищет вторую строку внутри первой</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: соединяет строки: дописывает stroka2 в конец stroka1, результат в stroka1 (cat = concatenate).
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>
+
+<question> What does the function `strcmp(stroka1,stroka2)` do?
+<tr>Что делает функция `strcmp(stroka1,stroka2)`?</tr>
+<variantright> compares two strings <tr>сравнивает две строки</tr>
+<variant> searches the first string for any character of the second string <tr>ищет в первой строке любой символ второй строки</tr>
+<variant> joins two strings <tr>соединяет две строки</tr>
+<variant> searches for the second string inside the first <tr>ищет вторую строку внутри первой</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: сравнивает две строки (cmp = compare): 0 — равны, < 0 — первая меньше, > 0 — первая больше.
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>
+
+<question> What is the result of the code?
+```cpp
+main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
+```
+<tr>Какой результат у кода?</tr>
+<variantright> 0
+<variant> 1
+<variant> 2
+<variant> 7
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 0. strcmp возвращает 0, если строки одинаковы, а "Salem" и "Salem" совпадают.
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>
+
+<question> What does the function `strcpy(str1,str2)` do?
+<tr>Что делает функция `strcpy(str1,str2)`?</tr>
+<variantright> copies a string: the string from str2 is copied to str1 <tr>копирует строку: строка из str2 копируется в str1</tr>
+<variant> compares two strings <tr>сравнивает две строки</tr>
+<variant> joins two strings <tr>соединяет две строки</tr>
+<variant> searches for the second string inside the first <tr>ищет вторую строку внутри первой</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: копирует строку str2 в str1 (cpy = copy). Порядок как у присваивания: куда ← откуда.
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>
+
+<question> What does the function `strstr(str1, str2)` do?
+<tr>Что делает функция `strstr(str1, str2)`?</tr>
+<variantright> searches for the second string inside the first <tr>ищет вторую строку внутри первой</tr>
+<variant> joins two strings <tr>соединяет две строки</tr>
+<variant> compares two strings <tr>сравнивает две строки</tr>
+<variant> copies a string <tr>копирует строку</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: ищет вторую строку внутри первой: strstr("hello world", "world") вернёт указатель на «world».
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>
+
+<question> What does the function `strrev(str)` do?
+<tr>Что делает функция `strrev(str)`?</tr>
+<variantright> reverses the string <tr>переворачивает строку задом наперёд</tr>
+<variant> copies a string <tr>копирует строку</tr>
+<variant> compares strings <tr>сравнивает строки</tr>
+<variant> deletes a string <tr>удаляет строку</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: переворачивает строку (rev = reverse): "abc" → "cba".
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>
+
+<question> The function `strncpy(S1,CS2,k)`:
+<tr>Функция `strncpy(S1,CS2,k)`:</tr>
+<variantright> copies the first k characters of the string CS2 to S1 <tr>копирует первые k символов строки CS2 в S1</tr>
+<variant> deletes the first k characters of the string CS2 from S1 <tr>удаляет первые k символов строки CS2 из S1</tr>
+<variant> deletes k characters from the strings S1 and CS2 <tr>удаляет k символов из строк S1 и CS2</tr>
+<variant> copies the last k characters of the string CS2 to S1 <tr>копирует последние k символов строки CS2 в S1</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: копирует первые k символов строки CS2 в S1 (n в имени — «не больше n символов»).
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>
+
+<question> The function `strnset(S,ch,k)`:
+<tr>Функция `strnset(S,ch,k)`:</tr>
+<variantright> repeats the character ch k times in the string S <tr>повторяет символ ch k раз в строке S</tr>
+<variant> deletes the character ch k times in the string S <tr>удаляет символ ch k раз в строке S</tr>
+<variant> replaces the character ch in the string S with the character k <tr>заменяет символ ch в строке S на символ k</tr>
+<variant> removes the characters ch and k from the string S <tr>убирает символы ch и k из строки S</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: записывает символ ch k раз в строку S — заполняет первые k символов символом ch.
+По лекции: тема 6, раздел «2. Строка как массив char» — strset / strnset.</explain>
+
+<question> The function `strncat(S1,CS2,k)`:
+<tr>Функция `strncat(S1,CS2,k)`:</tr>
+<variantright> appends the first k characters of the string CS2 to the string S1 <tr>добавляет первые k символов строки CS2 к строке S1</tr>
+<variant> appends the last k characters of the string CS2 to the string S1 <tr>добавляет последние k символов строки CS2 к строке S1</tr>
+<variant> appends k characters to the strings CS2 and S1 <tr>добавляет k символов к строкам CS2 и S1</tr>
+<variant> repeats the character CS2 k times in the string S1 <tr>повторяет символ CS2 k раз в строке S1</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: дописывает первые k символов строки CS2 в конец S1.
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>
+
+<question> The function `strlwr(S)`:
+<tr>Функция `strlwr(S)`:</tr>
+<variantright> converts the characters of the string S to lowercase (small) letters <tr>переводит символы строки S в строчные (маленькие) буквы</tr>
+<variant> converts the characters of the string S to uppercase letters <tr>переводит символы строки S в заглавные буквы</tr>
+<variant> converts the characters of the string S to Roman numerals <tr>переводит символы строки S в римские цифры</tr>
+<variant> converts the characters of the string S to Arabic numerals <tr>переводит символы строки S в арабские цифры</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: переводит буквы строки S в строчные (lwr = lower).
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>
+
+<question> The function `strupr(S)`:
+<tr>Функция `strupr(S)`:</tr>
+<variantright> converts the characters of the string S to uppercase letters <tr>переводит символы строки S в заглавные буквы</tr>
+<variant> converts the characters of the string S to lowercase letters <tr>переводит символы строки S в строчные буквы</tr>
+<variant> converts the characters of the string S to Roman numerals <tr>переводит символы строки S в римские цифры</tr>
+<variant> converts the characters of the string S to Arabic numerals <tr>переводит символы строки S в арабские цифры</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: переводит буквы строки S в заглавные (upr = upper).
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>
+
+<question> What is the function `strncmp(CS1,CS2,k)` for?
+<tr>Для чего нужна функция `strncmp(CS1,CS2,k)`?</tr>
+<variantright> compares only the first k characters of the strings CS1 and CS2 <tr>сравнивает только первые k символов строк CS1 и CS2</tr>
+<variant> compares only the last k characters of the strings CS1 and CS2 <tr>сравнивает только последние k символов строк CS1 и CS2</tr>
+<variant> appends the first k characters of CS1 to CS2 <tr>добавляет первые k символов CS1 к CS2</tr>
+<variant> appends the last k characters of CS1 to CS2 <tr>добавляет последние k символов CS1 к CS2</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: сравнивает только первые k символов строк CS1 и CS2.
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>
+
+<question> The function `stricmp(CS1,CS2)`:
+<tr>Функция `stricmp(CS1,CS2)`:</tr>
+<variantright> ignores the difference between uppercase and lowercase letters when comparing <tr>при сравнении не учитывает разницу между заглавными и строчными буквами</tr>
+<variant> takes into account the difference between uppercase and lowercase letters when comparing <tr>при сравнении учитывает разницу между заглавными и строчными буквами</tr>
+<variant> compares two strings <tr>сравнивает две строки</tr>
+<variant> joins two strings <tr>соединяет две строки</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: сравнивает строки без учёта разницы между заглавными и строчными буквами (i = ignore case).
+Ловушка: «сравнивает две строки» тоже верно в общем, но точный ответ — именно «игнорирует регистр».
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>
+
+<question> The function `strchr(CS,ch)`:
+<tr>Функция `strchr(CS,ch)`:</tr>
+<variantright> scans the string CS from left to right until it finds the character ch <tr>просматривает строку CS слева направо, пока не найдёт символ ch</tr>
+<variant> scans the string CS from the end to the beginning until it finds the character ch <tr>просматривает строку CS с конца к началу, пока не найдёт символ ch</tr>
+<variant> compares two strings <tr>сравнивает две строки</tr>
+<variant> joins two strings <tr>соединяет две строки</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: просматривает строку CS слева направо, пока не найдёт символ ch (возвращает указатель на него или NULL).
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>
+
+<question> The function `strrchr(CS,ch)`:
+<tr>Функция `strrchr(CS,ch)`:</tr>
+<variantright> scans the string CS from the end to the beginning until it finds the character ch <tr>просматривает строку CS с конца к началу, пока не найдёт символ ch</tr>
+<variant> scans the string CS from left to right until it finds the character ch <tr>просматривает строку CS слева направо, пока не найдёт символ ch</tr>
+<variant> compares two strings <tr>сравнивает две строки</tr>
+<variant> joins two strings <tr>соединяет две строки</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: просматривает строку с конца к началу, пока не найдёт ch (лишняя r — reverse).
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>
+
+<question> What is the result of the code?
+```cpp
+char s1[ 50 ] = "jack";
+char s2[ 50 ] = "jill";
+char s3[ 50 ] , *sptr;
+cout << strlen( s1 ) + strlen( s2 ) << endl;
+```
+<tr>Какой результат у кода?</tr>
+<variantright> 8
+<variant> 7
+<variant> 9
+<variant> 10
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 8. strlen("jack") = 4, strlen("jill") = 4, сумма 8. Длина строки не считает '\0' и не зависит от размера массива [50].
+По лекции: тема 6, раздел «2. Строка как массив char».</explain>

@@ -1,0 +1,221 @@
+<question> Which word is used to write the selection (switch) statement?
+<tr>Каким словом записывается оператор выбора?</tr>
+<variantright> switch
+<variant> return
+<variant> for
+<variant> if
+<variant> class
+<explain>Ответ: switch — оператор множественного выбора: switch (n) { case 1: …; break; default: … }.
+Почему не другие: if — условный оператор, for — цикл, return — возврат из функции, class — описание класса.
+По лекции: тема 3, раздел «2. Множественный выбор switch».</explain>
+
+<question> Which statement is used to exit from switch?
+<tr>Какой оператор используется для выхода из switch?</tr>
+<variantright> break
+<variant> do
+<variant> case
+<variant> return
+<variant> default
+<explain>Ответ: break — выход из switch (и из цикла).
+Почему не другие: case — метка варианта, default — ветка «иначе», return выходит из всей функции, do — начало цикла.
+По лекции: тема 3, раздел «2. Множественный выбор switch».</explain>
+
+<question> Which condition in C correctly checks that an array index is odd?
+<tr>Какое условие в C правильно проверяет, что индекс массива нечётный?</tr>
+<variantright> if (i%2==1)
+<variant> if (i%2=1)
+<variant> if (i%2==0)
+<variant> if (i%2!=1)
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: if (i%2==1) — у нечётного числа остаток от деления на 2 равен 1.
+Ловушка: i%2=1 — это присваивание, а не сравнение (ошибка); i%2==0 — проверка на чётность.
+По лекции: тема 3, раздел «1. Условный оператор if», и тема 2, раздел «2. Арифметика» (%).</explain>
+
+<question> The correct condition in C to check that an array index is even:
+<tr>Правильное условие в C для проверки, что индекс массива чётный:</tr>
+<variantright> if (i%2==0)
+<variant> if (a[i]%2==0)
+<variant> if (i%2==1)
+<variant> if (i%2=0)
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: if (i%2==0) — индекс чётный, если делится на 2 без остатка.
+Ловушка: a[i]%2==0 проверяет значение элемента, а не его индекс; i%2=0 — присваивание.
+По лекции: тема 3, раздел «1. Условный оператор if».</explain>
+
+<question> How many times will the loop repeat?
+```cpp
+for (x=1; x <= 10; x=x+2)
+```
+<tr>Сколько раз повторится цикл?</tr>
+<variantright> 5
+<variant> 10
+<variant> 15
+<variant> 20
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 5 раз. x = 1, 3, 5, 7, 9; следующее 11 уже больше 10 — цикл кончается.
+По лекции: тема 3, раздел «4. Цикл со счётчиком for».</explain>
+
+<question> What will k be equal to after the program runs?
+```cpp
+k=0; for (x=1;x <=10; x++) if (x % 3==0) k++;
+```
+<tr>Чему будет равно k после выполнения программы?</tr>
+<variantright> 3
+<variant> 4
+<variant> 5
+<variant> 2
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 3. Среди чисел 1…10 на 3 делятся 3, 6, 9 — k увеличится три раза.
+По лекции: тема 3, раздел «4. Цикл со счётчиком for».</explain>
+
+<question> What will k be equal to after the program runs?
+```cpp
+k=0; for (x=1;x <=10; x++) if (x % 5==0) k++;
+```
+<tr>Чему будет равно k после выполнения программы?</tr>
+<variantright> 2
+<variant> 3
+<variant> 4
+<variant> 5
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 2. На 5 делятся 5 и 10.
+По лекции: тема 3, раздел «4. Цикл со счётчиком for».</explain>
+
+<question> What will k be equal to after the program runs?
+```cpp
+k=0; for (x=1;x <=10; x++) if (x % 9==0) k++;
+```
+<tr>Чему будет равно k после выполнения программы?</tr>
+<variantright> 1
+<variant> 2
+<variant> 3
+<variant> 4
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 1. На 9 из чисел 1…10 делится только 9.
+По лекции: тема 3, раздел «4. Цикл со счётчиком for».</explain>
+
+<question> The loop with a parameter in C is written as:
+<tr>Запись цикла с параметром в C:</tr>
+<variantright> for <tr>initial value; final value; step — начальное значение; конечное значение; шаг</tr>
+<variant> while (condition) {loop body} <tr>while (условие) {тело цикла}</tr>
+<variant> do {loop body} while (condition) <tr>do {тело цикла} while (условие)</tr>
+<variant> switch () {}
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: for — цикл с параметром (со счётчиком).
+Почему не другие: while — цикл с предусловием, do…while — с постусловием, switch — не цикл.
+По лекции: тема 3, раздел «4. Цикл со счётчиком for».</explain>
+
+<question> Which statement is conditional?
+<tr>Какой оператор условный?</tr>
+<variantright> if
+<variant> for
+<variant> while
+<variant> switch
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: if — условный оператор.
+Почему не другие: for и while — циклы, switch — оператор выбора (множественного ветвления).
+По лекции: тема 3, раздел «1. Условный оператор if».</explain>
+
+<question> Which statement is called the selection statement?
+<tr>Какой оператор называется оператором выбора?</tr>
+<variantright> switch
+<variant> for
+<variant> if
+<variant> while
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: switch — оператор выбора (selection statement).
+По лекции: тема 3, раздел «2. Множественный выбор switch».</explain>
+
+<question> What is a branching statement?
+<tr>Что такое оператор ветвления?</tr>
+<variantright> dividing an algorithm into several paths depending on whether a condition is true or not <tr>разделение алгоритма на несколько путей в зависимости от того, выполняется условие или нет</tr>
+<variant> a statement that checks only one condition <tr>оператор, проверяющий выполнение только одного условия</tr>
+<variant> a statement that checks that conditions are not true <tr>оператор, проверяющий невыполнение условий</tr>
+<variant> a statement responsible for running any C program <tr>оператор, отвечающий за выполнение любой программы на C</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: ветвление — разделение алгоритма на несколько путей в зависимости от того, истинно условие или нет.
+Почему не другие: проверять можно не одно условие (вложенные if), а «запуск программы» к ветвлению отношения не имеет.
+По лекции: тема 1, раздел «4. Блок-схемы и типы алгоритмов», и тема 3, раздел 1.</explain>
+
+<question> What values does i take in `for(i=1;i<10;i+=2)`?
+<tr>Какие значения принимает i в `for(i=1;i<10;i+=2)`?</tr>
+<variantright> 1 3 5 7 9
+<variant> 2 4 6 8 10
+<variant> 1 2 3 4 5
+<variant> 1 3 5 7 9 10
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 1 3 5 7 9. Начинаем с 1, шаг +2, цикл идёт, пока i < 10; 11 уже не подходит.
+По лекции: тема 3, раздел «4. Цикл со счётчиком for».</explain>
+
+<question> What values does i take?
+```cpp
+for (int i=100; i>0; i-=10)
+```
+<tr>Какие значения принимает i?</tr>
+<variantright> 100,90,80,70,60,50,40,30,20,10
+<variant> 50,40,30,20,10
+<variant> 100,80,60,40,20
+<variant> 90,70,50,30,10
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 100, 90, …, 10. Шаг −10, цикл идёт, пока i > 0; 0 уже не подходит.
+По лекции: тема 3, раздел «4. Цикл со счётчиком for».</explain>
+
+<question> What values does i take?
+```cpp
+for (int i=100; i<=150; i+=10)
+```
+<tr>Какие значения принимает i?</tr>
+<variantright> 100,110,120,130,140,150
+<variant> 110,120,130,140,150
+<variant> 100,110,120,130,140
+<variant> 110,110,120,130,140,160
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 100, 110, 120, 130, 140, 150. Условие i <= 150, поэтому 150 входит, а 160 — нет.
+По лекции: тема 3, раздел «4. Цикл со счётчиком for».</explain>
+
+<question> What is the value of the variable a after the code runs?
+```cpp
+int a; for(a = 0; a < 10; a++) cout<<a;
+```
+<tr>Чему равна переменная a после выполнения кода?</tr>
+<variantright> 9
+<variant> 10
+<variant> 0
+<variant> 1
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 9 (по ключу базы). Цикл печатает 0…9, последнее выведенное число — 9.
+Строго: после выхода из цикла a = 10 (на нём условие a < 10 ложно), но в базе ответ 9 — на тесте выбирай 9.
+По лекции: тема 3, раздел «4. Цикл со счётчиком for».</explain>
+
+<question> If int n=3, what will the result be?
+```cpp
+switch(n) {
+case 2: cout << "aaa"; break;
+case 3: cout << "bbb"; break;
+default: cout << "vvv"; break; }
+```
+<tr>Если int n=3, какой будет результат?</tr>
+<variantright> bbb
+<variant> aaa
+<variant> vvv
+<variant> the code will not run <tr>код не выполнится</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: bbb. n = 3 совпадает с case 3, печатается bbb, break выходит из switch.
+По лекции: тема 3, раздел «2. Множественный выбор switch».</explain>
+
+<question> If int n=45, what will the result be?
+```cpp
+switch(n) {
+case 23: cout << "aaa";
+case 45: cout << "bbb";
+default: cout << "vvv";
+break; }
+```
+<tr>Если int n=45, какой будет результат?</tr>
+<variantright> bbbvvv
+<variant> bbb
+<variant> vvv
+<variant> aaa
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: bbbvvv. После case 45 нет break, поэтому выполнение «проваливается» дальше в default: печатаются bbb и vvv.
+По лекции: тема 3, раздел «2. Множественный выбор switch» — именно этот пример.</explain>

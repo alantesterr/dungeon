@@ -1,0 +1,16 @@
+## Дополнение к тестам: Sender, перерисовка, выделение, перетаскивание
+Этот раздел дописан к лекции, чтобы закрыть вопросы из базы тестов, которых нет в основном тексте.
+**Один обработчик на несколько компонентов.** В Object Inspector на вкладке Events можно выбрать уже готовый обработчик для разных кнопок, меток и полей. Какой именно компонент вызвал событие, подскажет параметр Sender. Чтобы работать с ним как с кнопкой, его приводят к нужному классу: dynamic_cast<TButton*>(Sender). Если Sender не кнопка, dynamic_cast вернёт NULL — так различают TEdit и TLabel:
+```
+void __fastcall TForm1::AnyMouseMove(TObject *Sender, TShiftState Shift, int X, int Y)
+{
+  if (TEdit *e = dynamic_cast<TEdit*>(Sender))  e->Font->Color = clRed;   // это поле ввода
+  if (TLabel *l = dynamic_cast<TLabel*>(Sender)) l->Font->Color = clBlue;  // это надпись
+}
+```
+**Координаты X и Y** в событиях мыши считаются от левого верхнего угла самого компонента, а не формы. У кнопки шириной 100 пикселей X идёт от 0 до 99. Поэтому Button1->Height = 50 - Y; делает кнопку ниже, когда мышь опускается.
+**Перетаскивание мышью.** В OnMouseMove проверяют, зажата ли левая кнопка — Shift.Contains(ssLeft) — и сдвигают компонент: Button1->Left = Button1->Left + X; Button1->Top = Button1->Top + Y;. Плавнее — запомнить точку нажатия в OnMouseDown (или брать Screen->CursorPos — позицию курсора на экране) и сдвигать на разницу.
+**Перерисовка.** Repaint() — перерисовать элемент немедленно; Invalidate() — пометить «нужно перерисовать» (сделается чуть позже); Refresh() — то же, что Repaint. Против мерцания в VCL ставят DoubleBuffered = true; пары BeginUpdate() / EndUpdate() «замораживают» перерисовку списков (Memo1->Lines, ListBox1->Items) на время большого изменения. В базе тестов на вопрос «как убрать мерцание» ответ — BeginUpdate() и EndUpdate().
+**Выделение текста в Edit и Memo.** SelStart — с какого символа (с 0), SelLength — сколько символов, SelText — выделенный текст. Выделить первые 5 букв: Edit1->SelStart = 0; Edit1->SelLength = 5;. SelectAll() — выделить всё; CutToClipboard(), CopyToClipboard(), PasteFromClipboard() — работа с буфером обмена (перед CutToClipboard проверяют SelLength > 0).
+**Подсказки.** Hint — текст подсказки, ShowHint = true — показывать. Свою подсказку можно показать из кода: Application->Hint = Format("X:%d Y:%d", ARRAYOFCONST((X, Y))); Application->ActivateHint(Screen->CursorPos);
+**Вопросы про FireMonkey (FMX) и новые версии Builder.** Часть вопросов базы взята из новых версий C++Builder с библиотекой FireMonkey (FMX): Fill->Color (цвет заливки), Opacity (прозрачность), TStyleManager (стили), ParentBackground, BorderColor, OnPaint у кнопки. В Builder 6 их нет — эти ответы просто запоминают.

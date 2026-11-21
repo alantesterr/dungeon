@@ -1,0 +1,165 @@
+<question> What is the return (expression) operation for?
+<tr>Для чего нужна операция return (выражение)?</tr>
+<variantright> returns the value of the expression to the statement that called the function <tr>возвращает значение выражения в оператор, который вызвал функцию</tr>
+<variant> there is no such statement in C <tr>такого оператора в C нет</tr>
+<variant> used when the function does not return a value <tr>используется, когда функция не возвращает значения</tr>
+<variant> makes the program beautiful <tr>придаёт программе красоту</tr>
+<variant> its purpose is not defined; by the rules it must be at the end of the program <tr>назначение не определено, по правилам должна стоять в конце программы</tr>
+<explain>Ответ: return выражение; завершает функцию и возвращает значение выражения туда, откуда функцию вызвали (a = f(x)).
+Почему не другие: «когда функция не возвращает значение» — это void (там пишут return; без выражения); оператор есть в C, и он не обязан стоять в конце программы.
+По лекции: тема 5, раздел «1. Что такое функция».</explain>
+
+<question> What is a variable called that is declared inside a function and known only in it?
+<tr>Как называется переменная, которая объявлена внутри функции и известна только в ней?</tr>
+<variantright> local variable <tr>локальная переменная</tr>
+<variant> global variable <tr>глобальная переменная</tr>
+<variant> unknown variable <tr>неизвестная переменная</tr>
+<variant> known variable <tr>известная переменная</tr>
+<variant> recursive variable <tr>рекурсивная переменная</tr>
+<explain>Ответ: локальная переменная — объявлена внутри функции или блока { }, видна только там и исчезает при выходе.
+По лекции: тема 5, раздел «6. Локальные и глобальные переменные».</explain>
+
+<question> What is a variable declared outside any block and function called?
+<tr>Как называется переменная, объявленная вне любого блока и функции?</tr>
+<variantright> global variable <tr>глобальная переменная</tr>
+<variant> local variable <tr>локальная переменная</tr>
+<variant> base variable <tr>базовая переменная</tr>
+<variant> known variable <tr>известная переменная</tr>
+<variant> unary variable <tr>унарная переменная</tr>
+<explain>Ответ: глобальная переменная — объявлена вне всех функций, видна во всех функциях ниже и живёт всю программу.
+По лекции: тема 5, раздел «6. Локальные и глобальные переменные».</explain>
+
+<question> What is the keyword `void` used for in a function header?
+<tr>Для чего в заголовке функции используется ключевое слово `void`?</tr>
+<variantright> shows that the function does not return a value <tr>показывает, что функция не возвращает значения</tr>
+<variant> shows that the function returns a value <tr>показывает, что функция возвращает значение</tr>
+<variant> void is not used in a function header <tr>в заголовке функции void не используется</tr>
+<variant> shows that the function stores a value <tr>показывает, что функция хранит значение</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: void в заголовке показывает, что функция не возвращает значения: void print() { … }.
+По лекции: тема 5, раздел «1. Что такое функция».</explain>
+
+<question> A certain sequence of operations and descriptions that performs some actions is called ...?
+<tr>Определённая последовательность операций и описаний, выполняющая некоторые действия, называется ...?</tr>
+<variantright> function <tr>функция</tr>
+<variant> procedure <tr>процедура</tr>
+<variant> recursion <tr>рекурсия</tr>
+<variant> code <tr>код</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: функция — именованная последовательность описаний и операторов, которая выполняет определённое действие.
+Почему не другие: «процедура» — термин Pascal (в C++ это функция типа void), рекурсия — вызов функции самой себя.
+По лекции: тема 5, раздел «1. Что такое функция».</explain>
+
+<question> What are the parameters at the beginning of a function description called?
+<tr>Как называются параметры в начале описания функции?</tr>
+<variantright> formal <tr>формальные</tr>
+<variant> actual <tr>фактические</tr>
+<variant> argument <tr>аргумент</tr>
+<variant> global <tr>глобальные</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: формальные. Параметры в заголовке функции (int f(int x)) — формальные, а значения при вызове (f(5)) — фактические (аргументы).
+По лекции: тема 5, раздел «3. Параметры и аргументы».</explain>
+
+<question> What is a function that calls itself called?
+<tr>Как называется функция, которая вызывает сама себя?</tr>
+<variantright> recursion <tr>рекурсия</tr>
+<variant> procedure <tr>процедура</tr>
+<variant> function <tr>функция</tr>
+<variant> statement <tr>оператор</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: рекурсия — функция, которая вызывает сама себя (например, fact(n) = n * fact(n−1)).
+По лекции: тема 5, раздел «7. Рекурсия».</explain>
+
+<question> What is the return (expression) operation for?
+<tr>Для чего нужна операция return (выражение)?</tr>
+<variantright> returns the value of the expression to the statement that called the function <tr>возвращает значение выражения в оператор, который вызвал функцию</tr>
+<variant> there is no such statement in C <tr>такого оператора в C нет</tr>
+<variant> used when the function does not return a value <tr>используется, когда функция не возвращает значения</tr>
+<variant> its purpose is not defined; by the rules it must be at the end of the program <tr>назначение не определено, по правилам должна стоять в конце программы</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: return выражение; возвращает значение выражения в оператор, который вызвал функцию.
+По лекции: тема 5, раздел «1. Что такое функция».</explain>
+
+<question> ..... helps the compiler determine the number and type of arguments passed to a function.
+<tr>..... помогает компилятору определить количество и тип аргументов, передаваемых в функцию.</tr>
+<variantright> function prototype <tr>прототип функции</tr>
+<variant> function identifier <tr>идентификатор функции</tr>
+<variant> file prototype <tr>прототип файла</tr>
+<variant> local prototype <tr>локальный прототип</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: прототип функции — заголовок с точкой с запятой (int sqr(int);). Он сообщает компилятору имя, количество и типы аргументов и тип результата.
+По лекции: тема 5, раздел «2. Объявление, определение, прототип».</explain>
+
+<question> What is the keyword `void` used for in a function header?
+<tr>Для чего в заголовке функции используется ключевое слово `void`?</tr>
+<variantright> shows that the function does not return a value <tr>показывает, что функция не возвращает значения</tr>
+<variant> shows that the function returns a value <tr>показывает, что функция возвращает значение</tr>
+<variant> void is not used in a function header <tr>в заголовке функции void не используется</tr>
+<variant> shows that the function stores a value <tr>показывает, что функция хранит значение</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: void показывает, что функция не возвращает значения.
+По лекции: тема 5, раздел «1. Что такое функция».</explain>
+
+<question> If `return ;` is written at the end of the program, what type does the function return?
+<tr>Если в конце программы написано `return ;`, какой тип возвращает функция?</tr>
+<variantright> void
+<variant> int
+<variant> float
+<variant> char
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: void. Оператор return; без выражения ничего не возвращает — так заканчивают функцию типа void.
+По лекции: тема 5, раздел «1. Что такое функция».</explain>
+
+<question> What does the function determine?
+```cpp
+int m(int x, int y)
+{ int t;
+if (x<y) t=x;
+else t=y;
+return t;}
+```
+<tr>Что определяет функция?</tr>
+<variantright> the smaller of two integers <tr>меньшее из двух целых чисел</tr>
+<variant> the larger of two integers <tr>большее из двух целых чисел</tr>
+<variant> whether two integers are equal <tr>равенство двух целых чисел</tr>
+<variant> the smaller of two real numbers <tr>меньшее из двух вещественных чисел</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: меньшее из двух целых. Если x < y, в t записывается x, иначе y — то есть всегда меньшее; параметры int, значит числа целые.
+По лекции: тема 5, раздел «1. Что такое функция», и тема 3, раздел «1. Условный оператор if».</explain>
+
+<question> What does the function determine?
+```cpp
+int m(int x, int y)
+{ if (x>y)
+return (x);
+else return (y);}
+```
+<tr>Что определяет функция?</tr>
+<variantright> the larger of two integers <tr>большее из двух целых чисел</tr>
+<variant> the smaller of two integers <tr>меньшее из двух целых чисел</tr>
+<variant> whether two integers are equal <tr>равенство двух целых чисел</tr>
+<variant> the smaller of two real numbers <tr>меньшее из двух вещественных чисел</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: большее из двух целых: если x > y, возвращается x, иначе y.
+По лекции: тема 5, раздел «1. Что такое функция».</explain>
+
+<question> What is the value of the variable a after the function call?
+```cpp
+int inc2(int vv)
+{
+vv++;
+return vv;
+}
+void main()
+{int a,b=5;
+a=inc2(b);
+}
+```
+<tr>Чему равна переменная a после вызова функции?</tr>
+<variantright> 6
+<variant> 5
+<variant> 7
+<variant> 8
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 6. b = 5 передаётся по значению: функция получает копию vv = 5, увеличивает её до 6 и возвращает 6, которое записывается в a. Сама b остаётся 5.
+По лекции: тема 5, раздел «3. Параметры и аргументы. По значению и по ссылке».</explain>

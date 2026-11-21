@@ -1,6 +1,6 @@
 /* =====================================================================
-   ДАННЫЕ: лекции, вопросы и задачи берутся из конспекта StudyPlay
-   (data/ir-252/notes/cpp15.json). Здесь же — повторение (какой вопрос
+   ДАННЫЕ: предметы из data/subjects/ (C++ — 15 тем УМКД с пояснениями, Архитектура, Философия, ИКТ),
+   задания «Практики» C++ — из data/cpp15.json. Здесь же — повторение (какой вопрос
    задать следующим) и сохранение прогресса на устройстве.
    ===================================================================== */
 (function () {
@@ -102,20 +102,25 @@
       /* картинка к вопросу (как в Тестере): <question_image>data:image/…</question_image> */
       var img = '', im = raw.match(/<(question_image|image_question|questionimage)>([\s\S]*?)<\/\1>/i);
       if (im) { img = im[2].trim(); raw = raw.replace(im[0], ''); if (!/^(data:image\/(png|jpe?g|gif|webp);base64,|https:\/\/)/i.test(img)) img = ''; }
-      var parts = raw.split(/<(variantright|variant_keyboard|variant)>/i), q = { q: parts[0].trim(), opts: [], type: 'choice', ex: ex, img: img };
+      /* перевод (C++: вопросы на английском): <tr>…</tr> после текста вопроса и после варианта */
+      var trOf = function (s) { var mm = s.match(/<tr>([\s\S]*?)<\/tr>/i); return mm ? { t: s.replace(mm[0], '').trim(), tr: mm[1].trim() } : { t: s.trim(), tr: '' }; };
+      var parts = raw.split(/<(variantright|variant_keyboard|variant)>/i), q0 = trOf(parts[0]), q = { q: q0.t, tr: q0.tr, opts: [], type: 'choice', ex: ex, img: img };
       for (var k = 1; k < parts.length; k += 2) {
-        var tag = parts[k].toLowerCase(), t = (parts[k + 1] || '').trim();
-        if (tag === 'variant_keyboard') { q.type = 'keyboard'; q.answer = t; } else if (t) q.opts.push({ t: t, right: tag === 'variantright' });
+        var tag = parts[k].toLowerCase(), ot = trOf(parts[k + 1] || ''), t = ot.t;
+        if (tag === 'variant_keyboard') { q.type = 'keyboard'; q.answer = t; } else if (t) q.opts.push(ot.tr ? { t: t, right: tag === 'variantright', tr: ot.tr } : { t: t, right: tag === 'variantright' });
       }
       return q;
     }).filter(function (q) { return q.q && (q.type === 'keyboard' ? q.answer : q.opts.length > 1); });
   };
   /* лекция у алтаря: «## Раздел», абзацы, «- пункт», «| a | b |» таблица, «! Запомни: …» заметка, **жирный** */
   D.parseLecture = function (text, n) {
-    var secs = [], cur = null, list = null, table = null;
+    var secs = [], cur = null, list = null, table = null, code = null;
     var inl = function (s) { return esc(s).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>'); };
     String(text || '').replace(/\r/g, '').split('\n').forEach(function (line) {
       var l = line.trim();
+      /* ``` … ``` — блок кода (C++): строки как есть, с отступами */
+      if (/^```/.test(l)) { if (code) code = null; else if (cur) { code = { t: 'code', text: '' }; cur.blocks.push(code); list = table = null; } return; }
+      if (code) { code.text += (code.text ? '\n' : '') + line.replace(/\s+$/, ''); return; }
       if (/^## /.test(l)) { cur = { id: n + '.' + (secs.length + 1), title: l.slice(3).trim(), blocks: [] }; secs.push(cur); list = table = null; return; }
       if (!cur || !l) { list = table = null; return; }
       if (/^- /.test(l)) { if (!list) { list = { t: 'ul', items: [] }; cur.blocks.push(list); } list.items.push(inl(l.slice(2))); table = null; return; }
@@ -141,6 +146,7 @@
           var seen = {};
           var pool = D.parseTxt(txts[i]).map(function (q) {
             var it = { id: hash(sid + '|' + q.q + '|' + (q.answer || '') + q.opts.map(function (o) { return o.t; }).join('|')), q: q.q, opts: q.opts, type: q.type, answer: q.answer, ex: q.ex };
+            if (q.tr) it.tr = q.tr;
             it.diff = diffOf(it); return it;
           }).filter(function (q) { if (seen[q.id]) return false; seen[q.id] = 1; return true; });
           /* комнаты — подряд по 10 вопросов (в файле вопросы идут по подтемам), последняя — босс темы */
@@ -188,70 +194,29 @@
       });
     });
   }
+  /* C++ (ноябрь 2026): 15 тем УМКД в том же формате, что Архитектура и Философия —
+     data/subjects/cpp/topics.json + tNN.txt (417 тестов: английский оригинал, перевод в <tr>, пояснение в <explain>)
+     + lNN.txt (лекции по плану УМКД с ответами на вопросы УМКД).
+     Этаж «Практика» (задания «напиши код») по-прежнему собирается из заданий конспекта data/cpp15.json. */
   function loadCpp() {
-    return fetch('data/cpp15.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (doc) {
-      D.doc = doc;
-      var floors = doc.lectures.map(function (lec, i) {
-        var texts = [], pool = [], tasks = [];
-        lec.sections.forEach(function (s) {
-          if (s.kind === 'text' && s.title) texts.push({ id: s.id, title: s.title, blocks: s.blocks });
-          if (s.kind === 'test') (s.blocks || []).forEach(function (b) { (b.questions || []).forEach(function (q) {
-            var it = { id: hash(q.q + '|' + (q.answer || '') + (q.opts || []).map(function (o) { return o.t; }).join('|')), q: q.q, opts: q.opts || [], type: q.type || 'choice', answer: q.answer };
-            it.diff = diffOf(it); pool.push(it);
-          }); });
-          if (s.kind === 'tasks') (s.blocks || []).forEach(function (b) { if (b.t === 'qa') tasks.push({ id: hash('task' + lec.id + b.num), num: b.num, title: b.title, q: b.q, a: b.a }); });
+    return loadSyll('cpp', 'C++').then(function () {
+      var sj = D.SUBJ.cpp; sj.title = 'C++ (ООП)';
+      return fetch('data/cpp15.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (doc) {
+        D.doc = doc;
+        var pRooms = [], pTasks = [], pTexts = [];
+        sj.floors.forEach(function (f) { pTexts = pTexts.concat(f.texts); });
+        doc.lectures.forEach(function (lec, i) {
+          var tasks = [];
+          lec.sections.forEach(function (s) { if (s.kind === 'tasks') (s.blocks || []).forEach(function (b) { if (b.t === 'qa') tasks.push({ id: hash('task' + lec.id + b.num), num: b.num, title: b.title, q: b.q, a: b.a }); }); });
+          if (!tasks.length) return;
+          var tf = sj.floors.filter(function (f) { return f.n === i + 1; })[0];
+          pRooms.push({ k: pRooms.length, sec: null, secs: tf ? tf.texts : [], boss: false, qs: [], tasks: tasks.map(function (t) { return t.id; }), src: tf ? tf.n : i + 1, label: (lec.label === 'Итог' ? 'Итог курса' : 'Тема ' + (i + 1)) + ': ' + (tf ? tf.title : lec.title) });
+          pTasks = pTasks.concat(tasks);
         });
-        /* комнаты: разделы лекции идут по порядку, 3–7 комнат + босс; в комнате может быть 1–2 раздела */
-        var n = Math.max(1, Math.min(7, texts.length || 1));
-        var rooms = [];
-        for (var k = 0; k < n; k++) {
-          var a = Math.floor(k * texts.length / n), b = Math.max(a + 1, Math.floor((k + 1) * texts.length / n));
-          var secs = texts.slice(a, b); secs.forEach(function (s) { s.tok = toks(s.title + ' ' + D.blocks(s.blocks)); });
-          rooms.push({ k: k, sec: secs[0] || null, secs: secs, boss: false, qs: [] });
-        }
-        /* каждый вопрос — в комнату с самым похожим разделом (по коду и словам) */
-        var cap = Math.max(3, Math.ceil(pool.length / n * 1.5));
-        var scored = pool.map(function (q) {
-          var qt = toks(q.q + ' ' + (q.opts || []).map(function (o) { return o.t; }).join(' ') + ' ' + (q.answer || ''));
-          var sc = rooms.map(function (r) { return r.secs.reduce(function (m, s) { return Math.max(m, overlap(qt, s.tok)); }, 0); });
-          var order = sc.map(function (_, i) { return i; }).sort(function (a, b) { return sc[b] - sc[a]; });
-          return { q: q, sc: sc, order: order, margin: sc[order[0]] - (sc[order[1]] || 0) };
-        }).sort(function (a, b) { return b.margin - a.margin; });   /* сначала самые «однозначные» */
-        scored.forEach(function (x) {
-          var pick = -1;
-          for (var i = 0; i < x.order.length; i++) { var ri = x.order[i]; if (x.sc[ri] > 0 && rooms[ri].qs.length < cap) { pick = ri; break; } }
-          if (pick < 0) { pick = 0; rooms.forEach(function (r, ri) { if (r.qs.length < rooms[pick].qs.length) pick = ri; }); }
-          x.q.room = pick; rooms[pick].qs.push(x.q.id);
-        });
-        /* пустая комната (раздел без вопросов) — берёт у самой большой соседней */
-        rooms.forEach(function (r, ri) { if (r.qs.length) return; var big = rooms.reduce(function (m, x) { return x.qs.length > m.qs.length ? x : m; }, rooms[0]); r.qs = big.qs.splice(0, Math.floor(big.qs.length / 2)); });
-        /* задания — в комнату с самым похожим разделом (если похожих нет — по кругу) */
-        rooms.forEach(function (r) { r.tasks = []; });
-        tasks.forEach(function (t, ti) {
-          var tt = toks((t.title || '') + ' ' + D.blocks(t.q)), best = -1, pick = ti % n;
-          rooms.forEach(function (r, ri) { var sc = r.secs.reduce(function (m, s) { return Math.max(m, overlap(tt, s.tok)); }, 0); if (sc > best && sc >= 2) { best = sc; pick = ri; } });
-          rooms[pick].tasks.push(t.id);
-        });
-        rooms.push({ k: n, sec: null, secs: texts, boss: true, tasks: [], qs: pool.map(function (q) { return q.id; }) });
-        var taskById = {}; tasks.forEach(function (t) { taskById[t.id] = t; });
-        var byId = {}; pool.forEach(function (q) { byId[q.id] = q; });
-        return { n: i + 1, id: lec.id, label: lec.label, title: lec.title, texts: texts, pool: pool, byId: byId, tasks: tasks, taskById: taskById, rooms: rooms, final: lec.label === 'Итог', subj: 'cpp' };
-      });
-      /* «Практика»: все задания «напиши код» — отдельный этаж, комната = тема (по порядку лекций).
-         На этажах лекций остаются только тестовые вопросы. */
-      var pRooms = [], pTasks = [], pTexts = [];
-      floors.forEach(function (f) {
-        pTexts = pTexts.concat(f.texts);
-        if (f.tasks.length) {
-          pRooms.push({ k: pRooms.length, sec: null, secs: f.texts, boss: false, qs: [], tasks: f.tasks.map(function (t) { return t.id; }), src: f.n, label: (f.final ? 'Итог курса' : 'Тема ' + f.n) + ': ' + f.title });
-          pTasks = pTasks.concat(f.tasks);
-        }
-        f.rooms.forEach(function (r) { r.tasks = []; });
-      });
-      var pById = {}; pTasks.forEach(function (t) { pById[t.id] = t; });
-      floors.push({ n: 17, id: 'cpp-practice', label: 'Практика', title: 'Практика: пишем код по темам', texts: pTexts, pool: [], byId: {}, tasks: pTasks, taskById: pById, rooms: pRooms, final: false, practice: true, subj: 'cpp' });
-      D.SUBJ.cpp = { id: 'cpp', title: 'C++ (ООП)', short: 'C++', floors: floors, unitWord: 'Этаж' };
-      return floors;
+        var pById = {}; pTasks.forEach(function (t) { pById[t.id] = t; });
+        if (pRooms.length) sj.floors.push({ n: 17, id: 'cpp-practice', label: 'Практика', title: 'Практика: пишем код по темам', texts: pTexts, pool: [], byId: {}, tasks: pTasks, taskById: pById, rooms: pRooms, final: false, practice: true, rk: 0, subj: 'cpp', syll: true });
+        return sj.floors;
+      }).catch(function (e) { console.warn('cpp practice', e); return sj.floors; });
     });
   }
 

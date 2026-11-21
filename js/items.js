@@ -135,6 +135,8 @@
     return hard || /[;()%]/.test(t) || !words.length;
   };
   X.trQuestion = function (q, tl) {
+    /* C++: готовый перевод на русский лежит в самом вопросе (<tr> в файле темы) — без интернета */
+    if (tl !== 'kk' && q.tr) return Promise.resolve({ q: q.tr, o: (q.opts || []).map(function (o) { return o.tr || o.t; }) });
     return Promise.all([X.trText(q.q, tl)].concat((q.opts || []).map(function (o) { return X.isCodeLike(o.t) ? Promise.resolve(o.t) : X.trText(String(o.t).replace(/^`([^`]*)`$/, '$1'), tl); })))
       .then(function (r) { return { q: r[0], o: r.slice(1) }; });
   };

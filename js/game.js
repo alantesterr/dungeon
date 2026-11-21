@@ -1649,7 +1649,9 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
   function exHtml(t) {
     return esc(t).split('\n').map(function (l) {
       if (!l.trim()) return '';
-      l = l.replace(/^(Решение:|Ответ:|Почему не (?:остальные|другие):|Ошибка-ловушка:|Ловушка:|Запомни:|Правило:|Проверка:|Замечание:)/, '<b>$1</b>');
+      l = l.replace(/^(Решение:|Ответ:|Почему не (?:остальные|другие):|Ошибка-ловушка:|Ловушка:|Запомни:|Правило:|Проверка:|Замечание:|Строго:|Точнее:)/, '<b>$1</b>');
+      if (/^По лекции:/.test(l)) return '<p class="ex-ref"><b>По лекции:</b>' + l.slice(10) + '</p>';
+      if (/^Вопрос по УМКД/.test(l)) return '<p class="ex-ref">' + l + '</p>';
       return /^• /.test(l) ? '<p class="ex-li">' + l + '</p>' : '<p>' + l + '</p>';
     }).join('');
   }
@@ -1666,14 +1668,32 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
     return (f.lab ? 'Лабораторные' : 'Лекция ' + f.n) + ' «' + f.title + '»' + (sec ? ', раздел «' + sec.title + '»' : '') + ' — открой книжку (B).';
   }
   function plainText(s) { return String(s || '').replace(/```\w*\n?/g, ' ').replace(/`/g, '').replace(/\s+/g, ' ').trim(); }
+  /* «По лекции: тема 2, раздел «7. Дополнительные библиотеки»» в пояснении → нужная тема и раздел книжки */
+  function exRef(q, f) {
+    var m = String(q.ex || '').match(/По лекции:([^\n]*)/); if (!m || !f) return null;
+    var line = m[1], tn = line.match(/тем[аеыи]\s+(\d+)/), tf = tn ? D.floors.filter(function (x) { return x.n === +tn[1] && x.texts && x.texts.length; })[0] : f;
+    if (!tf || !tf.texts || !tf.texts.length) return null;
+    var low = function (s) { return String(s).toLowerCase().replace(/ё/g, 'е').replace(/\s+/g, ' ').trim(); }, sec = null;
+    (line.match(/«[^»]+»/g) || []).some(function (nm) {
+      nm = low(nm.slice(1, -1).replace(/…$/, ''));
+      sec = tf.texts.filter(function (s) { var t = low(s.title); return t === nm || t.indexOf(nm) === 0 || nm.indexOf(t) === 0; })[0] || null;
+      return !!sec;
+    });
+    if (!sec) { var rn = line.match(/разделы?\s+(\d+)/); if (rn) sec = tf.texts.filter(function (s) { return s.title.indexOf(rn[1] + '.') === 0; })[0] || null; }
+    return { f: tf, sec: sec };
+  }
   function openExplain(q) {
-    var R = G.room, f = R && R.f, brief = !q.ex && R && f && f.texts.length ? briefHtml(q.q + ' ' + plainText(rightText(q))) : '';
+    var R = G.room, f = R && R.f, brief = !q.ex && R && f && f.texts.length ? briefHtml(q.q + ' ' + plainText(rightText(q))) : '', ref = exRef(q, f);
     var h = '<header class="md-top"><b>📖 Объяснение</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body ex-body">' +
       '<div class="ex-q">' + D.md(q.q) + '</div><p class="ex-right"><b>Правильный ответ:</b> ' + rightText(q) + '</p>' +
       (q.ex ? '<div class="ex-text">' + exHtml(q.ex) + '</div>' : '<p class="msg">Подробное пояснение к этому вопросу скоро появится.' + (brief ? ' А пока — кусок лекции по теме:' : '') + '</p>' + brief.replace('<details class="brief"', '<details class="brief" open')) +
-      '<p class="hint">📍 ' + esc(refLine(f)) + '</p>' +
-      '<div class="row"><button class="btn primary" data-close>Понятно — назад в игру</button><button class="btn ghost" data-ggl>🔎 Спросить в Google</button></div></div>';
-    modal(h, function (el) { el.querySelector('[data-ggl]').onclick = function () { openGoogle(q); }; });
+      (ref ? '' : '<p class="hint">📍 ' + esc(refLine(f)) + '</p>') +
+      '<div class="row"><button class="btn primary" data-close>Понятно — назад в игру</button>' + (ref ? '<button class="btn ghost" data-lec>📖 ' + esc((ref.f.lab ? 'Лабы' : 'Лекция ' + ref.f.n) + (ref.sec ? ': ' + ref.sec.title : '')) + '</button>' : '') + '<button class="btn ghost" data-ggl>🔎 Спросить в Google</button></div></div>';
+    modal(h, function (el) {
+      el.querySelector('[data-ggl]').onclick = function () { openGoogle(q); };
+      var lb = el.querySelector('[data-lec]');
+      if (lb) lb.onclick = function () { closeModal(); openBook({ f: ref.f, start: Math.max(0, ref.f.texts.indexOf(ref.sec)), mark: ref.sec ? [ref.sec.id] : [], cur: ref.sec ? ref.sec.id : null }); };
+    });
   }
   /* окно Google: вопрос, тема, предмет; поиск — только Google, без ИИ.
      Открыть поиск ДО ответа — это подсказка (вопрос потом спросит страж). */

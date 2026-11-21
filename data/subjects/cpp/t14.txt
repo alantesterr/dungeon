@@ -1,0 +1,113 @@
+<question> To declare a custom VCL property in the form's public section that allows read/write access to a private field, which keyword is primarily used?
+<tr>Каким ключевым словом в основном объявляют своё свойство VCL в секции public формы, которое даёт чтение и запись закрытого поля?</tr>
+<variantright> __property
+<variant> __attribute
+<variant> __public
+<variant> __member
+<variant> __accessor
+<explain>Ответ: __property — ключевое слово C++Builder для свойства: __property int Age = {read = FAge, write = SetAge};
+Почему не другие: __attribute, __public, __member, __accessor в C++Builder для свойств не используются.
+По лекции: тема 14, раздел «Свойства в C++Builder: __property».</explain>
+
+
+<question> (УМКД) What is a property of a class?
+<tr>(УМКД) Что такое свойство класса?</tr>
+<variantright> a characteristic of an object that describes its state (stored in a field, accessed through methods) <tr>характеристика объекта, описывающая его состояние (хранится в поле, доступ через методы)</tr>
+<variant> any function of the class <tr>любая функция класса</tr>
+<variant> an event of the class <tr>событие класса</tr>
+<variant> the name of the class <tr>имя класса</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: свойство — возраст, цвет, ширина: значение хранится в закрытом поле, а читают и меняют его через методы (getter/setter).
+По лекции: тема 14, раздел «Свойство, get и set».</explain>
+
+<question> (УМКД) Why should class data usually be encapsulated?
+<tr>(УМКД) Почему данные класса обычно инкапсулируют?</tr>
+<variantright> to protect them from wrong values and to change the implementation without changing outside code <tr>чтобы защитить от неверных значений и менять реализацию, не трогая внешний код</tr>
+<variant> to make the program faster <tr>чтобы программа работала быстрее</tr>
+<variant> because public fields are forbidden in C++ <tr>потому что public-поля в C++ запрещены</tr>
+<variant> to save memory <tr>чтобы сэкономить память</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: через setter нельзя записать возраст −5, а внутреннее устройство класса можно менять, не ломая остальную программу.
+Ловушка: public-поля не запрещены, просто ими легко испортить данные.
+По лекции: тема 14, раздел «Свойство, get и set».</explain>
+
+<question> (УМКД) What does a getter do?
+<tr>(УМКД) Что делает getter?</tr>
+<variantright> returns the value of a private field <tr>возвращает значение закрытого поля</tr>
+<variant> sets a new value with a check <tr>записывает новое значение с проверкой</tr>
+<variant> deletes the field <tr>удаляет поле</tr>
+<variant> creates an object <tr>создаёт объект</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: int getAge() const { return age; } — только чтение.
+Ловушка: запись с проверкой — это setter.
+По лекции: тема 14, раздел «Свойство, get и set».</explain>
+
+<question> (УМКД) What does a setter do?
+<tr>(УМКД) Что делает setter?</tr>
+<variantright> sets a new value of a private field, usually after checking it <tr>записывает новое значение закрытого поля, обычно после проверки</tr>
+<variant> returns the value of a field <tr>возвращает значение поля</tr>
+<variant> prints all fields <tr>выводит все поля</tr>
+<variant> copies the object <tr>копирует объект</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: void setAge(int a) { if (a >= 0 && a <= 150) age = a; else … } — проверка допустимости.
+По лекции: тема 14, раздел «Свойство, get и set».</explain>
+
+<question> (УМКД) How does a setter validate data?
+<tr>(УМКД) Как setter проверяет данные?</tr>
+<variantright> it writes the new value only if it is in the allowed range, otherwise reports an error <tr>записывает новое значение, только если оно в допустимом диапазоне, иначе сообщает об ошибке</tr>
+<variant> it always writes any value <tr>всегда записывает любое значение</tr>
+<variant> it asks the compiler <tr>спрашивает компилятор</tr>
+<variant> it calls the destructor <tr>вызывает деструктор</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: пример из лабы: setPublicationYear(int year) записывает год, только если он от 1000 до текущего, иначе печатает ошибку.
+По лекции: тема 14, раздел «Свойство, get и set».</explain>
+
+<question> (УМКД) How is a read-only property made?
+<tr>(УМКД) Как сделать свойство только для чтения?</tr>
+<variantright> provide a getter (read) but no setter (write) <tr>дать getter (read), но не делать setter (write)</tr>
+<variant> make the field public <tr>сделать поле public</tr>
+<variant> write two setters <tr>написать два setter</tr>
+<variant> declare the class const <tr>объявить класс const</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: есть только чтение — значит, снаружи значение не поменять. В C++Builder: __property без write.
+По лекции: тема 14, разделы «Свойство, get и set» и «Свойства в C++Builder: __property».</explain>
+
+<question> (УМКД) What is the difference between a public data member and an encapsulated property?
+<tr>(УМКД) Чем public-поле отличается от инкапсулированного свойства?</tr>
+<variantright> a public field can be changed to any value directly; an encapsulated property only through methods that check the value <tr>public-поле можно напрямую поменять на любое значение, инкапсулированное свойство — только через проверяющие методы</tr>
+<variant> there is no difference <tr>никакой разницы</tr>
+<variant> a public field cannot be read <tr>public-поле нельзя прочитать</tr>
+<variant> an encapsulated property cannot be changed at all <tr>инкапсулированное свойство нельзя изменить вообще</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: p.age = -5; с public-полем пройдёт, а p.setAge(-5) значение отклонит.
+По лекции: тема 14, раздел «Свойство, get и set».</explain>
+
+<question> (УМКД) In __property int Age = {read = FAge, write = SetAge}; what happens on p.Age = 20; ?
+<tr>(УМКД) Что происходит при p.Age = 20; если __property int Age = {read = FAge, write = SetAge}; ?</tr>
+<variantright> the method SetAge(20) is called <tr>вызывается метод SetAge(20)</tr>
+<variant> the field FAge is read <tr>читается поле FAge</tr>
+<variant> a compilation error <tr>ошибка компиляции</tr>
+<variant> a new object is created <tr>создаётся новый объект</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: запись в свойство вызывает то, что указано в write (SetAge), чтение — то, что в read (поле FAge). Снаружи свойство выглядит как обычное поле.
+По лекции: тема 14, раздел «Свойства в C++Builder: __property».</explain>
+
+<question> (УМКД) How can properties be accessed from outside the class?
+<tr>(УМКД) Как обращаться к свойствам извне класса?</tr>
+<variantright> through methods obj.getAge(), obj.setAge(20), or for __property like a field: obj.Age = 20 <tr>через методы obj.getAge(), obj.setAge(20), а для __property — как к полю: obj.Age = 20</tr>
+<variant> only from the constructor <tr>только из конструктора</tr>
+<variant> directly through the private field <tr>напрямую через private-поле</tr>
+<variant> it is impossible <tr>никак</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: снаружи работают только с открытым интерфейсом — методами или свойством __property; private-поле снаружи недоступно.
+По лекции: тема 14, разделы «Свойство, get и set» и «Свойства в C++Builder».</explain>
+
+<question> (УМКД) In which section must a component property be declared so that it appears in the Object Inspector?
+<tr>(УМКД) В какой секции нужно объявить свойство компонента, чтобы оно появилось в Object Inspector?</tr>
+<variantright> __published
+<variant> private
+<variant> protected
+<variant> public
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: свойства из секции __published видны в Object Inspector (так устроены Caption, Width, Color у всех компонентов).
+По лекции: тема 14, раздел «Свойства в C++Builder: __property», и тема 15.</explain>

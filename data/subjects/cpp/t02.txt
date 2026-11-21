@@ -1,0 +1,873 @@
+<question> Where are library functions located?
+<tr>Где находятся библиотечные функции?</tr>
+<variantright> in library files <tr>в библиотечных файлах</tr>
+<variant> on a CD <tr>на компакт-диске</tr>
+<variant> on the Internet <tr>в Интернете</tr>
+<variant> in the computer's RAM <tr>в оперативной памяти компьютера</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: в библиотечных файлах (.lib). Заголовок .h содержит только описания (прототипы), а сами функции лежат в библиотеках, их подключает компоновщик.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> Which header file contains the prototype of the `rand()` function?
+<tr>В каком заголовочном файле находится прототип функции `rand()`?</tr>
+<variantright> #include "stdlib.h"
+<variant> #include "conio.h"
+<variant> #include "math.h"
+<variant> #include "iostream.h"
+<variant> #include "stdio.h"
+<explain>Ответ: stdlib.h — там прототипы rand(), random(n), randomize(), abs, atoi.
+Почему не другие: conio.h — консоль (getch, clrscr), math.h — математика, iostream.h — cout/cin, stdio.h — printf/scanf и файлы.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки» — таблица заголовков.</explain>
+
+<question> If you mix float and double types, what type is the result?
+<tr>Если смешать типы float и double, какой тип получится в результате?</tr>
+<variantright> double
+<variant> float
+<variant> long
+<variant> int
+<variant> short
+<explain>Ответ: double. При смешивании типов «меньший» превращается в «больший»: float + double = double.
+По лекции: тема 2, раздел «6. Приоритет и преобразование типов».</explain>
+
+<question> What extension do source (header) files with functions and defined data have, and what are they called?
+<tr>Какое расширение у исходных (заголовочных) файлов с функциями и определёнными данными и как они называются?</tr>
+<variantright> ".h", ".h files" <tr>".h", ".h-файлы"</tr>
+<variant> ".htp", ".htp files" <tr>".htp", ".htp-файлы"</tr>
+<variant> ".c", ".c files" <tr>".c", ".c-файлы"</tr>
+<variant> ".f", ".f files" <tr>".f", ".f-файлы"</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: «.h», «h-файлы» (заголовочные файлы, header files). В них описания функций и данных, их подключают через #include.
+Почему не другие: .c — файл с исходным текстом на C, а не заголовок; .htp и .f — не используются.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> If you mix long and float types, what type is the result?
+<tr>Если смешать типы long и float, какой тип получится в результате?</tr>
+<variantright> float
+<variant> char
+<variant> int
+<variant> double
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: float. По правилу преобразования int → long → float → double: long + float = float.
+По лекции: тема 2, раздел «6. Приоритет и преобразование типов».</explain>
+
+<question> How is the remainder (modulo) operation written?
+<tr>Как записывается операция остатка от деления?</tr>
+<variantright> %
+<variant> /
+<variant> \
+<variant> &
+<variant> <<
+<explain>Ответ: % — остаток от деления: 7 % 2 = 1.
+Почему не другие: / — деление, \ — не операция, & — побитовое И (или адрес), << — сдвиг / вывод.
+По лекции: тема 2, раздел «2. Арифметика».</explain>
+
+<question> In which option is `sizeof` written correctly?
+<tr>В каком варианте `sizeof` записан правильно?</tr>
+<variantright> sizeof (type)
+<variant> sizeof type
+<variant> sizeof [type]
+<variant> sizeof: type
+<variant> sizeof_ type
+<explain>Ответ: sizeof (type) — тип пишут в круглых скобках: sizeof(int) = 4.
+Для переменной скобки можно не писать (sizeof x), а для имени типа они обязательны.
+По лекции: тема 2, раздел «5. Побитовые операции, запятая, ?:, sizeof…».</explain>
+
+<question> Which option correctly denotes logical negation?
+<tr>Какой вариант правильно обозначает логическое отрицание?</tr>
+<variantright> ! (exclamation mark — восклицательный знак)
+<variant> = (equals sign — знак равенства)
+<variant> \ (backslash — обратная косая черта)
+<variant> & (ampersand — амперсанд)
+<variant> ? (question mark — вопросительный знак)
+<explain>Ответ: ! — логическое «НЕ» (отрицание): !true = false.
+Почему не другие: = — присваивание, & — побитовое И / адрес, ? — часть условной операции ?:.
+По лекции: тема 2, раздел «3. Сравнение и логика».</explain>
+
+<question> If you mix short and int types, the result is ...
+<tr>Если смешать типы short и int, в результате получится ...</tr>
+<variantright> int
+<variant> short
+<variant> char
+<variant> float
+<variant> double
+<explain>Ответ: int. short в выражениях всегда превращается в int (char, short → int).
+По лекции: тема 2, раздел «6. Приоритет и преобразование типов».</explain>
+
+<question> What does the `*=` operation mean?
+<tr>Что означает операция `*=`?</tr>
+<variantright> multiply and assign <tr>умножить и присвоить</tr>
+<variant> assignment <tr>присваивание</tr>
+<variant> multiplication <tr>умножение</tr>
+<variant> comment <tr>комментарий</tr>
+<variant> multiply each element <tr>умножить каждый элемент</tr>
+<explain>Ответ: «умножить и присвоить»: s *= x — то же, что s = s * x.
+По лекции: тема 2, раздел «4. Присваивание в стиле C» — таблица составных присваиваний.</explain>
+
+<question> Which `printf()` format prints a real number?
+<tr>Какой формат `printf()` выводит вещественное число?</tr>
+<variantright> %f
+<variant> %u
+<variant> %o
+<variant> %x
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: %f — формат вещественного числа в printf.
+Почему не другие: %u — беззнаковое целое, %o — восьмеричное, %x — шестнадцатеричное.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки» — форматы printf.</explain>
+
+<question> What is the value of the expression `5/2` in C?
+<tr>Чему равно в C выражение `5/2`?</tr>
+<variantright> 2
+<variant> 2.5
+<variant> 1
+<variant> 5
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 2. Целое / целое = целое, дробная часть отбрасывается: 5/2 = 2 (а 5/2.0 = 2.5).
+По лекции: тема 2, раздел «2. Арифметика».</explain>
+
+<question> What is the value of the expression `7/2` in C?
+<tr>Чему равно в C выражение `7/2`?</tr>
+<variantright> 3
+<variant> 2
+<variant> 3.5
+<variant> 5
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 3. Целочисленное деление: 7/2 = 3, дробь отбрасывается (не округляется).
+По лекции: тема 2, раздел «2. Арифметика».</explain>
+
+<question> What is the value of the expression `7/3` in C?
+<tr>Чему равно в C выражение `7/3`?</tr>
+<variantright> 2
+<variant> 2.5
+<variant> 3
+<variant> 3.3
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 2. 7/3 = 2 (два целых раза по 3 в 7), остаток 1 отбрасывается.
+По лекции: тема 2, раздел «2. Арифметика».</explain>
+
+<question> What is the value of the expression `5%2` in C?
+<tr>Чему равно в C выражение `5%2`?</tr>
+<variantright> 1
+<variant> 2
+<variant> 2.5
+<variant> 3
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 1. % — остаток от деления: 5 = 2·2 + 1.
+По лекции: тема 2, раздел «2. Арифметика».</explain>
+
+<question> What is the value of the expression `7%2` in C?
+<tr>Чему равно в C выражение `7%2`?</tr>
+<variantright> 1
+<variant> 3
+<variant> 3.5
+<variant> 4
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 1. 7 = 2·3 + 1, остаток 1.
+По лекции: тема 2, раздел «2. Арифметика».</explain>
+
+<question> Which operation in C finds the integer part of dividing an integer by an integer (like div in Pascal)?
+<tr>Какая операция в C находит целую часть от деления целого на целое (как div в Pascal)?</tr>
+<variantright> /
+<variant> %
+<variant> \
+<variant> &
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: / — для двух целых чисел даёт целую часть частного (как div в Pascal); остаток (mod) даёт %.
+По лекции: тема 2, раздел «2. Арифметика».</explain>
+
+<question> Which expression in C does NOT increase the value of a variable by 1?
+<tr>Какое выражение в C НЕ увеличивает значение переменной на 1?</tr>
+<variantright> x*=1
+<variant> x++
+<variant> x=x+1
+<variant> x+=1
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: x*=1 — это x = x * 1, значение не меняется.
+x++, x=x+1 и x+=1 — три способа увеличить x на 1.
+По лекции: тема 2, разделы «2. Арифметика» и «4. Присваивание в стиле C».</explain>
+
+<question> How do you write a statement in C that gives a random integer in the range [-20, 50]?
+<tr>Как в C записать оператор, который даёт случайное целое число в диапазоне [-20, 50]?</tr>
+<variantright> random(70)-20;
+<variant> random(50)-20;
+<variant> random(30)+20;
+<variant> random(50);
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: random(70)-20. random(n) даёт от 0 до n−1, поэтому random(70) − 20 даёт от −20 до 49 — это и считается ответом в базе.
+Правило: диапазон [a; b] — random(b−a+1)+a; строго для [−20; 50] нужно random(71)−20, но такого варианта нет.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки» — случайные числа.</explain>
+
+<question> In what range will x be after `x = random(20)-5`?
+<tr>В каком диапазоне будет значение x после `x = random(20)-5`?</tr>
+<variantright> [-5,15]
+<variant> [5,20]
+<variant> [-5,20]
+<variant> [5,15]
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: [−5, 15] (по ключу базы). random(20) даёт 0…19, минус 5 → от −5 до 14.
+Из вариантов ближе всего [−5, 15]: левая граница −5 совпадает только у него и у [−5, 20], а 20 точно не получится.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> Which statement in Borland C++ Builder starts the random number generator so that each run of the program gives different numbers?
+<tr>Какой оператор в Borland C++ Builder запускает генератор случайных чисел, чтобы при каждом запуске программы получались разные числа?</tr>
+<variantright> randomize();
+<variant> time();
+<variant> getch();
+<variant> main();
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: randomize(); — запускает генератор от часов, и при каждом запуске числа разные.
+Почему не другие: getch() ждёт клавишу, main() — главная функция, time() только возвращает время.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> What is x after `x=0; x++; x=x+1; x=x*x;`?
+<tr>Чему равно x после `x=0; x++; x=x+1; x=x*x;`?</tr>
+<variantright> 4
+<variant> 2
+<variant> 0
+<variant> 3
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 4. По шагам: x=0 → x++ даёт 1 → x=x+1 даёт 2 → x=x*x даёт 2·2 = 4.
+По лекции: тема 2, раздел «2. Арифметика».</explain>
+
+<question> What is x after `x=0; x++; x=x*1; x=x*x;`?
+<tr>Чему равно x после `x=0; x++; x=x*1; x=x*x;`?</tr>
+<variantright> 1
+<variant> 2
+<variant> 0
+<variant> 4
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 1. x=0 → x++ даёт 1 → x=x*1 остаётся 1 → x=x*x = 1·1 = 1.
+По лекции: тема 2, раздел «2. Арифметика».</explain>
+
+<question> Which statement in C is equivalent to `n%=3`?
+<tr>Какому оператору в C равносильно `n%=3`?</tr>
+<variantright> n=n%3
+<variant> n=n/3
+<variant> n=n*3
+<variant> n=n\3
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: n=n%3. Составное n %= 3 означает «взять остаток от деления на 3 и записать в n».
+По лекции: тема 2, раздел «4. Присваивание в стиле C».</explain>
+
+<question> Choose the correct program for calculating the volume of a cube with a given side:
+<tr>Укажите правильную программу для вычисления объёма куба с заданной стороной:</tr>
+<variantright> v=pow (a,3);
+<variant> v=pow (a,4);
+<variant> v=pow (a,2);
+<variant> v=a*a;
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: v=pow(a,3); — объём куба V = a³, pow(a,3) — a в третьей степени.
+Почему не другие: pow(a,2) и a*a — площадь грани, pow(a,4) — четвёртая степень.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки» — math.h.</explain>
+
+<question> What does the program `{ float x=60, y; y=atan(x*3.14/180); cout<< y;}` calculate?
+<tr>Что вычисляет программа `{ float x=60, y; y=atan(x*3.14/180); cout<< y;}`?</tr>
+<variantright> arctangent <tr>арктангенс</tr>
+<variant> arccotangent <tr>арккотангенс</tr>
+<variant> tangent <tr>тангенс</tr>
+<variant> cotangent <tr>котангенс</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: арктангенс. atan — arctangent; x*3.14/180 переводит градусы в радианы, а функция считает арктангенс.
+Почему не другие: тангенс — tan, котангенс и арккотангенс отдельных функций в math.h не имеют.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки» — функции math.h.</explain>
+
+<question> In which file is the standard function `pow(x,y);` defined?
+<tr>В каком файле определена стандартная функция `pow(x,y);`?</tr>
+<variantright> math.h
+<variant> iostream.h
+<variant> stdlib.h
+<variant> conio.h
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: math.h — там pow, sqrt, sin, cos, log, fabs, ceil, floor.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> What will `cout<<sqrt(pow(5,4));` print?
+<tr>Что выведет `cout<<sqrt(pow(5,4));`?</tr>
+<variantright> 25
+<variant> 625
+<variant> 5
+<variant> 15
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 25. pow(5,4) = 5⁴ = 625, а sqrt(625) = 25.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> Specify the unary increment operation in C:
+<tr>Укажите унарную операцию инкремента в C:</tr>
+<variantright> ++
+<variant> --
+<variant> //
+<variant> /*
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: ++ — инкремент (увеличить на 1). Он унарный: работает с одним операндом (i++).
+Почему не другие: -- — декремент, // и /* — комментарии.
+По лекции: тема 2, разделы «1. Выражение…» и «2. Арифметика».</explain>
+
+<question> Specify the unary decrement operation in C:
+<tr>Укажите унарную операцию декремента в C:</tr>
+<variantright> --
+<variant> ++
+<variant> */
+<variant> //
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: -- — декремент (уменьшить на 1): i--.
+По лекции: тема 2, раздел «2. Арифметика».</explain>
+
+<question> How do you write the decimal logarithm lg x in C?
+<tr>Как в C записать десятичный логарифм lg x?</tr>
+<variantright> log10(x)
+<variant> ln (x)
+<variant> log (10x)
+<variant> lg(x)
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: log10(x) — десятичный логарифм.
+Почему не другие: натуральный логарифм — log(x) (а не ln), функции lg в C нет.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки» — math.h.</explain>
+
+<question> If x=2 at first, what is x after `x*=(x+1)`?
+<tr>Если сначала x=2, чему равно x после `x*=(x+1)`?</tr>
+<variantright> 6
+<variant> 5
+<variant> 4
+<variant> 3
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 6. Сначала вычисляется правая часть: x+1 = 3, потом x = x·3 = 2·3 = 6.
+По лекции: тема 2, раздел «4. Присваивание в стиле C» — именно этот пример.</explain>
+
+<question> Which function in C returns the modulus (absolute value) of a real argument?
+<tr>Какая функция в C возвращает модуль (абсолютное значение) вещественного аргумента?</tr>
+<variantright> fabs (x)
+<variant> labs (x)
+<variant> absx (x)
+<variant> fabc (x)
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: fabs(x) — модуль вещественного числа (f — floating).
+Почему не другие: labs — для long, absx и fabc не существуют. Для int — abs(x).
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> Which directive is included in C to use input-output commands?
+<tr>Какую директиву подключают в C, чтобы использовать команды ввода-вывода?</tr>
+<variantright> # include "iostream.h"
+<variant> # include "conio.h"
+<variant> # include "stdio.h"
+<variant> # include "math.h"
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: #include "iostream.h" — там cout и cin.
+Почему не другие: conio.h — getch/clrscr, stdio.h — printf/scanf (тоже ввод-вывод, но «команды» cout/cin в тесте — из iostream.h), math.h — математика.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> The output statement in C:
+<tr>Оператор вывода в C:</tr>
+<variantright> cout<<
+<variant> cin>>
+<variant> getch()
+<variant> scanf()
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: cout<< — оператор вывода на экран.
+Почему не другие: cin>> — ввод, getch() — ожидание клавиши, scanf() — функция ввода из stdio.h.
+По лекции: тема 1, «Ввод-вывод и переменные», и тема 2, раздел 7.</explain>
+
+<question> The input statement in C++:
+<tr>Оператор ввода в C++:</tr>
+<variantright> cin>>
+<variant> cout<<
+<variant> printf()
+<variant> getch()
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: cin>> — ввод с клавиатуры: cin >> x;.
+Почему не другие: cout<< и printf() — вывод, getch() — ждёт клавишу.
+По лекции: тема 1, раздел «Ввод-вывод и переменные».</explain>
+
+<question> What does the `getch();` statement do?
+<tr>Что делает оператор `getch();`?</tr>
+<variantright> waits for any key to be pressed but does not show it on the screen <tr>ждёт нажатия любой клавиши, но не выводит её на экран</tr>
+<variant> clears the screen <tr>очищает экран</tr>
+<variant> returns the value of a function <tr>возвращает значение функции</tr>
+<variant> marks the end of the program <tr>обозначает конец программы</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: getch() ждёт нажатия любой клавиши и НЕ показывает её на экране. Его ставят в конце, чтобы окно консоли не закрылось.
+Почему не другие: экран очищает clrscr(), значение функции возвращает return.
+По лекции: тема 1, раздел 8, и тема 2, раздел 7 (conio.h).</explain>
+
+<question> In which header file is the `getch()` function defined?
+<tr>В каком заголовочном файле определена функция `getch()`?</tr>
+<variantright> conio.h
+<variant> stdio.h
+<variant> iostream.h
+<variant> stdlib.h
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: conio.h (console input/output) — там getch() и clrscr().
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> The screen clearing function in C:
+<tr>Функция очистки экрана в C:</tr>
+<variantright> clrscr();
+<variant> clear screen();
+<variant> cls();
+<variant> clean();
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: clrscr(); — clear screen, очистка экрана консоли.
+Почему не другие: cls — команда Windows, а не функция C; clear screen() и clean() не существуют.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки» (conio.h).</explain>
+
+<question> Which header file is included to use the screen clearing function?
+<tr>Какой заголовочный файл подключают, чтобы использовать функцию очистки экрана?</tr>
+<variantright> conio.h
+<variant> stdio.h
+<variant> iostream.h
+<variant> stdlib.h
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: conio.h — в нём clrscr().
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> Which header file is included to use the random number function?
+<tr>Какой заголовочный файл подключают, чтобы использовать функцию случайных чисел?</tr>
+<variantright> stdlib.h
+<variant> iostream.h
+<variant> stdio.h
+<variant> conio.h
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: stdlib.h — random(n), rand(), randomize().
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> Which number corresponds to "false" in C?
+<tr>Какому числу в C соответствует «false» (ложь)?</tr>
+<variantright> 0
+<variant> 1
+<variant> it is not equal to any number <tr>ни одному числу не приравнивается</tr>
+<variant> -1
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 0. В C/C++ ложь — это 0, а любое ненулевое число — истина.
+По лекции: тема 2, раздел «3. Сравнение и логика».</explain>
+
+<question> Which number corresponds to "true" in C?
+<tr>Какому числу в C соответствует «true» (истина)?</tr>
+<variantright> 1
+<variant> 0
+<variant> -1
+<variant> it is not equal to any number <tr>ни одному числу не приравнивается</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 1. Результат истинного сравнения равен 1 (true = 1).
+По лекции: тема 2, раздел «3. Сравнение и логика».</explain>
+
+<question> What does 1 mean as the result of evaluating a condition?
+<tr>Что означает 1 как результат вычисления условия?</tr>
+<variantright> true <tr>истина</tr>
+<variant> false <tr>ложь</tr>
+<variant> the result of correct compilation of the program <tr>результат правильной компиляции программы</tr>
+<variant> boolean
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: истина (true). Условие, которое вычислилось в 1, истинно.
+По лекции: тема 2, раздел «3. Сравнение и логика».</explain>
+
+<question> What does 0 mean as the result of evaluating a condition?
+<tr>Что означает 0 как результат вычисления условия?</tr>
+<variantright> false <tr>ложь</tr>
+<variant> true <tr>истина</tr>
+<variant> the result of correct compilation of the program <tr>результат правильной компиляции программы</tr>
+<variant> boolean
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: ложь (false). 0 в условии — ложь.
+По лекции: тема 2, раздел «3. Сравнение и логика».</explain>
+
+<question> Is the expression `(1 != 1)` in C true or false?
+<tr>Выражение `(1 != 1)` в C истинно или ложно?</tr>
+<variantright> false <tr>ложно</tr>
+<variant> it makes no sense <tr>не имеет смысла</tr>
+<variant> true <tr>истинно</tr>
+<variant> unknown <tr>неизвестно</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: ложь. != значит «не равно», а 1 равно 1, поэтому (1 != 1) = false (0).
+По лекции: тема 2, раздел «3. Сравнение и логика».</explain>
+
+<question> The expression equivalent to `s=s+x`:
+<tr>Выражение, равносильное `s=s+x`:</tr>
+<variantright> s+=x
+<variant> s=x++
+<variant> s=s++
+<variant> s=+x
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: s+=x — сокращённая запись s = s + x.
+Почему не другие: s=x++ записывает x, s=s++ — неопределённое поведение, s=+x — просто s = x.
+По лекции: тема 2, раздел «4. Присваивание в стиле C».</explain>
+
+<question> How do you write the function arccos(x) in C?
+<tr>Как в C записать функцию arccos(x)?</tr>
+<variantright> acos(x)
+<variant> cosa(x)
+<variant> acos[x]
+<variant> acos{x}
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: acos(x) — арккосинус; аргумент функции в круглых скобках.
+Почему не другие: cosa не существует, квадратные и фигурные скобки для вызова функции не используются.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки» — math.h.</explain>
+
+<question> Which logical operation is called "logical multiplication" (AND)?
+<tr>Какая логическая операция называется «логическое умножение» (И)?</tr>
+<variantright> &&
+<variant> ||
+<variant> !
+<variant> :
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: && — логическое И («логическое умножение»): истина, только если оба операнда истинны.
+По лекции: тема 2, раздел «3. Сравнение и логика» — таблица истинности.</explain>
+
+<question> Which logical operation is called "logical sum" (OR)?
+<tr>Какая логическая операция называется «логическая сумма» (ИЛИ)?</tr>
+<variantright> ||
+<variant> &&
+<variant> :
+<variant> !
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: || — логическое ИЛИ («логическая сумма»): истина, если хотя бы один операнд истинен.
+По лекции: тема 2, раздел «3. Сравнение и логика».</explain>
+
+<question> What is the value of the expression `k=(3/2)*(3%2)`?
+<tr>Чему равно выражение `k=(3/2)*(3%2)`?</tr>
+<variantright> 1
+<variant> 2
+<variant> 0.5
+<variant> 3
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 1. 3/2 = 1 (целое деление), 3%2 = 1 (остаток), 1·1 = 1.
+По лекции: тема 2, раздел «2. Арифметика».</explain>
+
+<question> Given the declarations below. What is the type of the expression `d+1`?
+```cpp
+int a,b,c,n; float d,e;
+```
+<tr>Даны объявления: Какого типа значение выражения `d+1`?</tr>
+<variantright> float
+<variant> int
+<variant> char
+<variant> bool
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: float. d объявлена как float, 1 — int; int превращается в «больший» тип, результат float.
+По лекции: тема 2, раздел «6. Приоритет и преобразование типов».</explain>
+
+<question> The statement for entering variable values into the computer:
+<tr>Оператор ввода значений переменных в компьютер:</tr>
+<variantright> cin>>
+<variant> cout<<
+<variant> printf()
+<variant> getch()
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: cin>> — ввод значений переменных с клавиатуры.
+По лекции: тема 1, раздел «Ввод-вывод и переменные».</explain>
+
+<question> What is k in `k=ceil(3.226);`?
+<tr>Чему равно k в `k=ceil(3.226);`?</tr>
+<variantright> 4
+<variant> 3
+<variant> 2
+<variant> 3.5
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 4. ceil — округление вверх («потолок»): 3.226 → 4.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки» — округление.</explain>
+
+<question> What is k in `k=floor(3.63);`?
+<tr>Чему равно k в `k=floor(3.63);`?</tr>
+<variantright> 3
+<variant> 4
+<variant> 2
+<variant> 3.5
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 3. floor — округление вниз («пол»): 3.63 → 3.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> Which function finds the square root?
+<tr>Какая функция находит квадратный корень?</tr>
+<variantright> sqrt()
+<variant> sqr()
+<variant> pov()
+<variant> sgrt()
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: sqrt() — square root, квадратный корень.
+Ловушка: sqr — функция из Pascal (квадрат), sgrt и pov — опечатки.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> How do you write x to the power of y in C?
+<tr>Как в C записать x в степени y?</tr>
+<variantright> pow(x,y)
+<variant> povv(x,y)
+<variant> sqr(x,y)
+<variant> sqrt(x,y)
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: pow(x,y) — x в степени y.
+Почему не другие: sqrt — корень, sqr и povv в C нет.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> How do you write the 5th root of x?
+<tr>Как записать корень 5-й степени из x?</tr>
+<variantright> pow(x,1/5.)
+<variant> sqrt(x,1/5)
+<variant> sqrt(x,5)
+<variant> pow(x,1/5)
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: pow(x,1/5.). Корень 5-й степени — это x в степени 1/5.
+Ловушка: точка в 1/5. обязательна. Без неё 1/5 — целое деление и даёт 0, а pow(x,0) = 1.
+По лекции: тема 2, разделы «2. Арифметика» и «7. Дополнительные библиотеки».</explain>
+
+<question> Which `printf()` format prints a string?
+<tr>Какой формат `printf()` выводит строку?</tr>
+<variantright> %s
+<variant> %f
+<variant> %u
+<variant> %o
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: %s — строка (string).
+По лекции: тема 2, раздел «7. Дополнительные библиотеки» — форматы printf.</explain>
+
+<question> Which `printf()` format prints a real number?
+<tr>Какой формат `printf()` выводит вещественное число?</tr>
+<variantright> %f
+<variant> %o
+<variant> %u
+<variant> %s
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: %f — вещественное число (float).
+По лекции: тема 2, раздел 7 — форматы printf.</explain>
+
+<question> The `printf()` format for printing an unsigned decimal integer:
+<tr>Формат `printf()` для вывода беззнакового десятичного целого:</tr>
+<variantright> %u
+<variant> %s
+<variant> %o
+<variant> %f
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: %u — беззнаковое десятичное целое (unsigned).
+По лекции: тема 2, раздел 7 — форматы printf.</explain>
+
+<question> The `printf()` format for printing an unsigned octal integer:
+<tr>Формат `printf()` для вывода беззнакового восьмеричного целого:</tr>
+<variantright> %o
+<variant> %f
+<variant> %s
+<variant> %u
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: %o — беззнаковое восьмеричное целое (octal).
+По лекции: тема 2, раздел 7 — форматы printf.</explain>
+
+<question> Which `printf()` format prints an unsigned hexadecimal integer?
+<tr>Какой формат `printf()` выводит беззнаковое шестнадцатеричное целое?</tr>
+<variantright> %x
+<variant> %u
+<variant> %s
+<variant> %f
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: %x — беззнаковое шестнадцатеричное целое (hex).
+По лекции: тема 2, раздел 7 — форматы printf.</explain>
+
+<question> Which `printf()` format prints a real number in exponential form?
+<tr>Какой формат `printf()` выводит вещественное число в экспоненциальной форме?</tr>
+<variantright> %e
+<variant> %f
+<variant> %s
+<variant> %x
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: %e — вещественное число в экспоненциальной форме (1.5e+03).
+Почему не другие: %f — обычная запись с точкой, %s — строка, %x — шестнадцатеричное.
+По лекции: тема 2, раздел 7 — форматы printf.</explain>
+
+<question> What is the output?
+```cpp
+int i=10;
+cout <<  i++;
+cout  << ++i;
+```
+<tr>Какой получим ответ?</tr>
+<variantright> 10, 12
+<variant> 11, 12
+<variant> 10, 11
+<variant> 10, 10
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: 10, 12. cout << i++ выводит старое значение 10, потом i становится 11.
+Затем cout << ++i сначала увеличивает i до 12 и выводит 12.
+По лекции: тема 2, раздел «2. Арифметика» — префикс и постфикс, этот самый пример.</explain>
+
+<question> Which function reads a string from a file?
+<tr>Какая функция читает строку из файла?</tr>
+<variantright> fgets()
+<variant> fgetc()
+<variant> fputs()
+<variant> fread()
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: fgets() — get string, читает строку из файла.
+Почему не другие: fgetc — один символ, fputs — записывает строку, fread — читает блок байтов.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки» — stdio.h, файлы.</explain>
+
+<question> Which function writes a string to a file?
+<tr>Какая функция записывает строку в файл?</tr>
+<variantright> fputs()
+<variant> fread()
+<variant> fgets()
+<variant> fwrite()
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: fputs() — put string, записывает строку в файл.
+По лекции: тема 2, раздел 7 — stdio.h, файлы.</explain>
+
+<question> Specify the correct way to calculate x to the 4th power.
+<tr>Укажите правильный способ вычислить x в 4-й степени.</tr>
+<variantright> pow(x,4);
+<variant> pow(x/4);
+<variant> pow(x*4);
+<variant> pow(x;4);
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: pow(x,4); — аргументы через запятую: основание и показатель.
+Почему не другие: pow(x/4), pow(x*4) — один аргумент, pow(x;4) — точка с запятой внутри вызова недопустима.
+По лекции: тема 2, раздел 7 — math.h.</explain>
+
+<question> Which function writes data to a file?
+<tr>Какая функция записывает данные в файл?</tr>
+<variantright> fprintf ()
+<variant> fread ()
+<variant> fscanf ()
+<variant> fgets ()
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: fprintf() — форматированная запись данных в файл (как printf, но в файл).
+Почему не другие: fread и fscanf читают, fgets читает строку.
+По лекции: тема 2, раздел 7 — stdio.h, файлы.</explain>
+
+<question> Which function reads data from a file?
+<tr>Какая функция читает данные из файла?</tr>
+<variantright> fscanf()
+<variant> fprintf ()
+<variant> fgets ()
+<variant> fwrite ()
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: fscanf() — форматированное чтение данных из файла (как scanf).
+Почему не другие: fprintf и fwrite пишут. fgets тоже читает, но только строку — в базе ответом считается fscanf («данные»).
+По лекции: тема 2, раздел 7 — stdio.h, файлы.</explain>
+
+<question> Which function closes a file after you finish working with it?
+<tr>Какая функция закрывает файл после окончания работы с ним?</tr>
+<variantright> fclose()
+<variant> fexit()
+<variant> fgets()
+<variant> fgetc()
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: fclose() — закрывает файл после работы.
+По лекции: тема 2, раздел 7 — stdio.h, файлы.</explain>
+
+<question> Specify the file opening function in C.
+<tr>Укажите функцию открытия файла в C.</tr>
+<variantright> fopen()
+<variant> fclose()
+<variant> fexit()
+<variant> fnew()
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: fopen() — открывает файл: FILE *f = fopen("a.txt", "r");
+По лекции: тема 2, раздел 7 — stdio.h, файлы.</explain>
+
+<question> What is the name of the math library of standard arithmetic functions?
+<tr>Как называется математическая библиотека стандартных арифметических функций?</tr>
+<variantright> math.h
+<variant> match.h
+<variant> matem.h
+<variant> stdlib.h
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: math.h — математическая библиотека.
+По лекции: тема 2, раздел «7. Дополнительные библиотеки».</explain>
+
+<question> The function that finds the modulus of an integer:
+<tr>Функция, находящая модуль целого числа:</tr>
+<variantright> abs(x)
+<variant> abc(x)
+<variant> fabs(x)
+<variant> fabc(x)
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: abs(x) — модуль целого числа.
+Ловушка: fabs — для вещественных (f = floating), abc и fabc не существуют.
+По лекции: тема 2, раздел 7 — округление и модуль.</explain>
+
+<question> How is the arccosine written in C++?
+<tr>Как записывается арккосинус в C++?</tr>
+<variantright> acos(x)
+<variant> asin[x]
+<variant> atan(x)
+<variant> acos{x}
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: acos(x) — арккосинус.
+Почему не другие: asin — арксинус, atan — арктангенс, фигурные и квадратные скобки для вызова не используются.
+По лекции: тема 2, раздел 7 — math.h.</explain>
+
+<question> The function for rounding a number up:
+<tr>Функция округления числа вверх:</tr>
+<variantright> ceil(x)
+<variant> floor(x)
+<variant> fabs(x)
+<variant> log(x)
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: ceil(x) — округление вверх («потолок»).
+По лекции: тема 2, раздел 7 — округление.</explain>
+
+<question> The function for rounding a number down:
+<tr>Функция округления числа вниз:</tr>
+<variantright> floor(x)
+<variant> ceil(x)
+<variant> exp(x)
+<variant> fabs(x)
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: floor(x) — округление вниз («пол»).
+По лекции: тема 2, раздел 7 — округление.</explain>
+
+<question> What is NOT a comparison sign?
+<tr>Что НЕ является знаком сравнения?</tr>
+<variantright> =
+<variant> ==
+<variant> <
+<variant> !=
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: = — это присваивание, а не сравнение. Сравнение «равно» пишется ==.
+По лекции: тема 2, раздел «3. Сравнение и логика».</explain>
+
+<question> The increment operation is applied:
+<tr>Операция инкремента применяется:</tr>
+<variantright> to variables <tr>к переменным</tr>
+<variant> to constants <tr>к константам</tr>
+<variant> to expressions <tr>к выражениям</tr>
+<variant> to strings <tr>к строкам</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: к переменным. ++ меняет значение, а константу (5++) и выражение ((a+b)++) изменить нельзя.
+По лекции: тема 2, раздел «2. Арифметика».</explain>
+
+<question> To which numbers is the `%` operation applied?
+<tr>К каким числам применяется операция `%`?</tr>
+<variantright> to integers <tr>к целым</tr>
+<variant> to real numbers <tr>к вещественным</tr>
+<variant> to fractions <tr>к дробным</tr>
+<variant> to integers and real numbers <tr>к целым и вещественным</tr>
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: к целым числам. % — остаток от деления только для целых; для дробных есть функция fmod(x, y).
+По лекции: тема 2, раздел «2. Арифметика».</explain>
+
+<question> Logical "and" is denoted as:
+<tr>Логическое «и» обозначается так:</tr>
+<variantright> &&
+<variant> &
+<variant> |
+<variant> ||
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: && — логическое «и».
+Ловушка: одиночный & — побитовое И (и взятие адреса), || — «или».
+По лекции: тема 2, разделы 3 и 5.</explain>
+
+<question> Logical "or" is denoted as:
+<tr>Логическое «или» обозначается так:</tr>
+<variantright> ||
+<variant> &&
+<variant> &
+<variant> |
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: || — логическое «или».
+Ловушка: одиночный | — побитовое ИЛИ.
+По лекции: тема 2, разделы 3 и 5.</explain>
+
+<question> Logical "not equal" is denoted as:
+<tr>Логическое «не равно» обозначается так:</tr>
+<variantright> !=
+<variant> |=
+<variant> =!
+<variant> =|
+<variant> No correct answer <tr>Нет правильного ответа</tr>
+<explain>Ответ: != — «не равно».
+Почему не другие: |=, =!, =| — это не сравнение (|= — побитовое составное присваивание).
+По лекции: тема 2, раздел «3. Сравнение и логика».</explain>

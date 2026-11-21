@@ -1,0 +1,157 @@
+<question> A special method that is called once when a class' instance is created:
+<tr>Специальный метод, который вызывается один раз при создании экземпляра класса:</tr>
+<variantright> Constructor <tr>Конструктор</tr>
+<variant> Destructor <tr>Деструктор</tr>
+<variant> Function <tr>Функция</tr>
+<variant> Property <tr>Свойство</tr>
+<variant> Event <tr>Событие</tr>
+<explain>Ответ: Constructor (конструктор) — вызывается автоматически один раз при создании объекта.
+Ловушка: Destructor вызывается при уничтожении объекта.
+По лекции: тема 13, раздел «Конструктор».</explain>
+
+<question> The initialization of all elements of a class (common for all class instances) is made in …
+<tr>Инициализация всех элементов класса (общая для всех экземпляров класса) выполняется в …</tr>
+<variantright> constructor <tr>конструкторе</tr>
+<variant> destructor <tr>деструкторе</tr>
+<variant> object inspector <tr>инспекторе объектов</tr>
+<variant> form editor <tr>редакторе форм</tr>
+<variant> code editor window <tr>окне редактора кода</tr>
+<explain>Ответ: в конструкторе — там задают начальные значения полей каждого нового объекта.
+Почему не другие: деструктор освобождает ресурсы в конце жизни объекта; Object Inspector и редакторы — части IDE, а не класса.
+По лекции: тема 13, раздел «Конструктор».</explain>
+
+
+<question> (УМКД) What is a user-defined class?
+<tr>(УМКД) Что такое пользовательский класс?</tr>
+<variantright> a class written by the programmer for their own task (for example, Book) <tr>класс, который программист написал для своей задачи (например, Book)</tr>
+<variant> a class from the VCL library <tr>класс из библиотеки VCL</tr>
+<variant> a class that the user creates while the program runs <tr>класс, который пользователь создаёт во время работы программы</tr>
+<variant> a built-in data type <tr>встроенный тип данных</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: пользовательский класс описывает сам программист: поля, конструкторы, методы, деструктор.
+По лекции: тема 13, раздел «Конструктор» (пример класса Book).</explain>
+
+<question> (УМКД) What is the name of a constructor?
+<tr>(УМКД) Как называется конструктор?</tr>
+<variantright> the same as the class name, without a return type <tr>так же, как класс, без типа результата</tr>
+<variant> any name with type void <tr>любое имя с типом void</tr>
+<variant> init() <tr>init()</tr>
+<variant> the class name with ~ <tr>имя класса с ~</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: Book() — имя как у класса, тип результата не пишут (даже void).
+Ловушка: имя с тильдой ~Book() — деструктор.
+По лекции: тема 13, раздел «Конструктор».</explain>
+
+<question> (УМКД) What is the purpose of a constructor?
+<tr>(УМКД) Для чего нужен конструктор?</tr>
+<variantright> to initialize the fields of a new object <tr>задать начальные значения полей нового объекта</tr>
+<variant> to free memory <tr>освободить память</tr>
+<variant> to print the object <tr>вывести объект на экран</tr>
+<variant> to compare two objects <tr>сравнить два объекта</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: конструктор превращает выделенную память в готовый объект — задаёт начальные значения полей.
+Ловушка: освобождение памяти — работа деструктора.
+По лекции: тема 13, раздел «Конструктор».</explain>
+
+<question> (УМКД) What is a default constructor?
+<tr>(УМКД) Что такое конструктор по умолчанию?</tr>
+<variantright> a constructor without parameters (or with all parameters having default values) <tr>конструктор без параметров (или со значениями по умолчанию у всех параметров)</tr>
+<variant> a constructor with one parameter of the same class <tr>конструктор с одним параметром того же класса</tr>
+<variant> a constructor that deletes the object <tr>конструктор, который удаляет объект</tr>
+<variant> a constructor written in the base class <tr>конструктор в базовом классе</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: Book() — вызывается при Book a;. Если не написать ни одного конструктора, компилятор создаст пустой конструктор по умолчанию.
+По лекции: тема 13, раздел «Конструктор».</explain>
+
+<question> (УМКД) Which declaration calls a parameterized constructor?
+<tr>(УМКД) Какое объявление вызывает конструктор с параметрами?</tr>
+<variantright> Book b("1984", 1949);
+<variant> Book a;
+<variant> Book c = b;
+<variant> ~Book();
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: аргументы в скобках вызывают конструктор Book(string, int).
+Почему не другие: Book a; — конструктор по умолчанию, Book c = b; — конструктор копирования, ~Book() — деструктор.
+По лекции: тема 13, раздел «Конструктор».</explain>
+
+<question> (УМКД) What is a copy constructor?
+<tr>(УМКД) Что такое конструктор копирования?</tr>
+<variantright> a constructor Class(const Class &) that creates an object as a copy of another <tr>конструктор Класс(const Класс &), который создаёт объект как копию другого</tr>
+<variant> a constructor that copies a file <tr>конструктор, который копирует файл</tr>
+<variant> the assignment operator = <tr>операция присваивания =</tr>
+<variant> a constructor without parameters <tr>конструктор без параметров</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: Book(const Book &b) вызывается при Book c = b;, при передаче объекта в функцию по значению и при возврате по значению.
+Ловушка: b2 = b3; для уже созданного объекта — присваивание, а не конструктор копирования.
+По лекции: тема 13, раздел «Конструктор».</explain>
+
+<question> (УМКД) What is constructor overloading?
+<tr>(УМКД) Что такое перегрузка конструкторов?</tr>
+<variantright> several constructors with different parameters in one class <tr>несколько конструкторов с разными параметрами в одном классе</tr>
+<variant> a constructor that is too long <tr>слишком длинный конструктор</tr>
+<variant> calling a constructor twice for one object <tr>вызов конструктора дважды для одного объекта</tr>
+<variant> a constructor in the derived class <tr>конструктор в производном классе</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: Book(), Book(string, int), Book(const Book &) — нужный выбирается по аргументам при создании объекта.
+По лекции: тема 13, раздел «Конструктор».</explain>
+
+<question> (УМКД) When is a constructor called?
+<tr>(УМКД) Когда вызывается конструктор?</tr>
+<variantright> automatically when an object is created (declaration, new, temporary object) <tr>автоматически при создании объекта (объявление, new, временный объект)</tr>
+<variant> only when the programmer calls it by name <tr>только когда программист вызывает его по имени</tr>
+<variant> when the program ends <tr>когда программа заканчивается</tr>
+<variant> when the object is deleted <tr>когда объект удаляется</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: конструктор вызывается сам — при объявлении объекта, при new, при создании временного объекта и для каждого элемента массива объектов.
+По лекции: тема 13, раздел «Конструктор».</explain>
+
+<question> (УМКД) What is a destructor?
+<tr>(УМКД) Что такое деструктор?</tr>
+<variantright> a method ~Name() called automatically when an object is destroyed <tr>метод ~Имя(), который вызывается автоматически при уничтожении объекта</tr>
+<variant> a method that creates an object <tr>метод, который создаёт объект</tr>
+<variant> an operator that deletes a class <tr>операция, которая удаляет класс</tr>
+<variant> any method with parameters <tr>любой метод с параметрами</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: деструктор — с тильдой, без параметров и типа, один на класс.
+По лекции: тема 13, раздел «Деструктор и время жизни».</explain>
+
+<question> (УМКД) What is the purpose of a destructor?
+<tr>(УМКД) Для чего нужен деструктор?</tr>
+<variantright> to release resources: memory from new, open files <tr>освободить ресурсы: память из new, открытые файлы</tr>
+<variant> to initialize fields <tr>задать начальные значения полей</tr>
+<variant> to copy an object <tr>скопировать объект</tr>
+<variant> to show the form <tr>показать форму</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: в деструкторе делают delete[] для выделенной памяти и закрывают файлы.
+Ловушка: начальные значения задаёт конструктор.
+По лекции: тема 13, раздел «Деструктор и время жизни».</explain>
+
+<question> (УМКД) When is the destructor of a local object called?
+<tr>(УМКД) Когда вызывается деструктор локального объекта?</tr>
+<variantright> when the program leaves the block { } where the object was declared <tr>при выходе из блока { }, где объект объявлен</tr>
+<variant> right after the constructor <tr>сразу после конструктора</tr>
+<variant> never <tr>никогда</tr>
+<variant> only when delete is written <tr>только когда написан delete</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: локальный — при выходе из блока (в обратном порядке создания); динамический — при delete; глобальный — после завершения main.
+По лекции: тема 13, раздел «Деструктор и время жизни».</explain>
+
+<question> (УМКД) What is the correct order of an object's life cycle?
+<tr>(УМКД) Какой правильный порядок жизненного цикла объекта?</tr>
+<variantright> memory → constructor → use (methods) → destructor → memory released <tr>память → конструктор → использование (методы) → деструктор → освобождение памяти</tr>
+<variant> destructor → constructor → use <tr>деструктор → конструктор → использование</tr>
+<variant> use → constructor → destructor <tr>использование → конструктор → деструктор</tr>
+<variant> constructor → destructor → use <tr>конструктор → деструктор → использование</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: сначала выделяется память и работает конструктор, потом объект используют, в конце работает деструктор и память освобождается.
+По лекции: тема 13, раздел «Деструктор и время жизни».</explain>
+
+<question> (УМКД) Which constructor is called first when an object of a derived class is created?
+<tr>(УМКД) Какой конструктор вызывается первым при создании объекта производного класса?</tr>
+<variantright> the base class constructor <tr>конструктор базового класса</tr>
+<variant> the derived class constructor <tr>конструктор производного класса</tr>
+<variant> the destructor <tr>деструктор</tr>
+<variant> they are called at the same time <tr>одновременно</tr>
+<explain>Вопрос по УМКД (добавлен к базе).
+Ответ: порядок: базовые классы → поля-объекты → собственный конструктор. Деструкторы — в обратном порядке.
+По лекции: тема 13, раздел «Для теста на английском» (учебник МГУ), и тема 12, раздел 1.</explain>

@@ -1,0 +1,186 @@
+<question> In Object-oriented programming, a set of data and methods to manipulate the data is:
+<tr>В ООП набор данных и методов для работы с этими данными — это:</tr>
+<variantright> Class <tr>Класс</tr>
+<variant> Property <tr>Свойство</tr>
+<variant> Form <tr>Форма</tr>
+<variant> Type <tr>Тип</tr>
+<variant> Event <tr>Событие</tr>
+<explain>Ответ: Class (класс) — набор данных (полей) и методов для работы с этими данными.
+Почему не другие: property — одно свойство, form — окно программы, event — событие, type — общее слово «тип».
+По лекции: тема 7, раздел «2. Класс, объект, атрибут, метод».</explain>
+
+<question> A principle of OOP, a mechanism that links together the code and the data it manipulates:
+<tr>Принцип ООП, механизм, который связывает вместе код и данные, с которыми он работает:</tr>
+<variantright> encapsulation <tr>инкапсуляция</tr>
+<variant> polymorphism <tr>полиморфизм</tr>
+<variant> inheritance <tr>наследование</tr>
+<variant> abstraction <tr>абстракция</tr>
+<variant> type <tr>тип</tr>
+<explain>Ответ: encapsulation (инкапсуляция) — механизм, который связывает вместе код и данные, с которыми он работает, и защищает их от внешнего доступа.
+По лекции: тема 7, разделы «3. Четыре принципа ООП» и «Для теста на английском».</explain>
+
+<question> In OOP, an instance of a class in a memory is:
+<tr>В ООП экземпляр класса в памяти — это:</tr>
+<variantright> object <tr>объект</tr>
+<variant> class <tr>класс</tr>
+<variant> type <tr>тип</tr>
+<variant> property <tr>свойство</tr>
+<variant> event <tr>событие</tr>
+<explain>Ответ: object (объект) — экземпляр класса в памяти.
+Ловушка: класс — только описание (тип), памяти под данные у него нет; объект создаётся по классу.
+По лекции: тема 7, раздел «2. Класс, объект, атрибут, метод».</explain>
+
+<question> A principle of OOP, a mechanism by which one object (of a derived class) acquires the properties of another object (parent, base class):
+<tr>Принцип ООП, механизм, с помощью которого один объект (производного класса) получает свойства другого объекта (родительского, базового класса):</tr>
+<variantright> inheritance <tr>наследование</tr>
+<variant> polymorphism <tr>полиморфизм</tr>
+<variant> encapsulation <tr>инкапсуляция</tr>
+<variant> abstraction <tr>абстракция</tr>
+<variant> pseudocode <tr>псевдокод</tr>
+<explain>Ответ: inheritance (наследование) — производный класс получает свойства базового (родительского) класса.
+По лекции: тема 7, раздел «3. Четыре принципа ООП».</explain>
+
+<question> A special function of a class that specifies operations on objects data (specifies its behavior):
+<tr>Специальная функция класса, которая задаёт операции над данными объекта (задаёт его поведение):</tr>
+<variantright> method <tr>метод</tr>
+<variant> show()
+<variant> procedure <tr>процедура</tr>
+<variant> property <tr>свойство</tr>
+<variant> event <tr>событие</tr>
+<explain>Ответ: method (метод) — функция класса, которая задаёт поведение объекта (операции над его данными).
+Почему не другие: property — данные, event — событие, show() — просто один из возможных методов.
+По лекции: тема 7, раздел «2. Класс, объект, атрибут, метод».</explain>
+
+<question> A principle of OOP, a special mechanism that protects data from arbitrary access of other external codes:
+<tr>Принцип ООП, специальный механизм, который защищает данные от произвольного доступа из внешнего кода:</tr>
+<variantright> encapsulation <tr>инкапсуляция</tr>
+<variant> polymorphism <tr>полиморфизм</tr>
+<variant> abstraction <tr>абстракция</tr>
+<variant> inheritance <tr>наследование</tr>
+<variant> class <tr>класс</tr>
+<explain>Ответ: encapsulation — защищает данные объекта от произвольного доступа внешнего кода (private-поля + методы доступа).
+По лекции: тема 7, раздел «3. Четыре принципа ООП».</explain>
+
+<question> In OOP, a variable of some type that characterizes internal status of an object:
+<tr>В ООП переменная некоторого типа, которая характеризует внутреннее состояние объекта:</tr>
+<variantright> property <tr>свойство</tr>
+<variant> event <tr>событие</tr>
+<variant> method <tr>метод</tr>
+<variant> polymorphism <tr>полиморфизм</tr>
+<variant> inheritance <tr>наследование</tr>
+<explain>Ответ: property (свойство, атрибут) — переменная, которая описывает внутреннее состояние объекта.
+Почему не другие: method — действие, event — событие, polymorphism и inheritance — принципы.
+По лекции: тема 7, раздел «2. Класс, объект, атрибут, метод».</explain>
+
+<question> A principle of OOP, a mechanism that allows to use the same interface for a common class of actions:
+<tr>Принцип ООП, механизм, который позволяет использовать один и тот же интерфейс для общего класса действий:</tr>
+<variantright> polymorphism <tr>полиморфизм</tr>
+<variant> abstraction <tr>абстракция</tr>
+<variant> inheritance <tr>наследование</tr>
+<variant> class <tr>класс</tr>
+<variant> object <tr>объект</tr>
+<explain>Ответ: polymorphism (полиморфизм) — «один интерфейс, много реализаций»: одно имя действия для общего класса действий.
+По лекции: тема 7, раздел «3. Четыре принципа ООП».</explain>
+
+<question> OOP: a message from the operating system to an application that if occurs when some external actions are made:
+<tr>ООП: сообщение от операционной системы приложению, которое возникает при каких-то внешних действиях:</tr>
+<variantright> Event <tr>Событие</tr>
+<variant> Event handler <tr>Обработчик события</tr>
+<variant> Property <tr>Свойство</tr>
+<variant> Method <tr>Метод</tr>
+<variant> Class <tr>Класс</tr>
+<explain>Ответ: Event (событие) — сообщение операционной системы приложению о том, что произошло внешнее действие (щелчок, нажатие клавиши).
+Ловушка: Event handler — это функция-обработчик, которая реагирует на событие, а не само сообщение.
+По лекции: тема 7, раздел «Для теста на английском», и тема 11.</explain>
+
+<question> (НЕ ТОЧНО) In polymorphism principle: selecting of needed method (for specific object) is performed by … (В принципе полиморфизма выбор нужного метода (для конкретного объекта) выполняет …)
+<variantright> compiler <tr>компилятор</tr>
+<variant> operating system <tr>операционная система</tr>
+<variant> programmer <tr>программист</tr>
+<variant> user <tr>пользователь</tr>
+<variant> main form <tr>главная форма</tr>
+<explain>Ответ: compiler (компилятор) — по ключу базы.
+Точнее: для перегруженных функций нужный вариант выбирает компилятор (раннее связывание), а для virtual-методов — программа во время работы (позднее связывание). На экзамене выбирай compiler.
+По лекции: тема 7, раздел «3. Четыре принципа ООП», тема 12 (виртуальные методы).</explain>
+
+<question> In Object-oriented programming: the definitions for the data format and available functions for a given type:
+<tr>В ООП: описание формата данных и доступных функций для данного типа:</tr>
+<variantright> class <tr>класс</tr>
+<variant> object <tr>объект</tr>
+<variant> component <tr>компонент</tr>
+<variant> event <tr>событие</tr>
+<variant> procedure <tr>процедура</tr>
+<explain>Ответ: class — описание формата данных и доступных функций для данного типа.
+По лекции: тема 7, раздел «2. Класс, объект, атрибут, метод».</explain>
+
+<question> The instances of classes or a variable of the data type defined by the class:
+<tr>Экземпляры классов, или переменные типа данных, заданного классом:</tr>
+<variantright> objects <tr>объекты</tr>
+<variant> types <tr>типы</tr>
+<variant> classes <tr>классы</tr>
+<variant> procedures <tr>процедуры</tr>
+<variant> methods <tr>методы</tr>
+<explain>Ответ: objects (объекты) — экземпляры классов, переменные типа, определённого классом.
+По лекции: тема 7, раздел «2. Класс, объект, атрибут, метод».</explain>
+
+<question> In object-oriented programming: a function associated with a class
+<tr>В ООП: функция, связанная с классом</tr>
+<variantright> method <tr>метод</tr>
+<variant> object <tr>объект</tr>
+<variant> data type <tr>тип данных</tr>
+<variant> event <tr>событие</tr>
+<variant> component <tr>компонент</tr>
+<explain>Ответ: method — функция, связанная с классом.
+По лекции: тема 7, раздел «2. Класс, объект, атрибут, метод».</explain>
+
+<question> An action that an object is able to perform is…
+<tr>Действие, которое объект умеет выполнять, — это…</tr>
+<variantright> method <tr>метод</tr>
+<variant> event <tr>событие</tr>
+<variant> property <tr>свойство</tr>
+<variant> object inspector <tr>инспектор объектов</tr>
+<variant> unit <tr>модуль</tr>
+<explain>Ответ: method — действие, которое объект умеет выполнять.
+Почему не другие: event — то, что с объектом произошло, property — его характеристика.
+По лекции: тема 7, раздел «Для теста на английском».</explain>
+
+<question> Major principle of OOP which means that the internal representation of an object is generally hidden from view outside of the object's definition
+<tr>Главный принцип ООП, который означает, что внутреннее устройство объекта обычно скрыто от взгляда снаружи описания объекта</tr>
+<variantright> Encapsulation <tr>Инкапсуляция</tr>
+<variant> Abstraction <tr>Абстракция</tr>
+<variant> Inheritance <tr>Наследование</tr>
+<variant> Polymorphism <tr>Полиморфизм</tr>
+<variant> Data type <tr>Тип данных</tr>
+<explain>Ответ: Encapsulation — внутреннее устройство объекта скрыто от взгляда снаружи; доступ только через открытый интерфейс.
+Ловушка: абстракция — выделение главного (модель предмета), а скрытие деталей — инкапсуляция.
+По лекции: тема 7, раздел «3. Четыре принципа ООП».</explain>
+
+<question> Major principle of an OOP that denotes a model, a view, or some other focused representation for an actual item -
+<tr>Главный принцип ООП, который обозначает модель, представление или другое упрощённое отображение реального предмета —</tr>
+<variantright> Abstraction <tr>Абстракция</tr>
+<variant> Inheritance <tr>Наследование</tr>
+<variant> Polymorphism <tr>Полиморфизм</tr>
+<variant> Encapsulation <tr>Инкапсуляция</tr>
+<variant> Method <tr>Метод</tr>
+<explain>Ответ: Abstraction (абстракция) — модель, «вид» реального предмета, в которой оставлено только важное для задачи.
+По лекции: тема 7, раздел «3. Четыре принципа ООП».</explain>
+
+<question> Major principle of an OOP that allows using attributes and behavior from pre-existing classes
+<tr>Главный принцип ООП, который позволяет использовать атрибуты и поведение уже существующих классов</tr>
+<variantright> Inheritance <tr>Наследование</tr>
+<variant> Abstraction <tr>Абстракция</tr>
+<variant> Polymorphism <tr>Полиморфизм</tr>
+<variant> Encapsulation <tr>Инкапсуляция</tr>
+<variant> Method <tr>Метод</tr>
+<explain>Ответ: Inheritance — позволяет использовать атрибуты и поведение уже существующих классов.
+По лекции: тема 7, раздел «3. Четыре принципа ООП».</explain>
+
+<question> Major principle of an OOP that allows using same names of identifiers for the different functionality
+<tr>Главный принцип ООП, который позволяет использовать одинаковые имена идентификаторов для разной функциональности</tr>
+<variantright> Polymorphism <tr>Полиморфизм</tr>
+<variant> Inheritance <tr>Наследование</tr>
+<variant> Abstraction <tr>Абстракция</tr>
+<variant> Encapsulation <tr>Инкапсуляция</tr>
+<variant> Object <tr>Объект</tr>
+<explain>Ответ: Polymorphism — одни и те же имена для разной функциональности (например, метод draw() у круга и у квадрата рисует по-разному).
+По лекции: тема 7, раздел «3. Четыре принципа ООП».</explain>

@@ -1,0 +1,4 @@
+#1
+Ответ: __property — ключевое слово C++Builder для свойства: __property int Age = {read = FAge, write = SetAge};
+Почему не другие: __attribute, __public, __member, __accessor в C++Builder для свойств не используются.
+По лекции: тема 14, раздел «Свойства в C++Builder: __property».
