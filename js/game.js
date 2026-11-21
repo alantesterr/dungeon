@@ -1121,6 +1121,7 @@
     e.st = t;
   }
   function drawPets(c, t, dt, fy) {
+    if (!A.drawPet) { needArt(); return; }
     if (G.scene === 'path' && G.lib) {
       libPetsSync();
       G.libPets.forEach(function (e) {
@@ -2838,8 +2839,8 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
     }
     if (G.scene === 'house') { A.bgHouse(c, t); c.fillStyle = 'rgba(0,0,0,.35)'; c.beginPath(); c.ellipse(SAGE_X, A.FLOOR_Y + 8, 16, 4, 0, 0, 7); c.fill(); A.drawMonster(c, 'sage', 'idle', t, SAGE_X, A.FLOOR_Y + 8); drawIntruder(c, t); lakeSign(c, t); }
     else if (G.scene === 'hall') A.bgHall(c, t);
-    else if (G.scene === 'path' && G.lib) A.bgLib(c, t, G.lib);
-    else if ((G.scene === 'event' || G.scene === 'lake') && G.ev) A.bgEv(c, t, G.ev);
+    else if (G.scene === 'path' && G.lib) { if (A.bgLib) A.bgLib(c, t, G.lib); else { A.bgHall(c, t); needArt(); } }
+    else if ((G.scene === 'event' || G.scene === 'lake') && G.ev) { if (A.bgEv) A.bgEv(c, t, G.ev); else { A.bgRoom(c, t, { theme: 'crypt' }); needArt(); } }   /* файл рисовки не загрузился — не застываем, а догружаем */
     else if (G.scene === 'room' && G.room) A.bgRoom(c, t, { theme: themeOf(G.room.f), exit: true, exitOpen: G.room.objs.every(function (o) { return o.type !== 'mon' || o.dead; }), seed: G.room.k, goo: G.room.floor % 3 === 0, hole: G.room.floor % 2 === 0 });
     else return;
     var fy = A.FLOOR_Y + 8;
@@ -2876,7 +2877,7 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
       }
     });
     /* клетка с питомцем в комнате и питомцы (в библиотеке — бродят, в бою — тот, что ходит с тобой) */
-    if (G.scene === 'room' && G.room && G.room.cage) A.drawCage(c, t, G.room.cage.x, 96, G.room.cage.kind, G.room.cage.openT);
+    if (G.scene === 'room' && G.room && G.room.cage && A.drawCage) A.drawCage(c, t, G.room.cage.x, 96, G.room.cage.kind, G.room.cage.openT);
     drawPets(c, t, dt, fy);
     /* герой */
     {
@@ -2898,7 +2899,22 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
     }
   }
   /* ошибка в одном кадре не должна останавливать всю игру */
-  function loop(t) { requestAnimationFrame(loop); try { draw(t); } catch (e) { if (!loop.warned) { loop.warned = 1; console.error(e); } } }
+  function loop(t) { requestAnimationFrame(loop); try { draw(t); if (G.drawErr) { G.drawErr = null; var de = $('drawErr'); if (de) de.hidden = true; } } catch (e) { if (!loop.warned) { loop.warned = 1; console.error(e); } drawErrShow(e); } }
+  /* ошибка рисования — показываем её прямо на сцене (вместо «застывшей» картинки), чтобы можно было прислать скриншот */
+  function drawErrShow(e) {
+    var msg = String(e && e.message || e).slice(0, 140); if (G.drawErr === msg) return; G.drawErr = msg;
+    c.fillStyle = '#0c0a12'; c.fillRect(0, 0, A.W, A.H);
+    var el = $('drawErr'); if (!el) { el = document.createElement('div'); el.id = 'drawErr'; $('floaters').appendChild(el); }
+    el.hidden = false; el.textContent = '⚠ Картинка не нарисовалась: ' + msg + ' (' + G.scene + (G.ev ? ' · ' + G.ev.kind : '') + '). Обнови страницу (Ctrl+F5); если повторится — пришли скриншот.';
+    if (/is not a function|undefined/.test(msg)) needArt();
+  }
+  /* догрузить файлы рисовки, если какой-то не загрузился (например, открыли сайт во время обновления) */
+  function needArt() {
+    if (G.artReload) return; G.artReload = 1;
+    var v = (document.querySelector('script[src*="game.js"]') || {}).src; v = v && v.split('?v=')[1] || Date.now();
+    ['lib-art', 'ev-art', 'pets', 'ev3-art'].forEach(function (n) { var ok = { 'lib-art': A.bgLib, 'ev-art': A.bgEv, pets: A.drawPet, 'ev3-art': A.EV3 }[n]; if (ok) return; var s = document.createElement('script'); s.src = 'js/' + n + '.js?v=' + v + '&r=' + Date.now(); document.head.appendChild(s); });
+    setTimeout(function () { G.artReload = 0; }, 8000);
+  }
   /* для проверки: мгновенно довести героя до цели (вкладка в фоне не анимируется) */
   window.DGame = { G: G, liar: function () { G.liarForce = 1; }, pet: function (cb) { petRescue(cb || function () {}); }, cage: function () { G.cageForce = 1; }, ev: function (k, sid) { G.evForce = k; buildArena(sid || D.subjId, 'all', 1); }, go: function (s, a) { go(s, a); }, next: function () { goNext(); }, skip: function () { var h = G.hero; if (h.target != null) { h.x = h.target; h.target = null; var cb = h.onArrive; h.onArrive = null; if (cb) cb(); } } };
 
