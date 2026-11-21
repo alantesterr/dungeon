@@ -28,7 +28,7 @@
   function floater(text, x, y, color) {
     var el = document.createElement('div'); el.className = 'floater'; el.textContent = text; el.style.color = color || '#FFD25A';
     el.style.left = (x / A.W * 100) + '%'; el.style.top = (y / A.H * 100) + '%'; $('floaters').appendChild(el);
-    setTimeout(function () { el.remove(); }, 1100);
+    setTimeout(function () { el.remove(); }, 1900);
   }
   function labels(list) {
     $('floaters').querySelectorAll('.lbl').forEach(function (e) { e.remove(); });
@@ -48,7 +48,7 @@
     if (scene !== 'room') G.room = null;
     G.intruder = null;
     clearTimeout(G.watchT); $('app').classList.remove('watch'); hideBubble();
-    ({ house: enterHouse, subject: enterSubject, exam: enterExam, hall: enterHall, path: enterPath, floor: enterFloor, room: enterRoom })[scene](arg);
+    ({ house: enterHouse, subject: enterSubject, exam: enterExam, hall: enterHall, path: enterLib, floor: enterFloor, room: enterRoom })[scene](arg);
     hud(); window.scrollTo(0, 0);
   }
   /* «Тема 3» у предметов по силлабусу, «Этаж 3» у C++ */
@@ -283,9 +283,9 @@
      Справа «☰» — меню-пауза (и клавиша Esc): продолжить, карта тем, домик, рюкзак, лавка,
      настройки и отдельно — выйти в StudyPlay. */
   var BACK = { house: null, subject: 'house', exam: 'house', hall: 'house', path: 'hall', floor: 'path', room: 'floor' };
-  function backLabel(to) { return { sp: 'StudyPlay', house: 'Домик', hall: 'Зал', path: D.subj && D.subj.drill ? 'Уровни' : D.subj && D.subj.syll ? 'Темы' : 'Этажи', floor: 'Комнаты', level: 'Уровень' }[to] || 'Назад'; }
+  function backLabel(to) { return { sp: 'StudyPlay', house: 'Домик', hall: 'Зал', path: 'Библиотека', floor: 'Комнаты', level: 'Уровень' }[to] || 'Назад'; }
   function updBack() {
-    var to = BACK[G.scene], b = $('hudBack'); if (to === 'floor' && G.room && (G.room.f.rep || caveOn(G.room.f))) to = 'path'; if (to === 'floor' && G.room && (G.room.f.exam || G.room.f.arena)) to = 'house'; if (to === 'floor' && G.room && G.room.f.drill) to = 'level';
+    var to = BACK[G.scene], b = $('hudBack'); if (to === 'floor' && G.room && (G.room.f.rep || caveOn(G.room.f))) to = 'path'; if (to === 'floor' && G.room && (G.room.f.exam || G.room.f.arena)) to = 'path'; if (to === 'floor' && G.room && G.room.f.drill) to = 'level';
     b.hidden = !to; if (!to) return;
     $('hudBackT').textContent = backLabel(to);
     b.classList.toggle('exit', to === 'sp');
@@ -306,7 +306,7 @@
     if (G.scene === 'exam' && G.exam && !G.exam.done) return confirmBox('Прервать экзамен?', 'Результат не засчитается. Начать заново можно в любой момент.', 'Прервать', function () { go('house'); });
     if (G.scene === 'room' && G.room && G.room.f.exam) return confirmBox('Прервать экзамен?', 'Результат не засчитается. Начать заново можно кнопкой «🎓 Экзамен» в домике.', 'Прервать', function () { G.exam = null; go('house'); });
     if (G.scene === 'room' && G.room && G.room.mon && !G.room.mon.dead) return confirmBox('Выйти из комнаты?', 'Ответы уже сохранены. Комнату можно пройти ещё раз.', 'Выйти', goFloorBack);
-    if (to === 'floor' && G.room && G.room.f.arena) go('house'); else if (to === 'floor' && G.room && (G.room.f.rep || caveOn(G.room.f))) go('path'); else if (to === 'floor') goFloorBack(); else if (to) go(to);
+    if (to === 'floor' && G.room && (G.room.f.arena || G.room.f.exam)) go('path'); else if (to === 'floor' && G.room && (G.room.f.rep || caveOn(G.room.f))) go('path'); else if (to === 'floor') goFloorBack(); else if (to) go(to);
   }
   $('hudBack').onclick = goBack;
   function openMenu() {
@@ -314,7 +314,7 @@
     items.push(['play', '▶', 'Продолжить', 'Esc', closeModal]);
     if (inRoom && caveOn(G.room.f)) items.push(['cave', '🗺', 'Карта пещеры', 'перейти в другую комнату, возродить монстров', function () { closeModal(); openCaveMap(); }]);
     if (inRoom) items.push(['room', '↩', 'Выйти из комнаты', 'к комнатам темы', function () { closeModal(); goBack(); }]);
-    if (mapOk) items.push(['map', '🗺', D.subj.drill ? 'Уровни ИКТ' : D.subj.syll ? 'Карта тем' : 'Карта этажей', subjTitle(), function () { closeModal(); go('path'); }]);
+    if (mapOk) items.push(['map', '📚', 'Библиотека', subjTitle() + ': полки тем, ошибки, «Всё подряд»', function () { closeModal(); go('path'); }]);
     if (G.scene !== 'house') items.push(['house', '🏠', 'Домик', 'предметы, экзамен, задания дня', function () { closeModal(); go('house'); }]);
     items.push(['bag', '🎒', 'Рюкзак', 'предметы и оружие', function () { closeModal(); openBag(); }]);
     items.push(['set', '⚙', 'Настройки', 'перевод, звук, крупный вопрос', function () { closeModal(); openSettings(); }]);
@@ -504,7 +504,7 @@
     var qs = all.slice(0, EXAM_N), byId = {};
     qs.forEach(function (x) { byId[x.q.id] = x.q; });
     G.exam = { s: D.subjId, qs: qs, i: 0, ans: [], end: Date.now() + EXAM_MIN * 60000, done: false, hall: true };
-    G.exf = { n: 'exam', exam: true, id: D.subjId + '-exam', label: 'Экзамен', title: 'Экзамен · ' + subjTitle(), texts: [], pool: qs.map(function (x) { return x.q; }), byId: byId, tasks: [], taskById: {},
+    G.exf = { n: 'exam', exam: true, id: D.subjId + '-exam', label: 'Экзамен', title: 'Экзамен · ' + subjTitle(), texts: D.floors.reduce(function (a, f) { return a.concat(f.texts || []); }, []), pool: qs.map(function (x) { return x.q; }), byId: byId, tasks: [], taskById: {},
       rooms: [{ k: 0, sec: null, secs: [], boss: true, tasks: [], qs: qs.map(function (x) { return x.q.id; }) }], final: false, subj: D.subjId, syll: !!D.subj.syll };
     go('room', { f: 'exam', k: 0, again: 1 });
     if (G.exTimer) clearInterval(G.exTimer);
@@ -518,7 +518,7 @@
   function examAnswer(q, ok, picked) {
     var E = G.exam; if (!E || E.done || !E.hall) return;
     var x = E.qs.filter(function (y) { return y.q.id === q.id; })[0];
-    E.ans.push({ q: q, f: x ? x.f : null, ok: ok, typed: q.type === 'keyboard' ? picked : null, sel: Array.isArray(picked) ? picked : typeof picked === 'number' ? [picked] : [] }); E.i++;
+    E.ans.push({ q: q, f: x ? x.f : null, ok: ok, ggl: ok && !!(G.room && G.room.ggl), typed: q.type === 'keyboard' ? picked : null, sel: Array.isArray(picked) ? picked : typeof picked === 'number' ? [picked] : [] }); E.i++;
   }
   function finishExamHall(timeout) {
     var E = G.exam; if (!E || E.done) return;
@@ -535,7 +535,7 @@
   function finishExam(timeout) {
     var E = G.exam; if (!E || E.done) return; E.done = true; E.timeout = timeout;
     if (G.exTimer) { clearInterval(G.exTimer); G.exTimer = null; }
-    var right = E.ans.filter(function (a) { return a.ok; }).length, pct = Math.round(right / E.qs.length * 100);
+    var right = E.ans.filter(function (a) { return a.ok && !a.ggl; }).length, pct = Math.round(right / E.qs.length * 100);
     E.right = right; E.pct = pct;
     S.exams = S.exams || {}; var prev = S.exams[E.s] || {}; S.exams[E.s] = { pct: pct, at: Date.now(), best: Math.max(pct, prev.best || 0) };
     S.iq += right; D.touchStreak(); D.persist(); hud(); sfx(pct >= 50 ? 'win' : 'ok');
@@ -543,10 +543,10 @@
   }
   function ansText(a) { if (a.q.type === 'keyboard') return a.typed ? '<code>' + esc(a.typed) + '</code>' : '—'; return a.sel.length ? a.sel.map(function (oi) { return D.md(a.q.opts[oi].t); }).join(' · ') : '—'; }
   function examResult(review) {
-    var E = G.exam, wrong = E.ans.filter(function (a) { return !a.ok; }), skipped = E.qs.length - E.ans.length;
+    var E = G.exam, wrong = E.ans.filter(function (a) { return !a.ok; }), skipped = E.qs.length - E.ans.length, gg = E.ans.filter(function (a) { return a.ok && a.ggl; }).length;
     var grade = E.pct >= 90 ? 'отлично' : E.pct >= 75 ? 'хорошо' : E.pct >= 50 ? 'удовлетворительно' : 'пока не сдано';
     var h = '<div class="path-head"><h1>Экзамен завершён</h1><span class="tag ' + (E.pct >= 50 ? 'teal' : 'red') + '">' + E.pct + '% · ' + grade + '</span></div>' +
-      '<div class="sum-cards"><div><b>' + E.right + '</b><span>верно</span></div><div><b>' + wrong.length + '</b><span>ошибок</span></div><div><b>' + skipped + '</b><span>без ответа</span></div><div class="iq"><b>+' + E.right + '</b><span>IQ</span></div></div>' +
+      '<div class="sum-cards"><div><b>' + E.right + '</b><span>верно</span></div><div><b>' + wrong.length + '</b><span>ошибок</span></div><div><b>' + skipped + '</b><span>без ответа</span></div>' + (gg ? '<div><b>' + gg + '</b><span>верно с Гуглом (не в балле)</span></div>' : '') + '<div class="iq"><b>+' + E.right + '</b><span>IQ</span></div></div>' +
       (E.timeout ? '<p class="wave-msg">Время вышло — экзамен завершён автоматически.</p>' : '') +
       '<p class="hallnote">Лучший результат по предмету «' + esc(subjTitle()) + '»: ' + ((S.exams[E.s] || {}).best || E.pct) + '%. Ошибки попали в повторение — монстры спросят их снова.</p>';
     if (wrong.length) {
@@ -575,7 +575,7 @@
     var last = DOORS.filter(function (d) { return d[0] === D.subjId && D.SUBJ[d[0]]; })[0] || open[0];
     G.buttons = last ? [btn('Войти', 'primary', 'Enter', function () { enterDoor(last); })] : [];
   }
-  function enterDoor(d) { D.useSubject(d[0]); A.hallGlow = d[0]; walkTo(d[1], function () { openModes(d[0]); }); }
+  function enterDoor(d) { D.useSubject(d[0]); A.hallGlow = d[0]; walkTo(d[1], function () { go('path'); }); }
   /* выбор режима у двери предмета: тропа знаний, всё подряд (у ИКТ — хаос по уровням) и как на экзамене */
   function openModes(sid) {
     var sj = D.SUBJ[sid]; D.useSubject(sid);
@@ -594,6 +594,101 @@
       el.querySelector('[data-mode="exam"]').onclick = function () { closeModal(); D.useSubject(sid); startExamHall(); };
       G.modalEnter = function () { closeModal(); go('path'); };
     });
+  }
+
+  /* ---------- БИБЛИОТЕКА ПРЕДМЕТА (ноябрь 2026) ----------
+     Вход в подземелье предмета. Каждая тема — полка: книг на ней столько, сколько вопросов темы ты решил
+     верно без подсказки (где угодно: тема, «Всё подряд», экзамен…). Ошибся или «Не знаю» — книга улетает
+     на полку ошибок в углу и возвращается только по «✓ Знаю». Давно не видел выученный вопрос — книга пыльная.
+     Внизу всегда большая кнопка «▶ Всё подряд» — сразу в забег по всем темам. */
+  var SLOTS = 20, SPINE = ['#7F77DD', '#5DCAA5', '#EF9F27', '#D85A30', '#85B7EB', '#97C459', '#AFA9EC', '#E24B4A', '#FAC775', '#9FE1CB'];
+  function libFloors() { return D.floors.filter(function (f) { return poolIds(f).length; }); }
+  function shelfStat(f) {
+    var ids = poolIds(f), books = ids.filter(D.onShelf).length, err = ids.filter(D.isErr).length, dust = ids.filter(D.dusty).length;
+    return { ids: ids, total: ids.length, books: books, err: err, dust: dust, pct: ids.length ? Math.round(books / ids.length * 100) : 0 };
+  }
+  function slotsOf(n, total) { return !n ? 0 : Math.max(1, Math.round(n / Math.max(1, total) * SLOTS)); }
+  /* корешки книг: цвет и высота «случайные», но постоянные для полки; новые книги влетают по очереди */
+  function spines(seed, filled, prev, dust, cls) {
+    var h = '';
+    for (var i = 0; i < SLOTS; i++) {
+      if (i >= filled) { h += '<i class="sp empty"></i>'; continue; }
+      var col = cls === 'err' ? (i % 2 ? '#A32D2D' : '#C84040') : SPINE[(seed * 7 + i * 3) % SPINE.length], ht = 62 + ((seed * 13 + i * 29) % 34);
+      var isNew = prev != null && i >= prev, isDust = i >= filled - dust;
+      h += '<i class="sp' + (isNew ? ' new' : '') + (isDust && cls !== 'err' ? ' dust' : '') + '" style="--c:' + col + ';height:' + ht + '%' + (isNew ? ';animation-delay:' + ((i - prev) * 120 + 300) + 'ms' : '') + '"></i>';
+    }
+    return h;
+  }
+  function enterLib() {
+    if (!D.subj) D.useSubject(S.subj || 'cpp');
+    var sj = D.subj, sid = D.subjId, fl = libFloors();
+    show(false); where('📚 Библиотека · ' + subjTitle());
+    S.libSeen = S.libSeen || {};
+    var all = D.subjIds(), tot = all.filter(D.onShelf).length, pAll = all.length ? Math.round(tot / all.length * 100) : 0;
+    var errs = D.errIds(sj), ek = sid + ':err', ePrev = S.libSeen[ek], eFill = slotsOf(errs.length, Math.max(errs.length, SLOTS));
+    var h = '<div class="lib lib-' + sid + '"><div class="lib-head"><h1>📚 Библиотека · ' + esc(subjTitle()) + '</h1><span class="tag teal">собрано книг ' + tot + ' из ' + all.length + ' · ' + pAll + '%</span></div>';
+    S.tips = S.tips || {};
+    if (!S.tips.lib1) h += '<div class="tip lib-tip"><b>Как тут всё устроено</b><span>👇 Нажми <b>«▶ Всё подряд»</b> внизу — и сразу начнёшь отвечать на вопросы по всем темам. Каждая полка — это тема: верный ответ кладёт на неё книгу. Ошибки летят на красную полку ошибок.</span><button class="btn ghost" data-tipok="lib1">Понятно</button></div>';
+    h += '<div class="lib-grid">';
+    /* полка ошибок — в «углу», первой */
+    h += '<button class="shelf err' + (errs.length ? '' : ' clean') + '" data-sh="err"><div class="sh-plate"><b>📕 Полка ошибок</b><span>всё, где ты хоть раз ошибся или нажал «Не знаю»</span></div>' +
+      '<div class="sh-wood"><div class="sh-books">' + spines(1, eFill, ePrev != null && ePrev < eFill ? ePrev : null, 0, 'err') + '</div></div>' +
+      '<div class="sh-foot">' + (errs.length ? '<b class="bad">' + errs.length + ' ' + plural(errs.length, 'книга', 'книги', 'книг') + '</b><span>нажми — исправить</span>' : '<span>Пусто — ошибок нет ✨</span>') + '</div></button>';
+    S.libSeen[ek] = eFill;
+    fl.forEach(function (f) {
+      var st = shelfStat(f), key = sid + ':' + f.n, prev = S.libSeen[key], fill = slotsOf(st.books, st.total), dsl = Math.min(fill, slotsOf(st.dust, st.total));
+      var label = f.drill ? f.title : f.practice ? 'Практика' : f.lab ? 'Лабы' : 'Тема ' + f.n;
+      h += '<button class="shelf' + (st.pct >= 100 ? ' gold' : '') + '" data-sh="' + f.n + '"><div class="sh-plate"><b>' + esc(label) + (st.pct >= 100 ? ' ✓' : '') + '</b><span>' + esc(f.drill ? (f.sub || '') : f.title) + '</span></div>' +
+        '<div class="sh-wood"><div class="sh-books">' + spines(f.n | 0, fill, prev != null && prev < fill ? prev : null, dsl) + '</div></div>' +
+        '<div class="sh-foot"><span>📗 ' + st.books + ' / ' + st.total + ' · <b>' + st.pct + '%</b></span>' + (st.err ? '<span class="bad">📕 ' + st.err + '</span>' : '') + (st.dust ? '<span class="dusty">🌫 ' + st.dust + '</span>' : '') + '</div></button>';
+      S.libSeen[key] = fill;
+    });
+    h += '</div><div class="lib-dock"><button class="btn primary lib-all" data-all>▶ ' + (sj.drill ? 'Хаос-забег' : 'Всё подряд') + '<small>' + (sj.drill ? 'случайные вопросы уровня' : 'вопросы из всех тем вперемешку') + '</small></button>' +
+      '<button class="btn ghost" data-exam>🎓 Как на экзамене<small>' + EXAM_N + ' вопросов · ' + EXAM_MIN + ' мин</small></button></div></div>';
+    screenEl.innerHTML = h; D.persist();
+    var goAll = function () { S.tips.lib1 = 1; D.persist(); if (sj.drill) return openArena(sid); S.arenaLast = { s: sid, c: 'all' }; D.persist(); buildArena(sid, 'all', 0); };
+    screenEl.querySelector('[data-all]').onclick = goAll;
+    screenEl.querySelector('[data-exam]').onclick = function () { D.useSubject(sid); startExamHall(); };
+    screenEl.querySelectorAll('[data-tipok]').forEach(function (b) { b.onclick = function () { S.tips[b.getAttribute('data-tipok')] = 1; D.persist(); b.parentNode.remove(); }; });
+    screenEl.querySelectorAll('[data-sh]').forEach(function (b) { b.onclick = function () { var k = b.getAttribute('data-sh'); if (k === 'err') return openErrShelf(); openShelf(floorBy(+k)); }; });
+    G.buttons = [btn('Всё подряд', 'primary', 'Enter', goAll)];
+    /* новичок 10 секунд ничего не нажимает — кнопка «Всё подряд» мягко мигает */
+    clearTimeout(G.libT); G.libT = setTimeout(function () { var b = screenEl.querySelector('.lib-all'); if (G.scene === 'path' && b && !G.modal) b.classList.add('pulse'); }, 10000);
+  }
+  function openShelf(f) {
+    var st = shelfStat(f), hasBook = f.texts && f.texts.length, label = f.drill ? f.title : f.practice ? 'Практика' : f.lab ? 'Лабораторные' : 'Тема ' + f.n;
+    var h = '<header class="md-top"><b>📚 ' + esc(label) + '</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body">' +
+      '<p class="msg"><b>' + esc(f.drill ? (f.sub || f.title) : f.title) + '</b></p>' +
+      '<div class="sh-big"><div class="bar"><i style="width:' + st.pct + '%"></i></div><span>На полке <b>' + st.books + '</b> из ' + st.total + ' книг (' + st.pct + '%)' + (st.err ? ' · <b class="bad">на полке ошибок: ' + st.err + '</b>' : '') + (st.dust ? ' · <span class="dusty">пыльных: ' + st.dust + '</span>' : '') + '</span></div>' +
+      '<p class="hint">Книга ложится на полку, когда ты верно отвечаешь на вопрос этой темы без подсказки — неважно где: здесь, во «Всё подряд» или на экзамене.</p>' +
+      '<div class="modes">' +
+      '<button class="mode-card" data-fill><span class="mi">⚔</span><b>' + (f.drill ? 'Тренировка' : 'Добрать полку') + '</b><span>' + (f.drill ? '10 вопросов уровня: новые и ошибки чаще.' : 'Пройти тему: комнаты с монстрами по порядку, внизу босс темы.') + '</span></button>' +
+      (hasBook ? '<button class="mode-card" data-lec><span class="mi">📖</span><b>Лекция</b><span>Открыть книжку этой темы и почитать.</span></button>' : '') +
+      (st.dust ? '<button class="mode-card" data-dust><span class="mi">🌫</span><b>Повторить пыльные (' + st.dust + ')</b><span>Вопросы, которые ты давно не видел (больше недели). Ответишь — пыль сдуется.</span></button>' : '') +
+      '</div></div>';
+    modal(h, function (el) {
+      el.querySelector('.md-wrap').classList.add('menu-md');
+      el.querySelectorAll('[data-close]').forEach(function (b) { b.onclick = closeModal; });
+      var fill = function () { closeModal(); go('floor', f.n); };
+      el.querySelector('[data-fill]').onclick = fill; G.modalEnter = fill;
+      var lc = el.querySelector('[data-lec]'); if (lc) lc.onclick = function () { closeModal(); openBook({ f: f, start: 0, mark: [], cur: null }); };
+      var ds = el.querySelector('[data-dust]'); if (ds) ds.onclick = function () { closeModal(); libRun(st.ids.filter(D.dusty).slice(0, 10), '🌫 Пыльные книги · ' + label, 'dust'); };
+    });
+  }
+  function openErrShelf() {
+    var errs = D.errIds(D.subj);
+    if (!errs.length) { toast('Полка ошибок пустая — так держать! ✨', '#9FE1CB'); return; }
+    libErrRun();
+  }
+  function libErrRun() { libRun(D.errIds(D.subj).slice(0, 10), '📕 Полка ошибок', 'errs'); }
+  /* одна комната из готового списка вопросов (полка ошибок / пыльные) — как «Повторение», ответы идут в свои темы */
+  function libRun(ids, title, kind) {
+    if (!ids.length) return go('path');
+    var pool = [], byId = {}, texts = [];
+    D.floors.forEach(function (f) { f.pool.forEach(function (q) { if (!byId[q.id]) { byId[q.id] = q; pool.push(q); } }); texts = texts.concat(f.texts); });
+    G.rep = { n: 'rep', rep: true, errs: kind === 'errs', dust: kind === 'dust', rk: 0, id: D.subjId + '-' + kind, label: title, title: title, texts: texts, pool: pool, byId: byId, tasks: [], taskById: {},
+      rooms: [{ k: 0, sec: null, secs: [], boss: false, tasks: [], label: title, qs: ids.filter(function (id) { return byId[id]; }) }], final: false, subj: D.subjId, syll: !!D.subj.syll };
+    go('room', { f: 'rep', k: 0, again: 1 });
   }
 
   /* ---------- ПУТЬ C++ (как ветка Duolingo) ---------- */
@@ -835,9 +930,9 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     var nq = items.filter(function (x) { return x.t === 'q'; }).length, nt = items.length - nq;
     var msg = mode === 'clean' ? 'Комната чиста ✓: все вопросы увидены, ошибок нет. Монстров нет — но можно пройти её ещё раз для закрепления.'
       : mode === 'err' ? 'Зал ошибок: здесь только твои ошибки этой лекции (' + nq + '). Исправь их — и зал запрётся.'
-      : f.practice ? 'Практика · ' + (room.label || '') + ': ' + nt + ' ' + plural(nt, 'задание', 'задания', 'заданий') + ' «напиши код». Реши, открой решение и честно отметь. «Не знал» — задание ещё раз спросит страж у выхода.'
+      : f.practice ? 'Практика · ' + (room.label || '') + ': ' + nt + ' ' + plural(nt, 'задание', 'задания', 'заданий') + ' «напиши код». Реши, открой решение и честно отметь. «Не знал» — задание ляжет на полку ошибок.'
       : room.boss ? 'Босс спросит ' + nq + ' ' + plural(nq, 'вопрос', 'вопроса', 'вопросов') + ' всей лекции — сначала те, что ты ещё не видел, и слабые.'
-      : 'В комнате ' + nq + ' ' + plural(nq, 'вопрос', 'вопроса', 'вопросов') + (nt ? ' и ' + nt + ' ' + plural(nt, 'задание', 'задания', 'заданий') : '') + ' — у монстров ровно столько сердечек. Ошибся — вопрос вернётся через пару вопросов. Ошибки и подсказки ещё раз спросит страж у выхода.';
+      : 'В комнате ' + nq + ' ' + plural(nq, 'вопрос', 'вопроса', 'вопросов') + (nt ? ' и ' + nt + ' ' + plural(nt, 'задание', 'задания', 'заданий') : '') + ' — у монстров ровно столько сердечек. Ошибся — вопрос вернётся через пару вопросов, а его книга ляжет на полку ошибок в библиотеке.';
     panel.insertAdjacentHTML('afterbegin', '<div class="wave-msg' + (mode === 'clean' ? ' ok' : '') + '">' + esc(msg) + '</div>' + tipHtml('room2'));
   }
   function plural(n, a, b, c) { var m10 = n % 10, m100 = n % 100; return m10 === 1 && m100 !== 11 ? a : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? b : c; }
@@ -856,9 +951,12 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     var r = Math.random(), n = r < 0.4 ? 1 : r < 0.7 ? 2 : r < 0.88 ? 3 : r < 0.96 ? 4 : 5;
     return list.concat(cand.slice(0, n));
   }
+  var GUARD_CHANCE = 0.05;
   function maybeGuard() {
     var R = G.room; if (!R || R.mon || R.f.exam) return null;   /* в экзамене стража нет */
     if (R.objs.some(function (o) { return o.type === 'mon' && !o.dead; })) return null;
+    if (R.guardRoll == null) R.guardRoll = Math.random() < GUARD_CHANCE;   /* страж теперь редкость: ошибки и так копятся на полке ошибок */
+    if (!R.guardRoll) return null;
     var items = guardList(); if (!items.length) return null;
     var g = mkMon(GUARD, items, { guard: true, strong: true }); R.cheats = []; R.errs = {}; R.errItem = {};
     var ei = R.objs.length - 1, prev = R.objs[ei - 1];
@@ -908,7 +1006,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
       focusOn(false); sfx('guard');
       setPanel('<div class="row"><span class="tag gold">Страж выхода</span><span class="tag">' + g.hp + ' ♥</span></div><div class="qtext">У выхода стоит страж</div><p class="msg">Он спросит все вопросы, где ты брал подсказку, и несколько, где ошибался (чаще ошибался — скорее спросит): <b>' + g.hp + '</b>. Ответь сам, без подсказок. Страж не бьёт — сердечки у него не тратятся. Ошибёшься — вопрос вернётся в конец очереди.</p>',
         [btn('К стражу', 'primary', 'Enter', function () { approach(nextObj()); })]);
-      if (autoOn()) autoGo(nextObj());
+      /* страж — событие: ждём кнопку */
       return;
     }
     approach(autoOn() ? nextObjAuto() : nextObj());   /* автопоход: к монстру/сундуку/выходу, алтарь — только по желанию */
@@ -976,11 +1074,13 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
   function autoNext(R, m, fn) {
     if (!autoOn()) return;
     var q = R.q; if (!q) return;   /* задания (с решением) — без автоперехода, надо успеть прочитать */
+    if (R.hold) { R.holdFn = fn; return; }   /* ждём «✓ Знаю / Оставить» — переход после выбора */
     var tok = R.nextTok = Math.random();
     setTimeout(function () { if (G.room === R && R.mon === m && R.nextTok === tok && R.q === q && R.answered && !G.modal && !BK) fn(); }, wms() + (fast() ? 500 : 1100));
   }
   /* после сундука: добычу видно ~2 с, потом сам идём дальше (если ничего не нажато) */
   function autoLoot() {
+    return;   /* добычу показываем и ждём «Идти дальше» */
     if (!autoOn()) return; var R = G.room, tok = R.idleTok = Math.random();
     setTimeout(function () { if (G.room === R && R.idleTok === tok && !R.mon && !G.modal && !BK && G.scene === 'room') goNext(); }, fast() ? 1200 : 2200);
   }
@@ -1080,7 +1180,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     var isTask = it.t === 't', t = isTask ? R.f.taskById[it.id] : null;
     focusOn(true);
     var head = '<div class="row"><span class="tag ' + (m.boss || m.strong || m.guard ? 'gold' : 'red') + '">' + esc(monName(m)) + (m.boss ? ' · босс' : m.guard ? ' · твои ошибки' : m.twin ? ' · похожие понятия' : m.sophist ? ' · вопрос наоборот' : m.strong ? ' · сильный' : '') + '</span><span class="tag">' + m.hp + ' ♥</span><span class="grow"></span>' + (isTask ? icoBtns(false) : trBtn()) + '</div>';
-    R.assisted = false; R.fiftyUsed = false; R.hinted = false; R.tr = null; R.answered = false;
+    R.assisted = false; R.ggl = false; R.dunno = false; R.hold = false; R.holdFn = null; R.fiftyUsed = false; R.hinted = false; R.tr = null; R.answered = false;
     if (isTask) return askTask(head, t);
     var q = it.t === 'r' ? reverseQ(R.f, R.f.byId[it.id]) : R.f.byId[it.id]; R.q = q; R.recent.push(q.id); if (R.recent.length > 6) R.recent.shift();
     var right = q.type === 'keyboard' ? q.answer : (q.opts.filter(function (o) { return o.right; })[0] || {}).t;
@@ -1096,19 +1196,19 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
       R.order = order;
       h += '<div class="opts">' + order.map(function (oi, n) { return '<button class="opt" data-o="' + oi + '"><span class="n">' + (n + 1) + '</span><span>' + D.md(q.opts[oi].t) + '</span></button>'; }).join('') + '</div>';
     }
-    var hasBook = R.f.texts && R.f.texts.length && !R.f.exam;
+    var hasBook = R.f.texts && R.f.texts.length;
     /* «Загуглить» — крупная кнопка наверху, рядом с «Перевести»; появляется сама, если долго думаешь */
-    if (!R.f.exam) h = h.replace('<span class="grow"></span>', '<span class="grow"></span><button class="ggl-btn" data-ql="ggl"' + (errs >= 2 ? ' data-hot' : ' hidden') + ' title="Объяснит ответ и каждый вариант">🔎 Загуглить</button>');
+    h = h.replace('<span class="grow"></span>', '<span class="grow"></span><button class="ggl-btn" data-ql="ggl"' + (errs >= 2 ? ' data-hot' : ' hidden') + ' title="Объяснит ответ и каждый вариант">🔎 Загуглить</button>');
     /* книга видна всегда (спокойно, без мигания); если долго думаешь — подсвечивается */
-    if (!R.f.exam) h += '<div class="qlinks">' + (hasBook ? '<button class="book-btn" data-ql="book"' + (hadErr ? ' data-hot' : '') + ' title="Прочитать лекцию по этой теме (B)">📖 Открыть книгу <small>лекция по теме</small></button>' : '') +
-      (!q.rev ? '<button class="linkbtn know" data-know title="Отметить как выученный — больше почти не будет попадаться">✓ Знаю</button>' : '') + '</div>' + brief;
+    h += '<div class="qlinks">' + (hasBook ? '<button class="book-btn" data-ql="book"' + (hadErr ? ' data-hot' : '') + ' title="Прочитать лекцию по этой теме (B)">📖 Открыть книгу <small>лекция по теме</small></button>' : '') +
+      '<button class="linkbtn dunno" data-dunno title="Честно не знаю: покажу ответ и пояснение, вопрос ляжет на полку ошибок (сердечко не снимается)">🤷 Не знаю</button>' + '</div>' + brief;
     h += hotbarHtml();
     /* C++: кнопка «RU» — перевод в облачке включается и выключается в любой момент боя */
-    if (D.subjId === 'cpp' && !R.f.exam && /[A-Za-z]{3,}/.test(q.q)) h = h.replace('<span class="grow"></span>', '<span class="grow"></span><button class="tr-cloud' + (cppTrOn() ? ' on' : '') + '" data-trc title="Перевод в облачке: показать / убрать" aria-pressed="' + cppTrOn() + '">RU</button>');
+    if (D.subjId === 'cpp' && /[A-Za-z]{3,}/.test(q.q)) h = h.replace('<span class="grow"></span>', '<span class="grow"></span><button class="tr-cloud' + (cppTrOn() ? ' on' : '') + '" data-trc title="Перевод в облачке: показать / убрать" aria-pressed="' + cppTrOn() + '">RU</button>');
     setPanel(h); wireIco(); wireTr(); wireHotbar(); wireBrief(); R.trB = null; bubbleQ(q, m); autoTrBubble(q, m);
     var trc = panel.querySelector('[data-trc]'); if (trc) trc.onclick = function () { toggleCloudTr(); };
     hintTimers(R, q); recallFirst(R, q);
-    var kb0 = panel.querySelector('[data-know]'); if (kb0) kb0.onclick = function () { markKnown(q); };
+    var kb0 = panel.querySelector('[data-dunno]'); if (kb0) kb0.onclick = function () { dunnoQ(q); };
     if (S.cfg.autoTr) toggleTr();
     G.buttons = [];
     if (q.type === 'keyboard') { var inp = $('kbIn'); $('kbGo').onclick = function () { answer(norm(inp.value) === norm(q.answer), inp.value); }; inp.onkeydown = function (e) { if (e.key === 'Enter') { e.preventDefault(); $('kbGo').click(); } }; if (matchMedia('(pointer:fine)').matches) setTimeout(function () { inp.focus({ preventScroll: true }); }, 50); }
@@ -1125,6 +1225,29 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
       } else panel.querySelectorAll('.opt').forEach(function (b) { b.onclick = function () { var oi = +b.getAttribute('data-o'); answer(!!q.opts[oi].right, oi); }; });
     }
   }
+  /* «✓ Знаю / Оставить» после верного ответа на вопрос с полки ошибок. Пока не выбрал — игра ждёт (автопереход стоит). */
+  function knowAsk(R, q) {
+    R.hold = true; R.holdFn = null;
+    var v = panel.querySelector('.verdict:last-of-type') || panel.querySelector('.verdict'); if (!v) return;
+    v.insertAdjacentHTML('afterend', '<div class="know-box"><span>📕 Этот вопрос лежит на <b>полке ошибок</b>. Точно запомнил?</span><button class="btn primary" data-kn>✓ Знаю — убрать с полки</button><button class="btn ghost" data-kl>Оставить</button></div>');
+    var box = panel.querySelector('.know-box');
+    var done = function (yes) {
+      if (!R.hold) return; R.hold = false;
+      if (yes) { D.knowErr(q.id); sfx('chest'); toast('📗 Книга вернулась на свою полку', '#9FE1CB'); box.innerHTML = '<span>📗 Убрано с полки ошибок — книга вернулась на полку темы.</span>'; }
+      else box.innerHTML = '<span>📕 Оставлено на полке ошибок — встретится ещё.</span>';
+      box.classList.add('decided');
+      var fn = R.holdFn; R.holdFn = null; if (fn && G.room === R) setTimeout(fn, 900);
+    };
+    box.querySelector('[data-kn]').onclick = function () { done(true); };
+    box.querySelector('[data-kl]').onclick = function () { done(false); };
+  }
+  /* «🤷 Не знаю»: честно сдаёшься — показываем ответ и пояснение, вопрос уходит на полку ошибок, сердечко не снимается */
+  function dunnoQ(q) {
+    var R = G.room; if (!R || R.answered || R.q !== q) return;
+    R.dunno = true;
+    if (q.type === 'keyboard') return answer(false, '');
+    answer(false, -1);
+  }
   function norm(s) { return String(s == null ? '' : s).trim().toLowerCase().replace(/\s+/g, ' ').replace(/[;.]$/, ''); }
   function askTask(head, t) {
     var R = G.room; R.task = t; R.taskAnswered = false; R.q = null;
@@ -1139,24 +1262,33 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     var R = G.room; if (R.taskAnswered) return; R.taskAnswered = true; R.answered = true;
     panel.querySelectorAll('[data-b]').forEach(function (b) { b.disabled = true; }); G.buttons = [];
     var s = $('sol'); if (s && !s.classList.contains('open')) s.click();
-    panel.insertAdjacentHTML('beforeend', '<div class="verdict ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Отлично! Сильный удар.' : 'Не страшно: решение перед тобой, разберись в нём. Это задание спросит страж у выхода.') + '</div>');
+    panel.insertAdjacentHTML('beforeend', '<div class="verdict ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Отлично! Сильный удар.' : 'Не страшно: решение перед тобой, разберись в нём. Задание легло на полку ошибок.') + '</div>');
     if (!ok) R.mistakes.push({ q: 'Задание: ' + (R.task.title || '').replace(/\s·\s(лёгкая|средняя|сложная)$/, ''), a: 'разбери решение в книжке / в задании' });
     D.record(R.task.id, ok); resolve(ok, 2, 'task');
   }
 
   function answer(ok, pickedIdx) {
-    var R = G.room, q = R.q; if (R.answered) return; R.answered = true; D.record(q.id, ok && !R.assisted); if (R.f.exam) examAnswer(q, ok, pickedIdx);
+    var R = G.room, q = R.q; if (R.answered) return; R.answered = true;
+    var wasErr = D.isErr(q.id), clean = ok && !R.assisted;
+    D.record(q.id, ok, R.assisted); if (R.f.exam) examAnswer(q, ok, pickedIdx);
     G.sessAns = (G.sessAns || 0) + 1; try { if (navigator.vibrate) navigator.vibrate(ok ? 15 : [30, 40, 30]); } catch (e) {}   /* лёгкая вибрация: верно — короткая, ошибка — двойная */
     if (!ok && !R.mistakes.some(function (x) { return x.md === q.q; })) R.mistakes.push({ q: shortQ(q.q), md: q.q, a: q.type === 'keyboard' ? q.answer : D.strip(D.md((q.opts.filter(function (o) { return o.right; })[0] || {}).t || '')) });
-    var later = R.mon.guard ? 'Страж вернёт этот вопрос в конец очереди.' : 'Этот вопрос ещё раз спросит страж у выхода.';
-    var again = R.f.exam ? 'Правильный ответ подсвечен зелёным. Ошибка не вернётся — разбор будет в конце.' : R.mon.guard ? later : 'Монстр задаст этот вопрос ещё раз через пару вопросов, а потом его спросит и страж.';
+    if (R.reveal) R.reveal();
+    var later = R.mon.guard ? 'Страж вернёт этот вопрос в конец очереди.' : 'Книга на полку не легла — вопрос вернётся позже, пока не ответишь сам.';
+    var shelf = R.f.exam ? '' : ' 📕 Книга улетела на полку ошибок.';
+    var again = R.f.exam ? 'Правильный ответ подсвечен зелёным. Ошибка не вернётся — разбор будет в конце.' + shelf : R.mon.guard ? later : 'Монстр задаст этот вопрос ещё раз через пару вопросов.' + shelf;
+    var dunno = R.dunno ? '🤷 Не знаю — не страшно, вот ответ. ' : '';
+    var exp = R.dunno && q.ex ? '<div class="ex-text dunno-ex">' + exHtml(q.ex) + '</div>' : '';
+    var ggl = R.f.exam && ok && R.ggl ? ' С Гуглом — в балл не идёт.' : '';
     if (q.type === 'keyboard') {
       var inp = $('kbIn'); inp.disabled = true; $('kbGo').disabled = true;
-      panel.querySelector('.kb').insertAdjacentHTML('afterend', '<div class="verdict ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Верно!' + (R.assisted ? ' Но с подсказкой — ' + later : '') : 'Неверно. Правильный ответ: <code>' + esc(q.answer) + '</code>. ' + again) + '</div>');
+      panel.querySelector('.kb').insertAdjacentHTML('afterend', '<div class="verdict ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Верно!' + (R.assisted && !R.f.exam ? ' Но с подсказкой — ' + later : '') + ggl : dunno + (R.dunno ? '' : 'Неверно. ') + 'Правильный ответ: <code>' + esc(q.answer) + '</code>. ' + again) + '</div>' + exp);
     } else {
       panel.querySelectorAll('.opt').forEach(function (b) { var oi = +b.getAttribute('data-o'); b.disabled = true; b.classList.remove('sel'); if (q.opts[oi].right) b.classList.add('right'); else if (oi === pickedIdx || (Array.isArray(pickedIdx) && pickedIdx.indexOf(oi) >= 0)) b.classList.add('wrong'); });
-      panel.querySelector('.opts').insertAdjacentHTML('afterend', '<div class="verdict ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Верно! Удар!' + (R.assisted ? ' Но с подсказкой — ' + later : '') : (R.mon.guard ? 'Неверно. ' : (R.f.exam ? '✗ Неверно. ' : 'Почти! Запомни правильный ответ — он подсвечен зелёным. ')) + again) + '</div>');
+      panel.querySelector('.opts').insertAdjacentHTML('afterend', '<div class="verdict ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Верно! Удар!' + (R.assisted && !R.f.exam ? ' Но с подсказкой — ' + later : '') + ggl : dunno + (R.dunno ? '' : R.mon.guard ? 'Неверно. ' : (R.f.exam ? '✗ Неверно. ' : 'Почти! Запомни правильный ответ — он подсвечен зелёным. ')) + again) + '</div>' + exp);
     }
+    /* верно ответил на вопрос с полки ошибок — спросить: «✓ Знаю» (книга вернётся на полку темы) или «Оставить» */
+    if (clean && wasErr && !R.f.exam) knowAsk(R, q);
     resolve(ok, 1, 'q');
   }
   /* Верный ответ снимает одно сердечко монстра. Ошибка сердечко монстра НЕ снимает: монстр бьёт героя (−1 ♥),
@@ -1282,7 +1414,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
   function line(norm, rudeSet) { return rude() && rudeSet && Math.random() < 0.5 ? pick(rudeSet) : pick(norm); }
 
   /* после ответа панель ненадолго гаснет, чтобы было видно удар героя или атаку монстра */
-  var WATCH_MS = 1560;
+  var WATCH_MS = 2200;   /* пауза «посмотреть, что случилось» после ответа (было 1,5 с — слишком быстро) */
   function fast() { return S.cfg.fast === true; }   /* быстрый режим: короткие паузы и анимации */
   function wms() { return fast() ? 550 : WATCH_MS; }
   function watchHit(ms) {
@@ -1327,15 +1459,17 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
         if (m.hp < before) floater((R.crit ? 'КРИТ! ' : '') + '−1 ♥', m.x, 120, R.crit ? '#FF9600' : '#FFD25A');
         else floater('с подсказкой — не засчитано', m.x, 120, '#B4B2C4');
         floater('+' + gain + ' IQ', m.x + 20, 150, '#CECBF6');
-        if (!m.guard && R.assisted) setTimeout(function () { floater('вопрос → стражу', m.x, 90, '#FAC775'); }, 300);
+        if (!m.guard && R.assisted && !m.exam) setTimeout(function () { floater('с подсказкой — вернётся позже', m.x, 90, '#FAC775'); }, 300);
         D.persist(); hud(); bump();
         afterAnswer(true);
       });
     } else {
       R.wrong++; R.combo = 1;
-      if (!m.guard) setMon(m, 'attack');
+      if (!m.guard && !R.dunno) setMon(m, 'attack');
+      if (!m.exam) setTimeout(function () { floater('📕 → полка ошибок', 240, 50, '#F09595'); }, 700);
       setTimeout(function () {
         if (m.guard) { floater('страж не бьёт — вопрос в конец очереди', m.x, 110, '#FAC775'); D.persist(); hud(); return afterAnswer(false); }
+        if (R.dunno && !m.exam) { floater('честно — сердечко цело', G.hero.x, 110, '#9FE1CB'); drop(); floater('вопрос вернётся', m.x, 90, '#FAC775'); D.persist(); hud(); return afterAnswer(false); }
         sfx('hurt');
         if (m.exam) { G.hero.hurtAt = now(); floater('✗ неверно', G.hero.x, 110, '#F09595'); drop(); D.persist(); hud(); return afterAnswer(false); }   /* экзамен: бьёт для вида, сердечки не тратятся */
         if (S.shieldOn) { S.shieldOn = false; floater('Щит выдержал!', G.hero.x, 110, '#85B7EB'); }
@@ -1352,7 +1486,7 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
       if (!m.items.length) { var row1 = document.createElement('div'); row1.className = 'row'; row1.style.marginTop = '10px'; row1.innerHTML = '<span class="hint">Это был последний вопрос — считаем результат…</span>'; panel.appendChild(row1); return setTimeout(function () { if (G.room === R) finishExamHall(false); }, tpms() + 600); }
       G.buttons = [btn('Следующий вопрос', 'primary', 'Enter', ask)];
       var row2 = document.createElement('div'); row2.className = 'row'; row2.style.marginTop = '12px'; row2.innerHTML = '<button class="btn primary" data-nx>Следующий вопрос<kbd>Enter</kbd></button>';
-      panel.appendChild(row2); row2.querySelector('[data-nx]').onclick = ask; autoNext(R, m, ask); return;
+      panel.appendChild(row2); row2.querySelector('[data-nx]').onclick = ask; if (ok) autoNext(R, m, ask); return;
     }
     if (S.hp <= 0) return setTimeout(defeat, 500);
     if (m.mimic && m.dead) return setTimeout(function () { if (G.room === R) { R.mon = null; mimicLoot(); } }, wms());
@@ -1364,9 +1498,9 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
       G.buttons = []; var row0 = document.createElement('div'); row0.className = 'row'; row0.style.marginTop = '10px';
       row0.innerHTML = '<span class="hint">' + esc(monName(m)) + (m.guard ? ' исчез в облаке искр…' : ' повержен…') + '</span>' + (R.q ? '<button class="btn ghost" data-ex0>📖 Объясни</button>' : '');
       panel.appendChild(row0); var q0 = R.q, exb = row0.querySelector('[data-ex0]'); if (exb) exb.onclick = function () { openExplain(q0); };
+      /* пауза: видно, что случилось; дальше — только кнопкой (события не пролистываются сами) */
       setTimeout(function () {
-        if (G.room === R && R.mon === m && !BK && !G.modal) goNext();
-        else if (G.room === R && R.mon === m) { G.buttons = [btn('Дальше', 'primary', 'Enter', goNext)]; var nb = document.createElement('button'); nb.className = 'btn primary'; nb.innerHTML = 'Дальше<kbd>Enter</kbd>'; nb.onclick = goNext; row0.appendChild(nb); }
+        if (G.room === R && R.mon === m) { G.buttons = [btn('Дальше', 'primary', 'Enter', goNext)]; var nb = document.createElement('button'); nb.className = 'btn primary'; nb.innerHTML = 'Дальше<kbd>Enter</kbd>'; nb.onclick = goNext; row0.appendChild(nb); var hn = row0.querySelector('.hint'); if (hn) hn.textContent = monName(m) + (m.guard ? ' исчез в облаке искр.' : ' повержен!'); }
       }, m.guard ? tpms() + 800 : wms() + 500);
       return;
     }
@@ -1377,7 +1511,7 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
     row.innerHTML = btns.map(function (b, i) { return '<button class="btn ' + b.cls + '" data-b2="' + i + '">' + esc(b.label) + (b.key ? '<kbd>' + b.key + '</kbd>' : '') + '</button>'; }).join('');
     panel.appendChild(row); G.buttons = btns;
     row.querySelectorAll('[data-b2]').forEach(function (el) { el.onclick = function () { btns[+el.getAttribute('data-b2')].fn(); }; });
-    autoNext(R, m, btns[0].fn);
+    if (ok && !m.dead) autoNext(R, m, btns[0].fn);   /* после ошибки — ждём кнопку: надо успеть понять, что случилось */
   }
   function bump() { var e = $('hudCombo'); e.classList.remove('bump'); void e.offsetWidth; e.classList.add('bump'); }
   function setMon(m, st) { m.state = st; m.st = now(); var d = A.monDur(m.key, st); if (st !== 'death') setTimeout(function () { if (m.state === st) { m.state = 'idle'; m.st = now(); } }, d); }
@@ -1457,9 +1591,9 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
       var la = f.pool.filter(function (q) { return D.learned(q.id); }).length, dl = la - (f.l0 || 0);
       h += '<div class="wave-msg ok">⚔ ' + esc(f.title) + ': выучено <b>' + la + '</b> из ' + f.pool.length + (dl > 0 ? ' (+' + dl + ' за сессию)' : '') + '</div>';
       var nextA = btn('▶ Ещё 10 вопросов', 'primary', 'Enter', function () { G.arenaTok = 0; buildArena(f.subj, f.cid); });
-      var stopA = btn('Хватит на сегодня', 'ghost', null, function () { G.arenaTok = 0; go('house'); });
+      var stopA = btn('📚 В библиотеку', 'ghost', null, function () { G.arenaTok = 0; go('path'); });
       h += highNote(); setPanel(h, [nextA, stopA]); wireHighNote(panel); if (panel.querySelector('[data-rest]')) G.arenaTok = -1;
-      if (autoOn() && !panel.querySelector('[data-rest]')) {
+      if (false) {   /* итог десятки — ждём кнопку «Ещё 10» */
         var tokA = G.arenaTok = Math.random(), secA = 3, rowA = document.createElement('p'); rowA.className = 'hint'; panel.appendChild(rowA);
         var tickA = function () { if (G.arenaTok !== tokA || G.scene !== 'room' || G.room !== R) return; if (secA <= 0) { G.arenaTok = 0; return buildArena(f.subj, f.cid); } rowA.textContent = 'Следующие 10 вопросов через ' + secA + '…'; secA--; setTimeout(tickA, 1000); };
         tickA();
@@ -1473,8 +1607,10 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
       setPanel(h, [main, again[0]]); return;
     }
     if (f.rep) {   /* повторение: заново собрать слабые вопросы или вернуться к карте */
-      again = repWeak(0) ? [btn('🔁 Повторить ещё', 'ghost', null, function () { buildRep(0); })] : [];
-      main = btn('К карте тем', 'primary', 'Enter', function () { go('path'); });
+      var errLeft = D.errIds(D.subj).length;
+      again = f.errs ? (errLeft ? [btn('📕 Ещё с полки ошибок (' + errLeft + ')', 'ghost', null, function () { libErrRun(); })] : [])
+        : f.dust ? [] : repWeak(0) ? [btn('🔁 Повторить ещё', 'ghost', null, function () { buildRep(0); })] : [];
+      main = btn('📚 В библиотеку', 'primary', 'Enter', function () { go('path'); });
     }
     /* если остались вопросы — «ещё раз» стоит первой: так тема закроется целиком */
     if (again.length) { again[0].cls = 'primary'; again[0].key = 'Enter'; main.cls = 'ghost'; main.key = null; }
@@ -1567,7 +1703,7 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
 
   /* --- хотбар под вопросом --- */
   function hotbarHtml() {
-    if (G.room && G.room.f.exam) return '<p class="hint">Экзамен: подсказки и предметы недоступны — как на настоящем.</p>';
+    if (G.room && G.room.f.exam) return '<p class="hint">Экзамен: предметы недоступны. Ответ с книжкой засчитывается в балл, ответ с Гуглом — нет.</p>';
     var w = X.weapon(), W = X.WEAPONS[w.k], h = '<div class="hotbar" role="toolbar" aria-label="Предметы">';
     /* оружия больше нет — слот оружия убран */
     X.HOTBAR.forEach(function (k) {
@@ -1749,7 +1885,7 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
     if (f && (f.rep || f.arena)) { var tp = q.src ? q.src.topic : q.topic; if (tp) f = floorBy(tp); }   /* в «Повторении» — лекция темы вопроса */
     var before = !!(R && R.mon && R.q === q && !R.answered);
     /* открываем сразу, без окна; до ответа тихо помечаем как подсказку */
-    if (before && !R.assisted) { R.assisted = true; markAssisted(); }
+    if (before) R.ggl = true; if (before && !R.assisted) { R.assisted = true; markAssisted(); }
     window.open('https://www.google.com/search?udm=50&q=' + encodeURIComponent(aiPrompt(q, f, !before)), '_blank', 'noopener');
   }
   function slotCard(icon, title, sub, right, rar, extra) {

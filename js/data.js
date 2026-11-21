@@ -236,9 +236,23 @@
       var s = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null');
       if (!s || (s.v !== 1 && s.v !== 2)) return fresh();
       if (s.v === 1) { s.v = 2; s.subj = 'cpp'; if (s.at) s.at.s = 'cpp'; }
-      return Object.assign(fresh(), s);
+      return libMigrate(Object.assign(fresh(), s));
     } catch (e) { return fresh(); }
   })();
+  /* библиотека (ноябрь 2026): у вопроса появились поля
+     ok  — сколько раз ответил верно БЕЗ подсказки (книга на полке темы, если ok > 0 и вопроса нет на полке ошибок);
+     err — вопрос лежит на полке ошибок (ставится при любой ошибке / «Не знаю», снимается только кнопкой «✓ Знаю»);
+     ew  — сколько раз ошибся; seen — когда видел последний раз (для «пыли»).
+     Старое сохранение переносится: верные ответы → книги, ещё не исправленные ошибки → полка ошибок. */
+  function libMigrate(s) {
+    if (s.lib === 1) return s;
+    Object.keys(s.srs || {}).forEach(function (id) {
+      var r = s.srs[id]; if (r.ok == null) r.ok = Math.max(0, (r.n || 0) - (r.w || 0));
+      if (r.err == null) r.err = (r.w || 0) > 0 && (r.bad === true || (r.c || 0) < 3);
+      if (r.ew == null) r.ew = r.w || 0;
+    });
+    s.lib = 1; return s;
+  }
   D.persist = function () { try { localStorage.setItem(SAVE_KEY, JSON.stringify(D.save)); } catch (e) { /* приватный режим — играем без сохранения */ } };
 
   /* огонёк: день засчитывается после первого ответа */
@@ -259,7 +273,14 @@
   D.level = function (id) { var r = D.save.srs[id]; return r ? r.l : 0; };
   D.mastery = function (ids) { if (!ids.length) return 0; var s = 0; ids.forEach(function (id) { s += D.level(id); }); return Math.round(s / (ids.length * 5) * 100); };
   /* прогресс предмета/темы: доля вопросов, на которые хотя бы раз ответили верно (без подсказки) */
-  D.solvedOnce = function (id) { var r = D.save.srs[id]; return !!r && r.n - r.w > 0; };
+  D.solvedOnce = function (id) { var r = D.save.srs[id]; return !!r && (r.ok != null ? r.ok : r.n - r.w) > 0; };
+  /* ---------- БИБЛИОТЕКА: книги на полках и полка ошибок ---------- */
+  D.isErr = function (id) { var r = D.save.srs[id]; return !!r && !!r.err; };
+  D.onShelf = function (id) { if (D.isErr(id)) return false; return D.isKnown(id) || D.solvedOnce(id); };
+  D.knowErr = function (id) { var r = D.save.srs[id]; if (r) { r.err = false; r.seen = Date.now(); } D.persist(); };
+  D.DUST_MS = 7 * 864e5;
+  D.dusty = function (id) { var r = D.save.srs[id]; return !!r && D.onShelf(id) && !!r.seen && Date.now() - r.seen > D.DUST_MS; };
+  D.errIds = function (sj) { return D.subjIds(sj).filter(D.isErr).sort(function (a, b) { return (D.save.srs[b].ew || 0) - (D.save.srs[a].ew || 0); }); };
   D.progress = function (ids) { if (!ids.length) return 0; return Math.round(ids.filter(D.solvedOnce).length / ids.length * 100); };
   D.subjIds = function (sj) { var seen = {}; return (sj || D.subj).floors.reduce(function (a, f) { return a.concat(f.pool.map(function (q) { return q.id; })); }, []).filter(function (id) { if (seen[id]) return false; seen[id] = 1; return true; }); };
   /* «Зубрёжка» (ИКТ): вес вопроса при выборе. Новый — часто; ошибка — очень часто, но не сразу
@@ -271,6 +292,7 @@
     var r = D.save.srs[id]; if (!r) return 5;
     if (D.isBad(id)) return r.due > D.save.ticks ? 1.2 : 10;
     var c = r.c != null ? r.c : r.l >= 3 ? 3 : r.l;
+    if (D.dusty(id)) return 2.5;   /* пыльная книга — давно не видел, пора освежить */
     return c >= 3 ? 0.15 : c === 2 ? 0.6 : c === 1 ? 2 : 3;
   };
   D.learned = function (id) { if (D.isKnown(id)) return true; var r = D.save.srs[id]; return !!r && !D.isBad(id) && (r.c != null ? r.c : r.l >= 3 ? 3 : 0) >= 3; };
@@ -284,11 +306,14 @@
     }
     return out;
   };
-  D.record = function (id, ok) {
-    var s = D.save, r = s.srs[id] || { l: 0, n: 0, w: 0, due: 0 };
-    s.ticks++; r.n++;
-    if (ok) { r.l = Math.min(5, r.l + 1); r.due = s.ticks + GAP[r.l]; r.bad = false; r.c = (r.c || 0) + 1; }
-    else { r.w++; r.l = Math.max(0, r.l - 1); r.due = s.ticks + 4 + Math.floor(Math.random() * 5); r.bad = true; r.c = 0; }
+  /* hint = верно, но с подсказкой (Google, предмет, питомец): это НЕ ошибка (на полку ошибок не идёт),
+     но и не выучено — вопрос вернётся через несколько вопросов, пока не ответишь сам */
+  D.record = function (id, ok, hint) {
+    var s = D.save, r = s.srs[id] || { l: 0, n: 0, w: 0, due: 0, ok: 0, ew: 0, err: false };
+    s.ticks++; r.n++; r.seen = Date.now();
+    if (ok && hint) { r.due = s.ticks + 4 + Math.floor(Math.random() * 5); r.bad = true; r.c = 0; }
+    else if (ok) { r.l = Math.min(5, r.l + 1); r.due = s.ticks + GAP[r.l]; r.bad = false; r.c = (r.c || 0) + 1; r.ok = (r.ok || 0) + 1; }
+    else { r.w++; r.ew = (r.ew || 0) + 1; r.err = true; r.l = Math.max(0, r.l - 1); r.due = s.ticks + 4 + Math.floor(Math.random() * 5); r.bad = true; r.c = 0; }
     s.srs[id] = r;
   };
   /* «к повтору» — последний ответ был ошибкой (или «не знал», или с подсказкой) */
