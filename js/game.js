@@ -780,7 +780,7 @@
   function evAsk(q, o) {
     var E = G.ev, cur = E.cur = { q: q, assisted: false, tries: 0, done: false, wasErr: D.isErr(q.id) };
     var order = q.opts.map(function (_, i) { return i; }); for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), tt = order[i]; order[i] = order[j]; order[j] = tt; }
-    var hasBook = (floorOfQ(q) || {}).texts && floorOfQ(q).texts.length;
+    var hasBook = D.floors.some(function (f) { return f.texts && f.texts.length; });
     var h = '<div class="row ev-head"><span class="tag gold">' + esc(o.title) + '</span><span class="grow"></span>' +
       '<button class="btn ghost sm" data-evtr title="Перевести вопрос">🌐 Перевод</button>' + (hasBook ? '<button class="btn ghost sm" data-evbook title="Открыть лекцию по теме вопроса">📖 Книга</button>' : '') +
       '<button class="btn ghost sm" data-evggl title="Объяснит ответ — но тогда ответ засчитается как «с подсказкой»">🔎 Загуглить</button></div>' +
@@ -792,7 +792,7 @@
     var trb = panel.querySelector('[data-evtr]');
     trb.onclick = function () { var b = this; if (b.classList.contains('on')) { trHide(panel); b.classList.remove('on'); return; } b.disabled = true; trShow(q, panel, function () { return G.ev && G.ev.cur === cur; }).then(function (ok) { b.disabled = false; if (ok) b.classList.add('on'); }); };
     if (D.subjId === 'cpp' && cppTrOn()) trb.click();   /* C++: готовый перевод — сразу, как в бою */
-    var bk = panel.querySelector('[data-evbook]'); if (bk) bk.onclick = function () { var fq = floorOfQ(q), ref = exRef(q, fq), tf = ref ? ref.f : fq, idx = ref && ref.sec ? tf.texts.indexOf(ref.sec) : 0; openBook({ f: tf, start: Math.max(0, idx), mark: [], cur: ref && ref.sec ? ref.sec.id : null }); };
+    var bk = panel.querySelector('[data-evbook]'); if (bk) bk.onclick = function () { openBookFor(q); };
     panel.querySelector('[data-evggl]').onclick = function () { if (!cur.done) { cur.assisted = true; this.classList.add('used'); } window.open('https://www.google.com/search?udm=50&q=' + encodeURIComponent(aiPrompt(q, floorOfQ(q), cur.done)), '_blank', 'noopener'); };
     var finish = function (ok, oi, dunno) {
       if (cur.done) return; cur.done = true;
@@ -1244,7 +1244,7 @@
     var S2 = E.st = { q: q, shown: shown, truth: truth, file: false, assisted: false, mult: last ? 2 : 1, done: false, wasErr: D.isErr(q.id) };
     E.pointT = now(); E.look = 'pro'; E.proT = 0; setTimeout(function () { if (G.ev === E && E.st === S2 && !S2.done) floater(pick(['Виновен! Я докажу!', 'Слушайте внимательно…', 'Это же очевидно!', 'Возразить нечего, а?', 'Факты — упрямая вещь!']), A.COURT.pro + 30, 84, '#F09595'); }, 400);
     E.fileOpen = false;
-    var hasBook = (floorOfQ(q) || {}).texts && floorOfQ(q).texts.length;
+    var hasBook = D.floors.some(function (f) { return f.texts && f.texts.length; });
     setPanel(tugHtml(E) + '<div class="row ev-head"><span class="tag gold">⚖ Заявление ' + (E.n + 1) + ' из ' + COURT_N + (last ? ' · РЕШАЮЩЕЕ ×2' : '') + '</span><span class="grow"></span>' +
       '<button class="btn ghost sm" data-ctr>🌐 Перевод</button>' + (hasBook ? '<button class="btn ghost sm" data-cfile title="Раздел лекции по этому вопросу. Тогда за верный ответ — 1 очко вместо 2">📂 Материалы дела</button>' : '') + '<button class="btn ghost sm" data-cggl>🔎 Загуглить</button></div>' +
       '<div class="claim"><span class="who">😈 Прокурор:</span><div class="cq">«' + D.md(q.q) + '»</div>' + (q.img ? '<div class="qimg"><img src="' + esc(q.img) + '" alt=""></div>' : '') + '<div class="ca">Ответ: <b>' + D.md(q.opts[shown].t) + '</b></div></div>' +
@@ -1252,7 +1252,7 @@
     G.buttons = [];
     var ctr = panel.querySelector('[data-ctr]'); ctr.onclick = function () { var b = this; if (b.classList.contains('on')) { trHide(panel); b.classList.remove('on'); return; } b.disabled = true; trShow(q, panel, function () { return G.ev === E && E.st === S2; }).then(function (ok) { b.disabled = false; if (!ok) return; b.classList.add('on'); X.trQuestion(q, S.cfg.trLang || 'ru').then(function (d) { var t = d.o && d.o[shown], ca = panel.querySelector('.ca'); if (ca && t && t !== q.opts[shown].t && !X.isCodeLike(q.opts[shown].t) && !ca.querySelector('.o-tr')) ca.insertAdjacentHTML('beforeend', '<small class="o-tr">' + D.md(t) + '</small>'); }); }); };
     if (D.subjId === 'cpp' && cppTrOn()) ctr.click();
-    var cf = panel.querySelector('[data-cfile]'); if (cf) cf.onclick = function () { S2.file = true; E.fileOpen = true; var fq = floorOfQ(q), ref = exRef(q, fq), tf = ref ? ref.f : fq; openBook({ f: tf, start: ref && ref.sec ? Math.max(0, tf.texts.indexOf(ref.sec)) : 0, mark: [], cur: ref && ref.sec ? ref.sec.id : null }); };
+    var cf = panel.querySelector('[data-cfile]'); if (cf) cf.onclick = function () { S2.file = true; E.fileOpen = true; openBookFor(q); };
     panel.querySelector('[data-cggl]').onclick = function () { if (!S2.done) { S2.assisted = true; this.classList.add('used'); } window.open('https://www.google.com/search?udm=50&q=' + encodeURIComponent(aiPrompt(q, floorOfQ(q), S2.done)), '_blank', 'noopener'); };
     panel.querySelector('[data-agree]').onclick = function () { courtJudge(S2.truth, false); };
     panel.querySelector('[data-obj]').onclick = function () {
@@ -2447,8 +2447,34 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
   var BK = null;
   /* в «Практике» книга — лекция той темы, чьи задания в комнате */
   function bookFloor(R) { return R.f.practice && R.room.src ? floorBy(R.room.src) : R.f; }
+  /* где в лекциях ответ на этот вопрос: 1) ссылка «По лекции» в пояснении; 2) поиск по словам вопроса и
+     верного ответа во ВСЕХ лекциях предмета (своя тема чуть важнее); 3) иначе — начало темы вопроса */
+  function bookFor(q) {
+    var own = floorOfQ(q), ref = exRef(q, own);
+    if (ref && ref.sec) return { f: ref.f, sec: ref.sec };
+    var right = q.type === 'keyboard' ? q.answer : (q.opts || []).filter(function (o) { return o.right; }).map(function (o) { return o.t; }).join(' ');
+    var qt = D.toks(q.q), at = D.toks(right), best = null, bs = 0;   /* слова верного ответа важнее: раздел должен объяснять именно ответ */
+    D.floors.forEach(function (f) {
+      (f.texts || []).forEach(function (s) {
+        var sc = 0;
+        (s.blocks || []).forEach(function (b) { if (b.t === 'h') return; if (!b._tok) b._tok = D.toks(blockText(b)); var a = D.overlap(at, b._tok); sc = Math.max(sc, D.overlap(qt, b._tok) + a * 2 + (a > 0 ? 1 : 0)); });
+        if (!s._ttok) s._ttok = D.toks(s.title || ''); sc += D.overlap(qt, s._ttok) * 0.5;
+        if (f === own) sc += 0.4;
+        if (sc > bs) { bs = sc; best = { f: f, sec: s }; }
+      });
+    });
+    if (best && bs >= 1.2) return best;
+    var tf = own && own.texts && own.texts.length ? own : D.floors.filter(function (f) { return f.texts && f.texts.length; })[0];
+    return { f: tf, sec: null };
+  }
+  function openBookFor(q) {
+    var b = bookFor(q); if (!b || !b.f) return;
+    openBook({ f: b.f, start: b.sec ? Math.max(0, b.f.texts.indexOf(b.sec)) : 0, mark: b.sec ? [b.sec.id] : [], cur: b.sec ? b.sec.id : null });
+  }
   function openBookRoom() {
     var R = G.room; if (!R || !R.f.texts.length) return;
+    /* «Всё подряд», повторение, экзамен: тексты всех тем вперемешку — ищем раздел именно этого вопроса */
+    if (R.q && !R.task && (R.f.arena || R.f.rep || R.f.exam || !R.briefSec)) return openBookFor(R.q);
     var sec = (R.mon && R.briefSec) || R.room.sec || (R.room.secs || [])[0];
     var bf = bookFloor(R), idx = Math.max(0, bf.texts.indexOf(sec));
     openBook({ f: bf, start: idx, mark: (R.room.secs || []).map(function (s) { return s.id; }), cur: sec ? sec.id : null });
@@ -2991,7 +3017,7 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
     setTimeout(function () { G.artReload = 0; }, 8000);
   }
   /* для проверки: мгновенно довести героя до цели (вкладка в фоне не анимируется) */
-  window.DGame = { G: G, liar: function () { G.liarForce = 1; }, pet: function (cb) { petRescue(cb || function () {}); }, cage: function () { G.cageForce = 1; }, ev: function (k, sid) { G.evForce = k; buildArena(sid || D.subjId, 'all', 1); }, go: function (s, a) { go(s, a); }, next: function () { goNext(); }, skip: function () { var h = G.hero; if (h.target != null) { h.x = h.target; h.target = null; var cb = h.onArrive; h.onArrive = null; if (cb) cb(); } } };
+  window.DGame = { G: G, bookFor: function (q) { return bookFor(q); }, liar: function () { G.liarForce = 1; }, pet: function (cb) { petRescue(cb || function () {}); }, cage: function () { G.cageForce = 1; }, ev: function (k, sid) { G.evForce = k; buildArena(sid || D.subjId, 'all', 1); }, go: function (s, a) { go(s, a); }, next: function () { goNext(); }, skip: function () { var h = G.hero; if (h.target != null) { h.x = h.target; h.target = null; var cb = h.onArrive; h.onArrive = null; if (cb) cb(); } } };
 
   /* ---------- старт ---------- */
   if (A.loadPets) A.loadPets();
