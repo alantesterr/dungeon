@@ -1029,11 +1029,16 @@
     labels(E.boxes.map(function (b) { return b.open && !b.cage ? { text: b.letter, x: b.x, y: A.FLOOR_Y - 34, color: '#FAC775' } : null; }).filter(Boolean));
     var riddle = '<div class="riddle"><b>🚪 Загадка на двери:</b> ' + D.md(E.wq.q) + '</div>';
     var tiles = '<div class="ltiles">' + E.got.map(function (L, i) { return '<button class="ltile" data-lt="' + i + '">' + esc(L) + '</button>'; }).join('') + '</div>';
-    setPanel((lead || '') + riddle + '<p class="hint">Собранные буквы (' + E.got.length + ' из ' + E.word.length + '). Откроешь все — слово соберётся само. Догадался раньше — впиши слово: +10 IQ за каждую неоткрытую шкатулку.</p>' + tiles +
-      '<div class="guess"><input id="evGuess" autocomplete="off" placeholder="Угадать слово…" maxlength="12"><button class="btn primary" id="evGo">Открыть дверь</button></div>' +
+    /* клетки слова, как в «Вордли»: сколько клеток — столько букв */
+    var cells = '<div class="wcells" title="Слово из ' + E.word.length + ' букв">' + E.word.split('').map(function () { return '<span class="wc"></span>'; }).join('') + '<span class="wc-n">' + E.word.length + ' ' + plural(E.word.length, 'буква', 'буквы', 'букв') + '</span></div>';
+    setPanel((lead || '') + riddle + cells + '<p class="hint">Собранные буквы (' + E.got.length + ' из ' + E.word.length + ') — нажми на букву, и она встанет в клетку. Откроешь все шкатулки — слово соберётся само. Догадался раньше — впиши слово: +10 IQ за каждую неоткрытую шкатулку.</p>' + tiles +
+      '<div class="guess"><input id="evGuess" autocomplete="off" placeholder="Угадать слово…" maxlength="' + E.word.length + '"><button class="btn ghost" id="evDel" title="Стереть букву">⌫</button><button class="btn primary" id="evGo">Открыть дверь</button></div>' +
       (closed.length ? '<div class="row">' + E.boxes.map(function (b, i) { return b.open ? '' : '<button class="btn ghost" data-bx="' + i + '">🎁 Шкатулка ' + (i + 1) + '</button>'; }).join('') + '</div>' : ''));
-    var inp = $('evGuess');
-    panel.querySelectorAll('[data-lt]').forEach(function (b) { b.onclick = function () { inp.value += b.textContent; inp.focus(); }; });
+    var inp = $('evGuess'), wc = panel.querySelectorAll('.wc');
+    var paint = function () { var v = inp.value.toUpperCase().replace(/Ё/g, 'Е'); wc.forEach(function (c, i) { c.textContent = v[i] || ''; c.classList.toggle('on', !!v[i]); }); };
+    inp.oninput = paint;
+    $('evDel').onclick = function () { inp.value = inp.value.slice(0, -1); paint(); };
+    panel.querySelectorAll('[data-lt]').forEach(function (b) { b.onclick = function () { if (inp.value.length < E.word.length) { inp.value += b.textContent; paint(); } }; });
     panel.querySelectorAll('[data-bx]').forEach(function (b) { b.onclick = function () { boxOpen(+b.getAttribute('data-bx')); }; });
     var go2 = function () { boxGuess(inp.value); };
     $('evGo').onclick = go2; inp.onkeydown = function (e) { if (e.key === 'Enter') { e.preventDefault(); go2(); } };
@@ -1065,14 +1070,14 @@
   /* все буквы собраны: они по одной встают в ячейки двери, слово складывается само */
   function boxAssemble() {
     var E = G.ev; G.buttons = []; labels([]); E.solved = [];
-    setPanel('<div class="qtext">🚪 Все буквы собраны!</div><p class="msg">Буквы сами встают на свои места в двери…</p><div class="ltiles word-fill">' + E.word.split('').map(function (L, i) { return '<span class="ltile" style="animation-delay:' + (i * 450) + 'ms">' + esc(L) + '</span>'; }).join('') + '</div>');
+    setPanel('<div class="qtext">🚪 Все буквы собраны!</div><p class="msg">Буквы сами встают на свои места в двери…</p><div class="wcells">' + E.word.split('').map(function (L, i) { return '<span class="wc on drop" style="animation-delay:' + (i * 450) + 'ms">' + esc(L) + '</span>'; }).join('') + '</div>');
     E.word.split('').forEach(function (_, i) { setTimeout(function () { if (G.ev !== E) return; E.solved[i] = 1; sfx('ok'); }, 400 + i * 450); });
     setTimeout(function () { if (G.ev === E) boxGuess(E.word); }, 1400 + E.word.length * 450);
   }
   function boxGuess(v) {
     var E = G.ev, g = String(v || '').trim().toUpperCase().replace(/Ё/g, 'Е');
     if (!g) return;
-    if (g !== E.word) { sfx('hurt'); floater('Не то слово!', 440, 120, '#F09595'); var inp = $('evGuess'); if (inp) { inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); } return; }
+    if (g !== E.word) { sfx('hurt'); floater('Не то слово!', 440, 120, '#F09595'); var inp = $('evGuess'); if (inp) { inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); } var wcs = panel.querySelector('.wcells'); if (wcs) { wcs.classList.remove('shake'); void wcs.offsetWidth; wcs.classList.add('shake'); } return; }
     var closed = E.boxes.filter(function (b) { return !b.open && !b.cage; }).length, bonus = closed * 10;
     E.solved = E.word.split('').map(function () { return 1; }); E.doorOpen = true; sfx('door'); setTimeout(function () { sfx('win'); }, 300);
     D.record(E.wq.id, true, false); D.persist();
