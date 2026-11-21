@@ -1017,7 +1017,7 @@
     labels(E.boxes.map(function (b) { return b.open && !b.cage ? { text: b.letter, x: b.x, y: A.FLOOR_Y - 34, color: '#FAC775' } : null; }).filter(Boolean));
     var riddle = '<div class="riddle"><b>🚪 Загадка на двери:</b> ' + D.md(E.wq.q) + '</div>';
     var tiles = '<div class="ltiles">' + E.got.map(function (L, i) { return '<button class="ltile" data-lt="' + i + '">' + esc(L) + '</button>'; }).join('') + '</div>';
-    setPanel((lead || '') + riddle + '<p class="hint">Собранные буквы (' + E.got.length + ' из ' + E.word.length + '):</p>' + tiles +
+    setPanel((lead || '') + riddle + '<p class="hint">Собранные буквы (' + E.got.length + ' из ' + E.word.length + '). Откроешь все — слово соберётся само. Догадался раньше — впиши слово: +10 IQ за каждую неоткрытую шкатулку.</p>' + tiles +
       '<div class="guess"><input id="evGuess" autocomplete="off" placeholder="Угадать слово…" maxlength="12"><button class="btn primary" id="evGo">Открыть дверь</button></div>' +
       (closed.length ? '<div class="row">' + E.boxes.map(function (b, i) { return b.open ? '' : '<button class="btn ghost" data-bx="' + i + '">🎁 Шкатулка ' + (i + 1) + '</button>'; }).join('') + '</div>' : ''));
     var inp = $('evGuess');
@@ -1034,16 +1034,28 @@
       var q = evPick(1, (function () { var o = {}; o[E.wq.id] = 1; return o; })())[0]; if (!q) { E.busy = false; return; }
       evAsk(q, {
         title: '🎁 Шкатулка ' + (i + 1),
-        verdict: function (ok) { return ok ? (bx.cage ? '🔓 Щёлк! Это не шкатулка, а <b>клетка</b> — внутри питомец!' : '🔓 Щёлк! Шкатулка открылась — внутри буква <b>' + esc(bx.letter) + '</b>.') : '🔒 Шкатулка дёрнулась и осталась закрытой.'; },
+        verdict: function (ok) { return ok ? (bx.cage ? '🔓 Щёлк! Это не шкатулка, а <b>клетка</b> — внутри питомец!' : '🔓 Щёлк! Шкатулка открылась — внутри буква <b>' + esc(bx.letter) + '</b>.') : '🔒 Шкатулка дёрнулась и осталась закрытой — она загадает <b>другой вопрос</b>.'; },
         done: function (ok, first, aft) {
           E.busy = false;
           if (ok && bx.cage) { bx.open = true; bx.openT = now(); sfx('door'); return setTimeout(function () { petRescue(function () { if (G.ev === E) boxesIdle('<p class="msg">🐾 Питомец спасён! Теперь собирай буквы дальше.</p>'); }, E.cageKind); }, 1500); }
-          if (ok) { bx.open = true; bx.openT = now(); E.got.push(bx.letter); sfx('chest'); floater(bx.letter, bx.x, 150, '#FAC775'); }
-          else { bx.shakeT = now(); sfx('hurt'); }
+          if (!ok) {   /* ошибся — остаёшься у этой же шкатулки, она даёт другой вопрос */
+            bx.shakeT = now(); sfx('hurt');
+            return evButtons(aft, [btn('🎁 Другой вопрос этой шкатулки', 'primary', 'Enter', function () { boxOpen(i); }), btn('К двери и шкатулкам', 'ghost', null, function () { boxesIdle(); })]);
+          }
+          bx.open = true; bx.openT = now(); E.got.push(bx.letter); sfx('chest'); floater(bx.letter, bx.x, 150, '#FAC775');
+          /* открыты все шкатулки с буквами — слово собирается само */
+          if (E.boxes.every(function (b) { return b.open || b.cage; })) return evButtons(aft, [btn('🚪 Буквы летят в дверь — собрать слово', 'primary', 'Enter', boxAssemble)]);
           evButtons(aft, [btn('К двери и шкатулкам', 'primary', 'Enter', function () { boxesIdle(); })]);
         }
       });
     });
+  }
+  /* все буквы собраны: они по одной встают в ячейки двери, слово складывается само */
+  function boxAssemble() {
+    var E = G.ev; G.buttons = []; labels([]); E.solved = [];
+    setPanel('<div class="qtext">🚪 Все буквы собраны!</div><p class="msg">Буквы сами встают на свои места в двери…</p><div class="ltiles word-fill">' + E.word.split('').map(function (L, i) { return '<span class="ltile" style="animation-delay:' + (i * 260) + 'ms">' + esc(L) + '</span>'; }).join('') + '</div>');
+    E.word.split('').forEach(function (_, i) { setTimeout(function () { if (G.ev !== E) return; E.solved[i] = 1; sfx('ok'); }, 300 + i * 260); });
+    setTimeout(function () { if (G.ev === E) boxGuess(E.word); }, 600 + E.word.length * 260);
   }
   function boxGuess(v) {
     var E = G.ev, g = String(v || '').trim().toUpperCase().replace(/Ё/g, 'Е');
