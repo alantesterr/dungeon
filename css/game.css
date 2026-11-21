@@ -590,3 +590,9 @@ details.brief[open]>.rich{animation:richIn .45s ease-out}
 .know-list{display:flex;flex-direction:column;gap:6px;margin:8px 0}
 .kn-it{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer}
 .kn-it em{display:block;color:#9FE1CB;font-style:normal;font-size:13px;margin-top:2px}
+/* ---------- ПИТОМЦЫ ---------- */
+.pet-card{display:flex;flex-direction:column;gap:8px}
+.pet-cv{width:min(320px,100%);height:auto;aspect-ratio:16/9;image-rendering:pixelated;align-self:center;background:radial-gradient(ellipse at 50% 80%,rgba(250,199,117,.12),transparent 70%);border-radius:12px}
+.pet-info{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.pet-info input{background:var(--card);border:2px solid var(--line);border-radius:8px;color:var(--text);font:700 16px/1 inherit;padding:6px 10px;width:160px}
+.pet-ab{margin:4px 0;padding:8px 12px;background:var(--card);border:1px solid var(--line);border-radius:10px}

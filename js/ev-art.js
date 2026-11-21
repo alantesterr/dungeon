@@ -60,6 +60,7 @@
     /* сундук на той стороне */
     var fr = A.anim.chest_full_open || [], kk = E.chestOpen ? Math.min(2, Math.floor((t - E.chestOpen) / 120)) : 0;
     A.frame(c, fr[kk], 428, fy - 40, 2.5);
+    if (E.cage && A.drawCage) A.drawCage(c, t, 398, fy - 3, E.cage.kind, E.cage.openT, true);
   }
   function plank(c, x, y, w, rot, s, cracked) {
     c.save(); c.translate(x + w / 2, y + 3); c.rotate(rot || 0);
@@ -87,6 +88,7 @@
       else if (T.item === 'potion' && !T.taken) { px(c, ix - 4, fy - 16, 8, 11, '#c0303a'); px(c, ix - 2, fy - 20, 4, 4, '#d8d0c0'); px(c, ix - 3, fy - 14, 2, 4, 'rgba(255,255,255,.5)'); }
       else if (T.item === 'bat' && !T.taken) { var bf = Math.floor(t / 120) % 2; px(c, ix - 3, A.FLOOR_Y - 120, 6, 5, '#1a1420'); px(c, ix - 9, A.FLOOR_Y - 121 + bf * 2, 6, 3, '#1a1420'); px(c, ix + 3, A.FLOOR_Y - 121 + bf * 2, 6, 3, '#1a1420'); px(c, ix - 2, A.FLOOR_Y - 119, 1, 1, '#ff4040'); px(c, ix + 1, A.FLOOR_Y - 119, 1, 1, '#ff4040'); }
       else if (T.item === 'mirror') mirror(c, t, E, ix, fy);
+      else if (T.item === 'cage' && A.drawCage) A.drawCage(c, t, ix, fy - 3, E.cageKind, T.openT, true);
       /* бра с факелом */
       px(c, T.x - 3, 100, 6, 10, '#3a3440'); px(c, T.x - 5, 98, 10, 3, '#4a4452');
       if (T.lit && !(E.dim && E.m && E.m.state !== 'gone')) A.torch(c, T.x, 96, t + T.x * 7);
@@ -147,6 +149,7 @@
       var x = bx.x;
       px(c, x - 20, fy - 22, 40, 4, '#6b4526'); px(c, x - 18, fy - 18, 3, 18, '#4a2e14'); px(c, x + 15, fy - 18, 3, 18, '#4a2e14');
       var shake = bx.shakeT && t - bx.shakeT < 500 ? Math.sin((t - bx.shakeT) / 30) * 2 : 0, by = fy - 36;
+      if (bx.cage && A.drawCage) { A.drawCage(c, t, x, fy - 22, E.cageKind, bx.openT, true); if (!bx.open && E.hover === i) { c.strokeStyle = 'rgba(250,199,117,.9)'; c.lineWidth = 1; c.strokeRect(x - 19, fy - 54, 38, 34); } return; }
       if (bx.open) {
         px(c, x - 10, by + 4, 20, 10, '#7a1f2b'); px(c, x - 10, by + 4, 20, 2, '#d9b25a');
         px(c, x - 10, by - 6, 20, 4, '#9a2f3b');   /* откинутая крышка */

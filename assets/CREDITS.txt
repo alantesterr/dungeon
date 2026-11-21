@@ -5,3 +5,7 @@ Graphics credits:
 - "Boss: Demon Slime" (FREE v1.0) by chierit — https://chierit.itch.io/boss-demon-slime — CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
   Used in assets/monsters/demonslime: individual frames joined into strips (idle, cleave → attack, take_hit, death); recolored in game for the exam boss.
 Hero sprite, torches, scenes and UI: drawn for StudyPlay.
+
+Pet Cats Pack — Luiz Melo (https://luizmelo.itch.io/pet-cat-pack), CC0 (Creative Commons Zero).
+  Файлы: assets/pets/cat-1 … cat-6 (переименованы: idle, walk, run, sleep, lay, meow, sit, stretch). Лицензия — assets/pets/LICENSE-cats.txt.
+Слизень, совёнок, дракончик — нарисованы кодом (js/pets.js).

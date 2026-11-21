@@ -646,7 +646,7 @@
   /* что можно нажать в библиотеке: каждая полка, шкаф ошибок, дверь в холл */
   function libSpots() {
     var L = G.lib; if (!L) return [];
-    var out = [{ x0: L.err.x, x1: L.err.x + L.err.w, y0: A.LIB.CASE_TOP - 6, y1: A.FLOOR_Y, hv: { err: true }, tip: { text: '📕 Полка ошибок', sub: L.err.n ? L.err.n + ' — нажми, чтобы исправить' : 'пусто — ошибок нет', x: L.err.x + L.err.w / 2 + 30, y: A.LIB.CASE_TOP + 40 }, fn: function () { libWalk(L.err.x + L.err.w / 2, openErrShelf); } }];
+    var out = petsLibSpots().concat([{ x0: L.err.x, x1: L.err.x + L.err.w, y0: A.LIB.CASE_TOP - 6, y1: A.FLOOR_Y, hv: { err: true }, tip: { text: '📕 Полка ошибок', sub: L.err.n ? L.err.n + ' — нажми, чтобы исправить' : 'пусто — ошибок нет', x: L.err.x + L.err.w / 2 + 30, y: A.LIB.CASE_TOP + 40 }, fn: function () { libWalk(L.err.x + L.err.w / 2, openErrShelf); } }]);
     L.cases.forEach(function (cs) {
       cs.rows.forEach(function (row, r) {
         if (!row.f) return; var R = A.libRowRect(cs.x, cs.w, r);
@@ -854,6 +854,7 @@
   /* ---------- 🌉 МОСТ: 6 досок; верно — прочная, неверно — рассыпается и падает ---------- */
   function bridgeStart(E) {
     E.planks = []; E.falls = []; E.fallen = 0; E.placed = 0; G.hero.x = 52; G.hero.dir = 1;
+    E.cage = G.cageForce || Math.random() < 0.35 ? { kind: newPetKind() } : null; G.cageForce = null;   /* иногда на той стороне — клетка с питомцем */
     labels([]);
     setPanel('<div class="qtext">🌉 Мост через пропасть</div><p class="msg">Вместо монстров — пропасть. Чтобы перейти, нужно положить <b>6 досок</b>. Каждая доска — вопрос.<br>Верно — доска <b>прочная</b>, шагаешь вперёд. Неверно — доска <b>рассыпается и падает</b>, нужна новая. На той стороне — сундук. Сердечки здесь не тратятся.</p>',
       [btn('🪵 Положить доску', 'primary', 'Enter', bridgeAsk)]);
@@ -877,7 +878,10 @@
   }
   function bridgeWin() {
     var E = G.ev; G.buttons = []; setPanel('<p class="msg">Ты идёшь по мосту…</p>');
-    walkTo(430, function () { E.chestOpen = now(); sfx('chest'); var L = X.loot('chest'); setTimeout(function () { evEnd('🌉 Мост пройден!', 'Ты перешёл пропасть' + (E.fallen ? ', хотя ' + E.fallen + ' ' + plural(E.fallen, 'доска упала', 'доски упали', 'досок упало') + ' вниз' : ' без единой упавшей доски') + '. На той стороне — сундук.', L); }, 500); });
+    walkTo(430, function () {
+      E.chestOpen = now(); sfx('chest'); var L = X.loot('chest');
+      if (E.cage) { E.cage.openT = now() + 900; setTimeout(function () { sfx('door'); }, 900); setTimeout(function () { petRescue(function () { evEnd('🌉 Мост пройден!', 'Ты перешёл пропасть, открыл сундук и спас питомца из клетки!', L); }, E.cage.kind); }, 2400); return; }
+      setTimeout(function () { evEnd('🌉 Мост пройден!', 'Ты перешёл пропасть' + (E.fallen ? ', хотя ' + E.fallen + ' ' + plural(E.fallen, 'доска упала', 'доски упали', 'досок упало') + ' вниз' : ' без единой упавшей доски') + '. На той стороне — сундук.', L); }, 500); });
   }
 
   /* ---------- 🔦 ТЁМНАЯ КОМНАТА: факелы, спички; иногда зеркало и злой двойник ---------- */
@@ -885,6 +889,7 @@
     var xs = [96, 190, 290, 386], items = ['chest', 'coins', 'potion', 'bat'].sort(function () { return Math.random() - 0.5; });
     var errs = D.errIds(D.subj); E.mirrorOn = errs.length > 0 && Math.random() < 0.34;
     if (E.mirrorOn) items[2] = 'mirror';
+    if (G.cageForce || Math.random() < 0.3) { var ci = items.indexOf('coins') >= 0 ? items.indexOf('coins') : items.indexOf('bat'); if (ci >= 0) { items[ci] = 'cage'; E.cageKind = newPetKind(); } } G.cageForce = null;
     E.torches = xs.map(function (x, i) { return { x: x, lit: false, item: items[i] }; });
     E.m = E.mirrorOn ? { state: 'idle', x: xs[2] } : null; E.allLit = false; E.dim = false;
     G.hero.x = 40; G.hero.dir = 1; sfx('door');
@@ -923,6 +928,12 @@
     if (T.item === 'potion') { T.taken = true; X.add('potion'); return { msg: 'В углу стояло <b>зелье</b> — оно теперь в рюкзаке.', next: nx }; }
     if (T.item === 'bat') { T.taken = true; sfx('laugh'); floater('ЛЕТУЧАЯ МЫШЬ!', T.x, 90, '#F09595'); return { msg: 'Из темноты с визгом вылетела <b>летучая мышь</b>… и улетела. Фух.', next: nx }; }
     if (T.item === 'mirror') { mirrorStart(T); return { mirror: true }; }
+    if (T.item === 'cage') {
+      T.openT = now() + 700; G.buttons = []; setPanel('<p class="msg">🐾 Свет упал на <b>клетку</b> — внутри кто-то пищит! Замок поддаётся…</p>');
+      setTimeout(function () { sfx('door'); }, 700);
+      setTimeout(function () { petRescue(function () { if (G.ev === E) darkIdle('<p class="msg">Питомец спасён!' + (last ? '' : ' Осталось зажечь остальные факелы.') + '</p>'); }, E.cageKind); }, 2200);
+      return { mirror: true };
+    }
     return { next: nx };
   }
   /* ---------- 🪞 ЗЕРКАЛЬНЫЙ ДВОЙНИК ---------- */
@@ -984,13 +995,15 @@
     var w = boxWord(E); if (!w) { E.kind = 'bridge'; return bridgeStart(E); }
     E.word = w.word; E.wq = w.q; E.used[w.q.id] = 1; E.got = []; E.solved = null; E.doorOpen = false;
     var letters = w.word.split('').sort(function () { return Math.random() - 0.5; }), n = letters.length, x0 = 50, x1 = 390;
-    E.boxes = letters.map(function (L, i) { return { x: Math.round(x0 + (x1 - x0) * (n === 1 ? 0.5 : i / (n - 1))), letter: L, open: false }; });
+    if (n <= 7 && (G.cageForce || Math.random() < 0.45)) { letters.splice(Math.floor(Math.random() * (n + 1)), 0, null); E.cageKind = newPetKind(); } G.cageForce = null;   /* одна «шкатулка» — клетка с питомцем */
+    var nb = letters.length;
+    E.boxes = letters.map(function (L, i) { return { x: Math.round(x0 + (x1 - x0) * (nb === 1 ? 0.5 : i / (nb - 1))), letter: L, cage: L === null, open: false }; });
     G.hero.x = 24; G.hero.dir = 1; labels([]);
     boxesIdle('<div class="qtext">🔤 Комната со шкатулками</div><p class="msg">Дверь заперта. На ней <b>' + n + ' пустых ячеек</b> и надпись-загадка. В шкатулках — буквы. Нажми на шкатулку: верный ответ откроет её и даст букву. Собери слово — и дверь откроется. Угадаешь слово раньше — бонус!</p>');
   }
   function boxesIdle(lead) {
     var E = G.ev, closed = E.boxes.filter(function (b) { return !b.open; });
-    labels(E.boxes.map(function (b) { return b.open ? { text: b.letter, x: b.x, y: A.FLOOR_Y - 34, color: '#FAC775' } : null; }).filter(Boolean));
+    labels(E.boxes.map(function (b) { return b.open && !b.cage ? { text: b.letter, x: b.x, y: A.FLOOR_Y - 34, color: '#FAC775' } : null; }).filter(Boolean));
     var riddle = '<div class="riddle"><b>🚪 Загадка на двери:</b> ' + D.md(E.wq.q) + '</div>';
     var tiles = '<div class="ltiles">' + E.got.map(function (L, i) { return '<button class="ltile" data-lt="' + i + '">' + esc(L) + '</button>'; }).join('') + '</div>';
     setPanel((lead || '') + riddle + '<p class="hint">Собранные буквы (' + E.got.length + ' из ' + E.word.length + '):</p>' + tiles +
@@ -1009,9 +1022,10 @@
       var q = evPick(1, (function () { var o = {}; o[E.wq.id] = 1; return o; })())[0]; if (!q) { E.busy = false; return; }
       evAsk(q, {
         title: '🎁 Шкатулка ' + (i + 1),
-        verdict: function (ok) { return ok ? '🔓 Щёлк! Шкатулка открылась — внутри буква <b>' + esc(bx.letter) + '</b>.' : '🔒 Шкатулка дёрнулась и осталась закрытой.'; },
+        verdict: function (ok) { return ok ? (bx.cage ? '🔓 Щёлк! Это не шкатулка, а <b>клетка</b> — внутри питомец!' : '🔓 Щёлк! Шкатулка открылась — внутри буква <b>' + esc(bx.letter) + '</b>.') : '🔒 Шкатулка дёрнулась и осталась закрытой.'; },
         done: function (ok, first, aft) {
           E.busy = false;
+          if (ok && bx.cage) { bx.open = true; bx.openT = now(); sfx('door'); return setTimeout(function () { petRescue(function () { if (G.ev === E) boxesIdle('<p class="msg">🐾 Питомец спасён! Теперь собирай буквы дальше.</p>'); }, E.cageKind); }, 1500); }
           if (ok) { bx.open = true; bx.openT = now(); E.got.push(bx.letter); sfx('chest'); floater(bx.letter, bx.x, 150, '#FAC775'); }
           else { bx.shakeT = now(); sfx('hurt'); }
           evButtons(aft, [btn('К двери и шкатулкам', 'primary', 'Enter', function () { boxesIdle(); })]);
@@ -1023,12 +1037,131 @@
     var E = G.ev, g = String(v || '').trim().toUpperCase().replace(/Ё/g, 'Е');
     if (!g) return;
     if (g !== E.word) { sfx('hurt'); floater('Не то слово!', 440, 120, '#F09595'); var inp = $('evGuess'); if (inp) { inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); } return; }
-    var closed = E.boxes.filter(function (b) { return !b.open; }).length, bonus = closed * 10;
+    var closed = E.boxes.filter(function (b) { return !b.open && !b.cage; }).length, bonus = closed * 10;
     E.solved = E.word.split('').map(function () { return 1; }); E.doorOpen = true; sfx('door'); setTimeout(function () { sfx('win'); }, 300);
     D.record(E.wq.id, true, false); D.persist();
     if (bonus) { S.iq += bonus; hud(); }
     labels([]); G.buttons = []; setPanel('<p class="msg">Ключ повернулся… дверь открывается!</p>');
     walkTo(445, function () { var L = X.loot('chest'); evEnd('🔤 Слово «' + E.word + '» — дверь открыта!', (bonus ? 'Угадал раньше, чем открыл все шкатулки: бонус <b>+' + bonus + ' IQ</b>. ' : '') + 'За дверью — сундук.', L); });
+  }
+  /* =====================================================================
+     ПИТОМЦЫ (ноябрь 2026). Сидят в клетках (у монстров, в шкатулках, за мостом, в тёмной комнате) —
+     спас, и питомец живёт в библиотеке ЭТОГО предмета (S.pets[sid]). Один может ходить с тобой (S.petFollow[sid]) —
+     только в подземелье своего предмета. Способность случайная, от вида не зависит; срабатывает редко.
+     Чем выше редкость — тем чаще. Попался такой же вид — способность у твоего прокачивается (lv).
+     ===================================================================== */
+  var PET_AB = {
+    heal: { name: 'Лечит', ic: '❤', desc: 'иногда за верный ответ лечит 1 ♥', ch: [0.06, 0.1, 0.15] },
+    coin: { name: 'Монетка', ic: '🪙', desc: 'иногда за верный ответ приносит +3 IQ', ch: [0.08, 0.12, 0.18] },
+    second: { name: 'Второй шанс', ic: '🛡', desc: 'редко спасает от удара после ошибки (сердечко цело)', ch: [0.04, 0.06, 0.09] },
+    fifty: { name: 'Подсказка', ic: '✂', desc: 'очень редко убирает один неверный вариант (это считается подсказкой)', ch: [0.03, 0.05, 0.08] }
+  };
+  var PET_RAR = [{ n: 'обычный', col: '#B4B2C4' }, { n: 'редкий', col: '#85B7EB' }, { n: 'легендарный', col: '#FAC775' }];
+  var PET_NAMES = ['Мурка', 'Барсик', 'Пушок', 'Снежок', 'Уголёк', 'Рыжик', 'Кекс', 'Тиша', 'Бублик', 'Ириска', 'Пиксель', 'Байт', 'Сократ', 'Кэш', 'Бит', 'Тостер', 'Плюшка', 'Компот', 'Шрёдингер', 'Борщ'];
+  function myPets(sid) { S.pets = S.pets || {}; return S.pets[sid || D.subjId] = S.pets[sid || D.subjId] || []; }
+  function followPet(sid) { S.petFollow = S.petFollow || {}; var id = S.petFollow[sid || D.subjId]; return myPets(sid).filter(function (p) { return p.id === id; })[0] || null; }
+  function petChance(p) { return PET_AB[p.ab].ch[p.rar] * (1 + 0.25 * ((p.lv || 1) - 1)); }
+  function newPetKind() {
+    var r = Math.random();
+    if (r < 0.12) return ['slime', 'owl', 'dragon'][Math.floor(Math.random() * 3)];   /* свои — пореже */
+    return 'cat-' + (1 + Math.floor(Math.random() * 6));
+  }
+  /* спасение: показать карточку нового друга; cb — продолжить игру после «Понятно» */
+  function petRescue(cb, kind) {
+    var sid = D.subjId, list = myPets(sid); kind = kind || newPetKind();
+    var same = list.filter(function (p) { return p.kind === kind; })[0], p, upg = false;
+    if (same) { same.lv = (same.lv || 1) + 1; p = same; upg = true; }
+    else {
+      var rr = Math.random(), abs = Object.keys(PET_AB), used = list.map(function (x) { return x.name; }), free = PET_NAMES.filter(function (n) { return used.indexOf(n) < 0; });
+      p = { id: 'p' + Date.now().toString(36), kind: kind, name: (free.length ? free : PET_NAMES)[Math.floor(Math.random() * (free.length || PET_NAMES.length))], rar: rr < 0.06 ? 2 : rr < 0.3 ? 1 : 0, ab: abs[Math.floor(Math.random() * abs.length)], lv: 1, at: Date.now() };
+      list.push(p);
+    }
+    D.persist(); sfx('win');
+    petCard(p, { fresh: true, upg: upg, onClose: cb });
+  }
+  /* карточка питомца: живая картинка, имя (можно переименовать), редкость, способность, «Иди за мной» */
+  function petCard(p, o) {
+    o = o || {}; var sid = D.subjId, K = A.PET_KINDS[p.kind], AB = PET_AB[p.ab], R = PET_RAR[p.rar], fol = followPet(sid), isF = fol && fol.id === p.id;
+    var h = '<header class="md-top"><b>' + (o.fresh ? (o.upg ? '🐾 Снова ' + esc(K.name.toLowerCase()) + '!' : '🐾 Новый друг!') : '🐾 ' + esc(p.name)) + '</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body pet-card">' +
+      '<canvas class="pet-cv" width="160" height="90"></canvas>' +
+      (o.upg ? '<p class="msg">Такой же питомец у тебя уже есть — <b>' + esc(p.name) + '</b> стал сильнее (уровень ' + p.lv + ').</p>' : o.fresh ? '<p class="msg">Ты открыл клетку — питомец выпрыгнул и прижался к тебе. Теперь он живёт в библиотеке «' + esc(subjTitle()) + '».</p>' : '') +
+      '<div class="pet-info"><label>Имя: <input id="petName" maxlength="16" value="' + esc(p.name) + '"></label>' +
+      '<span class="tag" style="border-color:' + R.col + ';color:' + R.col + '">' + R.n + '</span><span class="tag">' + esc(K.name) + '</span><span class="tag">ур. ' + (p.lv || 1) + '</span></div>' +
+      '<p class="pet-ab">' + AB.ic + ' <b>' + AB.name + '</b> — ' + AB.desc + ' <span class="hint">(шанс ' + Math.round(petChance(p) * 100) + '%)</span></p>' +
+      '<p class="hint">С собой можно взять одного питомца — он ходит за тобой только в подземелье этого предмета.</p>' +
+      '<div class="row"><button class="btn primary" data-fol>' + (isF ? '🏠 Пусть остаётся в библиотеке' : '🐾 Иди за мной') + '</button><button class="btn ghost" data-close>' + (o.fresh ? 'Понятно' : 'Закрыть') + '</button></div></div>';
+    var stop = false;
+    modal(h, function (el) {
+      var save = function () { var v = (el.querySelector('#petName').value || '').trim(); if (v) p.name = v; D.persist(); };
+      var close = function () { stop = true; save(); closeModal(); if (G.scene === 'path') enterLib(); if (o.onClose) o.onClose(); };
+      el.querySelectorAll('[data-close]').forEach(function (b) { b.onclick = close; });
+      el.querySelector('[data-fol]').onclick = function () { S.petFollow = S.petFollow || {}; S.petFollow[sid] = isF ? null : p.id; G.petF = null; save(); sfx('ok'); close(); };
+      G.modalEnter = close;
+      var cv2 = el.querySelector('.pet-cv'), c2 = cv2.getContext('2d'); c2.imageSmoothingEnabled = false;
+      var anims = ['idle', 'meow', 'idle', 'sit', 'walk'], t0 = performance.now();
+      (function fr(t) { if (stop || !document.body.contains(cv2)) return; c2.clearRect(0, 0, 160, 90); c2.fillStyle = 'rgba(250,199,117,.12)'; c2.beginPath(); c2.ellipse(80, 74, 44, 8, 0, 0, 7); c2.fill(); var a = anims[Math.floor((t - t0) / 2200) % anims.length]; A.drawPet(c2, p.kind, a, t, 80, 74, false, 3); requestAnimationFrame(fr); })(t0);
+    });
+  }
+  /* ---------- питомцы в библиотеке: бродят, сидят, спят, мяукают ---------- */
+  function libPetsSync() {
+    var list = myPets(), fol = followPet();
+    G.libPets = (G.libPets || []).filter(function (e) { return list.indexOf(e.p) >= 0 && (!fol || fol.id !== e.p.id); });
+    list.forEach(function (p) { if (fol && fol.id === p.id) return; if (!G.libPets.some(function (e) { return e.p === p; })) G.libPets.push({ p: p, x: 80 + Math.random() * 320, target: null, anim: 'idle', until: 0, dir: Math.random() < 0.5 ? -1 : 1, st: now() }); });
+  }
+  function petBrain(e, t) {
+    if (t < e.until) return;
+    var r = Math.random();
+    if (r < 0.45) { e.target = 70 + Math.random() * 340; e.anim = 'walk'; e.until = t + 9e9; }
+    else { e.target = null; e.anim = r < 0.62 ? 'idle' : r < 0.74 ? 'sit' : r < 0.86 ? 'sleep' : r < 0.94 ? 'lay' : 'meow'; e.until = t + 2500 + Math.random() * 6000; }
+    e.st = t;
+  }
+  function drawPets(c, t, dt, fy) {
+    if (G.scene === 'path' && G.lib) {
+      libPetsSync();
+      G.libPets.forEach(function (e) {
+        petBrain(e, t);
+        if (e.target != null) { var d = e.target - e.x; if (Math.abs(d) < 1.5) { e.target = null; e.until = 0; } else { e.x += Math.sign(d) * Math.min(Math.abs(d), dt * 0.035); e.dir = Math.sign(d); } }
+        A.drawPet(c, e.p.kind, e.anim, t - e.st, e.x, fy, e.dir < 0, 1.4);
+        if (e.p.rar && !A.lite) { var R = PET_RAR[e.p.rar]; c.fillStyle = R.col; if (Math.floor(t / 300 + e.x) % 4 === 0) c.fillRect(Math.round(e.x + Math.sin(t / 200) * 8), Math.round(fy - 24 + Math.cos(t / 260) * 4), 1, 1); }
+      });
+    }
+    /* питомец, который ходит за тобой */
+    var p = followPet(); if (!p || !(G.scene === 'path' || G.scene === 'room' || G.scene === 'event')) return;
+    var F = G.petF && G.petF.p === p ? G.petF : (G.petF = { p: p, x: G.hero.x - 30, dir: 1, anim: 'idle', st: t });
+    var h = G.hero, want = h.x - 30 * (h.dir < 0 ? -1 : 1), d2 = want - F.x;
+    if (Math.abs(d2) > 2) { F.x += Math.sign(d2) * Math.min(Math.abs(d2), dt * (Math.abs(d2) > 40 ? 0.2 : 0.11)); F.dir = Math.sign(d2); var na = Math.abs(d2) > 40 ? 'run' : 'walk'; if (F.anim !== na) { F.anim = na; F.st = t; } }
+    else if (F.anim === 'walk' || F.anim === 'run') { F.anim = 'idle'; F.st = t; F.dir = h.dir < 0 ? -1 : 1; }
+    if (F.proc && t - F.proc < 1200) { if (F.anim !== 'meow') { F.anim = 'meow'; F.st = t; } } else if (F.anim === 'meow' && (!F.proc || t - F.proc >= 1200)) { F.anim = 'idle'; F.st = t; }
+    A.drawPet(c, p.kind, F.anim, t - F.st, F.x, fy, F.dir < 0, 1.4);
+  }
+  /* способность сработала: питомец мяукает, надпись над ним */
+  function petProc(kind) {
+    var p = followPet(); if (!p || p.ab !== kind || Math.random() >= petChance(p)) return false;
+    if (G.petF) G.petF.proc = now();
+    setTimeout(function () { floater(p.name + ': ' + PET_AB[kind].ic + ' ' + PET_AB[kind].name.toLowerCase() + '!', G.petF ? G.petF.x : G.hero.x - 30, 120, '#FAC775'); sfx('chest'); }, 350);
+    return p;
+  }
+  /* «✂ Подсказка»: убрать один неверный вариант в начале вопроса */
+  function petFifty(R, q) {
+    if (R.f.exam || q.type !== 'choice' || q.opts.length < 3) return;
+    var p = petProc('fifty'); if (!p) return;
+    setTimeout(function () {
+      if (G.room !== R || R.q !== q || R.answered) return;
+      var wr = [].slice.call(panel.querySelectorAll('.opt')).filter(function (b) { return !q.opts[+b.getAttribute('data-o')].right && !b.disabled; });
+      if (!wr.length) return; var b = wr[Math.floor(Math.random() * wr.length)]; b.disabled = true; b.classList.add('gone');
+      R.assisted = true; markAssisted();
+    }, 900);
+  }
+  /* клетка в обычной комнате: висит над комнатой; когда все монстры повержены — открывается */
+  var CAGE_CHANCE = 0.05;
+  function roomCage() {
+    var R = G.room; R.cage.openT = now(); sfx('door'); G.buttons = [];
+    setPanel('<p class="msg">🔓 Замок клетки с лязгом падает…</p>');
+    setTimeout(function () { if (G.room !== R) return; petRescue(function () { if (G.room === R) goNext(); }, R.cage.kind); }, 1500);
+  }
+  function petsLibSpots() {
+    return (G.libPets || []).map(function (e) { return { x0: e.x - 14, x1: e.x + 14, y0: A.FLOOR_Y - 18, y1: A.FLOOR_Y + 14, tip: { text: '🐾 ' + e.p.name, sub: PET_AB[e.p.ab].ic + ' ' + PET_AB[e.p.ab].name + ' · нажми', x: e.x, y: A.FLOOR_Y - 20 }, fn: function () { petCard(e.p); } }; })
+      .concat((function () { var p = followPet(), F = G.petF; return p && F ? [{ x0: F.x - 14, x1: F.x + 14, y0: A.FLOOR_Y - 18, y1: A.FLOOR_Y + 14, tip: { text: '🐾 ' + p.name + ' (ходит с тобой)', sub: 'нажми', x: F.x, y: A.FLOOR_Y - 20 }, fn: function () { petCard(p); } }] : []; })());
   }
   /* ---------- ПУТЬ C++ (как ветка Duolingo) ---------- */
   var UNITS = [[1, 3, 'Раздел 1 · к РК1', 'Основы: алгоритмы, операции, ветвления'], [4, 6, 'Раздел 2 · к РК1', 'Циклы, массивы, функции, строки'], [7, 9, 'Раздел 3 · к РК2', 'ООП: принципы, классы, среда C++ Builder'], [10, 12, 'Раздел 4 · к РК2', 'Формы, события, иерархия классов'], [13, 15, 'Раздел 5 · к экзамену', 'Конструкторы, свойства, компоненты'], [16, 16, 'Финал', 'Смешанные сложные вопросы по всему курсу'], [17, 17, 'Практика', 'Пишем код: задания по темам, по порядку']];
@@ -1264,7 +1397,8 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
       if (easy.length) items = easy.concat(items.filter(function (x) { return easy.indexOf(x) < 0; }));
     }
     G.room = { floor: f.n, f: f, k: a.k, room: room, mode: mode, items: items, objs: buildRoom(f, a.k, mode, items), idx: -1, combo: 1, recent: [], turns: 0, right: 0, wrong: 0, iq: 0, briefOpen: false, mon: null, m0: D.mastery(rq(room)), mistakes: [], problems: [], cheats: [], errs: {}, errItem: {}, fixed: 0, st0: st };
-    G.hero.x = 36; G.hero.dir = 1;
+    if (!f.exam && mode !== 'clean' && (G.cageForce || Math.random() < CAGE_CHANCE)) G.room.cage = { x: 300, kind: newPetKind() }; G.cageForce = null;
+    G.hero.x = 36; G.hero.dir = 1; G.petF = null;
     roomIdle();
     var nq = items.filter(function (x) { return x.t === 'q'; }).length, nt = items.length - nq;
     var msg = mode === 'clean' ? 'Комната чиста ✓: все вопросы увидены, ошибок нет. Монстров нет — но можно пройти её ещё раз для закрепления.'
@@ -1339,6 +1473,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     }, 1500);
   }
   function goNext() {
+    var R0 = G.room; if (R0 && R0.cage && !R0.cage.openT && !R0.objs.some(function (o) { return o.type === 'mon' && !o.dead; })) return roomCage();   /* все монстры повержены — открыть клетку с питомцем */
     var R = G.room; R.mon = null; R.bubble = null; G.buttons = []; hideBubble();
     var g = maybeGuard(); roomLabels();
     if (g) {
@@ -1546,7 +1681,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     if (D.subjId === 'cpp' && /[A-Za-z]{3,}/.test(q.q)) h = h.replace('<span class="grow"></span>', '<span class="grow"></span><button class="tr-cloud' + (cppTrOn() ? ' on' : '') + '" data-trc title="Перевод в облачке: показать / убрать" aria-pressed="' + cppTrOn() + '">RU</button>');
     setPanel(h); wireIco(); wireTr(); wireHotbar(); wireBrief(); R.trB = null; bubbleQ(q, m); autoTrBubble(q, m);
     var trc = panel.querySelector('[data-trc]'); if (trc) trc.onclick = function () { toggleCloudTr(); };
-    hintTimers(R, q); recallFirst(R, q);
+    hintTimers(R, q); recallFirst(R, q); petFifty(R, q);
     var kb0 = panel.querySelector('[data-dunno]'); if (kb0) kb0.onclick = function () { dunnoQ(q); };
     if (S.cfg.autoTr) toggleTr();
     G.buttons = [];
@@ -1789,6 +1924,7 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
     var drop = function () { m.hp = m.items.length; if (m.boss && !m.exam && !m.p2 && m.hp > 0 && m.hp <= Math.ceil(m.max / 2) && m.max >= 4) bossPhase2(m); if (!m.hp) { m.dead = true; if (m.guard) { m.tpAt = now(); m.state = 'idle'; m.st = m.tpAt; sfx('chest'); } else { setMon(m, 'death'); sfx('kill'); } } };
     if (ok) {
       R.right++;
+      if (!m.exam && !R.assisted) { if (S.hp < S.maxHp && petProc('heal')) { S.hp++; setTimeout(hud, 400); } else if (petProc('coin')) { S.iq += 3; R.iq += 3; } }
       var hw = X.hit(power, m), bonus = Math.min(20, Math.max(0, hw.dmg - power) * 2); R.crit = (R.combo >= 1.5 && Math.random() < (R.combo - 1));
       if (hw.note) setTimeout(function () { floater(hw.note, m.x, 90, '#FF9600'); }, 260);
       R.combo = Math.min(3, Math.round((R.combo + 0.1) * 10) / 10); if (R.combo >= 1.3) setTimeout(function () { floater('комбо ×' + R.combo.toFixed(1), G.hero.x, 70, '#FAC775'); }, 380);
@@ -1812,6 +1948,7 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
         sfx('hurt');
         if (m.exam) { G.hero.hurtAt = now(); floater('✗ неверно', G.hero.x, 110, '#F09595'); drop(); D.persist(); hud(); return afterAnswer(false); }   /* экзамен: бьёт для вида, сердечки не тратятся */
         if (S.shieldOn) { S.shieldOn = false; floater('Щит выдержал!', G.hero.x, 110, '#85B7EB'); }
+        else if (petProc('second')) { floater('сердечко цело', G.hero.x, 110, '#9FE1CB'); }
         else { var cost = X.hurtCost(); S.hp = Math.max(0, S.hp - cost); G.hero.hurtAt = now(); floater('−' + cost + ' ♥', G.hero.x, 110, '#F09595'); }
         if (S.hp <= 0 && X.take('feather')) { S.hp = 3; setTimeout(function () { floater('Перо феникса! +3 ♥', G.hero.x, 80, '#FF9600'); }, 400); }
         drop(); floater('вопрос вернётся', m.x, 90, '#FAC775');
@@ -2481,6 +2618,9 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
         }
       }
     });
+    /* клетка с питомцем в комнате и питомцы (в библиотеке — бродят, в бою — тот, что ходит с тобой) */
+    if (G.scene === 'room' && G.room && G.room.cage) A.drawCage(c, t, G.room.cage.x, 96, G.room.cage.kind, G.room.cage.openT);
+    drawPets(c, t, dt, fy);
     /* герой */
     {
       var anim = 'idle', f = Math.floor(t / 450);
@@ -2503,9 +2643,10 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
   /* ошибка в одном кадре не должна останавливать всю игру */
   function loop(t) { requestAnimationFrame(loop); try { draw(t); } catch (e) { if (!loop.warned) { loop.warned = 1; console.error(e); } } }
   /* для проверки: мгновенно довести героя до цели (вкладка в фоне не анимируется) */
-  window.DGame = { G: G, ev: function (k, sid) { G.evForce = k; buildArena(sid || D.subjId, 'all', 1); }, go: function (s, a) { go(s, a); }, next: function () { goNext(); }, skip: function () { var h = G.hero; if (h.target != null) { h.x = h.target; h.target = null; var cb = h.onArrive; h.onArrive = null; if (cb) cb(); } } };
+  window.DGame = { G: G, pet: function (cb) { petRescue(cb || function () {}); }, cage: function () { G.cageForce = 1; }, ev: function (k, sid) { G.evForce = k; buildArena(sid || D.subjId, 'all', 1); }, go: function (s, a) { go(s, a); }, next: function () { goNext(); }, skip: function () { var h = G.hero; if (h.target != null) { h.x = h.target; h.target = null; var cb = h.onArrive; h.onArrive = null; if (cb) cb(); } } };
 
   /* ---------- старт ---------- */
+  if (A.loadPets) A.loadPets();
   Promise.all([A.load(), D.load()]).then(function () {
     $('loading').classList.add('gone');
     requestAnimationFrame(loop);
