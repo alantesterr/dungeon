@@ -14,115 +14,111 @@
 - Преимущества ООП
 - Области применения
 
-Определения преподавателя («Полезная инфа», оригинал на английском, под каждым — перевод)
-
-Some definitions of OOP
-
-Некоторые определения ООП
-
-In Object-oriented programming, Class is a set of data and methods to manipulate the data.
+## Определения ООП от преподавателя (под каждым — как это звучит в тесте)
 
 В ООП класс (Class) — это набор данных и методов (methods) для работы с этими данными.
 
-In Object-oriented programming: class is the definitions for the data format and available functions for a given type.
+! Как в тесте: In Object-oriented programming, Class is a set of data and methods to manipulate the data.
 
 В ООП класс — это описание формата данных и доступных функций для данного типа.
 
-Classes in C++ are the abstractions that describes methods, properties of objects that do not exist yet. A class is a blueprint for creating objects that have similar attributes and behaviors.
+! Как в тесте: In Object-oriented programming: class is the definitions for the data format and available functions for a given type.
 
 Классы в C++ — это абстракции, описывающие методы и свойства ещё не существующих объектов. Класс — это «чертёж» (blueprint) для создания объектов с похожими атрибутами (attributes) и поведением (behaviors).
 
-With the help of one class you can create objects as many as needed.
+! Как в тесте: Classes in C++ are the abstractions that describes methods, properties of objects that do not exist yet. A class is a blueprint for creating objects that have similar attributes and behaviors.
 
 С помощью одного класса можно создать сколько угодно объектов.
 
-A class defines the properties and behaviors of objects, whereas an object is an instance of a class.
+! Как в тесте: With the help of one class you can create objects as many as needed.
 
 Класс задаёт свойства (properties) и поведение (behaviors) объектов, а объект — это экземпляр (instance) класса.
 
-Object is an instance of a class in a memory and it is created with the help of concrete class.
+! Как в тесте: A class defines the properties and behaviors of objects, whereas an object is an instance of a class.
 
 Объект (Object) — это экземпляр класса в памяти; он создаётся по конкретному классу.
 
-Objects are the instances of classes or a variable of the data type defined by the class.
+! Как в тесте: Object is an instance of a class in a memory and it is created with the help of concrete class.
 
 Объекты — это экземпляры классов, то есть переменные того типа, который задан классом.
 
-In OOP, Object is an instance of a class in a memory.
+! Как в тесте: Objects are the instances of classes or a variable of the data type defined by the class.
 
 В ООП объект — экземпляр класса в памяти.
 
-Abstraction is the major principle of an OOP that denotes a model, a view, or some other focused representation for an actual item.
+! Как в тесте: In OOP, Object is an instance of a class in a memory.
 
 Абстракция (Abstraction) — главный принцип ООП: модель, вид или иное упрощённое представление реального предмета (берём только существенное).
 
-Encapsulation is a principle of OOP, a mechanism that links together the code and the data it manipulates. Encapsulation is a principle of OOP, a special mechanism that protects data from arbitrary access of other external codes. Encapsulation is the major principle of OOP which means that the internal representation of an object is generally hidden from view outside of the object’s definition.
+! Как в тесте: Abstraction is the major principle of an OOP that denotes a model, a view, or some other focused representation for an actual item.
 
 Инкапсуляция (Encapsulation) — принцип ООП, механизм, который связывает вместе код и данные, с которыми он работает. Это особый механизм, защищающий данные от произвольного доступа внешнего кода. Инкапсуляция означает, что внутреннее устройство объекта скрыто от всего, что находится вне описания объекта.
 
-Encapsulation is the process of hiding the implementation details of a class and only exposing the necessary interfaces to the outside world.
+! Как в тесте: Encapsulation is a principle of OOP, a mechanism that links together the code and the data it manipulates. Encapsulation is a principle of OOP, a special mechanism that protects data from arbitrary access of other external codes. Encapsulation is the major principle of OOP which means that the internal representation of an object is generally hidden from view outside of the object’s definition.
 
 Инкапсуляция — это скрытие деталей реализации класса и открытие наружу только нужного интерфейса (interface).
 
-Polymorphism is a principle of OOP, a mechanism that allows to use the same interface for a common class of actions. In polymorphism principle: selecting of needed method (for specific object) is performed by compiler. Polymorphism is the major principle of an OOP that allows using same names of identifiers for the different functionality.
+! Как в тесте: Encapsulation is the process of hiding the implementation details of a class and only exposing the necessary interfaces to the outside world.
 
 Полиморфизм (Polymorphism) — принцип ООП, механизм, позволяющий использовать один интерфейс для общего класса действий. При полиморфизме выбор нужного метода (для конкретного объекта) выполняет компилятор (compiler). Полиморфизм позволяет использовать одинаковые имена для разной функциональности.
 
-Inheritance is a principle of OOP, a mechanism by which one object (of a derived class) acquires the properties of another object (parent, base class). Inheritance is the major principle of an OOP that allows using attributes and behavior from pre-existing classes.
+! Как в тесте: Polymorphism is a principle of OOP, a mechanism that allows to use the same interface for a common class of actions. In polymorphism principle: selecting of needed method (for specific object) is performed by compiler. Polymorphism is the major principle of an OOP that allows using same names of identifiers for the different functionality.
 
 Наследование (Inheritance) — принцип ООП, механизм, при котором один объект (производного класса, derived class) получает свойства другого объекта (родителя, базового класса — parent, base class). Наследование позволяет использовать атрибуты и поведение уже существующих классов.
 
-Method is a special function of a class that specifies operations on objects data (specifies its behavior). Methods are the actions performed by the component (what a component can do).
+! Как в тесте: Inheritance is a principle of OOP, a mechanism by which one object (of a derived class) acquires the properties of another object (parent, base class). Inheritance is the major principle of an OOP that allows using attributes and behavior from pre-existing classes.
 
 Метод (Method) — специальная функция класса, задающая операции над данными объекта (его поведение). Методы — это действия, которые выполняет компонент (что он умеет).
 
-In object-oriented programming: method is a function associated with a class.
+! Как в тесте: Method is a special function of a class that specifies operations on objects data (specifies its behavior). Methods are the actions performed by the component (what a component can do).
 
 В ООП метод — функция, связанная с классом.
 
-Method is an action that an object is able to perform.
+! Как в тесте: In object-oriented programming: method is a function associated with a class.
 
 Метод — действие, которое объект умеет выполнять.
 
-Constructor is a special method that is called once when a class’ instance is created. The initialization of all elements of a class (common for all class instances) is made in constructor.
+! Как в тесте: Method is an action that an object is able to perform.
 
 Конструктор (Constructor) — специальный метод, который вызывается один раз при создании экземпляра класса. Инициализация всех элементов класса (общая для всех экземпляров) делается в конструкторе.
 
-In OOP, property is a variable of some type that characterizes internal status of an object. Properties are the component attributes which determine how a component displayed on the screen and how it operates.
+! Как в тесте: Constructor is a special method that is called once when a class’ instance is created. The initialization of all elements of a class (common for all class instances) is made in constructor.
 
 В ООП свойство (property) — переменная какого-то типа, описывающая внутреннее состояние объекта. Свойства — это атрибуты компонента, определяющие, как он выглядит на экране и как работает.
 
-OOP: Event is a message from the operating system to an application that if occurs when some external actions are made. Event is a message which occurs at various points in the executable code when certain conditions are performed.
+! Как в тесте: In OOP, property is a variable of some type that characterizes internal status of an object. Properties are the component attributes which determine how a component displayed on the screen and how it operates.
 
 Событие (Event) — сообщение от операционной системы приложению, возникающее при каких-то внешних действиях. Событие — сообщение, возникающее в разных местах выполняемого кода при выполнении определённых условий.
 
-Event handler is a special procedure/function that is used to react at some actions (usually made by user).
+! Как в тесте: OOP: Event is a message from the operating system to an application that if occurs when some external actions are made. Event is a message which occurs at various points in the executable code when certain conditions are performed.
 
 Обработчик события (Event handler) — специальная процедура/функция для реакции на какие-то действия (обычно пользователя).
 
-Form is the main element of any application; the container that hosts all other visual and non-visual components.
+! Как в тесте: Event handler is a special procedure/function that is used to react at some actions (usually made by user).
 
 Форма (Form) — главный элемент любого приложения; контейнер, в котором находятся все остальные визуальные и невизуальные компоненты.
 
-Object Inspector is a part of C++ Builder IDE that is used to examine and edit the properties and events for the currently selected object. A component’s properties are set in Object Inspector
+! Как в тесте: Form is the main element of any application; the container that hosts all other visual and non-visual components.
 
 Object Inspector (инспектор объектов) — часть среды C++ Builder (IDE — среда разработки) для просмотра и изменения свойств и событий выбранного объекта. Свойства компонента задаются в Object Inspector.
 
-Code Editor is a part of a C++ Builder IDE that holds the set of a program commands.
+! Как в тесте: Object Inspector is a part of C++ Builder IDE that is used to examine and edit the properties and events for the currently selected object. A component’s properties are set in Object Inspector
 
 Code Editor (редактор кода) — часть среды C++ Builder, где хранится набор команд программы.
 
-Components are the self-contained building blocks that are carried on the form to create your applications.
+! Как в тесте: Code Editor is a part of a C++ Builder IDE that holds the set of a program commands.
 
 Компоненты (Components) — самостоятельные «кирпичики», которые кладут на форму, чтобы собрать приложение.
 
-The components that look the same at the design stage and during the application execution are called the Visual components. Visual components are also called Controls.
+! Как в тесте: Components are the self-contained building blocks that are carried on the form to create your applications.
 
 Компоненты, которые выглядят одинаково при проектировании (design stage) и во время работы программы, называются визуальными (Visual components). Их ещё называют элементами управления (Controls).
 
-The components that invisible during the application execution are called Non-visual.
+! Как в тесте: The components that look the same at the design stage and during the application execution are called the Visual components. Visual components are also called Controls.
 
 Компоненты, невидимые во время работы программы, называются невизуальными (Non-visual).
+
+! Как в тесте: The components that invisible during the application execution are called Non-visual.
 
 ## 1. Процедурный и объектный подход
 **ООП**
@@ -134,6 +130,9 @@ The components that invisible during the application execution are called Non-vi
 | Данные | отдельно от функций, часто глобальные | внутри объекта, защищены |
 | Пример | double area(double w, double h) | Rect r(3,4); r.area(); |
 | Для больших программ | трудно сопровождать | проще расширять и переиспользовать |
+
+! Вопрос УМКД: **Что такое объектно-ориентированное программирование?** — Подход, в котором программа строится из объектов — экземпляров классов, объединяющих данные и методы для работы с ними.
+! Вопрос УМКД: **Разница между процедурным и объектно-ориентированным подходом?** — Процедурный — программа как набор функций над отдельными данными; ООП — набор взаимодействующих объектов, в которых данные и функции объединены.
 
 ## 2. Класс, объект, атрибут, метод
 **Основные понятия**
@@ -154,6 +153,9 @@ Dog rex;                      // объект — экземпляр класс�
 rex.name = "Rex"; rex.bark();
 ```
 
+! Вопрос УМКД: **Что такое класс?** — Набор данных и методов для работы с ними; шаблон (чертёж), по которому создаются объекты с одинаковыми свойствами и поведением.
+! Вопрос УМКД: **Что такое объект?** — Экземпляр класса в памяти — переменная типа, определённого классом.
+
 ## 3. Четыре принципа ООП
 **Принципы**
 Инкапсуляция (encapsulation) — объединение данных и кода, который с ними работает, в одном объекте и защита данных от произвольного доступа извне. Детали реализации скрыты (private), наружу открыт только нужный интерфейс (public методы get/set).
@@ -165,7 +167,16 @@ rex.name = "Rex"; rex.bark();
 
 Преимущества ООП: программа ближе к реальному миру; код переиспользуется через наследование; данные защищены; легко расширять (новый класс-наследник), командная разработка. Где применяется: программы с окнами (C++Builder: форма, кнопки — это объекты), игры, базы данных, моделирование.
 
-## Для теста на английском
+! Вопрос УМКД: **Основные понятия ООП?** — Класс, объект, атрибут (свойство, поле), метод; принципы — инкапсуляция, наследование, полиморфизм, абстракция.
+! Вопрос УМКД: **Что такое инкапсуляция?** — Объединение данных и кода, работающего с ними, в одном объекте и защита данных от произвольного доступа извне (скрытие реализации).
+! Вопрос УМКД: **Что такое наследование?** — Механизм, при котором производный класс получает свойства и поведение базового и может добавить свои.
+! Вопрос УМКД: **Что такое полиморфизм?** — Возможность использовать один интерфейс (одно имя метода) для разных действий; нужный метод выбирается для конкретного объекта.
+! Вопрос УМКД: **Что такое абстракция?** — Модель реального предмета, отражающая только важные для задачи свойства и поведение.
+! Вопрос УМКД: **Чем отличаются инкапсуляция и абстракция?** — Абстракция определяет, что показать (существенные свойства), инкапсуляция — прячет детали реализации и защищает данные.
+! Вопрос УМКД: **Преимущества объектно-ориентированного подхода?** — Близость к реальному миру, повторное использование кода (наследование), защита данных, простота расширения и сопровождения больших программ.
+! Вопрос УМКД: **Как сущности реального мира представляются объектами и классами?** — Общие свойства и действия группы предметов описываются классом (поля и методы), конкретные предметы — объекты этого класса со своими значениями полей.
+
+## Формулировки из теста (англ. — с переводом)
 
 На экзамене эти определения дают на английском. Узнавай их по ключевым словам:
 
@@ -210,17 +221,3 @@ rex.name = "Rex"; rex.bark();
 | Агрегация | «целое / часть»: объект хранит другой объект или указатель на него | дерево хранит node *root |
 | Композиция | сильная агрегация: объект другого класса — поле класса | class Z1 { Point p; }; |
 | Использование | класс применяет другой класс в параметрах метода, локальных объектах, вызовах | void f(Point p); |
-
-## Вопросы УМКД к теме 7 — с ответами
-- **Что такое объектно-ориентированное программирование?** — Подход, в котором программа строится из объектов — экземпляров классов, объединяющих данные и методы для работы с ними.
-- **Основные понятия ООП?** — Класс, объект, атрибут (свойство, поле), метод; принципы — инкапсуляция, наследование, полиморфизм, абстракция.
-- **Что такое класс?** — Набор данных и методов для работы с ними; шаблон (чертёж), по которому создаются объекты с одинаковыми свойствами и поведением.
-- **Что такое объект?** — Экземпляр класса в памяти — переменная типа, определённого классом.
-- **Что такое инкапсуляция?** — Объединение данных и кода, работающего с ними, в одном объекте и защита данных от произвольного доступа извне (скрытие реализации).
-- **Что такое наследование?** — Механизм, при котором производный класс получает свойства и поведение базового и может добавить свои.
-- **Что такое полиморфизм?** — Возможность использовать один интерфейс (одно имя метода) для разных действий; нужный метод выбирается для конкретного объекта.
-- **Что такое абстракция?** — Модель реального предмета, отражающая только важные для задачи свойства и поведение.
-- **Чем отличаются инкапсуляция и абстракция?** — Абстракция определяет, что показать (существенные свойства), инкапсуляция — прячет детали реализации и защищает данные.
-- **Преимущества объектно-ориентированного подхода?** — Близость к реальному миру, повторное использование кода (наследование), защита данных, простота расширения и сопровождения больших программ.
-- **Разница между процедурным и объектно-ориентированным подходом?** — Процедурный — программа как набор функций над отдельными данными; ООП — набор взаимодействующих объектов, в которых данные и функции объединены.
-- **Как сущности реального мира представляются объектами и классами?** — Общие свойства и действия группы предметов описываются классом (поля и методы), конкретные предметы — объекты этого класса со своими значениями полей.

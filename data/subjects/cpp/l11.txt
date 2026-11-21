@@ -36,6 +36,13 @@
 
 Методы форм и компонентов: Show(), ShowModal(), Hide(), Close() у формы; Clear() у Memo и Edit; SetFocus() — передать фокус ввода; Lines->Add(…), Items->Add(…) у списков.
 
+! Вопрос УМКД: **Что такое свойство объекта?** — Характеристика объекта (переменная), определяющая его вид и поведение: Caption, Width, Color.
+! Вопрос УМКД: **Что такое метод?** — Функция объекта — действие, которое он умеет выполнять: Show(), Close(), Clear().
+! Вопрос УМКД: **Разница между свойством и методом?** — Свойство описывает состояние, его читают и присваивают; метод выполняет действие, его вызывают со скобками.
+! Вопрос УМКД: **Как менять свойства формы в Object Inspector?** — Выделить форму, на вкладке Properties выбрать свойство и ввести/выбрать новое значение.
+! Вопрос УМКД: **Как менять свойства формы программно?** — Присваиванием в коде во время работы: Form1->Color = clRed;, Width = 500;
+! Вопрос УМКД: **Основные свойства формы?** — Caption, Name, Width, Height, Left, Top, Color, Position, Visible, Enabled, BorderStyle, FormStyle, Font.
+
 ## События и обработчики
 
 Событие (event) — сообщение операционной системы приложению о том, что что-то произошло: щелчок, нажатие клавиши, движение мыши, срабатывание таймера, изменение размера окна. Обработчик события — специальная функция, которая выполняется в ответ на событие.
@@ -54,10 +61,16 @@
 
 Обработка действий пользователя: программа «ничего не делает», пока не произойдёт событие; весь код — в обработчиках. Так строится событийно-управляемое интерактивное приложение.
 
+! Вопрос УМКД: **Что такое событие?** — Сообщение ОС приложению о произошедшем действии (щелчок, клавиша, таймер, изменение размера).
+! Вопрос УМКД: **Что такое обработчик события?** — Метод формы, который выполняется в ответ на событие: void __fastcall TForm1::Button1Click(TObject *Sender).
+! Вопрос УМКД: **Как события связываются с методами?** — В Object Inspector на вкладке Events напротив события указывается имя метода-обработчика (двойной щелчок создаёт новый, можно выбрать существующий).
+! Вопрос УМКД: **Типичные события формы?** — OnCreate, OnShow, OnActivate, OnClick, OnDblClick, OnMouseMove, OnKeyPress, OnResize, OnClose, OnPaint.
+! Вопрос УМКД: **Как обрабатываются действия пользователя в визуальном приложении?** — Каждое действие порождает событие; программа реагирует, выполняя связанный с ним обработчик (событийно-управляемое программирование).
+
 ## Определения для теста (англ.)
-Properties (свойства) — attributes which determine how a component is displayed and how it operates (как выглядит и как работает).
-Methods (методы) — the actions performed by the component (что компонент умеет делать).
-Event (событие) — a message which occurs when certain conditions are performed. Event handler (обработчик) — a special procedure used to react to some actions.
+Свойства (Properties) — характеристики, которые определяют, как компонент выглядит и как работает (attributes which determine how a component is displayed and how it operates).
+Методы (Methods) — действия, которые выполняет компонент, то есть что он умеет делать (the actions performed by the component).
+Событие (Event) — сообщение, которое возникает при выполнении определённых условий (a message which occurs when certain conditions are performed). Обработчик события (Event handler) — специальная функция для реакции на действия (a special procedure used to react to some actions).
 Name — главное свойство: имя компонента в коде. Name и Tag есть абсолютно у всех компонентов (Tag — любое целое число для своих целей).
 Width, Height, Left, Top — тип int, в пикселях (pixels). Left — расстояние от левого края формы (координата X), Top — от верха (Y). Эти свойства все визуальные компоненты получают от класса TControl. ClientWidth/ClientHeight — полезная область внутри рамок.
 Размер текста — Font->Size, цвет текста — Font->Color.
@@ -93,8 +106,8 @@ Width, Height, Left, Top — тип int, в пикселях (pixels). Left — 
 | OnKeyUp | клавишу отпустили |
 | OnKeyPress | клавишу нажали и отпустили (символ) |
 | OnCreate / OnActivate / OnDeactivate | форма создана в памяти / стала активной / потеряла фокус |
-void __fastcall TForm1::Button1MouseMove(TObject *Sender, TShiftState Shift, int X, int Y)
 ```
+void __fastcall TForm1::Button1MouseMove(TObject *Sender, TShiftState Shift, int X, int Y)
 {
   // X, Y — координаты мыши ОТ ЛЕВОГО ВЕРХНЕГО УГЛА самого компонента (при Width = 100 X бывает 0…99)
   if (Shift.Contains(ssShift)) Caption = "Зажат Shift";    // ssShift, ssAlt, ssCtrl — клавиши
@@ -103,9 +116,7 @@ void __fastcall TForm1::Button1MouseMove(TObject *Sender, TShiftState Shift, int
   Label1->Font->Color = clRed;        // у надписи цвет текста — тоже через Font
   Button1->Cursor = crHandPoint;
   TControl *c = dynamic_cast<TControl*>(Sender);    // общий обработчик: кто вызвал?
-```
-if (dynamic_cast<TEdit*>(Sender)) { /* это Edit */ }
-```
+  if (dynamic_cast<TEdit*>(Sender)) { /* это Edit */ }
 }
 ```
 Цвет фона: Button1->Color = clYellow; (в C++ всегда через ->, не через точку).
@@ -129,16 +140,3 @@ void __fastcall TForm1::AnyMouseMove(TObject *Sender, TShiftState Shift, int X, 
 **Выделение текста в Edit и Memo.** SelStart — с какого символа (с 0), SelLength — сколько символов, SelText — выделенный текст. Выделить первые 5 букв: Edit1->SelStart = 0; Edit1->SelLength = 5;. SelectAll() — выделить всё; CutToClipboard(), CopyToClipboard(), PasteFromClipboard() — работа с буфером обмена (перед CutToClipboard проверяют SelLength > 0).
 **Подсказки.** Hint — текст подсказки, ShowHint = true — показывать. Свою подсказку можно показать из кода: Application->Hint = Format("X:%d Y:%d", ARRAYOFCONST((X, Y))); Application->ActivateHint(Screen->CursorPos);
 **Вопросы про FireMonkey (FMX) и новые версии Builder.** Часть вопросов базы взята из новых версий C++Builder с библиотекой FireMonkey (FMX): Fill->Color (цвет заливки), Opacity (прозрачность), TStyleManager (стили), ParentBackground, BorderColor, OnPaint у кнопки. В Builder 6 их нет — эти ответы просто запоминают.
-
-## Вопросы УМКД к теме 11 — с ответами
-- **Что такое свойство объекта?** — Характеристика объекта (переменная), определяющая его вид и поведение: Caption, Width, Color.
-- **Что такое метод?** — Функция объекта — действие, которое он умеет выполнять: Show(), Close(), Clear().
-- **Разница между свойством и методом?** — Свойство описывает состояние, его читают и присваивают; метод выполняет действие, его вызывают со скобками.
-- **Как менять свойства формы в Object Inspector?** — Выделить форму, на вкладке Properties выбрать свойство и ввести/выбрать новое значение.
-- **Как менять свойства формы программно?** — Присваиванием в коде во время работы: Form1->Color = clRed;, Width = 500;
-- **Основные свойства формы?** — Caption, Name, Width, Height, Left, Top, Color, Position, Visible, Enabled, BorderStyle, FormStyle, Font.
-- **Что такое событие?** — Сообщение ОС приложению о произошедшем действии (щелчок, клавиша, таймер, изменение размера).
-- **Что такое обработчик события?** — Метод формы, который выполняется в ответ на событие: void __fastcall TForm1::Button1Click(TObject *Sender).
-- **Как события связываются с методами?** — В Object Inspector на вкладке Events напротив события указывается имя метода-обработчика (двойной щелчок создаёт новый, можно выбрать существующий).
-- **Типичные события формы?** — OnCreate, OnShow, OnActivate, OnClick, OnDblClick, OnMouseMove, OnKeyPress, OnResize, OnClose, OnPaint.
-- **Как обрабатываются действия пользователя в визуальном приложении?** — Каждое действие порождает событие; программа реагирует, выполняя связанный с ним обработчик (событийно-управляемое программирование).

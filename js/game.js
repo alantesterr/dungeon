@@ -1100,7 +1100,10 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     if (!R.f.exam) h += '<div class="qlinks">' + (hasBook ? '<button class="book-btn" data-ql="book"' + (hadErr ? ' data-hot' : '') + ' title="Прочитать лекцию по этой теме (B)">📖 Открыть книгу <small>лекция по теме</small></button>' : '') +
       (!q.rev ? '<button class="linkbtn know" data-know title="Отметить как выученный — больше почти не будет попадаться">✓ Знаю</button>' : '') + '</div>' + brief;
     h += hotbarHtml();
+    /* C++: кнопка «RU» — перевод в облачке включается и выключается в любой момент боя */
+    if (D.subjId === 'cpp' && !R.f.exam && /[A-Za-z]{3,}/.test(q.q)) h = h.replace('<span class="grow"></span>', '<span class="grow"></span><button class="tr-cloud' + (cppTrOn() ? ' on' : '') + '" data-trc title="Перевод в облачке: показать / убрать" aria-pressed="' + cppTrOn() + '">RU</button>');
     setPanel(h); wireIco(); wireTr(); wireHotbar(); wireBrief(); R.trB = null; bubbleQ(q, m); autoTrBubble(q, m);
+    var trc = panel.querySelector('[data-trc]'); if (trc) trc.onclick = function () { toggleCloudTr(); };
     hintTimers(R, q); recallFirst(R, q);
     var kb0 = panel.querySelector('[data-know]'); if (kb0) kb0.onclick = function () { markKnown(q); };
     if (S.cfg.autoTr) toggleTr();
@@ -1210,12 +1213,21 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
   }
   /* C++ (вопросы на английском): сразу переводим и кладём перевод в облачко под оригинал,
      а к вариантам — мелкой строкой под каждым. Код не переводится и не дублируется. */
-  function autoTrBubble(q, m) {
+  /* перевод C++ в облачке по умолчанию выключен — привыкаем к английскому; включается кнопкой RU или в настройках */
+  function cppTrOn() { return S.cfg.cppTr === true; }
+  function toggleCloudTr() {
+    var R = G.room; S.cfg.cppTr = !cppTrOn(); D.persist();
+    var b = panel.querySelector('[data-trc]'); if (b) { b.classList.toggle('on', cppTrOn()); b.setAttribute('aria-pressed', cppTrOn()); }
+    if (!R || !R.q || !R.mon) return;
+    if (cppTrOn()) autoTrBubble(R.q, R.mon, true);
+    else { R.trB = null; bubbleQ(R.q, R.mon); panel.querySelectorAll('.o-tr').forEach(function (e) { e.remove(); }); }
+  }
+  function autoTrBubble(q, m, force) {
     var R = G.room;
-    if (D.subjId !== 'cpp' || S.cfg.cppTr === false || S.cfg.autoTr || S.cfg.bubbleDown) return;
+    if (D.subjId !== 'cpp' || !cppTrOn() || S.cfg.autoTr || (S.cfg.bubbleDown && !force)) return;
     var prose = q.q.replace(/```[\s\S]*?```/g, ' ').trim(); if (!/[A-Za-z]{3,}/.test(prose)) return;
     X.trQuestion(q, S.cfg.trLang).then(function (d) {
-      if (G.room !== R || R.q !== q || R.answered || R.mon !== m) return;
+      if (G.room !== R || R.q !== q || (R.answered && !force) || R.mon !== m) return;
       var text = String(d.q || '').replace(/```[\s\S]*?```/g, ' ').replace(/\n{2,}/g, '\n').trim();
       if (text && text !== prose) { R.trB = { q: q, text: text }; bubbleQ(q, m); }
       panel.querySelectorAll('.opt').forEach(function (b) {
@@ -1764,7 +1776,7 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
     var h = '<header class="md-top"><b>Настройки</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body">' +
       '<div class="set-row"><div><b>Язык перевода вопросов</b><span>На этот язык переводит кнопка «Перевести» (A→Я) и автоперевод.</span></div><div class="seg">' + Object.keys(X.LANGS).map(function (l) { return '<button data-lang="' + l + '" aria-pressed="' + (c2.trLang === l) + '">' + X.LANGS[l] + '</button>'; }).join('') + '</div></div>' +
       '<div class="set-row"><div><b>Автоперевод</b><span>Каждый вопрос сразу показывается в переводе. Оригинал — по ссылке «оригинал» под вопросом.</span></div><label class="sw"><input type="checkbox" id="setAuto"' + (c2.autoTr ? ' checked' : '') + '><i></i></label></div>' +
-'<div class="set-row"><div><b>Перевод C++ в облачке</b><span>Вопросы C++ на английском: в облачке у монстра оригинал, под ним перевод; под вариантами — мелкий перевод.</span></div><label class="sw"><input type="checkbox" id="setCppTr"' + (c2.cppTr !== false ? ' checked' : '') + '><i></i></label></div>' +
+'<div class="set-row"><div><b>Перевод C++ в облачке</b><span>Вопросы C++ на английском: в облачке у монстра оригинал, под ним перевод; под вариантами — мелкий перевод. По умолчанию выключен, чтобы привыкать к английскому; в бою включается кнопкой RU.</span></div><label class="sw"><input type="checkbox" id="setCppTr"' + (c2.cppTr === true ? ' checked' : '') + '><i></i></label></div>' +
       '<div class="set-row"><div><b>Звуки</b><span>Удар, ошибка, сундук, победа.</span></div><label class="sw"><input type="checkbox" id="setSound"' + (c2.sound !== false ? ' checked' : '') + '><i></i></label></div>' +
       '<div class="set-row"><div><b>Реплики 18+ (мат)</b><span>Монстры иногда матерятся, когда получают урон, бьют или умирают. Выключи — будут только приличные фразы.</span></div><label class="sw"><input type="checkbox" id="setRude"' + (c2.rude !== false ? ' checked' : '') + '><i></i></label></div>' +
       '<div class="set-row"><div><b>Автопереход и автопоход</b><span>После ответа сам переходит к следующему вопросу, герой сам идёт к монстрам, сундукам и выходу. Меньше нажатий.</span></div><label class="sw"><input type="checkbox" id="setAutoGo"' + (c2.auto !== false ? ' checked' : '') + '><i></i></label></div>' +

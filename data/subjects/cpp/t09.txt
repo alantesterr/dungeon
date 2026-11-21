@@ -17,7 +17,7 @@
 <variant> View Stack Window <tr>Окно стека</tr>
 <variant> Local Variables Window <tr>Окно локальных переменных</tr>
 <explain>Ответ: Object Inspector — смотреть и менять свойства (Properties) и события (Events) выделенного объекта.
-По лекции: тема 9, разделы «Что такое IDE…» и «Для теста на английском».</explain>
+По лекции: тема 9, разделы «Что такое IDE…» и «Формулировки из теста».</explain>
 
 <question> A part of a C++ Builder IDE that holds the set of a program commands:
 <tr>Часть среды C++ Builder, в которой хранится набор команд программы:</tr>
@@ -27,7 +27,7 @@
 <variant> Stack Window <tr>Окно стека</tr>
 <variant> Standard TollBar <tr>Стандартная панель инструментов</tr>
 <explain>Ответ: Code Editor — редактор кода, хранит команды программы (Unit1.cpp).
-По лекции: тема 9, раздел «Для теста на английском».</explain>
+По лекции: тема 9, раздел «Формулировки из теста».</explain>
 
 <question> The self-contained building blocks that are carried on the form to create your applications:
 <tr>Самостоятельные «строительные блоки», которые кладут на форму, чтобы создать приложение:</tr>
@@ -37,7 +37,7 @@
 <variant> Forms <tr>Формы</tr>
 <variant> Units <tr>Модули</tr>
 <explain>Ответ: Components (компоненты) — самостоятельные «кирпичики», которые кладут на форму, чтобы собрать приложение.
-По лекции: тема 9, раздел «Для теста на английском».</explain>
+По лекции: тема 9, раздел «Формулировки из теста».</explain>
 
 <question> The components that look the same at the design stage and during the application execution:
 <tr>Компоненты, которые выглядят одинаково и при проектировании, и во время работы приложения:</tr>
@@ -47,7 +47,7 @@
 <variant> System components <tr>Системные компоненты</tr>
 <variant> Dialog components <tr>Компоненты-диалоги</tr>
 <explain>Ответ: Visual components (визуальные) — выглядят одинаково при проектировании и во время работы: Button, Edit, Label.
-По лекции: тема 9, раздел «Для теста на английском».</explain>
+По лекции: тема 9, раздел «Формулировки из теста».</explain>
 
 <question> Visual components are also called ...
 <tr>Визуальные компоненты также называют ...</tr>
@@ -57,7 +57,7 @@
 <variant> Tools <tr>Инструменты</tr>
 <variant> Methods <tr>Методы</tr>
 <explain>Ответ: Controls (элементы управления) — второе название визуальных компонентов.
-По лекции: тема 9, раздел «Для теста на английском».</explain>
+По лекции: тема 9, раздел «Формулировки из теста».</explain>
 
 <question> The components that invisible during the application execution:
 <tr>Компоненты, которые не видны во время работы приложения:</tr>
@@ -67,7 +67,7 @@
 <variant> Methods <tr>Методы</tr>
 <variant> Dialogs <tr>Диалоги</tr>
 <explain>Ответ: Non-visual (невизуальные) — не видны во время работы программы: Timer, MainMenu, OpenDialog.
-По лекции: тема 9, раздел «Для теста на английском».</explain>
+По лекции: тема 9, раздел «Формулировки из теста».</explain>
 
 <question> What is Borland C++ Builder 6?
 <tr>Что такое Borland C++ Builder 6?</tr>
@@ -88,7 +88,7 @@
 <variant> TextPosition
 <variant> TextAlignment
 <explain>Ответ: Alignment — выравнивание текста у StaticText (и Label): taLeftJustify, taCenter, taRightJustify.
-По лекции: тема 9, раздел «Для теста на английском» (компоненты из лабы с часами), тема 11.</explain>
+По лекции: тема 9, раздел «Формулировки из теста» (компоненты из лабы с часами), тема 11.</explain>
 
 <question> What border type is set for StaticText when the BorderStyle property is set to sbsSunken?
 <tr>Какая рамка будет у StaticText, если BorderStyle = sbsSunken?</tr>
@@ -98,7 +98,7 @@
 <variant> Double line <tr>Двойная линия</tr>
 <variant> The type is bound to the parent style. <tr>Тип зависит от стиля родителя.</tr>
 <explain>Ответ: Sunken border — вдавленная рамка. sbsNone — без рамки, sbsSingle — простая линия.
-По лекции: тема 9, раздел «Для теста на английском».</explain>
+По лекции: тема 9, раздел «Формулировки из теста».</explain>
 
 <question> What function is used to get the current time?
 <tr>Какая функция используется, чтобы получить текущее время?</tr>
@@ -108,7 +108,7 @@
 <variant> DateTime.Now()
 <variant> DateTime x->Now();
 <explain>Ответ: Now().TimeString() — текущее время строкой; Now() возвращает дату и время, TimeString() берёт время.
-По лекции: тема 9, раздел «Для теста на английском».</explain>
+По лекции: тема 9, раздел «Формулировки из теста».</explain>
 
 <question> How does the FormStyle property with the value fsStayOnTop affect a form?
 <tr>Как свойство FormStyle со значением fsStayOnTop влияет на форму?</tr>
@@ -119,7 +119,7 @@
 <variant> Anchors the form to the top edge of the monitor screen <tr>Прикрепляет форму к верхнему краю экрана</tr>
 <explain>Ответ: форма всегда поверх других окон (Stay On Top).
 Почему не другие: модальность — ShowModal(), прозрачность — AlphaBlend.
-По лекции: тема 9, раздел «Для теста на английском», и тема 11 (свойства формы).</explain>
+По лекции: тема 9, раздел «Формулировки из теста», и тема 11 (свойства формы).</explain>
 
 <question> Which property of the BitBtn object is used to customize the button's appearance?
 <tr>Какое свойство объекта BitBtn используется для настройки внешнего вида кнопки?</tr>
@@ -129,7 +129,7 @@
 <variant> ButtonType
 <variant> ExternView
 <explain>Ответ: Kind — готовый вид кнопки BitBtn (bkOK, bkCancel, bkClose…).
-По лекции: тема 9, раздел «Для теста на английском».</explain>
+По лекции: тема 9, раздел «Формулировки из теста».</explain>
 
 <question> Which component property, StaticText, when set to True, automatically adjusts the component's size?
 <tr>Какое свойство компонента StaticText, если поставить True, автоматически подгоняет его размер?</tr>
@@ -139,7 +139,7 @@
 <variant> AutoAdjust
 <variant> Resizeable = true
 <explain>Ответ: AutoSize = true — размер компонента сам подгоняется под текст.
-По лекции: тема 9, раздел «Для теста на английском», и тема 11.</explain>
+По лекции: тема 9, раздел «Формулировки из теста», и тема 11.</explain>
 
 <question> What is the extension of project files in Borland C++ Builder?
 <tr>Какое расширение у файлов проекта в Borland C++ Builder?</tr>
@@ -161,4 +161,4 @@
 <variant> To change the location of the event handler <tr>Чтобы изменить место обработчика события</tr>
 <explain>Ответ: Glyph — картинка на кнопке BitBtn.
 Почему не другие: текст кнопки — Caption, цвет и форма — другие свойства.
-По лекции: тема 9, раздел «Для теста на английском».</explain>
+По лекции: тема 9, раздел «Формулировки из теста».</explain>

@@ -122,7 +122,7 @@
 <variant> all visual components and Timer <tr>у всех визуальных компонентов и Timer</tr>
 <variant> all dialogs and Form component <tr>у всех диалогов и у формы</tr>
 <explain>Ответ: у всех невизуальных компонентов (Timer, MainMenu, OpenDialog) нет Width — на форме их не видно при работе.
-По лекции: тема 9, раздел «Для теста на английском» (невизуальные компоненты).</explain>
+По лекции: тема 9, раздел «Формулировки из теста» (невизуальные компоненты).</explain>
 
 <question> The main property of a control (and component), which specifies the name of the component as referenced in code?
 <tr>Главное свойство элемента управления (и компонента), которое задаёт имя, по которому к компоненту обращаются в коде?</tr>

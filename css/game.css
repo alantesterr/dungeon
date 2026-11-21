@@ -514,6 +514,9 @@ details.brief.was-err summary{color:#FAC775}
 .ggl-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;margin-right:8px;border-radius:999px;border:1.5px solid #85B7EB;background:rgba(133,183,235,.14);color:#cfe3fa;font:inherit;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap}
 .ggl-btn:hover{background:rgba(133,183,235,.26)}
 .ggl-btn[hidden]{display:none}
+.tr-cloud{display:inline-flex;align-items:center;padding:7px 12px;margin-right:8px;border-radius:999px;border:1.5px solid #5DCAA5;background:transparent;color:#9FE1CB;font:inherit;font-size:14px;font-weight:800;letter-spacing:.5px;cursor:pointer;opacity:.75}
+.tr-cloud.on{background:rgba(93,202,165,.22);opacity:1;box-shadow:0 0 0 2px rgba(93,202,165,.25)}
+.tr-cloud:hover{opacity:1}
 .ggl-btn[data-hot]{border-color:#FAC775;color:#FAC775;background:rgba(250,199,117,.14);animation:hotGlow 1.8s ease-in-out 4}
 .ggl-btn.pop,.book-btn.pop{animation:popIn .5s cubic-bezier(.2,1.4,.4,1)}
 .ggl-btn.pop[data-hot]{animation:popIn .5s cubic-bezier(.2,1.4,.4,1),hotGlow 1.8s ease-in-out .5s 4}

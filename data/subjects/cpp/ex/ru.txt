@@ -1,0 +1,60 @@
+# Замены строк лекций: «= старая строка» и «> новая строка» (пустая «>» — удалить строку).
+# Нужны, чтобы лекции были на русском; английский остаётся только как термин или формулировка из теста — с переводом.
+= Some definitions of OOP
+>
+= Слайды преподавателя: «A project creation. Working with forms. A Form designer»
+> Слайды преподавателя: «Создание проекта. Работа с формами. Дизайнер форм» (A project creation. Working with forms. A Form designer).
+= The purpose of lesson is to give a description of the files that make up the project, and the window in which you edit the forms of the program being developed. — Цель: описать файлы, из которых состоит проект, и окно, в котором редактируют формы программы.
+> Цель занятия — описать файлы, из которых состоит проект, и окно, в котором редактируют формы программы.
+= The first step in developing a C++ Builder application is — to create a project.
+> Первый шаг в разработке приложения C++Builder — создать проект (to create a project).
+= Project files contain — automatically generated source code.
+> Файлы проекта содержат автоматически созданный исходный код (automatically generated source code).
+= Default name of the project file — Project1.cpp.
+> Имя файла проекта по умолчанию — Project1.cpp.
+= USEFORM("Unit2.cpp", Form2) indicates — the name of the project's form and the unit in which its event handlers are located.
+> USEFORM("Unit2.cpp", Form2) указывает имя формы проекта и модуль, в котором лежат её обработчики событий (the name of the project's form and the unit in which its event handlers are located).
+= How many main forms can a project have? — only one; by default the form created first.
+> Сколько главных форм может быть в проекте? — Только одна (only one); по умолчанию главная — форма, созданная первой.
+= Forms that are created in memory automatically — Auto-create forms; not created automatically but available — Available forms.
+> Формы, которые создаются в памяти автоматически, — Auto-create forms; формы, которые сами не создаются, но доступны, — Available forms.
+= To reassign the main form — Project → Options → Forms. Switch between forms — View Form (Shift+F12).
+> Назначить другую главную форму — Project → Options → Forms. Переключаться между формами — View Form (Shift+F12).
+= If the base class is not specified, the ancestor is — TObject.
+> Если базовый класс не указан, предок — TObject (the ancestor is TObject).
+= Ancestor class for all components of VCL — TComponent; base class of all controls — TControl; of all window controls — TWinControl; base class for creating a form window — TForm.
+> Предок всех компонентов VCL — TComponent; базовый класс всех элементов управления (controls) — TControl; всех оконных элементов (window controls) — TWinControl; базовый класс окна-формы — TForm.
+= The owner of all components located in the form is — the form itself; the owner of all forms is — the application.
+> Владелец (owner) всех компонентов на форме — сама форма; владелец всех форм — приложение (the application).
+= The component is always deleted when — its owner is deleted.
+> Компонент всегда удаляется вместе со своим владельцем (when its owner is deleted).
+= The & sign in Caption — the next character is underlined and is the accelerator key (Alt + key).
+> Знак & в Caption — следующая буква подчёркивается и становится «горячей клавишей» (accelerator key): Alt + эта буква.
+= fsStayOnTop — the form is always on top; fsMDIChild — child MDI window; fsMDIForm — parent MDI window.
+> fsStayOnTop — форма всегда поверх других окон; fsMDIChild — дочернее MDI-окно; fsMDIForm — родительское MDI-окно.
+= Base class of TPopupMenu — TMenu; pop-up menu appears automatically if — AutoPopup = True.
+> Базовый класс TPopupMenu — TMenu; всплывающее меню появляется само, если AutoPopup = True.
+= Properties (свойства) — attributes which determine how a component is displayed and how it operates (как выглядит и как работает).
+> Свойства (Properties) — характеристики, которые определяют, как компонент выглядит и как работает (attributes which determine how a component is displayed and how it operates).
+= Methods (методы) — the actions performed by the component (что компонент умеет делать).
+> Методы (Methods) — действия, которые выполняет компонент, то есть что он умеет делать (the actions performed by the component).
+= Event (событие) — a message which occurs when certain conditions are performed. Event handler (обработчик) — a special procedure used to react to some actions.
+> Событие (Event) — сообщение, которое возникает при выполнении определённых условий (a message which occurs when certain conditions are performed). Обработчик события (Event handler) — специальная функция для реакции на действия (a special procedure used to react to some actions).
+= A class is a blueprint for creating objects (класс — «чертёж» для создания объектов) с похожими атрибутами и поведением. Ещё одна формулировка из теста: abstractions that describe methods, properties of objects that do not exist yet (абстракции, описывающие методы и свойства ещё не существующих объектов).
+> Класс — «чертёж» для создания объектов с похожими атрибутами и поведением (A class is a blueprint for creating objects). Ещё одна формулировка из теста: абстракции, описывающие методы и свойства ещё не существующих объектов (abstractions that describe methods, properties of objects that do not exist yet).
+= An object is an instance of a class (объект — экземпляр класса) в памяти. С помощью конкретного класса создаётся object.
+> Объект — экземпляр класса в памяти (An object is an instance of a class); объект создаётся по конкретному классу.
+= Difference between a class and an object: класс задаёт свойства и поведение (properties and behaviors), объект — конкретный экземпляр (instance) этого класса.
+> Разница между классом и объектом: класс задаёт свойства и поведение (properties and behaviors), объект — конкретный экземпляр (instance) этого класса.
+= How many objects can be created from one class? — as many as needed (сколько нужно): TDog a, b, c; — три объекта одного класса.
+> Сколько объектов можно создать по одному классу? — Сколько нужно (as many as needed): TDog a, b, c; — три объекта одного класса.
+= Encapsulation в классах — hiding the implementation details of a class and only exposing the necessary interfaces (скрыть детали реализации, наружу открыть только нужное): поля в private, методы для работы с ними в public.
+> Инкапсуляция в классах — скрыть детали реализации и открыть наружу только нужное (hiding the implementation details of a class and only exposing the necessary interfaces): поля в private, методы для работы с ними в public.
+= Constructor (конструктор) — a special method that is called once when a class' instance is created (вызывается один раз при создании объекта). The initialization of all elements of a class is made in the constructor — начальные значения полей задают в конструкторе.
+> Конструктор (Constructor) — специальный метод, который вызывается один раз при создании объекта (a special method that is called once when a class' instance is created). Начальные значения всех полей задают в конструкторе (the initialization of all elements of a class is made in the constructor).
+= Destructor (деструктор) — вызывается при уничтожении объекта, имя с тильдой: ~TBook(). У формы: __fastcall ~TForm1();
+> Деструктор (Destructor) — вызывается при уничтожении объекта, имя с тильдой: ~TBook(). У формы: __fastcall ~TForm1();
+= Определения преподавателя («Полезная инфа», оригинал на английском, под каждым — перевод)
+> ## Определения ООП от преподавателя (под каждым — как это звучит в тесте)
+= Некоторые определения ООП
+>
