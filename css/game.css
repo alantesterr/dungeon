@@ -623,3 +623,5 @@ details.brief[open]>.rich{animation:richIn .45s ease-out}
 .fish-row{display:flex;flex-wrap:wrap;gap:6px}
 .fish-it{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:4px 10px}
 .fish-it.gold{border-color:#FAC775;color:#FAC775}.fish-it.ghost{border-color:#85B7EB;color:#CECBF6}
+#sceneWrap.zoomhit canvas#scene{animation:zoomHit .55s cubic-bezier(.2,1.6,.4,1)}
+@keyframes zoomHit{0%{transform:scale(1)}25%{transform:scale(1.07)}100%{transform:scale(1)}}

@@ -1185,7 +1185,7 @@
     var big = ['goblin', 'skeleton', 'mushroom', 'angel', 'doc', 'knight', 'lizard', 'delf'].filter(function (k) { return A.MON[k] && A.MON[k].lm; }); if (!big.length) big = ['goblin']; E.proKey = G.lastMonKey && big.indexOf(G.lastMonKey) >= 0 ? G.lastMonKey : big[Math.floor(Math.random() * big.length)];   /* прокурор — монстр покрупнее */
     E.you = 0; E.pro = 0; E.n = 0; E.tug = 0; E.verdict = null;
     G.hero.x = A.COURT.hero; G.hero.dir = -1; E.gavelT = now() + 300; setTimeout(function () { sfx('gavel'); }, 300); setTimeout(function () { E.gavelT = now(); sfx('gavel'); }, 800);
-    labels([{ text: '🦉 Судья', x: A.COURT.judge, y: 66, color: '#FAC775' }, { text: '😈 Прокурор', x: A.COURT.pro, y: 150, color: '#F09595' }, { text: '🐾 ' + E.defName, x: A.COURT.def, y: 172, color: '#9FE1CB' }]);
+    labels([ { text: '🐾 ' + E.defName, x: A.COURT.def, y: 172, color: '#9FE1CB' }]);
     setPanel('<div class="court-title">📜 ПОВЕСТКА В СУД!</div><p class="msg">Вместо монстров тебя вызвали в суд. Подзащитный — <b>' + esc(E.defName) + '</b>. Прокурор обвиняет его в том, что он ' + CHARGES[Math.floor(Math.random() * CHARGES.length)] + '!</p>' +
       '<p class="msg">Прокурор скажет <b>' + COURT_N + ' заявлений</b>: вопрос и ответ. Ответ бывает верный, а бывает неверный. Жми <b>«Соглашаюсь»</b> или <b>«ВОЗРАЖАЮ!»</b> — и выбери верный ответ. Без «материалов дела» — 2 очка, с ними — 1. Ошибка — 2 очка прокурору. Последнее заявление — <b>решающее</b> (×2). Набери больше прокурора — подзащитного оправдают.</p>',
       [btn('⚖ Начать заседание', 'primary', 'Enter', courtNext)]);
@@ -1202,6 +1202,7 @@
     var ri = q.opts.findIndex(function (o) { return o.right; }), wr = q.opts.map(function (_, i) { return i; }).filter(function (i) { return i !== ri; });
     var truth = Math.random() < 0.5, shown = truth ? ri : wr[Math.floor(Math.random() * wr.length)];
     var S2 = E.st = { q: q, shown: shown, truth: truth, file: false, assisted: false, mult: last ? 2 : 1, done: false, wasErr: D.isErr(q.id) };
+    E.pointT = now(); E.look = 'pro'; E.proT = 0; setTimeout(function () { if (G.ev === E && E.st === S2 && !S2.done) floater(pick(['Виновен! Я докажу!', 'Слушайте внимательно…', 'Это же очевидно!', 'Возразить нечего, а?', 'Факты — упрямая вещь!']), A.COURT.pro + 30, 84, '#F09595'); }, 400);
     E.fileOpen = false;
     var hasBook = (floorOfQ(q) || {}).texts && floorOfQ(q).texts.length;
     setPanel(tugHtml(E) + '<div class="row ev-head"><span class="tag gold">⚖ Заявление ' + (E.n + 1) + ' из ' + COURT_N + (last ? ' · РЕШАЮЩЕЕ ×2' : '') + '</span><span class="grow"></span>' +
@@ -1223,11 +1224,13 @@
     };
   }
   function objection() {
+    if (G.ev) G.ev.objT = now(); var cw = $('sceneWrap'); cw.classList.remove('zoomhit'); void cw.offsetWidth; cw.classList.add('zoomhit');
     var el = document.createElement('div'); el.className = 'objection'; el.textContent = 'ВОЗРАЖАЮ!'; $('floaters').appendChild(el); setTimeout(function () { el.remove(); }, 1500);
     var sw = $('sceneWrap'); sw.classList.remove('rage'); void sw.offsetWidth; sw.classList.add('rage'); sfx('objection');
   }
   function courtJudge(ok, objected, oi) {
-    var E = G.ev, S2 = E.st, q = S2.q; if (S2.done) return; S2.done = true;
+    var E = G.ev, S2 = E.st, q = S2.q; if (S2.done) return; S2.done = true; E.look = 'hero';
+    setTimeout(function () { floater(ok ? pick(['Н-не может быть…', 'Кхм… протестую…', 'Это… случайность!']) : pick(['ХА-ХА! Попался!', 'Я же говорил!', 'Виновен, виновен!']), A.COURT.pro + 30, 66, ok ? '#85B7EB' : '#F09595'); }, 300);
     D.record(q.id, ok, S2.assisted); D.persist();
     var pts = (S2.file ? 1 : 2) * S2.mult;
     if (ok) { E.you += pts; E.right++; E.proMood = -1; E.jury = 1; sfx('ok'); }
