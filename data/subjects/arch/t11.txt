@@ -1,151 +1,239 @@
-Архитектура ЭВМ. Тема 11 — вопросы из новой базы (Все темы 1–15), формат Тестера
+<question> Динамическое запоминающее устройство с произвольным порядком выборки:
+<variantright> DRAM
+<variant> RAM
+<variant> ROM
+<variant> SDRAM
+<variant> SRAM
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: DRAM.
+DRAM = Dynamic RAM: бит — заряд конденсатора, нужна регенерация.
+По лекции: тема 11, раздел «DRAM: бит как заряд конденсатора».
+Как в тесте (англ.): Dynamic random access memory:</explain>
 
-<question>Какой из видов памяти не требует регенерации?
-<variant>dram
-<variant>ddr sdram
-<variant>sdram
-<variantright>sram
-<variant>rdram
+<question> Модуль памяти с двухрядным расположением выводов:
+<variantright> DIMM
+<variant> RIMM
+<variant> ROM
+<variant> SIMM
+<variant> Нет верного ответа
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: DIMM.
+DIMM — контакты с двух сторон независимые (64-битная шина). SIMM — контакты с двух сторон соединены (32 бита).
+По лекции: тема 11, раздел «Модули и каналы».
+Как в тесте (англ.): A memory module with two rows of independent contacts (dual in-line):</explain>
 
-<question>Если изображение находится на экране, где хранится информация о нем?
-<variant>на экране монитора
-<variant>в ВЗУ
-<variant>на НЖМД
-<variantright>в видео ОЗУ
-<variant>в ОЗУ
+<question> Модуль памяти с однорядным расположением выводов:
+<variantright> SIMM
+<variant> DIMM
+<variant> RIMM
+<variant> ROM
+<variant> Нет верного ответа
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: SIMM.
+SIMM — модули 30/72 pin эпохи 386–Pentium.
+По лекции: тема 11, раздел «Модули и каналы».
+Как в тесте (англ.): A memory module with a single row of contacts (single in-line):</explain>
 
-<question>Динамическое запоминающее устройство с произвольным порядком выборки:
-<variant>ROM
-<variantright>DRAM
-<variant>RAM
-<variant>SRAM
-<variant>SDRAM
+<question> Тип памяти, скорость которой удваивается за счет передачи данных дважды за цикл:
+<variantright> DDR SDRAM
+<variant> DRAM
+<variant> RAM
+<variant> SDRAM
+<variant> SRAM
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: DDR SDRAM.
+DDR = Double Data Rate: передача по фронту и по спаду тактового сигнала.
+По лекции: тема 11, раздел «От SDRAM к DDR5».
+Как в тесте (англ.): Memory whose speed doubles by transferring data twice per clock cycle:</explain>
 
-<question>Модуль памяти с двухрядным расположением выводов:
-<variant>Нет верного ответа
-<variantright>DIMM
-<variant>RIMM
-<variant>SIMM
-<variant>ROM
+<question> Если изображение находится на экране, где хранится информация о нем?
+<variantright> в видео ОЗУ
+<variant> в ВЗУ
+<variant> в ОЗУ
+<variant> на НЖМД
+<variant> на экране монитора
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: в видео ОЗУ.
+Кадр хранится в видеопамяти (VRAM/кадровый буфер) видеоадаптера; в DOS-эпоху текстовый экран — по адресу B800:0000.
+По лекции: тема 11, раздел «DRAM: бит как заряд конденсатора».
+Как в тесте (англ.): When an image is on the screen, where is the information about it stored?</explain>
 
-<question>Модуль памяти с однорядным расположением выводов:
-<variant>DIMM
-<variant>ROM
-<variantright>SIMM
-<variant>Нет верного ответа
-<variant>RIMM
+<question> Как хранится бит в ячейке SRAM?
+<variantright> в триггере из 6 транзисторов
+<variant> как заряд конденсатора
+<variant> в магнитном домене
+<variant> в плавкой перемычке
+<explain>Ответ: в триггере из 6 транзисторов.
+6T-ячейка — две пары инверторов накрест (тот же RS-триггер). Регенерация не нужна.
+По лекции: тема 11, раздел «SRAM: бит в триггере».
+Как в тесте (англ.): How is a bit stored in an SRAM cell?</explain>
 
-<question>Тип памяти, скорость которой удваивается за счет передачи данных дважды за цикл:
-<variant>SDRAM
-<variant>RAM
-<variant>SRAM
-<variantright>DDR SDRAM
-<variant>DRAM
+<question> Как хранится бит в ячейке DRAM?
+<variantright> как заряд конденсатора (1 транзистор + 1 конденсатор)
+<variant> в триггере
+<variant> в ПЗУ
+<variant> в регистре процессора
+<explain>Ответ: как заряд конденсатора (1 транзистор + 1 конденсатор).
+Ячейка 1T1C очень маленькая → большая ёмкость и дешевизна.
+По лекции: тема 11, раздел «DRAM: бит как заряд конденсатора».
+Как в тесте (англ.): How is a bit stored in a DRAM cell?</explain>
 
-<question>Что обозначает «DDR4-3200»?
-<variantright>Память DDR4 с 3200 млн передач в секунду
-<variant>Память DDR4 с частотой шины ровно 3200 МГц
-<variant>Память DDR4 с задержкой 3200 нс
-<variant>Память DDR4 объёмом 3200 мегабайт на модуль
+<question> Почему DRAM нуждается в регенерации?
+<variantright> конденсатор теряет заряд из-за утечек
+<variant> чтобы стереть старые данные
+<variant> чтобы уменьшить нагрев
+<variant> потому что она энергонезависима
+<explain>Ответ: конденсатор теряет заряд из-за утечек.
+Каждую строку перечитывают и перезаписывают примерно раз в 64 мс.
+По лекции: тема 11, раздел «DRAM: бит как заряд конденсатора».
+Как в тесте (англ.): Why does DRAM need refreshing?</explain>
 
-<question>Что такое ECC-память?
-<variant>Память с повышенной тактовой частотой для игр
-<variantright>Память с кодом коррекции ошибок
-<variant>Память с двойной пропускной способностью
-<variant>Память только для чтения, без питания
+<question> Где обычно используется SRAM?
+<variantright> в кэш-памяти и регистровых файлах
+<variant> в модулях оперативной памяти
+<variant> в жёстких дисках
+<variant> в видеокамерах как плёнка
+<explain>Ответ: в кэш-памяти и регистровых файлах.
+SRAM быстрая, но дорогая и крупная по площади.
+По лекции: тема 11, раздел «SRAM или DRAM — сравнение».
+Как в тесте (англ.): Where is SRAM usually used?</explain>
 
-<question>Что такое строка и столбец в организации микросхемы DRAM?
-<variant>Расположение микросхем на модуле по строкам
-<variant>Организация регистров внутри ядра процессора
-<variant>Расположение контактов на модуле DIMM
-<variantright>Матрица ячеек с адресом из двух частей
+<question> Главный недостаток SRAM по сравнению с DRAM:
+<variantright> дороже и меньше ёмкость на кристалле
+<variant> медленнее
+<variant> требует регенерации
+<variant> теряет данные при чтении
+<explain>Ответ: дороже и меньше ёмкость на кристалле.
+6 транзисторов на бит против 1T+1C.
+По лекции: тема 11, раздел «SRAM или DRAM — сравнение».
+Как в тесте (англ.): The main disadvantage of SRAM compared to DRAM:</explain>
 
-<question>Какова пиковая пропускная способность одного 64-битного канала DDR3-1600?
-<variant>1,6 ГБ/с
-<variantright>12,8 ГБ/с
-<variant>25,6 ГБ/с
-<variant>6,4 ГБ/с
+<question> Чтение в DRAM разрушающее, поэтому…
+<variantright> после чтения строку записывают обратно
+<variant> её читают дважды
+<variant> данные хранятся в двух копиях
+<variant> используют ультрафиолет
+<explain>Ответ: после чтения строку записывают обратно.
+Усилители считывания сразу восстанавливают заряд.
+По лекции: тема 11, раздел «DRAM: бит как заряд конденсатора».
+Как в тесте (англ.): Reading DRAM is destructive, therefore…</explain>
 
-<question>Какова пиковая пропускная способность одного 64-битного канала DDR4-2400?
-<variant>9,6 ГБ/с
-<variantright>19,2 ГБ/с
-<variant>38,4 ГБ/с
-<variant>2,4 ГБ/с
+<question> SDRAM отличается от асинхронной DRAM тем, что…
+<variantright> работает синхронно с тактовым сигналом шины
+<variant> не требует регенерации
+<variant> энергонезависима
+<variant> использует триггеры
+<explain>Ответ: работает синхронно с тактовым сигналом шины.
+S = Synchronous; на основе SDRAM сделаны все DDR.
+По лекции: тема 11, раздел «От SDRAM к DDR5».
+Как в тесте (англ.): SDRAM differs from asynchronous DRAM in that…</explain>
 
-<question>Какова пиковая пропускная способность одного 64-битного канала DDR4-3200?
-<variant>3,2 ГБ/с
-<variantright>25,6 ГБ/с
-<variant>51,2 ГБ/с
-<variant>12,8 ГБ/с
+<question> Модуль DDR4-3200 передаёт за секунду
+<variantright> 3200 млн передач по 64 бита = 25,6 ГБ/с
+<variant> 3200 МБ
+<variant> 3,2 ГБ
+<variant> 6400 МБ
+<explain>Ответ: 3200 млн передач по 64 бита = 25,6 ГБ/с.
+Пропускная способность = MT/s × 8 байт: 3200 × 8 = 25 600 МБ/с (отсюда маркировка PC4-25600).
+По лекции: тема 11, раздел «От SDRAM к DDR5».
+Как в тесте (англ.): A DDR4-3200 module transfers per second</explain>
 
-<question>Какова пиковая пропускная способность одного 64-битного канала DDR5-4800?
-<variant>76,8 ГБ/с
-<variant>19,2 ГБ/с
-<variant>4,8 ГБ/с
-<variantright>38,4 ГБ/с
+<question> Двухканальный режим памяти…
+<variantright> удваивает ширину шины до 128 бит и теоретическую пропускную способность
+<variant> удваивает объём памяти
+<variant> уменьшает задержку CAS вдвое
+<variant> нужен только для ноутбуков
+<explain>Ответ: удваивает ширину шины до 128 бит и теоретическую пропускную способность.
+Модули одинаковые, ставятся в слоты разных каналов (часто одного цвета).
+По лекции: тема 11, раздел «Модули и каналы».
+Как в тесте (англ.): Dual-channel memory mode…</explain>
 
-<question>Какова пиковая пропускная способность одного 64-битного канала DDR5-6400?
-<variantright>51,2 ГБ/с
-<variant>6,4 ГБ/с
-<variant>102,4 ГБ/с
-<variant>25,6 ГБ/с
+<question> SO-DIMM — это…
+<variantright> укороченный модуль DIMM для ноутбуков и мини-ПК
+<variant> модуль ПЗУ
+<variant> модуль с одним рядом контактов
+<variant> разъём процессора
+<explain>Ответ: укороченный модуль DIMM для ноутбуков и мини-ПК.
+Small Outline DIMM.
+По лекции: тема 11, раздел «Модули и каналы».
+Как в тесте (англ.): SO-DIMM is…</explain>
 
-<question>Какова пиковая пропускная способность одного 64-битного канала DDR4-2666?
-<variant>2,7 ГБ/с
-<variantright>21,3 ГБ/с
-<variant>42,7 ГБ/с
-<variant>10,7 ГБ/с
+<question> Можно ли поставить модуль DDR3 в слот DDR4?
+<variantright> нет: у поколений разный ключ (вырез) и напряжение
+<variant> да, если частота совпадает
+<variant> да, только в ноутбуке
+<variant> да, но работать будет медленнее
+<explain>Ответ: нет: у поколений разный ключ (вырез) и напряжение.
+Вырез смещён специально, чтобы не перепутать (и напряжение 1,5 В vs 1,2 В).
+По лекции: тема 11, раздел «От SDRAM к DDR5».
+Как в тесте (англ.): Can a DDR3 module be installed in a DDR4 slot?</explain>
 
-<question>Какова пиковая пропускная способность двухканального режима DDR4-3200?
-<variant>12,8 ГБ/с
-<variant>102,4 ГБ/с
-<variantright>51,2 ГБ/с
-<variant>25,6 ГБ/с
+<question> Тайминг CL (CAS Latency) показывает…
+<variantright> задержку в тактах от команды чтения до выдачи первых данных
+<variant> частоту памяти
+<variant> объём модуля
+<variant> число каналов
+<explain>Ответ: задержку в тактах от команды чтения до выдачи первых данных.
+Реальная задержка = CL / частота шины; меньше — лучше.
+По лекции: тема 11, раздел «DRAM: бит как заряд конденсатора».
+Как в тесте (англ.): The CL (CAS latency) timing shows…</explain>
 
-<question>Какова пиковая пропускная способность двухканального режима DDR4-2400?
-<variant>9,6 ГБ/с
-<variant>76,8 ГБ/с
-<variant>19,2 ГБ/с
-<variantright>38,4 ГБ/с
+<question> Напряжение питания DDR5 стандартно
+<variantright> 1,1 В
+<variant> 1,5 В
+<variant> 1,2 В
+<variant> 3,3 В
+<explain>Ответ: 1,1 В.
+DDR3 — 1,5 В, DDR4 — 1,2 В, DDR5 — 1,1 В.
+По лекции: тема 11, раздел «От SDRAM к DDR5».
+Как в тесте (англ.): The standard supply voltage of DDR5 is</explain>
 
-<question>Какова пиковая пропускная способность двухканального режима DDR5-4800?
-<variantright>76,8 ГБ/с
-<variant>19,2 ГБ/с
-<variant>153,6 ГБ/с
-<variant>38,4 ГБ/с
+<question> Что значит RAM?
+<variantright> Random Access Memory — память с произвольным доступом
+<variant> Read And Modify
+<variant> Real Address Mode
+<variant> Read-only Access Memory
+<explain>Ответ: Random Access Memory — память с произвольным доступом.
+Любая ячейка доступна за одинаковое время, в любом порядке.
+По лекции: тема 11, раздел «RAM — память с произвольным доступом».
+Как в тесте (англ.): What does RAM stand for?</explain>
 
-<question>Модуль имеет маркировку PC4-25600. Какой это тип памяти?
-<variant>DDR4-6400
-<variant>DDR4-3600
-<variantright>DDR4-3200
-<variant>DDR4-1600
+<question> Ёмкость модуля памяти считается так:
+<variantright> число ячеек × разрядность ячейки
+<variant> частота × ширина шины
+<variant> число каналов × частота
+<variant> CL × частота
+<explain>Ответ: число ячеек × разрядность ячейки.
+Например, 2²⁸ адресов × 64 бита = 2 ГБ.
+По лекции: тема 11, раздел «SRAM или DRAM — сравнение».
+Как в тесте (англ.): The capacity of a memory module is calculated as:</explain>
 
-<question>Модуль имеет маркировку PC3-12800. Какой это тип памяти?
-<variantright>DDR3-1600
-<variant>DDR3-3200
-<variant>DDR3-800
-<variant>DDR3-2000
+<question> Что такое ECC-память?
+<variantright> память с кодом исправления ошибок (обычно Хэмминг + бит чётности, 72 бита на 64)
+<variant> память с удвоенной частотой
+<variant> энергонезависимая память
+<variant> память для видеокарт
+<explain>Ответ: память с кодом исправления ошибок (обычно Хэмминг + бит чётности, 72 бита на 64).
+Исправляет одиночную ошибку и обнаруживает двойную (SECDED) — тема 13.
+По лекции: тема 11, раздел «Модули и каналы».
+Как в тесте (англ.): What is ECC memory?</explain>
 
-<question>Модуль имеет маркировку PC4-19200. Какой это тип памяти?
-<variant>DDR4-1200
-<variant>DDR4-2800
-<variantright>DDR4-2400
-<variant>DDR4-4800
+<question> Видеопамять GDDR отличается от обычной DDR тем, что…
+<variantright> оптимизирована на высокую пропускную способность для видеокарты
+<variant> энергонезависима
+<variant> медленнее
+<variant> не требует регенерации
+<explain>Ответ: оптимизирована на высокую пропускную способность для видеокарты.
+GDDR6 — до 16–24 Гбит/с на вывод.
+По лекции: тема 11, раздел «От SDRAM к DDR5».
+Как в тесте (англ.): GDDR video memory differs from ordinary DDR in that…</explain>
 
-<question>Модуль имеет маркировку PC5-38400. Какой это тип памяти?
-<variantright>DDR5-4800
-<variant>DDR5-2400
-<variant>DDR5-5200
-<variant>DDR5-9600
-
-<question>Какова реальная тактовая частота шины памяти DDR4-3200?
-<variant>6400 МГц
-<variant>800 МГц
-<variant>3200 МГц
-<variantright>1600 МГц
-
-<question>Какова реальная тактовая частота шины памяти DDR3-1600?
-<variant>400 МГц
-<variantright>800 МГц
-<variant>1600 МГц
-<variant>3200 МГц
+<question> SPD на модуле памяти — это…
+<variantright> маленькая EEPROM с параметрами модуля, которую читает BIOS
+<variant> кэш модуля
+<variant> разъём питания
+<variant> радиатор
+<explain>Ответ: маленькая EEPROM с параметрами модуля, которую читает BIOS.
+Serial Presence Detect: частота, тайминги, объём; XMP/EXPO — профили разгона там же.
+По лекции: тема 11, раздел «Модули и каналы».
+Как в тесте (англ.): SPD on a memory module is…</explain>

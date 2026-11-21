@@ -34,6 +34,7 @@
         case 'ul': case 'ol': return '<' + b.t + '>' + b.items.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</' + b.t + '>';
         case 'note': return '<p><b>' + esc(b.kind || '') + '.</b> ' + b.html + '</p>';
         case 'table': return '<pre class="code" style="color:#ece8f6">' + esc(b.rows.map(function (r) { return r.map(strip).join(' | '); }).join('\n')) + '</pre>';
+        case 'imgs': return imgsHtml(b);
         default: return b.html ? '<p>' + b.html + '</p>' : '';
       }
     }).join('');
@@ -66,10 +67,12 @@
         case 'ul': case 'ol': return '<' + b.t + '>' + b.items.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</' + b.t + '>';
         case 'note': return '<aside class="bk-note ' + (NOTE_CLS[b.kind] || 'n-note') + '"><b>' + esc(b.kind || 'Запомни') + '.</b> ' + b.html + '</aside>';
         case 'table': return '<div class="bk-table"><table>' + b.rows.map(function (r, i) { var tg = b.head && i === 0 ? 'th' : 'td'; return '<tr>' + r.map(function (c2) { return '<' + tg + '>' + c2 + '</' + tg + '>'; }).join('') + '</tr>'; }).join('') + '</table></div>';
+        case 'imgs': return imgsHtml(b);
         default: return b.html ? '<p>' + b.html + '</p>' : '';
       }
     }).join('');
   };
+  function imgsHtml(b) { return '<div class="lec-imgs">' + b.items.map(function (x) { return '<figure><img src="' + esc(x.src) + '" alt="' + esc(x.alt) + '" loading="lazy"><figcaption>' + esc(x.alt) + '</figcaption></figure>'; }).join('') + '</div>'; }
 
   function hash(s) { var h = 5381; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return 'q' + (h >>> 0).toString(36); }
 
@@ -125,6 +128,9 @@
       if (!cur || !l) { list = table = null; return; }
       if (/^- /.test(l)) { if (!list) { list = { t: 'ul', items: [] }; cur.blocks.push(list); } list.items.push(inl(l.slice(2))); table = null; return; }
       if (/^\|/.test(l)) { var cells = l.replace(/^\||\|$/g, '').split('|').map(function (c) { return inl(c.trim()); }); if (!table) { table = { t: 'table', head: true, rows: [] }; cur.blocks.push(table); } table.rows.push(cells); list = null; return; }
+      /* ![подпись](assets/…) — картинка; несколько подряд — одна галерея */
+      var im = l.match(/^!\[([^\]]*)\]\(((?:assets\/|https:\/\/|data:image\/)[^)\s]+)\)$/);
+      if (im) { if (!list || list.t !== 'imgs') { list = { t: 'imgs', items: [] }; cur.blocks.push(list); } list.items.push({ alt: im[1], src: im[2] }); table = null; return; }
       list = table = null;
       if (/^! /.test(l)) { var m = l.slice(2).match(/^([^:]{2,20}):\s*(.*)$/); cur.blocks.push({ t: 'note', kind: m ? m[1] : 'Запомни', html: inl(m ? m[2] : l.slice(2)) }); return; }
       cur.blocks.push({ t: 'p', html: inl(l) });
@@ -147,6 +153,7 @@
           var pool = D.parseTxt(txts[i]).map(function (q) {
             var it = { id: hash(sid + '|' + q.q + '|' + (q.answer || '') + q.opts.map(function (o) { return o.t; }).join('|')), q: q.q, opts: q.opts, type: q.type, answer: q.answer, ex: q.ex };
             if (q.tr) it.tr = q.tr;
+            if (q.img) it.img = q.img;   /* картинка к вопросу (например, «какой элемент изображён») */
             it.diff = diffOf(it); return it;
           }).filter(function (q) { if (seen[q.id]) return false; seen[q.id] = 1; return true; });
           /* комнаты — подряд по 10 вопросов (в файле вопросы идут по подтемам), последняя — босс темы */

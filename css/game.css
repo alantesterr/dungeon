@@ -535,3 +535,10 @@ details.brief[open]>.rich{animation:richIn .45s ease-out}
 @keyframes richIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.cave-ov,.cave-ov.out,#sceneWrap.enter #scene,#panel>*,.opts.reveal .opt,details.brief.drop,.ggl-btn,.book-btn{animation-duration:.01s!important}}
 @media (max-width:520px){.ggl-btn{font-size:13.5px;padding:6px 10px;margin-right:6px}.book-btn{font-size:13.5px;padding:7px 11px}.book-btn[data-hot]::after{content:"←"}}
+/* картинки в лекции (условные обозначения элементов и т. п.) */
+.lec-imgs{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
+.lec-imgs figure{margin:0;background:#fffdf6;border:1px solid #d8ccb0;border-radius:10px;padding:6px 8px;width:170px;text-align:center}
+.lec-imgs img{width:100%;height:auto;display:block}
+.lec-imgs figcaption{font-size:12.5px;line-height:1.3;color:#3b3226;margin-top:4px}
+.ex-text .ex-star{color:#FAC775;font-weight:700}
+.qimg img{min-width:min(210px,100%);height:auto}

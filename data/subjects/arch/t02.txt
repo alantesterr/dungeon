@@ -1,285 +1,359 @@
-Архитектура ЭВМ. Тема 2 — вопросы из новой базы (Все темы 1–15), формат Тестера
+<question> Сколько бит отводится под хранение порядка в формате половинной точности (Half precision)?
+<variantright> 5
+<variant> 14
+<variant> 16
+<variant> 32
+<variant> 8
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: 5.
+Half: 1 + 5 + 10.
+По лекции: тема 2, раздел «Идея плавающей точки».
+Как в тесте (англ.): How many bits are used for the exponent in half precision?</explain>
 
-<question>Сколько бит отводится под хранение порядка в формате половинной точности (Half precision)?
-<variant>16
-<variant>32
-<variant>8
-<variantright>5
-<variant>14
+<question> Сколько бит отводится под хранение порядка в формате одинарной точности (коротком вещественном типе, Single)?
+<variantright> 8
+<variant> 10
+<variant> 14
+<variant> 16
+<variant> 32
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: 8.
+Single: 1 + 8 + 23.
+По лекции: тема 2, раздел «Идея плавающей точки».
+Как в тесте (англ.): How many bits are used for the exponent in single precision?</explain>
 
-<question>Сколько бит отводится под хранение порядка в формате одинарной точности (коротком вещественном типе, Single)?
-<variant>10
-<variant>32
-<variant>16
-<variant>14
-<variantright>8
+<question> Сколько бит отводится под хранение короткого вещественного числа (формат одинарной точности)?
+<variantright> 32
+<variant> 10
+<variant> 14
+<variant> 16
+<variant> 4
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: 32.
+4 байта.
+По лекции: тема 2, раздел «Разбор заданий СРО (тема 2)».
+Как в тесте (англ.): How many bits are used to store a single-precision (short real) number?</explain>
 
-<question>Сколько бит отводится под хранение короткого вещественного числа (формат одинарной точности)?
-<variant>16
-<variantright>32
-<variant>14
-<variant>4
-<variant>10
+<question> Сколько бит отводится под хранение вещественного числа в формате половинной точности (Half)?
+<variantright> 16
+<variant> 10
+<variant> 14
+<variant> 32
+<variant> 4
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: 16.
+2 байта.
+По лекции: тема 2, раздел «Идея плавающей точки».
+Как в тесте (англ.): How many bits are used to store a half-precision number?</explain>
 
-<question>Сколько бит отводится под хранение вещественного числа в формате половинной точности (Half)?
-<variant>14
-<variantright>16
-<variant>4
-<variant>10
-<variant>32
+<question> Сколько бит отводится под хранение длинного вещественного числа (формат двойной точности, Double)?
+<variantright> 64
+<variant> 10
+<variant> 16
+<variant> 4
+<variant> 8
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: 64.
+8 байт.
+По лекции: тема 2, раздел «Идея плавающей точки».
+Как в тесте (англ.): How many bits are used to store a double-precision (long real) number?</explain>
 
-<question>Сколько бит отводится под хранение длинного вещественного числа (формат двойной точности, Double)?
-<variant>4
-<variant>10
-<variant>8
-<variant>16
-<variantright>64
+<question> Сколько бит отводится под хранение порядка в длинном вещественном типе (формат двойной точности, Double)?
+<variantright> 11
+<variant> 14
+<variant> 16
+<variant> 32
+<variant> 8
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: 11.
+Double: 1 + 11 + 52.
+По лекции: тема 2, раздел «Идея плавающей точки».
+Как в тесте (англ.): How many bits are used for the exponent in double precision?</explain>
 
-<question>Сколько бит отводится под хранение порядка в длинном вещественном типе (формат двойной точности, Double)?
-<variant>32
-<variant>16
-<variant>8
-<variantright>11
-<variant>14
+<question> При хранении вещественных чисел старший бит отвечает за:
+<variantright> знак числа
+<variant> количество знаков после запятой
+<variant> порядок без смещения
+<variant> размер мантиссы
+<variant> смещение порядка
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: знак числа.
+S — первый бит.
+По лекции: тема 2, раздел «Идея плавающей точки».
+Как в тесте (англ.): When storing real numbers, the most significant bit holds:</explain>
 
-<question>При хранении вещественных чисел старший бит отвечает за:
-<variant>размер мантиссы
-<variant>смещение порядка
-<variant>порядок без смещения
-<variant>количество знаков после запятой
-<variantright>знак числа
+<question> Смещение (сдвиг) порядка для коротких вещественных чисел (формат одинарной точности) равно:
+<variantright> 127
+<variant> 1023
+<variant> 15
+<variant> 255
+<variant> 256
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: 127.
+2⁷ − 1.
+По лекции: тема 2, раздел «Идея плавающей точки».
+Как в тесте (англ.): The exponent bias for single-precision numbers is:</explain>
 
-<question>Смещение (cдвиг) порядка для коротких вещественных чисел (формат одинарной точности) равно:
-<variant>1023
-<variantright>127
-<variant>256
-<variant>15
-<variant>255
+<question> Смещение (сдвиг) порядка для вещественных чисел в формате половинной точности равно:
+<variantright> 15
+<variant> 1023
+<variant> 128
+<variant> 255
+<variant> 256
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: 15.
+2⁴ − 1.
+По лекции: тема 2, раздел «Идея плавающей точки».
+Как в тесте (англ.): The exponent bias for half-precision numbers is:</explain>
 
-<question>Смещение (cдвиг) порядка для вещественных чисел в формате половинной точности равно:
-<variant>1023
-<variant>256
-<variantright>15
-<variant>128
-<variant>255
+<question> Смещение (сдвиг) порядка для длинных вещественных чисел (формат двойной точности) равно:
+<variantright> 1023
+<variant> 1024
+<variant> 127
+<variant> 128
+<variant> 256
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: 1023.
+2¹⁰ − 1.
+По лекции: тема 2, раздел «Идея плавающей точки».
+Как в тесте (англ.): The exponent bias for double-precision numbers is:</explain>
 
-<question>Смещение (cдвиг) порядка для длинных вещественных чисел (формат двойной точности) равно:
-<variant>127
-<variant>128
-<variantright>1023
-<variant>1024
-<variant>256
+<question> Из представленных чисел выберите положительное:
+<variantright> 4FA74012
+<variant> 8A83126E
+<variant> 940C4801
+<variant> BF828F5C
+<variant> C1212540
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: 4FA74012.
+Первая hex-цифра 0–7 → знак 0.
+По лекции: тема 2, раздел «Идея плавающей точки».
+Как в тесте (англ.): Choose the positive number:</explain>
 
-<question>Из представленных чисел выберите положительное:
-<variant>940C4801
-<variantright>4FA74012
-<variant>BF828F5C
-<variant>8A83126E
-<variant>C1212540
+<question> Из представленных чисел выберите положительное:
+<variantright> 6B12A010
+<variant> AF828F5C
+<variant> CA200000
+<variant> F48C4800
+<variant> FA80026E
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: 6B12A010.
+6 = 0110, старший бит 0.
+По лекции: тема 2, раздел «Идея плавающей точки».
+Как в тесте (англ.): Choose the positive number:</explain>
 
-<question>Из представленных чисел выберите положительное:
-<variantright>6B12A010
-<variant>AF828F5C
-<variant>F48C4800
-<variant>FA80026E
-<variant>CA200000
+<question> Из представленных чисел выберите отрицательное:
+<variantright> 9FA11264321CED91
+<variant> 4000147AE147AE14
+<variant> 40AAAA64ADFF822C
+<variant> 70C3880CCCDD93C4
+<variant> 7F3062400001A9FC
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: 9FA11264321CED91.
+9 = 1001, старший бит 1.
+По лекции: тема 2, раздел «Идея плавающей точки».
+Как в тесте (англ.): Choose the negative number:</explain>
 
-<question>Из представленных чисел выберите отрицательное:
-<variant>40AAAA64ADFF822C
-<variantright>9FA11264321CED91
-<variant>7F3062400001A9FC
-<variant>70C3880CCCDD93C4
-<variant>4000147AE147AE14
+<question> Из представленных чисел выберите отрицательное:
+<variantright> AAF55E353F7CED91
+<variant> 1200147AE987AE14
+<variant> 40C3880CCCDD93C4
+<variant> 6ADE104DD2F1A9FC
+<variant> 7509C764ADFF822C
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: AAF55E353F7CED91.
+A = 1010.
+По лекции: тема 2, раздел «Идея плавающей точки».
+Как в тесте (англ.): Choose the negative number:</explain>
 
-<question>Из представленных чисел выберите отрицательное:
-<variant>6ADE104DD2F1A9FC
-<variant>7509C764ADFF822C
-<variant>1200147AE987AE14
-<variantright>AAF55E353F7CED91
-<variant>40C3880CCCDD93C4
+<question> Сопроцессоры используются для:
+<variantright> операции с плавающей точкой;
+<variant> Нет верного ответа
+<variant> ускорения ввода информации на экран;
+<variant> ускорения обработки данных;
+<variant> ускорения передачи данных;
+<explain>⭐ Вопрос из базы экзамена (150 вопросов).
+Ответ: операции с плавающей точкой;.
+FPU (8087).
+По лекции: тема 2, раздел «Идея плавающей точки».
+Как в тесте (англ.): Coprocessors are used for:</explain>
 
-<question>Сколько бит отводится под знак, порядок и дробную часть в binary32?
-<variant>1, 7 и 24 бита
-<variant>2, 8 и 22 бита
-<variant>1, 11 и 20 бит
-<variantright>1, 8 и 23 бита
+<question> Сколько бит мантиссы хранится в single?
+<variantright> 23
+<variant> 24
+<variant> 8
+<variant> 32
+<variant> 52
+<explain>Ответ: 23.
+24-й бит — скрытая единица.
+По лекции: тема 2, раздел «Идея плавающей точки».</explain>
 
-<question>Сколько бит отводится под знак, порядок и дробную часть в binary64?
-<variantright>1, 11 и 52 бита
-<variant>1, 10 и 53 бита
-<variant>1, 8 и 55 бит
-<variant>1, 12 и 51 бит
+<question> Сколько бит мантиссы хранится в double?
+<variantright> 52
+<variant> 53
+<variant> 11
+<variant> 64
+<variant> 23
+<explain>Ответ: 52.
+Плюс скрытый бит.
+По лекции: тема 2, раздел «Идея плавающей точки».</explain>
 
-<question>Что означает нормализованная двоичная запись числа?
-<variant>Число приведено к целому умножением на 2
-<variant>Число записано в виде суммы степеней десятки
-<variantright>Число представлено как 1,xxx · 2 в степени p
-<variant>Число записано только с нулевой целой частью
+<question> Нормализованная двоичная запись — это:
+<variantright> 1,M × 2ᵖ
+<variant> 0,M × 2ᵖ
+<variant> M × 10ᵖ
+<variant> M без порядка
+<variant> 1 × M
+<explain>Ответ: 1,M × 2ᵖ.
+Перед запятой ровно одна 1.
+По лекции: тема 2, раздел «Разбор заданий СРО (тема 2)».</explain>
 
-<question>Какое смещение порядка используется в binary64?
-<variant>255
-<variantright>1023
-<variant>1024
-<variant>127
+<question> Зачем нужен скрытый (неявный) бит?
+<variantright> ведущая 1 всегда есть — её не хранят и выигрывают 1 бит точности
+<variant> чтобы хранить знак
+<variant> для NaN
+<variant> для порядка
+<variant> для округления
+<explain>Ответ: ведущая 1 всегда есть — её не хранят и выигрывают 1 бит точности.
+Экономия бита.
+По лекции: тема 2, раздел «Идея плавающей точки».</explain>
 
-<question>Как кодируется знак отрицательного числа в IEEE 754?
-<variant>Число хранится в дополнительном коде
-<variant>Мантисса инвертируется и получает плюс единицу
-<variant>Порядок записывается со знаком минус
-<variantright>Старший бит S равен 1, остальные поля прежние
+<question> 21,625 в нормализованной двоичной форме:
+<variantright> 1,0101101 × 2⁴
+<variant> 1,0101101 × 2⁵
+<variant> 10,101101 × 2³
+<variant> 0,10101101 × 2⁵
+<variant> 1,101 × 2⁴
+<explain>Ответ: 1,0101101 × 2⁴.
+10101,101 → 4 сдвига.
+По лекции: тема 2, раздел «Разбор заданий СРО (тема 2)».</explain>
 
-<question>Что произойдёт при вычислении 0,1 + 0,2 с числами с плавающей точкой?
-<variant>Происходит переполнение поля порядка
-<variant>Результат всегда получается целым числом
-<variantright>Результат близок к 0,3, но не равен ему
-<variant>Результат точно равен 0,3 во всех случаях
+<question> Смещённый порядок для 21,625 в single:
+<variantright> 131
+<variant> 127
+<variant> 4
+<variant> 132
+<variant> 123
+<explain>Ответ: 131.
+4 + 127.
+По лекции: тема 2, раздел «Идея плавающей точки».</explain>
 
-<question>Чему равно число, у которого порядок 00000000 и дробь 0?
-<variantright>Нулю (знак задаёт +0 или −0)
-<variant>Единице (порядок равен нулю)
-<variant>Минимальному нормализованному числу
-<variant>Бесконечности (все поля нулевые)
+<question> Код 21,625 в single:
+<variantright> 41AD0000
+<variant> 41A00000
+<variant> C1AD0000
+<variant> 42AD0000
+<variant> 40AD0000
+<explain>Ответ: 41AD0000.
+0 10000011 0101101…
+По лекции: тема 2, раздел «Идея плавающей точки».</explain>
 
-<question>Примерно сколько значащих десятичных цифр даёт binary32?
-<variantright>Около 7
-<variant>Около 15
-<variant>Около 23
-<variant>Около 3
+<question> 430F0000h как single равно:
+<variantright> 143
+<variant> 15
+<variant> 430
+<variant> −143
+<variant> 14,3
+<explain>Ответ: 143.
+1,0001111 × 2⁷.
+По лекции: тема 2, раздел «Идея плавающей точки».</explain>
 
-<question>Какое значение изменится сильнее при потере младшего бита дроби у binary32 для числа около 1?
-<variantright>Абсолютная ошибка порядка 10^−7
-<variant>Абсолютная ошибка порядка 10^−2
-<variant>Ошибки не возникает вовсе
-<variant>Абсолютная ошибка порядка 1
+<question> C2440000h как single равно:
+<variantright> −49
+<variant> 49
+<variant> −98
+<variant> −24,5
+<variant> 194
+<explain>Ответ: −49.
+S = 1, 1,10001 × 2⁵.
+По лекции: тема 2, раздел «Идея плавающей точки».</explain>
 
-<question>Какой шестнадцатеричный код имеет число −7,25 в формате binary32?
-<variantright>C0E80000
-<variant>40E80000
-<variant>C1680000
-<variant>C0680000
+<question> Почему 0,1 нельзя точно записать в двоичном виде?
+<variantright> в двоичной системе это бесконечная периодическая дробь
+<variant> потому что 0,1 < 1
+<variant> из-за знака
+<variant> мантисса слишком короткая для любых чисел
+<variant> порядок отрицательный
+<explain>Ответ: в двоичной системе это бесконечная периодическая дробь.
+0,000110011…
+По лекции: тема 2, раздел «Идея плавающей точки».</explain>
 
-<question>Какой шестнадцатеричный код имеет число −5,75 в формате binary32?
-<variant>40B80000
-<variant>C0380000
-<variantright>C0B80000
-<variant>C1380000
+<question> E = все единицы, M = 0 означает:
+<variantright> бесконечность
+<variant> ноль
+<variant> NaN
+<variant> денормализованное число
+<variant> максимальное число
+<explain>Ответ: бесконечность.
+±∞.
+По лекции: тема 2, раздел «Разбор заданий СРО (тема 2)».</explain>
 
-<question>Какой шестнадцатеричный код имеет число 100 в формате binary32?
-<variantright>42C80000
-<variant>42480000
-<variant>43480000
-<variant>C2C80000
+<question> E = все единицы, M ≠ 0 означает:
+<variantright> NaN
+<variant> бесконечность
+<variant> ноль
+<variant> отрицательное число
+<variant> ошибку записи
+<explain>Ответ: NaN.
+Not a Number.
+По лекции: тема 2, раздел «Разбор заданий СРО (тема 2)».</explain>
 
-<question>Какой шестнадцатеричный код имеет число −0,15625 в формате binary32?
-<variant>BDA00000
-<variantright>BE200000
-<variant>3E200000
-<variant>BEA00000
+<question> E = 0 и M = 0 означает:
+<variantright> ±0
+<variant> NaN
+<variant> бесконечность
+<variant> 1
+<variant> минимальное нормализованное
+<explain>Ответ: ±0.
+Два нуля: +0 и −0.
+По лекции: тема 2, раздел «Идея плавающей точки».</explain>
 
-<question>Какой шестнадцатеричный код имеет число 21,625 в формате binary32?
-<variant>422D0000
-<variant>C1AD0000
-<variant>412D0000
-<variantright>41AD0000
+<question> Зачем порядок хранят со смещением (bias)?
+<variantright> чтобы порядок был неотрицательным и числа сравнивались как целые
+<variant> чтобы хранить знак
+<variant> для скрытого бита
+<variant> для NaN
+<variant> чтобы увеличить мантиссу
+<explain>Ответ: чтобы порядок был неотрицательным и числа сравнивались как целые.
+Упрощает сравнение.
+По лекции: тема 2, раздел «Идея плавающей точки».</explain>
 
-<question>Какой шестнадцатеричный код имеет число −12,375 в формате binary32?
-<variant>41460000
-<variant>C1C60000
-<variant>C0C60000
-<variantright>C1460000
+<question> −7,25 в single:
+<variantright> C0E80000
+<variant> 40E80000
+<variant> C0F80000
+<variant> C1E80000
+<variant> C0E00000
+<explain>Ответ: C0E80000.
+1 10000001 1101…
+По лекции: тема 2, раздел «Идея плавающей точки».</explain>
 
-<question>Какое число закодировано в binary32 значением C2480000h?
-<variant>−25
-<variant>−100
-<variantright>−50
-<variant>50
+<question> Точность single в десятичных цифрах примерно:
+<variantright> 7–8
+<variant> 15–16
+<variant> 3–4
+<variant> 19–20
+<variant> 32
+<explain>Ответ: 7–8.
+24 бита ≈ 7 цифр.
+По лекции: тема 2, раздел «Идея плавающей точки».</explain>
 
-<question>Какое число закодировано в binary32 значением 3F000000h?
-<variant>−0,5
-<variant>1
-<variant>0,25
-<variantright>0,5
+<question> Дробная часть переводится в двоичную систему:
+<variantright> умножением на 2 и записью целых частей
+<variant> делением на 2 и записью остатков
+<variant> сдвигом вправо
+<variant> через hex
+<variant> делением на 10
+<explain>Ответ: умножением на 2 и записью целых частей.
+0,625×2 = 1,25 → 1…
+По лекции: тема 2, раздел «Разбор заданий СРО (тема 2)».</explain>
 
-<question>Какое число закодировано в binary32 значением 3E800000h?
-<variant>0,5
-<variant>−0,25
-<variantright>0,25
-<variant>0,125
-
-<question>Какое число закодировано в binary32 значением 42F60000h?
-<variant>−123
-<variant>246
-<variantright>123
-<variant>61,5
-
-<question>Какое число закодировано в binary32 значением C0A00000h?
-<variant>−10
-<variant>5
-<variant>−2,5
-<variantright>−5
-
-<question>Чему равен порядок E, хранимый в поле, для числа 13,625 в binary32?
-<variant>129
-<variant>131
-<variant>3
-<variantright>130
-
-<question>Чему равен порядок E, хранимый в поле, для числа −0,15625 в binary32?
-<variant>−3
-<variant>125
-<variantright>124
-<variant>123
-
-<question>Чему равен порядок E, хранимый в поле, для числа 100 в binary32?
-<variant>134
-<variant>6
-<variantright>133
-<variant>132
-
-<question>Чему равен порядок E, хранимый в поле, для числа 0,5 в binary32?
-<variant>−1
-<variant>127
-<variant>125
-<variantright>126
-
-<question>Поле порядка binary32 равно 10000100 (132). Каков истинный порядок p?
-<variantright>5
-<variant>132
-<variant>4
-<variant>6
-
-<question>Поле порядка binary32 равно 01111011 (123). Каков истинный порядок p?
-<variant>123
-<variant>−5
-<variantright>−4
-<variant>−3
-
-<question>Поле порядка binary32 равно 01111111 (127). Каков истинный порядок p?
-<variant>127
-<variantright>0
-<variant>−1
-<variant>1
-
-<question>Как выглядит число 21,625 в нормализованной двоичной форме?
-<variant>1,0101101 · 2^5
-<variant>1,0101101 · 2^3
-<variantright>1,0101101 · 2^4
-<variant>0,10101101 · 2^5
-
-<question>Как выглядит число 13,625 в нормализованной двоичной форме?
-<variantright>1,101101 · 2^3
-<variant>1,101101 · 2^2
-<variant>0,1101101 · 2^4
-<variant>1,101101 · 2^4
-
-<question>Как выглядит число 6,5 в нормализованной двоичной форме?
-<variant>1,101 · 2^3
-<variantright>1,101 · 2^2
-<variant>1,101 · 2^1
-<variant>0,1101 · 2^3
-
-<question>Как выглядит число 45,25 в нормализованной двоичной форме?
-<variant>0,10110101 · 2^6
-<variantright>1,0110101 · 2^5
-<variant>1,0110101 · 2^6
-<variant>1,0110101 · 2^4
+<question> Временный (extended) формат x87 занимает:
+<variantright> 80 бит (10 байт)
+<variant> 64 бит
+<variant> 128 бит
+<variant> 32 бит
+<variant> 48 бит
+<explain>Ответ: 80 бит (10 байт).
+Порядок 15, мантисса 64 с явным битом.
+По лекции: тема 2, раздел «Идея плавающей точки».</explain>
