@@ -3026,7 +3026,22 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
 
   /* ---------- старт ---------- */
   if (A.loadPets) A.loadPets();
+  /* Философия пересобрана из учебника StudyPlay (ноябрь 2026): у части вопросов поправлен текст — их номер поменялся.
+     Один раз переносим прогресс со старых номеров на новые (idmap.json: старый → новый). */
+  function migrateIds(sid, ver) {
+    S.idmig = S.idmig || {}; if (S.idmig[sid] === ver) return;
+    fetch('data/subjects/' + sid + '/idmap.json').then(function (r) { return r.ok ? r.json() : null; }).then(function (map) {
+      if (!map) return; var n = 0;
+      Object.keys(map).forEach(function (o) {
+        var nw = map[o];
+        if (D.save.srs[o] && !D.save.srs[nw]) { D.save.srs[nw] = D.save.srs[o]; n++; }
+        if (D.save.known && D.save.known[o]) D.save.known[nw] = 1;
+      });
+      S.idmig[sid] = ver; D.persist(); if (n) console.info('прогресс перенесён:', sid, n);
+    }).catch(function () {});
+  }
   Promise.all([A.load(), D.load()]).then(function () {
+    migrateIds('phil', 1);
     $('loading').classList.add('gone');
     requestAnimationFrame(loop);
     G.sessStart = Date.now(); G.sessL0 = learnedAll();   /* для «выхода на высокой ноте» */

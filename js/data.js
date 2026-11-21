@@ -54,7 +54,7 @@
   D.toks = toks; D.overlap = overlap;
 
   /* блоки лекции для книжки — полноценная вёрстка: таблицы, заметки, код и вывод */
-  var NOTE_CLS = { 'Запомни': 'n-note', 'Важно': 'n-warn', 'Совет': 'n-tip', 'Нюанс': 'n-trick', 'Частая ошибка': 'n-err', 'Ошибка': 'n-err', 'Ловушка': 'n-err' };
+  var NOTE_CLS = { 'Коротко': 'n-tip', 'Личность': 'n-trick', 'Запомни': 'n-note', 'Важно': 'n-warn', 'Совет': 'n-tip', 'Нюанс': 'n-trick', 'Частая ошибка': 'n-err', 'Ошибка': 'n-err', 'Ловушка': 'n-err' };
   D.bookHtml = function (bl) {
     return (bl || []).map(function (b) {
       switch (b.t) {
