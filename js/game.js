@@ -43,7 +43,7 @@
   function show(stage) { stageEl.hidden = !stage; screenEl.hidden = !!stage; }
   function go(scene, arg) {
     if (scene !== 'exam' && G.exTimer) { clearInterval(G.exTimer); G.exTimer = null; }
-    G.prevScene = G.scene; G.scene = scene; labels([]); G.hero.onArrive = null; G.hero.target = null;
+    G.prevScene = G.scene; G.scene = scene; labels([]); if ($('libTip')) $('libTip').hidden = true; G.hero.onArrive = null; G.hero.target = null;
     clearTimeout(G.idleT); document.querySelectorAll('.door-hint').forEach(function (e) { e.remove(); });
     if (scene !== 'room') G.room = null;
     G.intruder = null;
@@ -440,8 +440,15 @@
   function sceneXY(e) { var r = $('scene').getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * A.W, y: (e.clientY - r.top) / r.height * A.H }; }
   function hotAt(e) { var p = sceneXY(e); return hotspots().filter(function (h) { return p.x >= h.x0 && p.x <= h.x1 && p.y >= h.y0 && p.y <= h.y1; })[0]; }
   $('scene').addEventListener('click', function (e) { if (G.modal || BK || G.hero.target != null) return; var h = hotAt(e); if (h) h.fn(); });
-  $('scene').addEventListener('mousemove', function (e) { var h = hotAt(e); $('scene').style.cursor = h ? 'pointer' : ''; if (G.lib) G.lib.hover = G.scene === 'path' && h && h.hv ? h.hv : null; });
-  $('scene').addEventListener('mouseleave', function () { if (G.lib) G.lib.hover = null; });
+  $('scene').addEventListener('mousemove', function (e) { var h = hotAt(e); $('scene').style.cursor = h ? 'pointer' : ''; if (G.lib) { G.lib.hover = G.scene === 'path' && h && h.hv ? h.hv : null; libTip(G.scene === 'path' && h ? h.tip : null); } });
+  $('scene').addEventListener('mouseleave', function () { if (G.lib) G.lib.hover = null; libTip(null); });
+  /* подсказка над полкой под курсором: какая тема, сколько собрано */
+  function libTip(tp) {
+    var el = $('libTip'); if (!tp) { if (el) el.hidden = true; return; }
+    if (!el) { el = document.createElement('div'); el.id = 'libTip'; $('floaters').appendChild(el); }
+    el.hidden = false; el.innerHTML = '<b>' + esc(tp.text) + '</b><span>' + esc(tp.sub) + '</span>';
+    el.style.left = Math.max(12, Math.min(88, tp.x / A.W * 100)) + '%'; el.style.top = (tp.y / A.H * 100) + '%';
+  }
   /* ---------- ПРЕДМЕТ: темы силлабуса 1–15 с процентами ---------- */
   function enterSubject(id) {
     D.useSubject(id); show(false); where(subjTitle());
@@ -636,11 +643,11 @@
   /* что можно нажать в библиотеке: каждая полка, шкаф ошибок, дверь в холл */
   function libSpots() {
     var L = G.lib; if (!L) return [];
-    var out = [{ x0: L.err.x, x1: L.err.x + L.err.w, y0: A.LIB.CASE_TOP - 6, y1: A.FLOOR_Y, hv: { err: true }, fn: function () { libWalk(L.err.x + L.err.w / 2, openErrShelf); } }];
+    var out = [{ x0: L.err.x, x1: L.err.x + L.err.w, y0: A.LIB.CASE_TOP - 6, y1: A.FLOOR_Y, hv: { err: true }, tip: { text: '📕 Полка ошибок', sub: L.err.n ? L.err.n + ' — нажми, чтобы исправить' : 'пусто — ошибок нет', x: L.err.x + L.err.w / 2 + 30, y: A.LIB.CASE_TOP + 40 }, fn: function () { libWalk(L.err.x + L.err.w / 2, openErrShelf); } }];
     L.cases.forEach(function (cs) {
       cs.rows.forEach(function (row, r) {
         if (!row.f) return; var R = A.libRowRect(cs.x, cs.w, r);
-        out.push({ x0: R.x, x1: R.x + R.w, y0: R.y, y1: R.y + R.h, hv: { x: cs.x, w: cs.w, r: r }, fn: function () { libWalk(cs.x + cs.w / 2, function () { openShelf(row.f); }); } });
+        out.push({ x0: R.x, x1: R.x + R.w, y0: R.y, y1: R.y + R.h + 6, hv: { x: cs.x, w: cs.w, r: r }, tip: { text: shelfLabel(row.f) + ' · ' + row.f.title, sub: '📗 ' + row.st.books + ' из ' + row.st.total + ' · ' + row.st.pct + '%' + (row.st.err ? ' · 📕 ' + row.st.err : ''), x: cs.x + cs.w / 2, y: R.y - 2 }, fn: function () { libWalk(cs.x + cs.w / 2, function () { openShelf(row.f); }); } });
       });
     });
     out.push({ x0: 436, x1: 476, y0: A.FLOOR_Y - 70, y1: A.FLOOR_Y, fn: function () { libWalk(458, function () { go('hall'); }); } });

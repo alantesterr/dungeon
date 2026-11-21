@@ -210,10 +210,6 @@
       caseFrame(c, P, cs.x, cs.w, false);
       cs.rows.forEach(function (row, r) { books(c, P, t, cs.x, cs.w, r, row, (row.n | 0) * 31 + ci, false, L.anim && row.newFrom != null ? { t0: L.anim.t0, delay: 500 + (ci * ROWS + r) * 160 } : null); });
     });
-    /* таблички с номерами — поверх всех полок */
-    L.cases.forEach(function (cs) {
-      cs.rows.forEach(function (row, r) { if (row.n == null) return; var R = rowRect(cs.x, cs.w, r), by = R.y + R.h - 3, lx = R.x + R.w / 2 - 9; px(c, lx - 1, by, 20, 10, '#2a1a0a'); px(c, lx, by + 1, 18, 8, row.gold ? '#FAC775' : '#d9b25a'); px(c, lx, by + 1, 18, 1, '#ffe9a8'); c.fillStyle = '#2a1a0a'; c.font = 'bold 8px monospace'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(String(row.n), lx + 9, by + 5.5); });
-    });
     /* лестница у последнего шкафа */
     var lc = L.cases[L.cases.length - 1];
     if (lc) { var lx = lc.x + lc.w + 2; c.strokeStyle = P.woodL; c.lineWidth = 2; c.beginPath(); c.moveTo(lx, CASE_TOP + 10); c.lineTo(lx + 14, A.FLOOR_Y); c.moveTo(lx + 8, CASE_TOP + 8); c.lineTo(lx + 22, A.FLOOR_Y); c.stroke(); for (var st = 0; st < 7; st++) { var yy = CASE_TOP + 24 + st * 20, k = (yy - CASE_TOP) / (A.FLOOR_Y - CASE_TOP); px(c, lx + k * 14, yy, 9, 2, P.woodL); } }
@@ -223,6 +219,36 @@
     if (hv) { var rr = hv.err ? { x: E.x + 2, y: CASE_TOP - 2, w: E.w - 4, h: A.FLOOR_Y - CASE_TOP } : rowRect(hv.x, hv.w, hv.r); c.strokeStyle = 'rgba(' + (hv.err ? '255,120,120' : P.glow) + ',' + (0.7 + 0.3 * Math.sin(t / 150)).toFixed(2) + ')'; c.lineWidth = 2; c.strokeRect(rr.x - 1, rr.y - 1, rr.w + 2, rr.h + 1); }
     /* виньетка */
     var vg = c.createRadialGradient(W / 2, H * 0.55, H * 0.35, W / 2, H * 0.55, W * 0.72); vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.5)'); c.fillStyle = vg; c.fillRect(0, 0, W, H);
+    /* таблички с номерами — поверх всего (после виньетки, чтобы не темнели); под курсором табличка горит */
+    L.cases.forEach(function (cs) {
+      cs.rows.forEach(function (row, r) {
+        if (row.n == null) return;
+        var on = hv && !hv.err && hv.x === cs.x && hv.r === r;
+        plate(c, t, cs.x + cs.w / 2, rowRect(cs.x, cs.w, r).y + ROW_H - 11, String(row.n), on, row.gold);
+      });
+    });
   };
+  /* ---------- пиксельный шрифт для табличек: 3×5, рисуется квадратиками — цифры чёткие при любом размере ---------- */
+  var GL = {
+    '0': '111101101101111', '1': '010110010010111', '2': '111001111100111', '3': '111001111001111', '4': '101101111001001',
+    '5': '111100111001111', '6': '111100111101111', '7': '111001010010010', '8': '111101111101111', '9': '111101111001111',
+    'П': '111101101101101', 'Л': '011101101101101'
+  };
+  function glyphs(c, s, x, y, k, col) {
+    c.fillStyle = col;
+    for (var i = 0; i < s.length; i++) { var g = GL[s[i]]; if (!g) continue; for (var b = 0; b < 15; b++) if (g[b] === '1') c.fillRect(x + i * 4 * k + (b % 3) * k, y + Math.floor(b / 3) * k, k, k); }
+  }
+  function plate(c, t, cx, top, s, on, gold) {
+    var k = 2, tw = s.length * 4 * k - k, w = tw + 8, h = 5 * k + 6, x = Math.round(cx - w / 2), y = Math.round(top);
+    if (on) {   /* горит: свечение, яркая табличка, лёгкое «дыхание» */
+      var a = 0.55 + 0.35 * Math.sin(t / 140);
+      var g = c.createRadialGradient(cx, y + h / 2, 2, cx, y + h / 2, 26); g.addColorStop(0, 'rgba(255,220,120,' + a.toFixed(2) + ')'); g.addColorStop(1, 'rgba(255,200,80,0)');
+      c.fillStyle = g; c.fillRect(cx - 28, y - 18, 56, h + 36);
+    }
+    px(c, x - 1, y - 1, w + 2, h + 2, '#1a0f05');
+    px(c, x, y, w, h, on ? '#fff1b8' : gold ? '#FAC775' : '#caa04e');
+    px(c, x, y, w, 1, on ? '#ffffff' : '#ffe9a8'); px(c, x, y + h - 1, w, 1, on ? '#e0b040' : '#8a6a2a');
+    glyphs(c, s, x + 4, y + 3, k, on ? '#7a2a00' : '#2a1a0a');
+  }
   A.libRowRect = rowRect;
 })();
