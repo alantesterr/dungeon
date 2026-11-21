@@ -626,3 +626,7 @@ details.brief[open]>.rich{animation:richIn .45s ease-out}
 #sceneWrap.zoomhit canvas#scene{animation:zoomHit .55s cubic-bezier(.2,1.6,.4,1)}
 @keyframes zoomHit{0%{transform:scale(1)}25%{transform:scale(1.07)}100%{transform:scale(1)}}
 #drawErr{position:absolute;left:8px;right:8px;bottom:8px;z-index:7;background:rgba(90,20,30,.92);border:1px solid #E24B4A;color:#fff;font-size:13px;padding:6px 10px;border-radius:8px}
+/* автопереход: полоска на кнопке, которая нажмётся сама */
+.btn.auto{position:relative;overflow:hidden}
+.btn.auto::after{content:"";position:absolute;left:0;bottom:0;height:4px;width:100%;background:rgba(255,255,255,.75);transform-origin:left;animation:autoBar var(--auto,3000ms) linear forwards;pointer-events:none}
+@keyframes autoBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}

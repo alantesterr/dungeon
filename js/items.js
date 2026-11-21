@@ -37,6 +37,8 @@
     var sp = {}; try { sp = JSON.parse(localStorage.getItem('sp-settings') || '{}') || {}; } catch (e) { /* нет настроек StudyPlay */ }
     S.cfg = { trLang: sp.trLang === 'kk' ? 'kk' : 'ru', autoTr: !!sp.autoTr };
   }
+  /* автопереход включён для всех (ноябрь 2026); выключить можно в настройках */
+  if (S.cfg.autoV2 !== 1) { S.cfg.auto = true; S.cfg.autoV2 = 1; }
   X.count = function (k) { return S.inv.items[k] || 0; };
   X.add = function (k, n) { S.inv.items[k] = (S.inv.items[k] || 0) + (n || 1); };
   X.take = function (k) { if (!X.count(k)) return false; S.inv.items[k]--; return true; };
