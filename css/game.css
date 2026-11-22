@@ -668,3 +668,4 @@ details.brief[open]>.rich{animation:richIn .45s ease-out}
 .note-btn:hover,.note-btn:focus-visible{transform:translateY(-1px);border-color:#AFA9EC;background:linear-gradient(#3a3166,#2a2346);outline:none}
 .note-btn.has{border-color:#AFA9EC;background:linear-gradient(#3f3470,#2e2650);box-shadow:0 0 10px rgba(175,169,236,.35),0 2px 0 #1a1530}
 .qlinks{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+#app:not(.focus) .tr-under.in-bubble{display:none}

@@ -843,6 +843,7 @@
       var prose = q.q.replace(/```[\s\S]*?```/g, ' ').trim(), text = String(d.q || '').replace(/```[\s\S]*?```/g, ' ').replace(/\n{2,}/g, '\n').trim();
       var qt = root.querySelector('.qtext, .cq');
       if (qt && text && text !== prose && !root.querySelector('.tr-under')) qt.insertAdjacentHTML('afterend', '<div class="tr-under">🌐 ' + D.md(text) + '</div>');
+      if (G.ev && G.ev.cur && G.ev.cur.q === q) { G.ev.cur.trText = text && text !== prose ? text : null; flyAsk(q); }
       root.querySelectorAll('.opt').forEach(function (b) {
         var oi = +b.getAttribute('data-o'), o = q.opts[oi], t = d.o && d.o[oi];
         if (!o || !t || t === o.t || X.isCodeLike(o.t) || b.querySelector('.o-tr')) return;
@@ -851,7 +852,7 @@
       return true;
     }).catch(function () { floater('Перевод недоступен — нет интернета?', 240, 60, '#F09595'); return false; });
   }
-  function trHide(root) { root.querySelectorAll('.tr-under, .o-tr').forEach(function (e) { e.remove(); }); }
+  function trHide(root) { root.querySelectorAll('.tr-under, .o-tr').forEach(function (e) { e.remove(); }); if (G.ev && G.ev.cur) { G.ev.cur.trText = null; flyAsk(G.ev.cur.q); } }
   function evKnowBox(q, root) {
     root.insertAdjacentHTML('beforeend', '<div class="know-box"><span>📕 Этот вопрос лежит на <b>полке ошибок</b>. Точно запомнил?</span><button class="btn primary sm" data-kn>✓ Знаю — убрать</button><button class="btn ghost sm" data-kl>Оставить</button></div>');
     var box = root.querySelector('.know-box');
@@ -918,11 +919,16 @@
       }
     });
     /* вопрос «говорит» глаз: облачко у него; если поместилось — в панели только варианты */
-    setTimeout(function () {
-      if (!G.ev || G.ev.cur && G.ev.cur.q !== q) return;
-      var fit = bubbleAt('<small class="b-twin">Держу доску… Ответь — и она твоя!</small>' + D.md(q.q), flySpeaker(), 'q', true);
-      var qt = panel.querySelector('.qtext'); if (fit && qt && !q.img) qt.classList.add('in-bubble');
-    }, 350);
+    setTimeout(function () { flyAsk(q); }, 350);
+  }
+  /* облачко глаза с вопросом; перевод (C++ и др.) — в этом же облачке под оригиналом, как в бою */
+  function flyAsk(q) {
+    var E = G.ev; if (!E || E.kind !== 'bridge' || !E.cur || E.cur.q !== q || E.cur.done) return;
+    var tr = E.cur.trText ? '<div class="b-tr">' + D.md(E.cur.trText) + '</div>' : '';
+    var fit = bubbleAt('<small class="b-twin">Держу доску… Ответь — и она твоя!</small>' + D.md(q.q) + tr, flySpeaker(), 'q', true);
+    var qt = panel.querySelector('.qtext'), tu = panel.querySelector('.tr-under');
+    if (qt) qt.classList.toggle('in-bubble', !!(fit && !q.img));
+    if (tu) tu.classList.toggle('in-bubble', !!fit);   /* перевод уже в облачке — в панели не дублируем */
   }
   function bridgeWin() {
     var E = G.ev; G.buttons = []; E.flyAway = true; hideBubble(); setPanel('<p class="msg">Ты идёшь по мосту… Глаз довольно улетает.</p>');
