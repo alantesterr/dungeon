@@ -374,9 +374,9 @@
     setPanel(
       (intro ? '<div class="qtext">Добро пожаловать в Подземелье знаний!</div>' +
         '<p class="msg">Игра для подготовки к РК и экзамену. В комнатах монстры задают вопросы: верно — монстр теряет сердечко, ошибся — бьёт тебя (−1 ♥) и спросит этот вопрос ещё раз. IQ — награда за ответы, на него Мудрец продаёт предметы.</p>'
-        : '<div class="qtext">Домик</div><p class="hint">Продолжай с того места, где остановился.</p>') +
+        : '<div class="qtext">Домик</div><p class="hint">Выйди на улицу — там холл с дверями предметов. У каждого предмета своя библиотека.</p>') +
         '',
-      [contBtn() || btn('▶ Начать', 'primary', 'Enter', toDungeon), btn('🎣 Рыбалка', 'ghost', null, toLake), btn('🎒 Рюкзак', 'ghost', null, openBag)]);
+      [btn('🚪 Выйти на улицу', 'primary', 'Enter', toDungeon), btn('🎣 Рыбалка', 'ghost', null, toLake), btn('🎒 Рюкзак', 'ghost', null, openBag)]);   /* «Продолжить» убран — выходим через дверь */
     clearTimeout(G.idleT); G.idleT = setTimeout(doorHint, 120000);   /* стоишь дома 2 минуты — подсказка про дверь */
     if (S.maxHp > 5) { S.maxHp = 5; S.hp = Math.min(S.hp, 5); }   /* уровней больше нет — 5 сердечек у всех */
     if (S.hp < S.maxHp) { S.hp = S.maxHp; D.persist(); }
