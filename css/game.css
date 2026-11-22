@@ -660,3 +660,5 @@ details.brief[open]>.rich{animation:richIn .45s ease-out}
 .nt-h{margin:16px 0 6px;color:#FAC775;font-size:16px}
 .nt-it{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px}
 .lchip.notes{border-color:#7F77DD;color:#CECBF6}
+.note-min{margin:-4px 0 8px;font-size:13px;color:#FAC775;min-height:1em}
+.btn[disabled]{opacity:.45;cursor:not-allowed}

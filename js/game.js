@@ -1376,7 +1376,8 @@
     var hasBook = R.f.texts && R.f.texts.length;
     setPanel(head + '<div class="qtext">🎭 «Я скажу четыре вещи. Одна из них — ложь. Найдёшь?»</div>' +
       '<div class="opts stmts">' + all.map(function (s, i) { return '<button class="opt stmt" data-s="' + i + '"><span class="n">' + (i + 1) + '</span><span><span class="sq">' + D.md(s.q.q) + '</span><span class="sa">→ ' + D.md(s.a) + '</span></span></button>'; }).join('') + '</div>' +
-      '<div class="qlinks">' + (hasBook ? '<button class="book-btn" data-ql="book">📖 Открыть книгу <small>проверить по лекции</small></button>' : '') + '</div>');
+      '<div class="qlinks">' + (hasBook ? '<button class="book-btn" data-ql="book">📖 Открыть книгу <small>проверить по лекции</small></button>' : '') + '<button class="linkbtn note-btn" data-note>📝 Запись</button></div>' + noteBlock(q));
+    var lnb = panel.querySelector('[data-note]'); if (lnb) lnb.onclick = function () { openNote(q); };
     var bk = panel.querySelector('[data-ql="book"]'); if (bk) bk.onclick = openBookRoom;
     bubbleAt('<b>Найди мою ложь…</b> <small>одно из утверждений внизу — неправда</small>', R.mon, 'q');
     panel.querySelectorAll('.stmt').forEach(function (b) { b.onclick = function () { liarPick(+b.getAttribute('data-s')); }; });
@@ -1520,13 +1521,19 @@
       '<div class="ex-q">' + D.md(q.q) + '</div>' + (answered ? '<p class="ex-right"><b>Правильный ответ:</b> ' + rightText(q) + '</p>' : '<p class="hint">Ответ увидишь на полке «Мои записи» (кафедра со свечой в библиотеке) или после ответа.</p>') +
       '<p class="hint">Объясни своими словами — так запоминается лучше. Запись появится под этим вопросом каждый раз, когда он попадётся, и на полке «Мои записи».</p>' +
       '<textarea id="noteTxt" class="note-ta" rows="5" placeholder="Например: аксиология — от «аксиос» = ценность. Запомнить: ценность → аксио…">' + esc(n ? n.t : '') + '</textarea>' +
+      '<p class="note-min" id="noteMin"></p>' +
       '<div class="row"><button class="btn primary" data-save>💾 Сохранить</button>' + (n ? '<button class="btn ghost" data-del>🗑 Удалить</button>' : '') + '<button class="btn ghost" data-close>Отмена</button></div></div>';
     modal(h, function (el) {
       el.querySelectorAll('[data-close]').forEach(function (b) { b.onclick = closeModal; });
-      var ta = el.querySelector('#noteTxt'); setTimeout(function () { ta.focus(); }, 50);
-      el.querySelector('[data-save]').onclick = function () {
+      var ta = el.querySelector('#noteTxt'), sv = el.querySelector('[data-save]'), mn = el.querySelector('#noteMin'); setTimeout(function () { ta.focus(); }, 50);
+      /* защита от случайных записей: сохраняем только от 3 символов (пробелы не считаются) */
+      var NOTE_MIN = 3, len = function () { return ta.value.replace(/\s+/g, '').length; };
+      var check = function () { var k = len(); sv.disabled = k < NOTE_MIN; mn.textContent = k < NOTE_MIN ? (k ? 'Ещё ' + (NOTE_MIN - k) + ' — запись сохраняется от ' + NOTE_MIN + ' символов.' : 'Напиши хотя бы ' + NOTE_MIN + ' символа — чтобы случайное нажатие не попало в записи.') : ''; };
+      ta.oninput = check; check();
+      sv.onclick = function () {
+        if (len() < NOTE_MIN) { check(); return; }
         var t = ta.value.trim(); S.notes = S.notes || {};
-        if (t) { S.notes[q.id] = { t: t, at: Date.now(), sid: D.subjId }; sfx('ok'); toast('📝 Запись сохранена', '#9FE1CB'); } else delete S.notes[q.id];
+        S.notes[q.id] = { t: t, at: Date.now(), sid: D.subjId }; sfx('ok'); toast('📝 Запись сохранена', '#9FE1CB');
         D.persist(); closeModal(); refreshNote(q); if (after) after();
       };
       var dl = el.querySelector('[data-del]'); if (dl) dl.onclick = function () { delete S.notes[q.id]; D.persist(); closeModal(); refreshNote(q); if (after) after(); };
