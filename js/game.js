@@ -254,9 +254,11 @@
     var sj = D.SUBJ[sid]; D.useSubject(sid);
     var x = arenaScopes(sj).filter(function (y) { return y.id === cid; })[0] || arenaScopes(sj)[0];
     var pool = [], byId = {}, texts = [];
-    x.floors.forEach(function (f) { f.pool.forEach(function (q) { if (!byId[q.id]) { byId[q.id] = q; pool.push(q); } }); texts = texts.concat(f.texts); });
+    var xfl = x.floors, tsel = cid === 'all' && !sj.drill ? topicSel(sid) : null;   /* выбранные темы («⚙ Темы») */
+    if (tsel) { xfl = x.floors.filter(function (f) { return tsel.indexOf(f.n) >= 0; }); if (!xfl.length) xfl = x.floors; }
+    xfl.forEach(function (f) { f.pool.forEach(function (q) { if (!byId[q.id]) { byId[q.id] = q; pool.push(q); } }); texts = texts.concat(f.texts); });
     var prev = G.arena && G.arena.subj === sid && G.arena.cid === cid ? G.arena : null;
-    G.arena = { n: 'arena', arena: true, cid: cid, id: sid + '-arena-' + cid, label: 'Всё подряд', title: 'Всё подряд · ' + sj.short, texts: texts, pool: pool, byId: byId, tasks: [], taskById: {},
+    G.arena = { n: 'arena', arena: true, cid: cid, id: sid + '-arena-' + cid, label: 'Всё подряд', title: 'Всё подряд · ' + sj.short + (tsel ? ' · темы ' + rangesText(tsel) : ''), texts: texts, pool: pool, byId: byId, tasks: [], taskById: {},
       rooms: [{ k: 0, sec: null, secs: [], boss: false, tasks: [], label: 'Арена', qs: [] }], final: false, subj: sid, syll: !!sj.syll,
       batch: batch != null ? batch : prev ? prev.batch + 1 : 0, l0: prev ? prev.l0 : pool.filter(function (q) { return D.learned(q.id); }).length };
     /* умная рулетка: иногда вместо монстров — особая комната (не в самой первой десятке забега) */
@@ -654,6 +656,7 @@
         out.push({ x0: R.x, x1: R.x + R.w, y0: R.y, y1: R.y + R.h + 6, hv: { x: cs.x, w: cs.w, r: r }, tip: { text: shelfLabel(row.f) + ' · ' + row.f.title, sub: '📗 ' + row.st.books + ' из ' + row.st.total + ' · ' + row.st.pct + '%' + (row.st.err ? ' · 📕 ' + row.st.err : ''), x: cs.x + cs.w / 2, y: R.y - 2 }, fn: function () { libWalk(cs.x + cs.w / 2, function () { openShelf(row.f); }); } });
       });
     });
+    out.push({ x0: 390, x1: 420, y0: A.FLOOR_Y - 42, y1: A.FLOOR_Y, tip: { text: '📝 Мои записи', sub: 'вопрос, ответ и твои объяснения — по темам', x: 404, y: A.FLOOR_Y - 46 }, fn: function () { libWalk(384, openNotes); } });   /* кафедра со свечой */
     out.push({ x0: 436, x1: 476, y0: A.FLOOR_Y - 70, y1: A.FLOOR_Y, fn: function () { libWalk(458, function () { go('hall'); }); } });
     return out;
   }
@@ -671,9 +674,11 @@
       var nar = window.innerWidth < 600, pre = sj.drill ? '' : nar ? '' : ns.length > 1 ? 'Темы ' : 'Тема ';
       return { text: sj.drill ? (nar ? 'ИКТ' : 'Все вопросы ИКТ') : pre + ns[0] + (ns.length > 1 ? '–' + ns[ns.length - 1] : ''), x: cs.x + cs.w / 2, y: A.LIB.CASE_TOP - 8, color: '#FAC775' };
     });
-    labels([{ text: window.innerWidth < 600 ? '📕 ' + L.err.n : L.err.n ? '📕 Ошибки · ' + L.err.n : '📕 Ошибок нет', x: Math.max(L.err.x + L.err.w / 2, window.innerWidth < 600 ? 30 : 48), y: A.LIB.CASE_TOP - 22, color: L.err.n ? '#F09595' : '#9FE1CB' }].concat(caseLbl));
+    var nNotes = notesList(sid).length;
+    labels([{ text: window.innerWidth < 600 ? '📕 ' + L.err.n : L.err.n ? '📕 Ошибки · ' + L.err.n : '📕 Ошибок нет', x: Math.max(L.err.x + L.err.w / 2, window.innerWidth < 600 ? 30 : 48), y: A.LIB.CASE_TOP - 22, color: L.err.n ? '#F09595' : '#9FE1CB' },
+      { text: '📝 ' + (window.innerWidth < 600 ? nNotes : 'Мои записи · ' + nNotes), x: 404, y: A.FLOOR_Y - 46, color: '#CECBF6' }].concat(caseLbl));
     S.tips = S.tips || {};
-    var chips = '<div class="lib-chips">' + '<button class="lchip err' + (L.err.n ? '' : ' ok') + '" data-sh="err">📕 Ошибки <b>' + L.err.n + '</b></button>' +
+    var chips = '<div class="lib-chips">' + '<button class="lchip err' + (L.err.n ? '' : ' ok') + '" data-sh="err">📕 Ошибки <b>' + L.err.n + '</b></button>' + '<button class="lchip notes" data-notes>📝 Мои записи <b>' + nNotes + '</b></button>' +
       libFloors().map(function (f) { var st = shelfStat(f); return '<button class="lchip' + (st.pct >= 100 ? ' gold' : '') + '" data-sh="' + f.n + '" title="' + esc(f.title) + '"><span>' + esc(shelfLabel(f)) + '</span><i style="--p:' + st.pct + '%"></i><b>' + st.pct + '%</b></button>'; }).join('') + '</div>';
     var tip = !S.tips.lib1 ? '<div class="tip lib-tip"><b>Как тут всё устроено</b><span>👇 Нажми <b>«▶ Всё подряд»</b> — и сразу начнёшь отвечать на вопросы по всем темам. Каждая полка в шкафу — тема: верный ответ ставит на неё книгу. Ошибки летят в красный шкаф в углу. Нажми на полку — герой подойдёт к ней.</span><button class="btn ghost" data-tipok="lib1">Понятно</button></div>' : '';
     var goAll = function () { S.tips.lib1 = 1; D.persist(); S.arenaLast = { s: sid, c: 'all' }; D.persist(); buildArena(sid, 'all', 0); };
@@ -681,10 +686,13 @@
     setPanel('<div class="lib-top"><div class="qtext">📚 ' + esc(A.libName(sid)) + '</div><span class="tag teal">книг на полках: ' + tot + ' из ' + all.length + ' · ' + pAll + '%</span></div>' + tip +
       '<div class="lib-dock"><button class="btn primary lib-all" data-all>▶ Всё подряд<small>вопросы из всех тем вперемешку</small></button>' +
       '<button class="btn ghost lib-ex" data-exam>🎓 Как на экзамене<small>' + EXAM_N + ' вопросов · ' + EXAM_MIN + ' мин</small></button></div>' +
+      (sj.drill ? '' : '<div class="row ts-row"><button class="btn ghost sm" data-tsel>⚙ Темы во «Всё подряд»: <b>' + esc(topicSelText(sid)) + '</b></button></div>') +
       jailHtml() + '<p class="hint">Полки — это темы: нажми на полку в шкафу (или ниже), чтобы пройти тему, открыть лекцию или повторить пыльные книги.</p>' + chips);
     wireJail();
     panel.querySelector('[data-all]').onclick = goAll;
     panel.querySelector('[data-exam]').onclick = goExam;
+    var tsb = panel.querySelector('[data-tsel]'); if (tsb) tsb.onclick = function () { openTopicPick(sid, enterLib); };
+    panel.querySelector('[data-notes]').onclick = function () { openNotes(); };
     panel.querySelectorAll('[data-tipok]').forEach(function (b) { b.onclick = function () { S.tips[b.getAttribute('data-tipok')] = 1; D.persist(); b.parentNode.remove(); }; });
     panel.querySelectorAll('[data-sh]').forEach(function (b) { b.onclick = function () { var k = b.getAttribute('data-sh'); if (k === 'err') return openErrShelf(); openShelf(floorBy(+k)); }; });
     G.buttons = [btn('Всё подряд', 'primary', 'Enter', goAll)];
@@ -785,9 +793,9 @@
       '<button class="btn ghost sm" data-evtr title="Перевести вопрос">🌐 Перевод</button>' + (hasBook ? '<button class="btn ghost sm" data-evbook title="Открыть лекцию по теме вопроса">📖 Книга</button>' : '') +
       '<button class="btn ghost sm" data-evggl title="Объяснит ответ — но тогда ответ засчитается как «с подсказкой»">🔎 Загуглить</button></div>' +
       (o.lead ? '<p class="ev-lead">' + o.lead + '</p>' : '') +
-      '<div class="qtext">' + D.md(q.q) + '</div>' + (q.img ? '<div class="qimg"><img src="' + esc(q.img) + '" alt="Картинка к вопросу"></div>' : '') +
+      '<div class="qtext">' + D.md(q.q) + '</div>' + (q.img ? '<div class="qimg"><img src="' + esc(q.img) + '" alt="Картинка к вопросу"></div>' : '') + noteBlock(q) +
       '<div class="opts' + (o.match ? ' matches' : '') + '">' + order.map(function (oi, n) { return '<button class="opt' + (o.match ? ' match' : '') + '" data-o="' + oi + '"><span class="n">' + (o.match ? '🔥' : n + 1) + '</span><span>' + D.md(q.opts[oi].t) + '</span></button>'; }).join('') + '</div>' +
-      '<div class="qlinks"><button class="linkbtn dunno" data-evdunno>🤷 Не знаю</button></div><div id="evAfter"></div>';
+      '<div class="qlinks"><button class="linkbtn note-btn" data-note>📝 Запись</button><button class="linkbtn dunno" data-evdunno>🤷 Не знаю</button></div><div id="evAfter"></div>';
     setPanel(h); G.buttons = [];
     var trb = panel.querySelector('[data-evtr]');
     trb.onclick = function () { var b = this; if (b.classList.contains('on')) { trHide(panel); b.classList.remove('on'); return; } b.disabled = true; trShow(q, panel, function () { return G.ev && G.ev.cur === cur; }).then(function (ok) { b.disabled = false; if (ok) b.classList.add('on'); }); };
@@ -825,6 +833,7 @@
       };
     });
     panel.querySelector('[data-evdunno]').onclick = function () { finish(false, -1, true); };
+    panel.querySelector('[data-note]').onclick = function () { openNote(q); };
   }
   /* перевод вопроса в особых комнатах и в суде — как в бою: оригинал (с кодом!) остаётся,
      перевод текста — ниже, у вариантов — мелкая строка с переводом (код в вариантах не переводим) */
@@ -1452,6 +1461,114 @@
     var all = S.fish || {}, rows = Object.keys(all).map(function (sid) { var sj = D.SUBJ[sid]; return '<h4>' + esc(sj ? sj.title : sid) + '</h4><div class="fish-row">' + Object.keys(FISH).filter(function (k) { return all[sid][k]; }).map(function (k) { return '<span class="fish-it ' + k + '">🐟 ' + FISH[k] + ' × <b>' + all[sid][k] + '</b></span>'; }).join('') + '</div>'; }).join('');
     modal('<header class="md-top"><b>🪣 Садок</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body">' + (rows || '<p class="msg">Пока пусто — закинь удочку!</p>') + '<p class="hint">Золотая рыбка — вопрос из базы экзамена ⭐, рыба-призрак — вопрос с полки ошибок.</p></div>', function (el) { el.querySelectorAll('[data-close]').forEach(function (b) { b.onclick = closeModal; }); });
   }
+  /* =====================================================================
+     ⚙ ВЫБОР ТЕМ для «Всё подряд» и 📝 МОИ ЗАПИСИ (ноябрь 2026)
+     S.topicSel[предмет] = [номера тем] (нет — все темы). У ИКТ тем нет — выбора нет.
+     S.notes[id вопроса] = { t: текст, at: время, sid: предмет } — запись своими словами; видна под вопросом
+     и на полке «Мои записи» (кафедра со свечой в библиотеке), разложена по темам.
+     ===================================================================== */
+  function topicSel(sid) { S.topicSel = S.topicSel || {}; var a = S.topicSel[sid || D.subjId]; return Array.isArray(a) && a.length ? a : null; }
+  function rangesText(a) {
+    a = a.slice().sort(function (x, y) { return x - y; }); var out = [], s = a[0], p = a[0];
+    for (var i = 1; i <= a.length; i++) { if (a[i] === p + 1) { p = a[i]; continue; } out.push(s === p ? String(s) : s + '–' + p); s = p = a[i]; }
+    return out.join(', ');
+  }
+  function parseRanges(str, max) {
+    var set = {};
+    String(str || '').replace(/[–—]/g, '-').split(/[,;\s]+/).forEach(function (part) {
+      var m = part.match(/^(\d+)(?:-(\d+))?$/); if (!m) return;
+      var a = +m[1], b = m[2] ? +m[2] : a; if (a > b) { var t = a; a = b; b = t; }
+      for (var k = a; k <= b && k <= max; k++) if (k >= 1) set[k] = 1;
+    });
+    return Object.keys(set).map(Number).sort(function (x, y) { return x - y; });
+  }
+  function topicSelText(sid) { var a = topicSel(sid); return a ? 'темы ' + rangesText(a) : 'все темы'; }
+  function openTopicPick(sid, onDone) {
+    var sj = D.SUBJ[sid]; if (!sj || sj.drill) return;
+    var fl = sj.floors.filter(function (f) { return f.pool.length; }), cur = topicSel(sid), max = Math.max.apply(null, fl.map(function (f) { return f.n; }));
+    var on = function (n) { return !cur || cur.indexOf(n) >= 0; };
+    var h = '<header class="md-top"><b>⚙ Какие темы будут во «Всё подряд»</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body">' +
+      '<p class="hint">Отметь темы галочками или впиши номера: <b>1, 3, 5-7</b>. Ничего не выбрано — значит все темы.</p>' +
+      '<div class="row"><input id="tsRange" class="ts-range" placeholder="например: 1, 3, 5-7" value="' + (cur ? rangesText(cur).replace(/–/g, '-') : '') + '"><button class="btn ghost sm" data-all>Все</button><button class="btn ghost sm" data-none>Снять все</button></div>' +
+      '<div class="ts-list">' + fl.map(function (f) { return '<label class="ts-it"><input type="checkbox" data-n="' + f.n + '"' + (on(f.n) ? ' checked' : '') + '><b>' + esc(shelfLabel(f)) + '</b><span>' + esc(f.title) + '</span><em>' + f.pool.length + '</em></label>'; }).join('') + '</div>' +
+      '<p class="msg" id="tsInfo"></p><div class="row"><button class="btn primary" data-save>Сохранить</button><button class="btn ghost" data-close>Отмена</button></div></div>';
+    modal(h, function (el) {
+      el.querySelectorAll('[data-close]').forEach(function (b) { b.onclick = closeModal; });
+      var boxes = [].slice.call(el.querySelectorAll('[data-n]')), rng = el.querySelector('#tsRange');
+      var picked = function () { return boxes.filter(function (b) { return b.checked; }).map(function (b) { return +b.getAttribute('data-n'); }); };
+      var info = function () { var p = picked(), q = fl.filter(function (f) { return p.indexOf(f.n) >= 0; }).reduce(function (s, f) { return s + f.pool.length; }, 0); el.querySelector('#tsInfo').innerHTML = !p.length || p.length === fl.length ? 'Будут <b>все темы</b>.' : 'Выбрано: <b>темы ' + rangesText(p) + '</b> · вопросов: ' + q; };
+      boxes.forEach(function (b) { b.onchange = function () { var p = picked(); rng.value = p.length && p.length < fl.length ? rangesText(p).replace(/–/g, '-') : ''; info(); }; });
+      rng.oninput = function () { var p = parseRanges(rng.value, max); boxes.forEach(function (b) { b.checked = !p.length || p.indexOf(+b.getAttribute('data-n')) >= 0; }); info(); };
+      el.querySelector('[data-all]').onclick = function () { boxes.forEach(function (b) { b.checked = true; }); rng.value = ''; info(); };
+      el.querySelector('[data-none]').onclick = function () { boxes.forEach(function (b) { b.checked = false; }); rng.value = ''; info(); };
+      var save = function () { var p = picked(); S.topicSel = S.topicSel || {}; S.topicSel[sid] = p.length && p.length < fl.length ? p : null; D.persist(); closeModal(); sfx('ok'); if (onDone) onDone(); };
+      el.querySelector('[data-save]').onclick = save; G.modalEnter = save; info();
+    });
+  }
+
+  /* ---------- 📝 записи ---------- */
+  function noteOf(id) { return S.notes && S.notes[id]; }
+  function noteBlock(q) { var n = q && noteOf(q.id); return n ? '<div class="my-note"><b>📝 Моя запись:</b> ' + esc(n.t).replace(/\n/g, '<br>') + '</div>' : ''; }
+  function refreshNote(q) {
+    var el = panel.querySelector('.my-note'), html = noteBlock(q);
+    if (el) { if (html) el.outerHTML = html; else el.remove(); return; }
+    if (!html) return; var anchor = panel.querySelector('.qimg') || panel.querySelector('.qtext'); if (anchor) anchor.insertAdjacentHTML('afterend', html);
+  }
+  function openNote(q, after) {
+    var n = noteOf(q.id), answered = (G.room && G.room.q === q && G.room.answered) || (G.ev && G.ev.cur && G.ev.cur.q === q && G.ev.cur.done) || after;
+    var h = '<header class="md-top"><b>📝 Моя запись</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body">' +
+      '<div class="ex-q">' + D.md(q.q) + '</div>' + (answered ? '<p class="ex-right"><b>Правильный ответ:</b> ' + rightText(q) + '</p>' : '<p class="hint">Ответ увидишь на полке «Мои записи» (кафедра со свечой в библиотеке) или после ответа.</p>') +
+      '<p class="hint">Объясни своими словами — так запоминается лучше. Запись появится под этим вопросом каждый раз, когда он попадётся, и на полке «Мои записи».</p>' +
+      '<textarea id="noteTxt" class="note-ta" rows="5" placeholder="Например: аксиология — от «аксиос» = ценность. Запомнить: ценность → аксио…">' + esc(n ? n.t : '') + '</textarea>' +
+      '<div class="row"><button class="btn primary" data-save>💾 Сохранить</button>' + (n ? '<button class="btn ghost" data-del>🗑 Удалить</button>' : '') + '<button class="btn ghost" data-close>Отмена</button></div></div>';
+    modal(h, function (el) {
+      el.querySelectorAll('[data-close]').forEach(function (b) { b.onclick = closeModal; });
+      var ta = el.querySelector('#noteTxt'); setTimeout(function () { ta.focus(); }, 50);
+      el.querySelector('[data-save]').onclick = function () {
+        var t = ta.value.trim(); S.notes = S.notes || {};
+        if (t) { S.notes[q.id] = { t: t, at: Date.now(), sid: D.subjId }; sfx('ok'); toast('📝 Запись сохранена', '#9FE1CB'); } else delete S.notes[q.id];
+        D.persist(); closeModal(); refreshNote(q); if (after) after();
+      };
+      var dl = el.querySelector('[data-del]'); if (dl) dl.onclick = function () { delete S.notes[q.id]; D.persist(); closeModal(); refreshNote(q); if (after) after(); };
+    });
+  }
+  /* полка «Мои записи»: вопрос, ответ и запись — по темам, с поиском */
+  function notesList(sid) {
+    var out = [], notes = S.notes || {}, sj = D.SUBJ[sid];
+    Object.keys(notes).forEach(function (id) {
+      var n = notes[id]; if (n.sid && n.sid !== sid) return;
+      var f = null, q = null; (sj ? sj.floors : []).forEach(function (fl) { if (!q && fl.byId && fl.byId[id]) { q = fl.byId[id]; f = fl; } });
+      if (q) out.push({ id: id, q: q, f: f, n: n });
+    });
+    return out;
+  }
+  function openNotes(filter) {
+    var sid = D.subjId, list = notesList(sid), groups = {};
+    list.forEach(function (x) { (groups[x.f.n] = groups[x.f.n] || []).push(x); });
+    var keys = Object.keys(groups).map(Number).sort(function (a, b) { return a - b; }), fq = String(filter || '').toLowerCase();
+    var h = '<header class="md-top"><b>📝 Мои записи · ' + esc(subjTitle()) + '</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body">' +
+      (list.length ? '<div class="row"><input id="ntFind" class="ts-range" placeholder="🔎 Поиск по записям и вопросам" value="' + esc(filter || '') + '"></div>' +
+        '<div class="nt-tabs">' + keys.map(function (k) { var f = groups[k][0].f; return '<button class="lchip" data-jump="' + k + '"><span>' + esc(shelfLabel(f)) + '</span><b>' + groups[k].length + '</b></button>'; }).join('') + '</div>' : '<p class="msg">Пока записей нет. Во время вопроса нажми <b>«📝 Запись»</b> и объясни своими словами — запись появится здесь, по темам.</p>');
+    keys.forEach(function (k) {
+      var items = groups[k].filter(function (x) { return !fq || (x.q.q + ' ' + x.n.t).toLowerCase().indexOf(fq) >= 0; }); if (!items.length) return;
+      var f = items[0].f;
+      h += '<h3 class="nt-h" id="nt-' + k + '">' + esc(shelfLabel(f)) + ' · ' + esc(f.title) + '</h3>' + items.sort(function (a, b) { return b.n.at - a.n.at; }).map(function (x) {
+        return '<div class="nt-it"><div class="ex-q">' + D.md(x.q.q) + '</div><p class="ex-right"><b>Ответ:</b> ' + rightText(x.q) + '</p><div class="my-note"><b>📝 Моя запись:</b> ' + esc(x.n.t).replace(/\n/g, '<br>') + '</div>' +
+          '<div class="row"><button class="btn ghost sm" data-edit="' + x.id + '">✏ Изменить</button><button class="btn ghost sm" data-ex="' + x.id + '">📖 Объясни</button><button class="btn ghost sm" data-delnt="' + x.id + '">🗑 Удалить</button></div></div>';
+      }).join('');
+    });
+    h += '</div>';
+    modal(h, function (el) {
+      el.querySelector('.md-wrap').classList.add('notes-md');
+      el.querySelectorAll('[data-close]').forEach(function (b) { b.onclick = closeModal; });
+      var find = el.querySelector('#ntFind'); if (find) { find.oninput = function () { clearTimeout(G.ntT); var v = find.value; G.ntT = setTimeout(function () { openNotes(v); var f2 = $('ntFind'); if (f2) { f2.focus(); f2.setSelectionRange(v.length, v.length); } }, 250); }; }
+      el.querySelectorAll('[data-jump]').forEach(function (b) { b.onclick = function () { var t = el.querySelector('#nt-' + b.getAttribute('data-jump')); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }; });
+      var byId = {}; list.forEach(function (x) { byId[x.id] = x; });
+      el.querySelectorAll('[data-edit]').forEach(function (b) { b.onclick = function () { var x = byId[b.getAttribute('data-edit')]; closeModal(); openNote(x.q, function () { openNotes(filter); }); }; });
+      el.querySelectorAll('[data-ex]').forEach(function (b) { b.onclick = function () { var x = byId[b.getAttribute('data-ex')]; closeModal(); openExplain(x.q); }; });
+      el.querySelectorAll('[data-delnt]').forEach(function (b) { b.onclick = function () { delete S.notes[b.getAttribute('data-delnt')]; D.persist(); openNotes(filter); if (G.scene === 'path') enterLib(); }; });
+    });
+  }
   /* ---------- ПУТЬ C++ (как ветка Duolingo) ---------- */
   var UNITS = [[1, 3, 'Раздел 1 · к РК1', 'Основы: алгоритмы, операции, ветвления'], [4, 6, 'Раздел 2 · к РК1', 'Циклы, массивы, функции, строки'], [7, 9, 'Раздел 3 · к РК2', 'ООП: принципы, классы, среда C++ Builder'], [10, 12, 'Раздел 4 · к РК2', 'Формы, события, иерархия классов'], [13, 15, 'Раздел 5 · к экзамену', 'Конструкторы, свойства, компоненты'], [16, 16, 'Финал', 'Смешанные сложные вопросы по всему курсу'], [17, 17, 'Практика', 'Пишем код: задания по темам, по порядку']];
   function floorMastery(f) { return D.mastery(f.pool.map(function (q) { return q.id; })); }
@@ -1994,7 +2111,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     var rec = D.save.srs[q.id], errs = rec ? rec.w || 0 : 0, hadErr = !R.f.exam && !q.rev && (errs > 0 || D.isBad(q.id));
     var brief = R.f.exam ? '' : briefHtml(q.q + ' ' + (right || ''));
     if (brief) brief = hadErr ? brief.replace('<details class="brief"', '<details class="brief was-err" open').replace('<summary>Кратко из лекции</summary>', '<summary>Ты здесь ошибался — вот суть</summary>') : brief.replace('<details class="brief"', '<details class="brief later"');
-    var h = head + tipHtml('q3') + '<div class="qtext">' + D.md(q.q) + '</div>' + (q.img ? '<div class="qimg"><img src="' + esc(q.img) + '" alt="Картинка к вопросу"></div>' : '');
+    var h = head + tipHtml('q3') + '<div class="qtext">' + D.md(q.q) + '</div>' + (q.img ? '<div class="qimg"><img src="' + esc(q.img) + '" alt="Картинка к вопросу"></div>' : '') + noteBlock(q);
     if (q.type === 'keyboard') h += '<div class="kb"><input id="kbIn" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Что выведет программа? Впиши ответ"><button class="btn primary" id="kbGo">Ответить<kbd>Enter</kbd></button></div>';
     else {
       var order = q.opts.map(function (_, i) { return i; }); for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var tt = order[i]; order[i] = order[j]; order[j] = tt; }
@@ -2006,7 +2123,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     h = h.replace('<span class="grow"></span>', '<span class="grow"></span><button class="ggl-btn" data-ql="ggl"' + (errs >= 2 ? ' data-hot' : ' hidden') + ' title="Объяснит ответ и каждый вариант">🔎 Загуглить</button>');
     /* книга видна всегда (спокойно, без мигания); если долго думаешь — подсвечивается */
     h += '<div class="qlinks">' + (hasBook ? '<button class="book-btn" data-ql="book"' + (hadErr ? ' data-hot' : '') + ' title="Прочитать лекцию по этой теме (B)">📖 Открыть книгу <small>лекция по теме</small></button>' : '') +
-      '<button class="linkbtn dunno" data-dunno title="Честно не знаю: покажу ответ и пояснение, вопрос ляжет на полку ошибок (сердечко не снимается)">🤷 Не знаю</button>' + '</div>' + brief;
+      '<button class="linkbtn note-btn" data-note title="Записать своими словами — запись будет под этим вопросом и на полке «Мои записи»">📝 Запись</button>' + '<button class="linkbtn dunno" data-dunno title="Честно не знаю: покажу ответ и пояснение, вопрос ляжет на полку ошибок (сердечко не снимается)">🤷 Не знаю</button>' + '</div>' + brief;
     h += hotbarHtml();
     /* C++: кнопка «RU» — перевод в облачке включается и выключается в любой момент боя */
     if (D.subjId === 'cpp' && /[A-Za-z]{3,}/.test(q.q)) h = h.replace('<span class="grow"></span>', '<span class="grow"></span><button class="tr-cloud' + (cppTrOn() ? ' on' : '') + '" data-trc title="Перевод в облачке: показать / убрать" aria-pressed="' + cppTrOn() + '">RU</button>');
@@ -2014,6 +2131,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     var trc = panel.querySelector('[data-trc]'); if (trc) trc.onclick = function () { toggleCloudTr(); };
     hintTimers(R, q); recallFirst(R, q); petFifty(R, q);
     var kb0 = panel.querySelector('[data-dunno]'); if (kb0) kb0.onclick = function () { dunnoQ(q); };
+    var nb0 = panel.querySelector('[data-note]'); if (nb0) nb0.onclick = function () { openNote(q); };
     if (S.cfg.autoTr) toggleTr();
     G.buttons = [];
     if (q.type === 'keyboard') { var inp = $('kbIn'); $('kbGo').onclick = function () { answer(norm(inp.value) === norm(q.answer), inp.value); }; inp.onkeydown = function (e) { if (e.key === 'Enter') { e.preventDefault(); $('kbGo').click(); } }; if (matchMedia('(pointer:fine)').matches) setTimeout(function () { inp.focus({ preventScroll: true }); }, 50); }

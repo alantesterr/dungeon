@@ -642,3 +642,21 @@ details.brief[open]>.rich{animation:richIn .45s ease-out}
 .wc-n{margin-left:6px;color:var(--mute);font-size:13px}
 .wcells.shake{animation:wetOut .4s}
 .guess #evDel{padding:8px 12px}
+/* ---------- ВЫБОР ТЕМ и МОИ ЗАПИСИ ---------- */
+.ts-row{margin:-2px 0 6px}
+.ts-range{flex:1;min-width:0;background:var(--card);border:2px solid var(--line);border-radius:10px;color:var(--text);font:600 16px/1.2 inherit;padding:8px 12px}
+.ts-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin:10px 0}
+.ts-it{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 10px;cursor:pointer}
+.ts-it input{width:18px;height:18px}
+.ts-it span{color:var(--mute);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ts-it em{font-style:normal;font-size:12px;color:var(--mute)}
+.ts-it:has(input:checked){border-color:#5DCAA5;background:#1c2a24}
+.my-note{margin:6px 0 8px;padding:8px 12px;border-radius:10px;background:#221c34;border:1px solid #7F77DD;border-left:4px solid #AFA9EC;color:#e8e4f8;font-size:15px}
+.my-note b{color:#CECBF6}
+.linkbtn.note-btn{color:#CECBF6;margin-right:12px}
+.note-ta{width:100%;box-sizing:border-box;background:var(--card);border:2px solid var(--line);border-radius:10px;color:var(--text);font:16px/1.45 inherit;padding:10px 12px;margin:6px 0 10px;resize:vertical}
+.note-ta:focus{border-color:#7F77DD;outline:none}
+.nt-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.nt-h{margin:16px 0 6px;color:#FAC775;font-size:16px}
+.nt-it{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.lchip.notes{border-color:#7F77DD;color:#CECBF6}
