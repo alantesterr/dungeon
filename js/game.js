@@ -187,7 +187,7 @@
     });
   }
   function reviveCave(f) {
-    caveRun(f, true); toast('Монстры возродились! Теперь они спрашивают и «наоборот» — закрепляем.', '#FAC775');
+    caveRun(f, true); toast('Монстры возродились! Пройди тему ещё раз — закрепляем.', '#FAC775');
     caveTransition(f, 0, 0, function () { go('room', { f: f.n, k: 0 }); }, true);
   }
   /* выход на высокой ноте: после 25+ минут — после победы предлагаем закончить с итогом «сегодня выучено +N» */
@@ -1730,7 +1730,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
       out.push(mkMon('twin', pair, { twin: true }));
     }
     /* Софист (только предметы по силлабусу): 2 вопроса «наоборот» — дан ответ, выбери вопрос */
-    if ((f.arena || (caveOn(f) && caveRun(f).revived > 0)) && qs.length >= 4 && target - out.length >= 2) {   /* Софист — только у возрождённых монстров и в Хаос-забеге */
+    if (false && (f.arena || (caveOn(f) && caveRun(f).revived > 0)) && qs.length >= 4 && target - out.length >= 2) {   /* Софист удалён по просьбе автора (ноябрь 2026) */   /* Софист — только у возрождённых монстров и в Хаос-забеге */
       var rev = qs.filter(function (x) { return revOk(f, f.byId[x.id]); }).slice(0, f.arena ? 2 : 3);
       if (rev.length >= 2) {
         qs = qs.filter(function (x) { return rev.indexOf(x) < 0; });
