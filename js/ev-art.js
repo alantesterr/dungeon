@@ -40,23 +40,32 @@
     var ex = B.x0 + B.n * B.pw;
     px(c, B.x0 - 6, fy - 30, 5, 34, '#5a3a1e'); px(c, ex + 1, fy - 30, 5, 34, '#5a3a1e');
     c.strokeStyle = '#a08060'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(B.x0 - 4, fy - 28); c.quadraticCurveTo((B.x0 + ex) / 2, fy - 8, ex + 3, fy - 28); c.stroke();
-    /* доски */
+    /* доски: летающий глаз опускает доску с высоты, где держал её */
+    var FLY_DY = 64;   /* насколько выше моста висит глаз */
     for (var i = 0; i < B.n; i++) {
       var p = E.planks[i]; if (!p) continue;
-      var k2 = Math.min(1, (t - p) / 320), y = fy - 1 - (1 - k2) * 34;
-      plank(c, B.x0 + i * B.pw + 1, y, B.pw - 2, 0, 1);
-      if (k2 >= 1 && t - p < 700 && !A.lite) { var d = (t - p - 320) / 380; for (var q = 0; q < 6; q++) px(c, B.x0 + i * B.pw + 4 + q * 7, fy - 3 - d * 8, 2, 2, 'rgba(220,200,160,' + (1 - d).toFixed(2) + ')'); }
+      var k2 = Math.min(1, (t - p) / 700), ease = 1 - Math.pow(1 - k2, 3), y = fy - 1 - (1 - ease) * (FLY_DY - 4);
+      plank(c, B.x0 + i * B.pw + 1, y, B.pw - 2, (1 - ease) * 0.15, 1);
+      if (k2 >= 1 && t - p < 1100 && !A.lite) { var d = (t - p - 700) / 400; for (var q = 0; q < 6; q++) px(c, B.x0 + i * B.pw + 4 + q * 7, fy - 3 - d * 8, 2, 2, 'rgba(220,200,160,' + (1 - d).toFixed(2) + ')'); }
     }
-    /* падающие доски: появилась → дрожит с трещинами → рассыпается и летит вниз */
+    /* уроненные доски: глаз разжимает лапы — доска кувыркаясь летит в пропасть мимо моста */
     E.falls.forEach(function (F) {
-      var dt = t - F.t0, x = B.x0 + F.i * B.pw + 1;
-      if (dt < 0) return;
-      if (dt < 260) { plank(c, x, fy - 1 - (1 - dt / 260) * 34, B.pw - 2, 0, 1); return; }
-      if (dt < 900) { var sh = Math.sin(dt / 18) * 1.5; plank(c, x + sh, fy - 1, B.pw - 2, 0, 1, true); return; }
-      var ft = (dt - 900) / 1000; if (ft > 1.4) return;
-      var yy = fy - 1 + ft * ft * 260, a = Math.max(0, 1 - ft / 1.4);
-      c.globalAlpha = a; plank(c, x - ft * 12, yy, (B.pw - 2) / 2 - 1, ft * 2.4, 1, true); plank(c, x + (B.pw - 2) / 2 + 1 + ft * 14, yy + ft * 20, (B.pw - 2) / 2 - 1, -ft * 3, 1, true); c.globalAlpha = 1;
+      var dt = t - F.t0, x = B.x0 + F.i * B.pw + 1; if (dt < 0) return;
+      var ft = dt / 1000; if (ft > 2.2) return;
+      var yy = fy - FLY_DY + 4 + ft * ft * 150, a = yy > H - 20 ? Math.max(0, 1 - (yy - (H - 20)) / 40) : 1;
+      c.globalAlpha = a; plank(c, x + Math.sin(ft * 5) * 4, yy, B.pw - 2, ft * 3.2, 1, ft > 0.5); c.globalAlpha = 1;
     });
+    /* летающий глаз с доской: висит над следующим местом для доски */
+    if (E.placed < B.n && !E.flyAway) {
+      var tx = B.x0 + E.placed * B.pw + B.pw / 2; E.fx = E.fx == null ? tx + 80 : E.fx + (tx - E.fx) * 0.05;
+      var bob = Math.sin(t / 380) * 4, ey = fy - FLY_DY + bob, st = E.flyT && t - E.flyT < 900 ? E.flyMood : 'idle';
+      if (E.holding) {   /* доска в «лапах» под глазом */
+        c.strokeStyle = 'rgba(80,40,60,.9)'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(E.fx - 10, ey - 30); c.lineTo(E.fx - 14, ey + 2); c.moveTo(E.fx + 10, ey - 30); c.lineTo(E.fx + 14, ey + 2); c.stroke();
+        plank(c, E.fx - B.pw / 2 + 1, ey + 2, B.pw - 2, Math.sin(t / 500) * 0.06, 1);
+      }
+      A.drawMonster(c, 'eye', st, E.flyT ? t - E.flyT : t, E.fx, ey, 1);
+      E.flyTop = ey - 64;   /* верх монстра — для облачка с вопросом */
+    }
     /* сундук на той стороне */
     var fr = A.anim.chest_full_open || [], kk = E.chestOpen ? Math.min(2, Math.floor((t - E.chestOpen) / 120)) : 0;
     A.frame(c, fr[kk], 428, fy - 40, 2.5);

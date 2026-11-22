@@ -662,3 +662,9 @@ details.brief[open]>.rich{animation:richIn .45s ease-out}
 .lchip.notes{border-color:#7F77DD;color:#CECBF6}
 .note-min{margin:-4px 0 8px;font-size:13px;color:#FAC775;min-height:1em}
 .btn[disabled]{opacity:.45;cursor:not-allowed}
+/* заметная кнопка «Записать» */
+.note-btn{display:inline-flex;align-items:center;gap:6px;margin:0 10px 6px 0;padding:7px 14px;border-radius:999px;border:2px solid #7F77DD;background:linear-gradient(#2e2650,#241e3c);color:#e8e4f8;font:700 14px/1.1 inherit;cursor:pointer;box-shadow:0 2px 0 #1a1530;transition:transform .12s,border-color .12s,background .12s}
+.note-btn small{font-weight:500;color:#CECBF6;opacity:.85}
+.note-btn:hover,.note-btn:focus-visible{transform:translateY(-1px);border-color:#AFA9EC;background:linear-gradient(#3a3166,#2a2346);outline:none}
+.note-btn.has{border-color:#AFA9EC;background:linear-gradient(#3f3470,#2e2650);box-shadow:0 0 10px rgba(175,169,236,.35),0 2px 0 #1a1530}
+.qlinks{display:flex;flex-wrap:wrap;align-items:center;gap:4px}

@@ -795,7 +795,7 @@
       (o.lead ? '<p class="ev-lead">' + o.lead + '</p>' : '') +
       '<div class="qtext">' + D.md(q.q) + '</div>' + (q.img ? '<div class="qimg"><img src="' + esc(q.img) + '" alt="Картинка к вопросу"></div>' : '') + noteBlock(q) +
       '<div class="opts' + (o.match ? ' matches' : '') + '">' + order.map(function (oi, n) { return '<button class="opt' + (o.match ? ' match' : '') + '" data-o="' + oi + '"><span class="n">' + (o.match ? '🔥' : n + 1) + '</span><span>' + D.md(q.opts[oi].t) + '</span></button>'; }).join('') + '</div>' +
-      '<div class="qlinks"><button class="linkbtn note-btn" data-note>📝 Запись</button><button class="linkbtn dunno" data-evdunno>🤷 Не знаю</button></div><div id="evAfter"></div>';
+      '<div class="qlinks">' + noteBtn(q) + '<button class="linkbtn dunno" data-evdunno>🤷 Не знаю</button></div><div id="evAfter"></div>';
     setPanel(h); G.buttons = [];
     var trb = panel.querySelector('[data-evtr]');
     trb.onclick = function () { var b = this; if (b.classList.contains('on')) { trHide(panel); b.classList.remove('on'); return; } b.disabled = true; trShow(q, panel, function () { return G.ev && G.ev.cur === cur; }).then(function (ok) { b.disabled = false; if (ok) b.classList.add('on'); }); };
@@ -883,32 +883,49 @@
   }
 
   /* ---------- 🌉 МОСТ: 6 досок; верно — прочная, неверно — рассыпается и падает ---------- */
+  /* летающий глаз над пропастью: вопрос — в облачке от него (как в бою) */
+  var FLY_LINES_OK = ['Держи! Заслужил.', 'Ладно… бери доску.', 'Верно. Кладу аккуратно.', 'Хм, ты умнее, чем кажешься.'];
+  var FLY_LINES_BAD = ['Упс… уронил! Хе-хе.', 'Ой, лапы соскользнули!', 'Неверно — лови… а, не поймал!', 'Бульк! Доска улетела.'];
+  function flySpeaker() {
+    var E = G.ev, x = A.EV.bridgePlankX(Math.min(5, E.placed)), top = E.flyTop || (A.FLOOR_Y + 8 - 128);
+    return { key: 'eye', x: x, big: Math.max(1, (A.FLOOR_Y + 8 - 40 - top) / A.monHeight('eye')) };
+  }
+  function flySay(html, cls) { if (G.ev && G.ev.kind === 'bridge') bubbleAt(html, flySpeaker(), cls || 'say', true); }
   function bridgeStart(E) {
-    E.planks = []; E.falls = []; E.fallen = 0; E.placed = 0; G.hero.x = 52; G.hero.dir = 1;
+    E.planks = []; E.falls = []; E.fallen = 0; E.placed = 0; E.holding = true; E.flyAway = false; G.hero.x = 52; G.hero.dir = 1;
     E.cage = G.cageForce || Math.random() < 0.35 ? { kind: newPetKind() } : null; G.cageForce = null;   /* иногда на той стороне — клетка с питомцем */
     labels([]);
-    setPanel('<div class="qtext">🌉 Мост через пропасть</div><p class="msg">Вместо монстров — пропасть. Чтобы перейти, нужно положить <b>6 досок</b>. Каждая доска — вопрос.<br>Верно — доска <b>прочная</b>, шагаешь вперёд. Неверно — доска <b>рассыпается и падает</b>, нужна новая. На той стороне — сундук. Сердечки здесь не тратятся.</p>',
-      [btn('🪵 Положить доску', 'primary', 'Enter', bridgeAsk)]); autoFirst('read');
+    setTimeout(function () { flySay('<b>Хочешь на ту сторону? Доски у меня. Отвечай — и получишь!</b>', 'say'); }, 600);
+    setPanel('<div class="qtext">🌉 Мост через пропасть</div><p class="msg">Над пропастью парит <b>летающий глаз</b> — он держит доски. Нужно <b>6 досок</b>, каждая — его вопрос.<br>Ответил верно — он <b>аккуратно кладёт доску</b>, и ты шагаешь вперёд. Ошибся — он <b>роняет доску в пропасть</b>, и нужна новая. На той стороне — сундук. Сердечки здесь не тратятся.</p>',
+      [btn('🪵 Получить доску', 'primary', 'Enter', bridgeAsk)]); autoFirst('read');
   }
   function bridgeAsk() {
     var E = G.ev, q = evPick(1)[0]; if (!q) return evNext();
+    E.holding = true;
     evAsk(q, {
       title: '🌉 Доска ' + (E.placed + 1) + ' из 6' + (E.fallen ? ' · упало: ' + E.fallen : ''),
-      verdict: function (ok) { return ok ? '🪵 Прочная доска! Ты шагаешь вперёд.' : '💥 Доска рассыпалась и упала в пропасть…'; },
+      verdict: function (ok) { return ok ? '🪵 Глаз аккуратно кладёт доску — ты шагаешь вперёд.' : '💥 Глаз разжал лапы — доска улетела в пропасть…'; },
       done: function (ok, first, aft) {
-        var i = E.placed;
-        if (ok) { E.planks[i] = now(); E.placed++; sfx('thud'); setTimeout(function () { walkTo(A.EV.bridgePlankX(i), null); }, 380); }
+        var i = E.placed; E.holding = false; E.flyT = now();
+        if (ok) { E.flyMood = 'hit'; E.planks[i] = now(); E.placed++; flySay('<b>' + pick(FLY_LINES_OK) + '</b>', 'say ok'); setTimeout(function () { sfx('thud'); }, 650); setTimeout(function () { walkTo(A.EV.bridgePlankX(i), null); }, 900); }
         else {
-          E.fallen++; E.falls.push({ i: i, t0: now() }); setTimeout(function () { sfx('crack'); }, 300); setTimeout(function () { sfx('whistle'); }, 900); setTimeout(function () { sfx('boom'); }, 1900); setTimeout(function () { sfx('wawa'); }, 2300);
-          setTimeout(function () { floater('доска упала! (' + E.fallen + ')', A.EV.bridgePlankX(i), 150, '#F09595'); }, 1000);
+          E.flyMood = 'attack'; E.fallen++; E.falls.push({ i: i, t0: now() }); flySay('<b>' + pick(FLY_LINES_BAD) + '</b>', 'say bad'); sfx('laugh');
+          setTimeout(function () { sfx('whistle'); }, 300); setTimeout(function () { sfx('boom'); }, 1700); setTimeout(function () { sfx('wawa'); }, 2100);
+          setTimeout(function () { floater('доска упала! (' + E.fallen + ')', A.EV.bridgePlankX(i), 150, '#F09595'); }, 900);
         }
         var last = E.placed >= 6;
-        evButtons(aft, [btn(last ? '🏁 Перейти на ту сторону' : ok ? '🪵 Следующая доска' : '🪵 Положить новую доску', 'primary', 'Enter', last ? bridgeWin : bridgeAsk)]);
+        evButtons(aft, [btn(last ? '🏁 Перейти на ту сторону' : ok ? '🪵 Следующая доска' : '🪵 Попросить новую доску', 'primary', 'Enter', last ? bridgeWin : bridgeAsk)]);
       }
     });
+    /* вопрос «говорит» глаз: облачко у него; если поместилось — в панели только варианты */
+    setTimeout(function () {
+      if (!G.ev || G.ev.cur && G.ev.cur.q !== q) return;
+      var fit = bubbleAt('<small class="b-twin">Держу доску… Ответь — и она твоя!</small>' + D.md(q.q), flySpeaker(), 'q', true);
+      var qt = panel.querySelector('.qtext'); if (fit && qt && !q.img) qt.classList.add('in-bubble');
+    }, 350);
   }
   function bridgeWin() {
-    var E = G.ev; G.buttons = []; setPanel('<p class="msg">Ты идёшь по мосту…</p>');
+    var E = G.ev; G.buttons = []; E.flyAway = true; hideBubble(); setPanel('<p class="msg">Ты идёшь по мосту… Глаз довольно улетает.</p>');
     walkTo(430, function () {
       E.chestOpen = now(); sfx('chest'); var L = X.loot('chest');
       if (E.cage) { E.cage.openT = now() + 900; setTimeout(function () { sfx('door'); }, 900); setTimeout(function () { petRescue(function () { evEnd('🌉 Мост пройден!', 'Ты перешёл пропасть, открыл сундук и спас питомца из клетки!', L); }, E.cage.kind); }, 4200); return; }
@@ -1376,7 +1393,7 @@
     var hasBook = R.f.texts && R.f.texts.length;
     setPanel(head + '<div class="qtext">🎭 «Я скажу четыре вещи. Одна из них — ложь. Найдёшь?»</div>' +
       '<div class="opts stmts">' + all.map(function (s, i) { return '<button class="opt stmt" data-s="' + i + '"><span class="n">' + (i + 1) + '</span><span><span class="sq">' + D.md(s.q.q) + '</span><span class="sa">→ ' + D.md(s.a) + '</span></span></button>'; }).join('') + '</div>' +
-      '<div class="qlinks">' + (hasBook ? '<button class="book-btn" data-ql="book">📖 Открыть книгу <small>проверить по лекции</small></button>' : '') + '<button class="linkbtn note-btn" data-note>📝 Запись</button></div>' + noteBlock(q));
+      '<div class="qlinks">' + (hasBook ? '<button class="book-btn" data-ql="book">📖 Открыть книгу <small>проверить по лекции</small></button>' : '') + '' + noteBtn(q) + '</div>' + noteBlock(q));
     var lnb = panel.querySelector('[data-note]'); if (lnb) lnb.onclick = function () { openNote(q); };
     var bk = panel.querySelector('[data-ql="book"]'); if (bk) bk.onclick = openBookRoom;
     bubbleAt('<b>Найди мою ложь…</b> <small>одно из утверждений внизу — неправда</small>', R.mon, 'q');
@@ -1509,8 +1526,12 @@
 
   /* ---------- 📝 записи ---------- */
   function noteOf(id) { return S.notes && S.notes[id]; }
+  /* заметная кнопка записи: нет записи — «📝 Записать своими словами», есть — «✏ Моя запись» */
+  function noteBtnLabel(q) { return noteOf(q.id) ? '✏ Моя запись <small>изменить</small>' : '📝 Записать <small>своими словами</small>'; }
+  function noteBtn(q) { return '<button class="note-btn' + (noteOf(q.id) ? ' has' : '') + '" data-note title="Объясни своими словами — запись будет под этим вопросом и на полке «Мои записи»">' + noteBtnLabel(q) + '</button>'; }
   function noteBlock(q) { var n = q && noteOf(q.id); return n ? '<div class="my-note"><b>📝 Моя запись:</b> ' + esc(n.t).replace(/\n/g, '<br>') + '</div>' : ''; }
   function refreshNote(q) {
+    var nb = panel.querySelector('[data-note]'); if (nb) { nb.innerHTML = noteBtnLabel(q); nb.classList.toggle('has', !!noteOf(q.id)); }
     var el = panel.querySelector('.my-note'), html = noteBlock(q);
     if (el) { if (html) el.outerHTML = html; else el.remove(); return; }
     if (!html) return; var anchor = panel.querySelector('.qimg') || panel.querySelector('.qtext'); if (anchor) anchor.insertAdjacentHTML('afterend', html);
@@ -2130,7 +2151,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     h = h.replace('<span class="grow"></span>', '<span class="grow"></span><button class="ggl-btn" data-ql="ggl"' + (errs >= 2 ? ' data-hot' : ' hidden') + ' title="Объяснит ответ и каждый вариант">🔎 Загуглить</button>');
     /* книга видна всегда (спокойно, без мигания); если долго думаешь — подсвечивается */
     h += '<div class="qlinks">' + (hasBook ? '<button class="book-btn" data-ql="book"' + (hadErr ? ' data-hot' : '') + ' title="Прочитать лекцию по этой теме (B)">📖 Открыть книгу <small>лекция по теме</small></button>' : '') +
-      '<button class="linkbtn note-btn" data-note title="Записать своими словами — запись будет под этим вопросом и на полке «Мои записи»">📝 Запись</button>' + '<button class="linkbtn dunno" data-dunno title="Честно не знаю: покажу ответ и пояснение, вопрос ляжет на полку ошибок (сердечко не снимается)">🤷 Не знаю</button>' + '</div>' + brief;
+      noteBtn(q) + '<button class="linkbtn dunno" data-dunno title="Честно не знаю: покажу ответ и пояснение, вопрос ляжет на полку ошибок (сердечко не снимается)">🤷 Не знаю</button>' + '</div>' + brief;
     h += hotbarHtml();
     /* C++: кнопка «RU» — перевод в облачке включается и выключается в любой момент боя */
     if (D.subjId === 'cpp' && /[A-Za-z]{3,}/.test(q.q)) h = h.replace('<span class="grow"></span>', '<span class="grow"></span><button class="tr-cloud' + (cppTrOn() ? ' on' : '') + '" data-trc title="Перевод в облачке: показать / убрать" aria-pressed="' + cppTrOn() + '">RU</button>');
