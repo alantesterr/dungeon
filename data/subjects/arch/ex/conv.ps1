@@ -300,6 +300,8 @@ if (Test-Path $oldMeta) { $om = [IO.File]::ReadAllText($oldMeta, [Text.Encoding]
 $topics = @()
 foreach ($n in ($lec.Keys | Sort-Object)) {
   $nn = '{0:D2}' -f $n; $script:qi2 = 0
+  # тема собрана вручную (есть ex\handNN.txt) — её lNN/tNN не трогаем
+  if (Test-Path (Join-Path $Out "ex\hand$nn.txt")) { $topics += [ordered]@{ n = $n; rk = $(if ($n -le 5) { 1 } else { 2 }); title = $titles[$n]; file = "t$nn.txt"; lecture = "l$nn.txt" }; continue }
   $lt = ConvLecture $n
   [IO.File]::WriteAllText((Join-Path $Out "l$nn.txt"), $lt, $enc)
   [IO.File]::WriteAllText((Join-Path $Out "t$nn.txt"), (ConvTests $n (LecSections $lt)), $enc)
