@@ -1535,10 +1535,16 @@
   /* заметная кнопка записи: нет записи — «📝 Записать своими словами», есть — «✏ Моя запись» */
   function noteBtnLabel(q) { return noteOf(q.id) ? '✏ Моя запись <small>изменить</small>' : '📝 Записать <small>своими словами</small>'; }
   function noteBtn(q) { return '<button class="note-btn' + (noteOf(q.id) ? ' has' : '') + '" data-note title="Объясни своими словами — запись будет под этим вопросом и на полке «Мои записи»">' + noteBtnLabel(q) + '</button>'; }
-  function noteBlock(q) { var n = q && noteOf(q.id); return n ? '<div class="my-note"><b>📝 Моя запись:</b> ' + esc(n.t).replace(/\n/g, '<br>') + '</div>' : ''; }
+  /* запись под вопросом свёрнута: «📝 Моя запись ▸» — нажми, чтобы развернуть; сама раскрывается, если долго думаешь */
+  function noteBlock(q, open) { var n = q && noteOf(q.id); return n ? '<details class="my-note"' + (open ? ' open' : '') + '><summary>📝 Моя запись</summary><div class="nt-body">' + esc(n.t).replace(/\n/g, '<br>') + '</div></details>' : ''; }
+  function openMyNote(drop) {   /* плавно развернуть запись и подъехать к ней */
+    var d = panel.querySelector('details.my-note'); if (!d || d.open) return false;
+    d.open = true; if (drop) { d.classList.add('drop'); setTimeout(function () { if (d.isConnected) d.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 350); }
+    return true;
+  }
   function refreshNote(q) {
-    var nb = panel.querySelector('[data-note]'); if (nb) { nb.innerHTML = noteBtnLabel(q); nb.classList.toggle('has', !!noteOf(q.id)); }
-    var el = panel.querySelector('.my-note'), html = noteBlock(q);
+    var nb = panel.querySelector('[data-note]'); if (nb) { nb.innerHTML = noteBtnLabel(q); nb.classList.toggle('has', !!noteOf(q.id)); nb.classList.remove('hot'); }
+    var el = panel.querySelector('.my-note'), html = noteBlock(q, true);
     if (el) { if (html) el.outerHTML = html; else el.remove(); return; }
     if (!html) return; var anchor = panel.querySelector('.qimg') || panel.querySelector('.qtext'); if (anchor) anchor.insertAdjacentHTML('afterend', html);
   }
@@ -1960,9 +1966,10 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     msg.querySelector('button').onclick = reveal; R.reveal = reveal;
     setTimeout(function () { if (G.room === R && R.q === q) reveal(); }, ms);
   }
-  /* подсказки появляются по нарастающей, пока вопрос висит без ответа (30 / 60 / 120 с) */
-  /* книга подсвечивается через 30 с, «Кратко из лекции» плавно выезжает через 50 с, «Загуглить» — через 75 с */
-  var HINT_T = [30000, 50000, 75000];
+  /* подсказки появляются по нарастающей, пока вопрос висит без ответа:
+     книга подсвечивается через 30 с, твоя запись разворачивается через 40 с, «Загуглить» — через 45 с
+     (записи нет — тогда же подсвечивается «📝 Записать»). «Кратко из лекции» убрано: лучше книга, Google и своя запись. */
+  var HINT_T = [30000, 40000, 45000];
   function dropBrief(b) {   /* «Кратко из лекции» плавно опускается вниз — и экран сам к нему подъезжает */
     if (!b) return; b.classList.remove('later'); b.open = true; b.classList.add('drop');
     setTimeout(function () { if (b.isConnected) b.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 350);
@@ -1973,11 +1980,14 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     if (gg) gg.onclick = function () { openGoogle(q); };
     var alive = function () { return G.room === R && R.q === q && !R.answered; };
     var show = function (el, hot) { if (!el || !alive()) return; el.hidden = false; el.classList.add('pop'); if (hot) el.setAttribute('data-hot', ''); };
-    var wasErr = panel.querySelector('details.brief.was-err');
-    if (wasErr) { wasErr.classList.add('later'); setTimeout(function () { if (G.room === R && R.q === q) dropBrief(wasErr); }, Math.min(readMs(q), 4000) + 300); }   /* ошибался — суть выезжает сразу после чтения */
+    /* ошибался здесь раньше — твоя запись раскрывается сразу после чтения вопроса */
+    if (R.noteNow) setTimeout(function () { if (alive()) openMyNote(true); }, Math.min(readMs(q), 4000) + 300);
     setTimeout(function () { show(bk, true); }, HINT_T[0]);
-    setTimeout(function () { if (!alive()) return; dropBrief(panel.querySelector('details.brief.later')); }, HINT_T[1]);
-    setTimeout(function () { show(gg, true); }, HINT_T[2]);
+    setTimeout(function () { if (alive()) openMyNote(true); }, HINT_T[1]);
+    setTimeout(function () {
+      show(gg, true);
+      var nb = panel.querySelector('[data-note]'); if (nb && alive() && !noteOf(q.id)) nb.classList.add('hot');
+    }, HINT_T[2]);
   }
   /* «✓ Знаю — не спрашивай»: вопрос засчитывается как верный и дальше почти не попадается (вернуть — в Настройках) */
   function markKnown(q) {
@@ -2140,11 +2150,12 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     if (isTask) return askTask(head, t);
     var q = it.t === 'r' ? reverseQ(R.f, R.f.byId[it.id]) : R.f.byId[it.id]; R.q = q; R.recent.push(q.id); if (R.recent.length > 6) R.recent.shift();
     var right = q.type === 'keyboard' ? q.answer : (q.opts.filter(function (o) { return o.right; })[0] || {}).t;
-    /* подсказки по нарастающей: сначала только вопрос и варианты; книга через 30 с, «Кратко из лекции» через 60 с, Google через 120 с.
-       Ошибался здесь раньше — суть из лекции раскрыта сразу; ошибался 2+ раз — сразу подсвечен Google. */
+    /* подсказки по нарастающей (см. HINT_T): книга, своя запись, Google.
+       Ошибался здесь раньше — твоя запись раскрывается сразу после чтения; ошибался 2+ раз — сразу виден Google. */
     var rec = D.save.srs[q.id], errs = rec ? rec.w || 0 : 0, hadErr = !R.f.exam && !q.rev && (errs > 0 || D.isBad(q.id));
-    var brief = R.f.exam ? '' : briefHtml(q.q + ' ' + (right || ''));
-    if (brief) brief = hadErr ? brief.replace('<details class="brief"', '<details class="brief was-err" open').replace('<summary>Кратко из лекции</summary>', '<summary>Ты здесь ошибался — вот суть</summary>') : brief.replace('<details class="brief"', '<details class="brief later"');
+    if (!R.f.exam && R.f.texts && R.f.texts.length) briefHtml(q.q + ' ' + (right || ''));   /* только чтобы книга знала нужный раздел; «Кратко из лекции» больше не показываем */
+    var brief = '';
+    R.noteNow = hadErr;
     var h = head + tipHtml('q3') + '<div class="qtext">' + D.md(q.q) + '</div>' + (q.img ? '<div class="qimg"><img src="' + esc(q.img) + '" alt="Картинка к вопросу"></div>' : '') + noteBlock(q);
     if (q.type === 'keyboard') h += '<div class="kb"><input id="kbIn" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Что выведет программа? Впиши ответ"><button class="btn primary" id="kbGo">Ответить<kbd>Enter</kbd></button></div>';
     else {
@@ -2978,7 +2989,7 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
     /* новые ключи (…2), чтобы обновлённые подсказки увидели и те, кто уже закрыл старые */
     floor2: 'Комнаты темы идут по порядку — в каждой спросят все её вопросы. Последняя комната — босс: вопросы всей темы. Свои ошибки повторишь у стража на выходе и в «🔁 Повторении» на карте.',
     room2: 'Жми «Идти дальше» (Enter) — герой сам подойдёт к монстру, сундуку или алтарю (если у темы есть лекция). Сердечки монстра = сколько вопросов он задаст.',
-    q3: 'Сначала спокойно прочитай вопрос — варианты появятся сами (или нажми 1–5). Можно открыть «📖 Книгу» в любой момент. Если долго думаешь, снизу выедет «Кратко из лекции», а сверху появится «🔎 Загуглить». «✓ Знаю» убирает лёгкий вопрос.',
+    q3: 'Сначала спокойно прочитай вопрос — варианты появятся сами (или нажми 1–5). Можно открыть «📖 Книгу» в любой момент. Если долго думаешь, развернётся твоя «📝 Моя запись», а сверху появится «🔎 Загуглить». Нашёл ответ в книге или Google — запиши своими словами. «✓ Знаю» убирает лёгкий вопрос.',
     q2: 'Вопрос задаёт монстр в облачке, варианты — внизу (клавиши 1–5). Не знаешь — «🔎 Google» объяснит ответ, но такой вопрос потом спросит страж. «…» в облачке опускает вопрос вниз.'
   };
   function tipHtml(k) {

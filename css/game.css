@@ -669,3 +669,14 @@ details.brief[open]>.rich{animation:richIn .45s ease-out}
 .note-btn.has{border-color:#AFA9EC;background:linear-gradient(#3f3470,#2e2650);box-shadow:0 0 10px rgba(175,169,236,.35),0 2px 0 #1a1530}
 .qlinks{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
 #app:not(.focus) .tr-under.in-bubble{display:none}
+/* «📝 Моя запись» под вопросом — свёрнута, раскрывается по нажатию или сама, если долго думаешь */
+details.my-note{padding:6px 12px}
+details.my-note>summary{cursor:pointer;list-style:none;font-weight:700;color:#CECBF6;user-select:none}
+details.my-note>summary::-webkit-details-marker{display:none}
+details.my-note>summary::after{content:" ▸";opacity:.8}details.my-note[open]>summary::after{content:" ▾"}
+details.my-note>summary:hover{color:#fff}
+details.my-note .nt-body{margin-top:6px}
+details.my-note[open]>.nt-body{animation:richIn .45s ease-out}
+details.my-note.drop{animation:briefDrop .8s cubic-bezier(.2,.8,.3,1),briefGlow 1.6s ease-in-out .8s 2;border-color:#FAC775;transform-origin:top}
+.note-btn.hot{border-color:#FAC775;animation:briefGlow 1.6s ease-in-out 3}
+@media (prefers-reduced-motion:reduce){details.my-note.drop,.note-btn.hot{animation-duration:.01s!important}}
