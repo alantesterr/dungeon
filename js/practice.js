@@ -309,25 +309,86 @@
       '<div class="fp-cap">' + esc(f.Caption || 'Form1') + '<i>_</i><i>□</i><i>×</i></div><div class="fp-cl" style="height:' + (H - 22) + 'px">' + (ref.comps || []).map(comp).join('') + '</div></div></div>' +
       '<p class="fp-note">Положи компоненты примерно так же. Имена (Label1, Button1…) Builder даст сам.</p></details>';
   }
+  /* оконное (VCL) задание — в большом Builder с отдельными окнами. Пустое задание начинается с File → New → Application
+     (Project1 с пустой Form1), задание-продолжение — с формой из методички. Проверка — та же, что на сайте (CPP.vclRunCheck). */
+  function ensureVclCheck() {
+    if (CPP.vclRunCheck) return;
+    var d = el('<div style="display:none"><div class="vclw" data-id="dg-init"><script type="application/json" data-role="vcl">{"form":{"Caption":"Form1","Width":200,"Height":120},"comps":[],"code":"","checks":[]}</script></div></div>');
+    document.body.appendChild(d); try { CPP.initVcl(d); } catch (e) {} d.remove();
+  }
   function openVcl(t) {
-    vclBox = el('<div class="prx prx-vcl"><div class="prx-t"><span class="ico">C</span><span class="tt">C++Builder 6 — ' + esc(t.name || 'Форма') + '</span><button data-x title="К списку">×</button></div><div class="prx-b"><div class="vclw" data-id="dg-' + esc(t.id) + '"><script type="application/json" data-role="vcl"></script></div></div></div>');
-    vclBox.querySelector('script').textContent = JSON.stringify(t.vcl);
-    document.body.appendChild(vclBox);
-    vclBox.querySelector('[data-x]').onclick = function () { openList(task.sid, task.li); };
-    CPP.initVcl(vclBox);
-    var w = vclBox.querySelector('.vclw');
-    new MutationObserver(function () { if (w.classList.contains('solved')) markSolved(t, 'Форма работает, как надо — задание решено!'); }).observe(w, { attributes: true, attributeFilter: ['class'] });
+    var X = CPP.IDE_TEST, key = 'dgLab:' + t.id, prj = null, c = t.vcl || {};
+    try { var sv = localStorage.getItem(key); if (sv) prj = X.prjLoad(JSON.parse(sv)); } catch (e) { prj = null; }
+    if (!prj) {
+      prj = X.newProject('vcl', 'Project1');
+      if ((c.comps && c.comps.length) || c.code) {
+        var p = new CPP.VCL.Project({ formName: 'Form1', unitName: 'Unit1', form: Object.assign({}, c.form || {}, { Visible: false }), comps: c.comps || [], code: c.code || '' });
+        prj.forms = [p]; prj.auto = ['Form1']; prj.main = 'Form1';
+      }
+      task.fresh = true;
+    }
+    prj.dgKeep = true; CPP.openIDE(prj); ensureVclCheck();
+  }
+  function mainForm() { var ide = CPP.ide && CPP.ide(), prj = ide && ide.get && ide.get(); if (!prj || prj.kind === 'console') return null; return prj.forms.find(function (p) { return p.fn === prj.main; }) || prj.forms[0]; }
+  /* шаги обучалки из методички (vcl.steps) или общие: компоненты → обработчики → F9 → Проверить */
+  function vclSteps(t) {
+    var c = t.vcl || {}, ref = c.ref || {};
+    if (c.steps && c.steps.length) return c.steps.map(function (s) { return { t: s.t, c: s.c || {} }; });
+    var types = []; (ref.comps || []).forEach(function (x) { if (types.indexOf(x.type) < 0) types.push(x.type); });
+    var hs = []; String(ref.code || '').replace(/TForm1::(\w+)\s*\(/g, function (_, n) { if (hs.indexOf(n) < 0 && !/^TForm1$/.test(n)) hs.push(n); });
+    var out = [];
+    types.forEach(function (ty) { var n = (ref.comps || []).filter(function (x) { return x.type === ty; }).length; out.push({ t: 'Положи на форму <b>' + ty.slice(1) + '</b>' + (n > 1 ? ' × ' + n : '') + ' (палитра, вкладка ' + ((CPP.VCL.COMP[ty] || {}).tab || 'Standard') + ').', c: { comp: ty, count: n } }); });
+    hs.forEach(function (h) { out.push({ t: 'Создай обработчик <code>' + h + '</code>: выдели компонент и дважды щёлкни по нему (или по событию в Object Inspector → Events), напиши код.', c: { handler: h } }); });
+    out.push({ t: 'Нажми <b>F9</b> (Run ▶) — проверь окно программы.', c: { run: 1 } });
+    if (c.checks && c.checks.length) out.push({ t: 'Нажми <b>«✔ Проверить»</b>.', c: { check: -1 } });
+    return out;
+  }
+  function vclStepOk(c, p, t) {
+    if (!p) return false;
+    try {
+      if (c.comp) return p.comps.filter(function (x) { return x.vcl === c.comp; }).length >= (c.count || 1);
+      if (c.prop) { var o = p.find(c.prop[0]); if (!o) return false; var w = c.prop[2], k = c.prop[1];
+        if (k === 'Font.Size') return o.p.Font.p.Size == w; if (k === 'Font.Color') return CPP.VCL.colorName(o.p.Font.p.Color) === w;
+        return typeof w === 'string' && /^cl/.test(w) ? CPP.VCL.colorName(o.p[k]) === w : String(o.p[k]) === String(w); }
+      if (c.handler) return p.handlers().some(function (h) { return h.name === c.handler; });
+      if (c.code) return new RegExp(c.code).test(p.code);
+      if (c.run) return !!(task.ran || PR._ran);
+      if (c.check != null) { var chs = (t.vcl || {}).checks || []; if (c.check < 0) return !!save()[t.id]; return CPP.vclRunCheck && chs[c.check] ? CPP.vclRunCheck(p, chs[c.check]).length === 0 : false; }
+    } catch (e) { return false; }
+    return false;
+  }
+  function drawVclSteps(t) {
+    var box = tw && tw.querySelector('.tk-live'); if (!box) return;
+    var p = mainForm(), steps = vclSteps(t), cur = -1, h = '';
+    if (!p) { h = '<li class="cur"><span>1</span><div>Создай оконное приложение: <b>File → New → Application</b>.</div></li>'; }
+    else steps.forEach(function (s, i) { var d = vclStepOk(s.c, p, t); if (!d && cur < 0) cur = i; h += '<li class="' + (d ? 'done' : i === cur ? 'cur' : '') + '"><span>' + (d ? '✓' : i + 1) + '</span><div>' + s.t + '</div></li>'; });
+    if (box.innerHTML !== h) box.innerHTML = h;
+  }
+  function checkVcl() {
+    var t = task.t, res = tw.querySelector('.tk-res'), p = mainForm(), chs = (t.vcl || {}).checks || [];
+    try { var ide = CPP.ide(); localStorage.setItem('dgLab:' + t.id, JSON.stringify(CPP.IDE_TEST.prjJSON(ide.get()))); } catch (e) {}
+    task.ran = true;
+    if (!p) { res.innerHTML = '<p class="tk-bad">Сначала создай оконное приложение: File → New → Application.</p>'; return; }
+    if (!chs.length) { res.innerHTML = '<p class="tk-warn">У этого задания нет автопроверки — сравни с картинкой и эталоном.</p><button class="w2k" data-self>✓ Решил сам</button>'; res.querySelector('[data-self]').onclick = function () { markSolved(t, 'Отмечено как решённое.'); }; return; }
+    var all = true, rows = chs.map(function (ch) {
+      var bad;
+      try { bad = CPP.vclRunCheck(p, ch); } catch (e) { bad = [e.vclAsk ? 'программа ждёт ответа в диалоге' : 'ошибка: ' + (e.message || e)]; }
+      if (bad.length) all = false;
+      return '<div class="tk-t ' + (bad.length ? 'bad' : 'ok') + '"><b>' + (bad.length ? '✗ ' : '✓ ') + esc(ch.name) + '</b>' + (bad.length ? '<span>' + bad.map(esc).join('<br>') + '</span>' : '') + '</div>';
+    }).join('');
+    res.innerHTML = (all ? '<p class="tk-ok">✓ Работает как в задании!</p>' : '<p class="tk-bad">Пока не всё работает.</p>') + rows;
+    if (all) markSolved(t, 'Форма работает как надо — задание решено!');
   }
   function taskWin(t, l) {
     var tests = t.tests || [];
     tw = makeWin('prx-task', t.name + ' · ' + (l.short || ''), '<div class="tk-scroll"><div class="tk-text">' + md(t.text || t.title || '') + '</div>' +
       (t.note ? '<p class="tk-note">⚠ ' + md(t.note) + '</p>' : '') +
-      (t.kind === 'vcl' ? formPic(t.vcl && t.vcl.ref) : '<details class="tk-livebox" open><summary>🧭 Делаем с нуля, как в настоящем Builder</summary><ol class="tk-live"></ol>' +
+      (t.kind === 'vcl' ? formPic(t.vcl && t.vcl.ref) + '<details class="tk-livebox" open><summary>🧭 Делаем, как в настоящем Builder</summary><ol class="tk-live"></ol></details>' : '<details class="tk-livebox" open><summary>🧭 Делаем с нуля, как в настоящем Builder</summary><ol class="tk-live"></ol>' +
         '<p class="tk-skip">Уже умеешь? <a href="#" data-auto>Создать консольный проект за меня</a></p></details>') +
       '<details class="tk-steps"><summary>💡 Подсказка: как решать по шагам</summary><div>' + md(t.steps || 'Подсказки нет — посмотри эталон.') + '</div></details>' +
       '<details class="tk-ref"><summary>📄 Эталонное решение</summary><pre class="tk-code"></pre></details>' +
       '<div class="tk-res" aria-live="polite"></div></div>' +
-      '<div class="prx-bar">' + (t.kind === 'vcl' ? '<span class="grow tk-hint">Собери форму, напиши обработчик, жми F9 и «Проверить» в окне Builder.</span>' : '<button class="w2k primary" data-check>✔ Проверить' + (tests.length ? ' (' + tests.length + ')' : '') + '</button><span class="grow"></span>') +
+      '<div class="prx-bar">' + (t.kind === 'vcl' ? '<button class="w2k primary" data-checkv>✔ Проверить' + ((t.vcl && t.vcl.checks || []).length ? ' (' + t.vcl.checks.length + ')' : '') + '</button><span class="grow"></span>' : '<button class="w2k primary" data-check>✔ Проверить' + (tests.length ? ' (' + tests.length + ')' : '') + '</button><span class="grow"></span>') +
       '<button class="w2k" data-list>📁 К списку</button></div>', { ico: '📝', min: true });
     tw.querySelector('.tk-code').textContent = t.ref || (t.vcl && t.vcl.ref ? t.vcl.ref.code : '') || t.unit || '';
     tw.querySelector('[data-x]').onclick = function () { openList(task.sid, task.li); };
@@ -336,6 +397,8 @@
     var au = tw.querySelector('[data-auto]'); if (au) au.onclick = function (e) {
       e.preventDefault(); var p = CPP.IDE_TEST.newProject('console', 'Project1'); p.units[0].cpp = startCode(t); p.dgKeep = true; CPP.openIDE(p); drawSteps(t);
     };
+    var cv = tw.querySelector('[data-checkv]'); if (cv) cv.onclick = checkVcl;
+    if (t.kind === 'vcl') { clearInterval(PR.stepT); PR.stepT = setInterval(function () { if (!tw || !task || task.t !== t) { clearInterval(PR.stepT); return; } drawVclSteps(t); }, 900); drawVclSteps(t); }
     if (t.kind !== 'vcl') { clearInterval(PR.stepT); PR.stepT = setInterval(function () { if (!tw || !task || task.t !== t) { clearInterval(PR.stepT); return; } drawSteps(t); }, 700); drawSteps(t); }
     if (save()[t.id]) tw.querySelector('.tk-res').innerHTML = '<p class="tk-ok">✓ Это задание ты уже решал.</p>';
   }

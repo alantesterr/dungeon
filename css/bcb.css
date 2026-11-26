@@ -224,4 +224,5 @@ pre.cpp-code{background:var(--ed-bg);color:var(--ed-ink);border:1px solid var(--
 .bcbx.flo.con-prj .dz{display:none}
 .bcbx.flo .bx-center.m-form .bx-ed{visibility:visible}
 .bcbx.flo .bx-center.m-code .dz{visibility:hidden}
-.bcbx.flo .bx-center.m-form .dz{z-index:4}
+.bcbx.flo .bx-center.m-form .dz{z-index:6}
+.bcbx.flo .bx-center.ed-front .bx-ed{z-index:5}

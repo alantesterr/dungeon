@@ -129,6 +129,10 @@
         if (tree.innerHTML !== h) tree.innerHTML = h;
       }
     };
+    /* как в Builder: двойной щелчок по компоненту (новый обработчик) выводит окно кода вперёд; щелчок по форме — форму */
+    var center = root.querySelector('.bx-center');
+    root.addEventListener('dblclick', function (e) { if (e.target.closest('.dz .frm')) setTimeout(function () { center.classList.add('ed-front'); }, 30); });
+    root.addEventListener('mousedown', function (e) { if (e.target.closest('.dz .frm')) center.classList.remove('ed-front'); else if (e.target.closest('.bx-ed')) center.classList.add('ed-front'); });
     setInterval(tick, 900); tick();
   }
   var open0 = CPP.openIDE;

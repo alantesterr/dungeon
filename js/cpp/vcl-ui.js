@@ -405,6 +405,7 @@ function initVcl(el){
     }
     return bad;
   }
+  CPP.vclRunCheck=runCheck;  /* игра «Подземелье»: проверка оконного задания в большом Builder */
   function checkAll(){
     resBox.hidden=false; errBox.hidden=true;
     const rows=[]; let okAll=true;
