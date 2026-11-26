@@ -44,7 +44,9 @@
   var scripts = {};
   function loadScript(src) { if (scripts[src]) return scripts[src]; return (scripts[src] = new Promise(function (ok, bad) { var s = document.createElement('script'); s.src = src + VER; s.onload = ok; s.onerror = function () { scripts[src] = null; bad(new Error('Не загрузился ' + src)); }; document.head.appendChild(s); })); }
   /* только интерпретатор C++ (для «🧪 Попробовать» в тестах), без Builder */
-  PR.loadCpp = function () { var c = Promise.resolve(); ['cpp-parse', 'cpp-lib', 'cpp-run', 'cpp-stdlib'].forEach(function (n) { c = c.then(function () { return loadScript('js/cpp/' + n + '.js'); }); }); return c; };
+  PR.loadCpp = function () {
+    if (!document.querySelector('link[data-pr="cpp"]')) { var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = SUBJ.cpp.css + VER; l.setAttribute('data-pr', 'cpp'); document.head.appendChild(l); }
+    var c = Promise.resolve(); ['cpp-parse', 'cpp-lib', 'cpp-run', 'cpp-stdlib', 'cpp-ui'].forEach(function (n) { c = c.then(function () { return loadScript('js/cpp/' + n + '.js'); }); }); return c; };
   function load(sid) {
     if (loading[sid]) return loading[sid];
     var cfg = SUBJ[sid];
@@ -307,18 +309,26 @@
   var SRC = { teacher_lab: 'из методички преподавателя', teacher_lecture: 'из лекции преподавателя', umkd_syllabus: 'из УМКД / силлабуса', added: 'дополнительное' };
   function siteTaskWin(t, l) {
     var solved = save()[t.id], tq = window.TRY ? { q: plainT(t.name) + '. ' + plainT(t.text).slice(0, 600) } : null;
+    var full = siteImg(t.text || ''), fm = full.match(/<figure[\s\S]*?<\/figure>/), firstFig = fm ? '<div class="tk-fig1">' + fm[0] + '</div>' : '';
+    /* «По шагам» — решение по строкам, открываются по одной (сначала сам, потом подглядываешь) */
+    var steps = String(t.solution || '').split(/\n+/).map(function (x) { return x.trim(); }).filter(function (x) { return x && !/^\[рисунок/.test(x); });
+    if (steps.length < 2) steps = (plainT(t.solution).match(/[^.!?]+[.!?]+/g) || []).map(function (x) { return x.trim(); });
+    if (steps.length > 8) { var k = Math.ceil(steps.length / 8), g = []; for (var i = 0; i < steps.length; i += k) g.push(steps.slice(i, i + k).join('\n')); steps = g; }
     tw = makeWin('prx-task', t.name + ' · ' + (l.short || ''), '<div class="tk-scroll">' +
       '<p class="tk-src">' + (SRC[t.src] ? '<span class="src-badge ' + (t.src === 'added' ? 'add' : 'exam') + '">' + esc(SRC[t.src]) + '</span>' : '') + (t.ex ? ' <span class="src-badge add">пример из методички</span>' : '') + '</p>' +
-      '<p class="tk-brief">🎯 <b>Коротко:</b> ' + esc(brief(t)) + '</p><div class="tk-text">' + siteImg(t.text || '') + '</div>' +
+      '<p class="tk-brief">🎯 <b>Задача:</b> ' + esc(brief(t)) + '</p>' + firstFig +
       (t.tools && t.tools.length ? '<p class="tk-tools">🧰 На стенде слева: <b>' + esc(t.tools.join(', ')) + '</b></p>' : '') +
       (tq && TRY.find(tq, 'arch').length ? '<p class="tk-tools">🧪 Проверь себя на тренажёре: <button class="w2k" data-try>' + esc(TRY.find(tq, 'arch').map(function (x) { return x.label; }).join(' · ')) + '</button></p>' : '') +
-      (t.solution ? '<details class="tk-ref"><summary>📄 Решение и разбор</summary><div class="tk-sol">' + siteImg(t.solution) + '</div></details>' : '') +
+      '<details class="tk-full"><summary>📖 Подробнее — полное условие из методички</summary><div class="tk-text">' + full + '</div></details>' +
+      (steps.length ? '<details class="tk-livebox"><summary>🧭 По шагам</summary><div class="tk-hints"></div></details>' : '') +
+      (t.solution ? '<details class="tk-ref"><summary>📄 Эталон — решение и разбор</summary><div class="tk-sol">' + siteImg(t.solution) + '</div></details>' : '') +
       '<div class="tk-res">' + (solved ? '<p class="tk-ok">✓ Это задание ты уже сделал.</p>' : '') + '</div></div>' +
       '<div class="prx-bar"><button class="w2k primary" data-done>' + (solved ? '✓ Сделано' : '✓ Я сделал задание') + '</button><span class="grow"></span><button class="w2k" data-studio title="Свободная сборка схем">⚡ EWB-студия</button><button class="w2k" data-list>📁 К списку</button></div>', { ico: '📝', min: true });
     tw.querySelector('[data-x]').onclick = tw.querySelector('[data-list]').onclick = function () { openList(task.sid, task.li); };
     tw.querySelector('[data-done]').onclick = function () { markSolved(t, 'Задание отмечено как сделанное.'); this.textContent = '✓ Сделано'; };
     tw.querySelector('[data-studio]').onclick = function () { openSite(task.sid, 't16', 'EWB-студия'); };
     var trb = tw.querySelector('[data-try]'); if (trb) trb.onclick = function () { TRY.open(tq, 'arch'); };
+    if (steps.length) hints(tw.querySelector('.tk-hints'), { steps: steps.map(function (x, i) { return (i + 1) + '. ' + x.replace(/^\d+[.)]\s*/, ''); }).join('\n') });
   }
   function openTask(sid, li, ti) {
     closeWin(); hideTask(); curSid = sid;
@@ -471,19 +481,64 @@
     if (!task || !window.CPP || !CPP.ide) return; var ide = CPP.ide(), prj = ide && ide.get && ide.get(); if (!prj || prj.kind !== 'console') return;
     try { var j = JSON.stringify(CPP.IDE_TEST.prjJSON(prj)); if (j !== task.saved) { localStorage.setItem('dgLab:' + task.t.id, j); task.saved = j; } } catch (e) {}
   }
+  /* «Пример работы»: эталон запускается на первом тесте — видно и ввод, и вывод, как в консоли */
+  function sampleOut(t) {
+    if (!t.ref || !window.CPP || !CPP.run) return '';
+    var ts = (t.tests || [])[0] || { input: '' }, r;
+    try { r = CPP.run(t.ref, { input: ts.input || '', maxSteps: 2000000 }); } catch (e) { return ''; }
+    var scr = (r.screen || []).map(function (row) { var x = row.slice(); while (x.length && x[x.length - 1].c === ' ') x.pop(); return x; });
+    while (scr.length && !scr[scr.length - 1].length) scr.pop();
+    if (!scr.length) return '';
+    return '<div class="tk-sample"><div class="tk-sample-t">C:\\Projects\\Project1.exe — пример работы' + (ts.input ? ' (ввод: ' + esc(String(ts.input).replace(/\n/g, ' ')) + ')' : '') + '</div><div class="con tk-con">' + CPP.screenHTML(scr.slice(0, 40)) + '</div></div>';
+  }
+  /* эталон: оконное и ООП — вставляется в Builder (твой вариант сохраняется, его можно вернуть); обычный код — показывается целиком */
+  function refProject(t) {
+    var X = CPP.IDE_TEST, p;
+    if (t.kind === 'vcl') {
+      var r = (t.vcl && t.vcl.ref) || {}; p = X.newProject('vcl', 'Project1');
+      var f = new CPP.VCL.Project({ formName: 'Form1', unitName: 'Unit1', form: Object.assign({}, r.form || {}, { Visible: false }), comps: r.comps || [], code: r.code || '' });
+      p.forms = [f]; p.auto = ['Form1']; p.main = 'Form1';
+    } else { p = X.newProject('console', 'Project1'); p.units[0].cpp = t.ref; }
+    p.dgKeep = true; return p;
+  }
+  function refBox(t, vcl, oop) {
+    var d = tw.querySelector('.tk-ref'), box = tw.querySelector('.tk-refbox'), code = t.ref || (t.vcl && t.vcl.ref ? t.vcl.ref.code : '') || t.unit || '';
+    var mineKey = 'dgLab:' + t.id + ':mine';
+    var insert = function () {
+      var ide = CPP.ide && CPP.ide(), cur = ide && ide.get && ide.get();
+      try { if (cur) localStorage.setItem(mineKey, JSON.stringify(CPP.IDE_TEST.prjJSON(cur))); } catch (e) {}
+      var rp = refProject(t); CPP.openIDE(rp); if (vcl) ensureVclCheck();
+      if (task) task.refPrj = rp;
+      draw(true);
+    };
+    var draw = function (done) {
+      var has = (function () { try { return !!localStorage.getItem(mineKey); } catch (e) { return false; } })();
+      box.innerHTML = (done ? '<p class="tk-ok">✓ Эталон вставлен в Builder' + (vcl ? ': форма и код Unit1.cpp. Нажми F9 и посмотри, как работает; двойной щелчок по кнопке покажет её обработчик.' : '. Нажми F9 и разбери, как он устроен.') + '</p>' : '') +
+        '<pre class="tk-code cpp-code">' + (CPP.highlight ? CPP.highlight(code.replace(/\s+$/, '')) : esc(code)) + '</pre>' +
+        '<p>' + (done ? '' : '<button class="w2k" data-ins>⤵ Вставить эталон в Builder</button> ') + (has && done ? '<button class="w2k" data-mine>↩ Вернуть мой вариант</button>' : '') + '</p>';
+      var a = box.querySelector('[data-ins]'); if (a) a.onclick = insert;
+      var b = box.querySelector('[data-mine]'); if (b) b.onclick = function () { try { var j = localStorage.getItem(mineKey); if (j) { var p = CPP.IDE_TEST.prjLoad(JSON.parse(j)); p.dgKeep = true; CPP.openIDE(p); if (vcl) ensureVclCheck(); } } catch (e) {} draw(false); };
+    };
+    draw(false);
+    d.addEventListener('toggle', function () { if (d.open && (vcl || oop) && !d._ins) { d._ins = 1; insert(); } });
+  }
   function taskWin(t, l) {
     var tests = t.tests || [];
-    tw = makeWin('prx-task', t.name + ' · ' + (l.short || ''), '<div class="tk-scroll"><p class="tk-brief">🎯 <b>Коротко:</b> ' + esc(brief(t)) + '</p><details class="tk-full" open><summary>Полное условие из методички</summary><div class="tk-text">' + md(t.text || t.title || '') + '</div></details>' +
-      (t.note ? '<p class="tk-note">⚠ ' + md(t.note) + '</p>' : '') +
-      (t.kind === 'vcl' ? formPic(t.vcl && t.vcl.ref) + '<details class="tk-livebox" open><summary>🧭 Делаем, как в настоящем Builder</summary><ol class="tk-live"></ol></details>' : '<details class="tk-livebox" open><summary>🧭 Делаем с нуля, как в настоящем Builder</summary><ol class="tk-live"></ol>' +
-        '<p class="tk-skip">Уже умеешь? <a href="#" data-auto>Создать консольный проект за меня</a></p></details>') +
-      '<div class="tk-hints"></div>' +
-      '<details class="tk-ref"><summary>📄 Эталонное решение</summary><pre class="tk-code"></pre></details>' +
+    var oop = t.kind !== 'vcl' && /\bclass\s+\w+/.test(t.ref || ''), vcl = t.kind === 'vcl';
+    /* порядок: коротко + картинка/пример → подробнее → по шагам → эталон (всё, кроме главного, свёрнуто) */
+    tw = makeWin('prx-task', t.name + ' · ' + (l.short || ''), '<div class="tk-scroll"><p class="tk-brief">🎯 <b>Задача:</b> ' + esc(brief(t)) + '</p>' +
+      (vcl ? formPic(t.vcl && t.vcl.ref) : sampleOut(t)) +
+      '<details class="tk-full"><summary>📖 Подробнее — полное условие из методички</summary><div class="tk-text">' + md(t.text || t.title || '') + '</div>' +
+        (t.note ? '<p class="tk-note">⚠ ' + md(t.note) + '</p>' : '') + '</details>' +
+      '<details class="tk-livebox"><summary>🧭 По шагам</summary><p class="tk-mini">' + (vcl ? 'Как в настоящем Builder — шаги отмечаются сами:' : 'С нуля, как в настоящем Builder — шаги отмечаются сами:') + '</p><ol class="tk-live"></ol>' +
+        (vcl ? '' : '<p class="tk-skip">Уже умеешь? <a href="#" data-auto>Создать консольный проект за меня</a></p>') +
+        '<p class="tk-mini"><b>Как решать:</b></p><div class="tk-hints"></div></details>' +
+      '<details class="tk-ref"><summary>📄 Эталон' + (vcl ? ' — откроется готовая форма в Builder' : oop ? ' — код вставится в Builder' : ' — готовый код') + '</summary><div class="tk-refbox"></div></details>' +
       '<div class="tk-res" aria-live="polite"></div></div>' +
       '<div class="prx-bar">' + (t.kind === 'vcl' ? '<button class="w2k primary" data-checkv>✔ Проверить' + ((t.vcl && t.vcl.checks || []).length ? ' (' + t.vcl.checks.length + ')' : '') + '</button><span class="grow"></span>' : '<button class="w2k primary" data-check>✔ Проверить' + (tests.length ? ' (' + tests.length + ')' : '') + '</button><span class="grow"></span>') +
       '<button class="w2k" data-list>📁 К списку</button></div>', { ico: '📝', min: true });
-    tw.querySelector('.tk-code').textContent = t.ref || (t.vcl && t.vcl.ref ? t.vcl.ref.code : '') || t.unit || '';
     hints(tw.querySelector('.tk-hints'), t);
+    refBox(t, vcl, oop);
     tw.querySelector('[data-x]').onclick = function () { openList(task.sid, task.li); };
     tw.querySelector('[data-list]').onclick = function () { openList(task.sid, task.li); };
     var ck = tw.querySelector('[data-check]'); if (ck) ck.onclick = check;
@@ -524,6 +579,10 @@
     if (all) markSolved(t, 'Все проверки пройдены — задание решено!');
   }
   function markSolved(t, msg) {
+    var ide0 = window.CPP && CPP.ide && CPP.ide(); if (task && task.t === t && task.refPrj && ide0 && ide0.get && ide0.get() === task.refPrj) {   /* в Builder сейчас эталон — не засчитываем */
+      var rr = tw && tw.querySelector('.tk-res'); if (rr) rr.insertAdjacentHTML('afterbegin', '<p class="tk-warn">Это эталон — он работает. В прогресс не идёт: верни свой вариант (📄 Эталон → ↩) или собери заново сам и проверь.</p>');
+      return;
+    }
     var s = save(); if (s[t.id]) return; s[t.id] = 1; D.persist();
     if (window.DGame && DGame.toast) DGame.toast('💻 ' + msg); else if (typeof window.toast === 'function') window.toast(msg);
     var r = tw && tw.querySelector('.tk-res'); if (r && !/tk-ok/.test(r.innerHTML)) r.insertAdjacentHTML('afterbegin', '<p class="tk-ok">✓ ' + esc(msg) + '</p>');

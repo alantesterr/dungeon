@@ -341,33 +341,65 @@
   /* ================= окно ================= */
   var ov = null;
   T.close = function () { var was = !!ov; if (ov) { ov.remove(); ov = null; } T.active = false; if (was && T.onClose) { var f = T.onClose; T.onClose = null; f(); } };
-  function runCpp(box, code, input) {
-    var out = box.querySelector('.tr-con');
-    if (!window.CPP || !CPP.run) { out.textContent = 'Загружаю C++…'; return; }
-    var r; try { r = CPP.run(code, { input: input || '', maxSteps: 300000 }); } catch (e) { r = { error: e, lines: [] }; }
-    var lines = (r.lines || []).join('\n').replace(/\n+$/, '').replace(/([^\n])(  проход \d+:|После:|цикл (№\d+ )?повторился)/g, '$1\n$2');
-    out.innerHTML = esc(lines).replace(/^(  проход \d+:.*|После:.*|цикл (№\d+ )?повторился.*)$/gm, '<span class="tr-tr">$1</span>') +
-      (r.error ? '\n<span class="tr-bad">' + (r.compileError ? 'Ошибка компиляции' : 'Ошибка') + (r.error.line ? ' (строка ' + r.error.line + ')' : '') + ': ' + esc(r.error.message) + '</span>' : (lines ? '' : '<i>(программа ничего не вывела)</i>'));
-    return r;
-  }
+  /* ---------- C++: как в Builder — окно Unit1.cpp и отдельное окно программы (ввод и вывод вместе) ---------- */
   function cppPane(box, it) {
-    var code, why, input = '';
-    if (it.demo) { code = it.demo.code; why = it.demo.why; input = it.demo.input || ''; }
+    var code, why, preset = '';
+    if (it.demo) { code = it.demo.code; why = it.demo.why; preset = it.demo.input || ''; }
     else {
       var b = buildRun(it.snip); code = b.code; it._plain = b.plain;
-      why = b.fn ? 'Это функция из вопроса. Я дописал <code>main()</code>, который вызывает её с примерами, — видно, что она возвращает. Поменяй числа и запусти ещё раз.' :
-        b.traced ? 'Это код из вопроса. Я обернул его в <code>main()</code> и вставил строки «проход N» — видно, как на каждом шаге меняются переменные и сколько раз повторился цикл. Поменяй числа и запусти ещё раз.' :
-        'Это код из вопроса, обёрнутый в <code>main()</code>. Внизу программа печатает, какие значения получились у переменных. Поменяй что-нибудь и запусти ещё раз.';
+      why = b.fn ? 'Это функция из вопроса. Я дописал <code>main()</code>, который вызывает её с примерами, — видно, что она возвращает.' :
+        b.traced ? 'Это код из вопроса. Я обернул его в <code>main()</code> и вставил строки «проход N» — видно, как на каждом шаге меняются переменные и сколько раз повторился цикл.' :
+        'Это код из вопроса, обёрнутый в <code>main()</code>. В конце программа печатает, какие значения получились у переменных.';
     }
-    box.innerHTML = '<p class="tr-why">' + why + '</p><pre class="tr-con"></pre>' +
-      '<div class="tr-row"><button class="btn primary tr-run">▶ Запустить ещё раз <kbd>Ctrl+Enter</kbd></button><label class="tr-inl">Ввод (для cin): <input class="tr-in" data-inp value="' + esc(input) + '"></label></div>' +
-      '<p class="tr-mini">Код можно менять прямо здесь:</p><textarea class="tr-code" spellcheck="false">' + esc(code) + '</textarea>';
-    var ta = box.querySelector('textarea');
-    setTimeout(function () { var k = ta.value.indexOf('// ↓'); if (k > 0) { var ln = ta.value.slice(0, k).split('\n').length - 1; ta.scrollTop = Math.max(0, ln - 1) * 20; } }, 0);
-    var go = function () { var r = runCpp(box, ta.value, box.querySelector('[data-inp]').value); if (r && r.compileError && it._plain && ta.value === code) { ta.value = code = it._plain; runCpp(box, code, ''); } };
-    box.querySelector('.tr-run').onclick = go;
-    ta.onkeydown = function (e) { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); go(); } else if (e.key === 'Tab') { e.preventDefault(); var p = ta.selectionStart; ta.value = ta.value.slice(0, p) + '  ' + ta.value.slice(ta.selectionEnd); ta.selectionStart = ta.selectionEnd = p + 2; } };
-    if (window.CPP && CPP.run) go(); else (window.PR && PR.loadCpp ? PR.loadCpp() : Promise.reject()).then(go, function () { box.querySelector('.tr-con').textContent = 'Не получилось загрузить интерпретатор C++.'; });
+    var orig = code;
+    box.innerHTML = '<p class="tr-why">' + why + ' <span class="tr-mini">Поменяй код и нажми <b>F9</b> — запустится заново.</span></p>' +
+      '<div class="tb-ide"><div class="tb-cap"><span>C++Builder 6 - Project1 - [Unit1.cpp]</span></div>' +
+      '<div class="tb-tools"><button class="tb-b" data-run title="Run (F9)">▶ Run <u>F9</u></button><button class="tb-b" data-reset title="Вернуть исходный код">↺ Исходный код</button><span class="tb-tab">Unit1.cpp</span></div>' +
+      '<div class="tb-ed"></div><div class="tb-stat"><span class="tb-pos">1: 1</span><span>Insert</span><span class="tb-msg"></span></div></div>' +
+      '<div class="tb-con"><div class="tb-con-t"><span>C:\\Projects\\Project1.exe</span><i class="tb-x" title="Закрыть">×</i></div><div class="con tb-scr" tabindex="-1"></div>' +
+      '<div class="tb-cin" hidden><span>&gt;</span><input spellcheck="false" autocomplete="off" aria-label="Ввод для программы"></div><div class="tb-st"></div></div>';
+    var R = null, con = box.querySelector('.tb-con'), scr = box.querySelector('.tb-scr'), cin = box.querySelector('.tb-cin'), inp = cin.querySelector('input'), st = box.querySelector('.tb-st'), msg = box.querySelector('.tb-msg');
+    var ed = null;
+    var step = function () {
+      if (!R) return;
+      var r; try { r = CPP.run(R.src, { input: R.input, keys: R.keys, interactive: true, maxSteps: 300000 }); } catch (e) { r = { error: e, screen: [] }; }
+      if (r.compileError) {
+        if (R.auto && it._plain && R.src === orig) { orig = code = it._plain; ed.value = code; R.src = code; return step(); }   /* трассировка не прижилась — запускаем как есть */
+        con.hidden = true; msg.innerHTML = '<b class="tb-err">[C++ Error] Unit1.cpp(' + (r.error.line || '?') + '): ' + esc(r.error.message) + '</b>'; if (r.error.line) ed.markLine(r.error.line); R = null; return;
+      }
+      con.hidden = false; msg.textContent = '';
+      var screen = (r.screen || []).slice(); while (screen.length > 1 && !screen[screen.length - 1].length) screen.pop();
+      scr.innerHTML = CPP.screenHTML(screen);
+      scr.querySelectorAll('.cl').forEach(function (l) { if (/^\s*проход \d+:|^После:|^цикл (№\d+ )?повторился/.test(l.textContent)) l.classList.add('tb-tr'); });
+      scr.scrollTop = scr.scrollHeight;
+      if (r.waiting && r.waitKey) { cin.hidden = true; st.textContent = 'getch(): программа ждёт — нажми любую клавишу в этом окне'; R.waitKey = true; scr.focus({ preventScroll: true }); return; }
+      R.waitKey = false;
+      if (r.waiting) { cin.hidden = false; st.textContent = 'Программа ждёт ввода — напечатай и нажми Enter'; inp.focus({ preventScroll: true }); return; }
+      cin.hidden = true;
+      st.innerHTML = r.error ? '<b class="tb-err">Ошибка во время работы: ' + esc(r.error.message) + '</b>' : 'Программа завершилась.' + (R.auto && R.input ? ' Ввод «' + esc(R.input.replace(/\n/g, ' ').trim()) + '» я набрал сам — нажми <b>F9</b> и введи свои значения.' : ' F9 — запустить ещё раз.');
+      R = null;
+    };
+    var run = function (auto) {
+      ed.markLine(0); msg.textContent = '';
+      R = { src: ed.value, input: auto ? (preset ? preset.replace(/\s*$/, '\n') : '') : '', keys: auto ? [13, 13, 13, 13, 13] : [], auto: !!auto };
+      step();
+    };
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); if (!R) return; R.input += inp.value + '\n'; inp.value = ''; step(); } });
+    scr.addEventListener('keydown', function (e) { if (!R || !R.waitKey || e.ctrlKey || e.altKey || /^(Shift|Control|Alt|F\d+)$/.test(e.key)) return; e.preventDefault(); e.stopPropagation(); R.keys.push(e.key === 'Enter' ? 13 : e.key === 'Escape' ? 27 : e.key.length === 1 ? e.key.charCodeAt(0) : 13); step(); });
+    scr.addEventListener('click', function () { if (R && R.waitKey) scr.focus(); else if (!cin.hidden) inp.focus(); });
+    box.querySelector('.tb-x').onclick = function () { R = null; con.hidden = true; };
+    box.querySelector('[data-run]').onclick = function () { run(false); };
+    box.querySelector('[data-reset]').onclick = function () { ed.value = orig; run(true); };
+    box.addEventListener('keydown', function (e) { if (e.key === 'F9') { e.preventDefault(); e.stopPropagation(); run(false); } });
+    var ready = function () {
+      ed = CPP.makeEditor(box.querySelector('.tb-ed'), code, function () { run(false); });
+      var ta = box.querySelector('.cta'), pos = box.querySelector('.tb-pos');
+      var upd = function () { var s = ta.value.slice(0, ta.selectionStart).split('\n'); pos.textContent = s.length + ': ' + (s[s.length - 1].length + 1); };
+      ta.addEventListener('keyup', upd); ta.addEventListener('click', upd);
+      setTimeout(function () { var k = code.indexOf('// ↓'); if (k > 0) { var ln = code.slice(0, k).split('\n').length - 1; ta.scrollTop = Math.max(0, ln - 1) * 20; } }, 0);
+      run(true);
+    };
+    if (window.CPP && CPP.run && CPP.makeEditor) ready(); else (window.PR && PR.loadCpp ? PR.loadCpp() : Promise.reject()).then(ready, function () { st.textContent = 'Не получилось загрузить C++.'; });
   }
   T.open = function (q, sid) {
     var list = T.find(q, sid); if (!list.length) return;

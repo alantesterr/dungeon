@@ -779,7 +779,7 @@ details.my-note.drop{animation:briefDrop .8s cubic-bezier(.2,.8,.3,1),briefGlow 
 
 /* ---------- 🧪 Попробовать (js/try.js) ---------- */
 .tr-ov{position:fixed;inset:0;z-index:3000;background:rgba(8,6,14,.72);display:flex;align-items:center;justify-content:center;padding:12px}
-.tr-win{background:var(--bg2);border:2px solid var(--line2);border-radius:16px;width:min(760px,100%);max-height:calc(100vh - 24px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.tr-win{background:var(--bg2);border:2px solid var(--line2);border-radius:16px;width:min(880px,100%);max-height:calc(100vh - 24px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)}
 .tr-win>header,.tr-win>footer{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line)}
 .tr-win>footer{border-bottom:0;border-top:1px solid var(--line);justify-content:flex-end}
 .tr-win .grow{flex:1}
@@ -859,3 +859,32 @@ details.my-note.drop{animation:briefDrop .8s cubic-bezier(.2,.8,.3,1),briefGlow 
 .prx-task .tk-mini{color:#666;font-size:12px}
 .tr-con .tr-tr{color:#8fd8b8}
 .tr-ham td.tr-flip{cursor:pointer}.tr-ham td.tr-flip:hover{outline:2px solid var(--teal2)}
+.prx-task .tk-sample{margin:6px 0 8px;border:2px solid;border-color:#808080 #fff #fff #808080}
+.prx-task .tk-sample-t{background:linear-gradient(90deg,#0a246a,#a6caf0);color:#fff;font:bold 11px Tahoma,sans-serif;padding:2px 5px}
+.prx-task .tk-con{border-radius:0;max-height:220px;min-height:0;font-size:12px}
+.prx-task .tk-ref pre.tk-code{max-height:320px}
+.prx-task details>summary{padding:3px 0}
+
+/* «🧪 Попробовать» в стиле C++Builder: окно Unit1.cpp + окно программы */
+.tb-ide{background:#d4d0c8;border:2px solid;border-color:#fff #404040 #404040 #fff;color:#000;font:12px Tahoma,"MS Sans Serif",sans-serif;margin:8px 0}
+.tb-cap{background:linear-gradient(90deg,#0a246a,#a6caf0);color:#fff;font-weight:700;padding:3px 6px}
+.tb-tools{display:flex;align-items:center;gap:4px;padding:3px 4px;border-bottom:1px solid #808080}
+.tb-b{font:12px Tahoma,sans-serif;padding:3px 10px;background:#d4d0c8;color:#000;border:1px solid;border-color:#fff #404040 #404040 #fff;cursor:pointer}
+.tb-b:active{border-color:#404040 #fff #fff #404040}
+.tb-b u{text-decoration:none;color:#555;font-size:11px}
+.tb-tab{margin-left:auto;background:#fff;border:1px solid #808080;border-bottom:0;padding:2px 10px}
+.tb-ed .ced{height:240px;min-height:120px;border:2px solid;border-color:#808080 #fff #fff #808080}
+.tb-stat{display:flex;gap:2px;padding:2px}.tb-stat span{border:1px solid;border-color:#808080 #fff #fff #808080;padding:1px 8px;white-space:nowrap}
+.tb-stat .tb-msg{flex:1;overflow:hidden;text-overflow:ellipsis;border:0}
+.tb-err{color:#c00}
+.tb-con{background:#d4d0c8;border:2px solid;border-color:#fff #404040 #404040 #fff;margin:6px 0}
+.tb-con-t{display:flex;align-items:center;background:linear-gradient(90deg,#0a246a,#a6caf0);color:#fff;font:bold 12px Tahoma,sans-serif;padding:2px 4px}
+.tb-con-t span{flex:1}.tb-x{font-style:normal;background:#d4d0c8;color:#000;width:16px;height:14px;line-height:12px;text-align:center;border:1px solid;border-color:#fff #404040 #404040 #fff;cursor:pointer}
+.tb-con .tb-scr{border-radius:0;margin:0;min-height:90px;max-height:260px;outline:none}
+.tb-con .tb-scr .cl.tb-tr{color:#7fd8b0}
+.tb-cin{display:flex;align-items:center;gap:6px;background:#0c0c0c;padding:2px 10px 6px;color:#c0c0c0;font:13px Consolas,monospace}
+.tb-cin[hidden]{display:none}
+.tb-cin input{flex:1;background:#0c0c0c;color:#fff;border:0;border-bottom:1px solid #555;font:13px Consolas,monospace;outline:none}
+.tb-st{font:12px Tahoma,sans-serif;color:#000;padding:3px 6px}
+.tb-con[hidden]{display:none}
+.prx-task .tk-fig1 img{max-width:100%}
