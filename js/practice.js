@@ -15,6 +15,7 @@
   var md = function (s) { return D.md ? D.md(String(s || '')) : esc(s).replace(/\n/g, '<br>'); };
   var SUBJ = {
     cpp: { title: 'C++Builder 6', data: 'data/subjects/cpp/labs.json', js: ['cpp-parse', 'cpp-lib', 'cpp-run', 'cpp-stdlib', 'cpp-ui', 'vcl', 'vcl-ui', 'bcb-ide', 'bcb-skin'].map(function (n) { return 'js/cpp/' + n + '.js'; }), css: 'css/bcb.css' }
+    , arch: { title: 'Electronics Workbench', site: 'https://alantesterr.github.io/contents/', data: 'data/subjects/arch/labs.json', js: [] }
   };
   var labs = {}, loading = {};
   function save() { var S = D.save; S.labs = S.labs || {}; return S.labs; }
@@ -143,7 +144,7 @@
         }).join('');
     }).join('');
     win = makeWin('prx-list', 'Лабораторные работы — ' + SUBJ[sid].title, '<div class="lb-wrap"><div class="lb-tree">' + tree + '</div><div class="lb-right"></div></div>' +
-      '<div class="prx-bar"><button class="w2k" data-free title="Как после запуска настоящей программы: пустой Project1. Лабу можно открыть через File → Open Project">🖥 Пустой Builder</button><span class="grow">' + esc(PR.label(sid)) + '</span><button class="w2k" data-exit>🚪 Встать из-за компьютера</button></div>', { ico: '📁' });
+      '<div class="prx-bar"><button class="w2k" data-free title="Как после запуска настоящей программы">' + (SUBJ[sid].site ? '⚡ Пустой EWB' : '🖥 Пустой Builder') + '</button><span class="grow">' + esc(PR.label(sid)) + '</span><button class="w2k" data-exit>🚪 Встать из-за компьютера</button></div>', { ico: '📁' });
     win.querySelector('[data-x]').onclick = exit; win.querySelector('[data-exit]').onclick = exit;
     win.querySelector('[data-free]').onclick = function () { openFree(sid); };
     var right = win.querySelector('.lb-right');
@@ -152,7 +153,7 @@
       var l = L[i];
       right.innerHTML = '<h3>' + esc(l.title) + '</h3>' + (l.description ? '<details class="lb-desc"><summary>Текст лабы из методички</summary><div>' + md(l.description) + '</div></details>' : '') +
         '<div class="lb-tasks">' + l.tasks.map(function (t, k) {
-          return '<button class="lb-task' + (s[t.id] ? ' ok' : '') + '" data-t="' + k + '"><b>' + (s[t.id] ? '✓ ' : '') + esc(t.name || ('Задание ' + (k + 1))) + '</b><span>' + esc(String(t.title || t.text || '').replace(/[*`#]/g, '').slice(0, 90)) + '</span><em>' + (t.kind === 'vcl' ? 'форма (VCL)' : 'консоль') + (t.tests && t.tests.length ? ' · проверок: ' + t.tests.length : '') + '</em></button>';
+          return '<button class="lb-task' + (s[t.id] ? ' ok' : '') + '" data-t="' + k + '"><b>' + (s[t.id] ? '✓ ' : '') + esc(t.name || ('Задание ' + (k + 1))) + '</b><span>' + esc(String(t.title || t.text || '').replace(/[*`#]/g, '').slice(0, 90)) + '</span><em>' + (SUBJ[sid].site ? esc((t.tools || []).join(', ') || (t.ex ? 'пример из методички' : 'задача с решением')) : (t.kind === 'vcl' ? 'форма (VCL)' : 'консоль') + (t.tests && t.tests.length ? ' · проверок: ' + t.tests.length : '')) + '</em></button>';
         }).join('') + '</div>';
       right.querySelectorAll('[data-t]').forEach(function (b) { b.onclick = function () { openTask(sid, i, +b.getAttribute('data-t')); }; });
     };
@@ -162,7 +163,7 @@
 
   /* ---------- задание ---------- */
   var task = null, tw = null, vclBox = null;
-  function hideTask() { if (tw) { tw.remove(); tw = null; } if (vclBox) { vclBox.remove(); vclBox = null; } var ide = window.CPP && CPP.ide && CPP.ide(); if (ide) ide.hide(); }
+  function hideTask() { if (tw) { tw.remove(); tw = null; } if (vclBox) { vclBox.remove(); vclBox = null; } if (siteBox) { siteBox.remove(); siteBox = null; } var ide = window.CPP && CPP.ide && CPP.ide(); if (ide) ide.hide(); }
   function startCode(t) {
     if (t.start) return t.start;
     return '#include <iostream.h>\n#include <conio.h>\n#include <math.h>\n\nint main()\n{\n  // ' + String(t.name || 'Задание') + ': напиши решение здесь\n\n  getch();\n  return 0;\n}\n';
@@ -170,6 +171,7 @@
   /* «Пустой Builder»: как после запуска настоящей программы — Project1 с пустой Form1 */
   function openFree(sid) {
     closeWin(); hideTask(); task = null; curSid = sid;
+    if (SUBJ[sid].site) { openSite(sid, 't16', 'Electronics Workbench — свободная сборка'); return; }
     var p = CPP.IDE_TEST.newProject('vcl', 'Project1'); p.dgKeep = true;
     CPP.openIDE(p);
     if (window.DGame && DGame.toast) DGame.toast('💻 Пустой Builder. Лабу можно открыть: File → Open Project (Ctrl+F11)');
@@ -209,10 +211,50 @@
     document.querySelectorAll('.bcbx .bx-menu .on').forEach(function (x) { x.classList.remove('on'); });
     openDialog(curSid);
   }, true);
+  /* ---------- Архитектура: «компьютер» показывает учебный сайт автора (тот же адрес alantesterr.github.io) —
+     там живые окна EWB, пошаговый ассемблер и калькуляторы. Открываем нужную тему / задание по якорю #id. ---------- */
+  var siteBox = null;
+  function openSite(sid, anchor, title) {
+    if (siteBox) siteBox.remove();
+    var url = SUBJ[sid].site + '#' + (anchor || 't1');
+    siteBox = el('<div class="prx prx-site"><div class="prx-t"><span class="ico">⚡</span><span class="tt">' + esc(SUBJ[sid].title) + ' — ' + esc(title || '') + '</span><button data-x title="К списку">×</button></div>' +
+      '<div class="prx-b"><iframe title="Лабораторный стенд" src="' + esc(url) + '" loading="eager"></iframe><div class="site-load">Загружается стенд…</div></div></div>');
+    document.body.appendChild(siteBox);
+    siteBox.querySelector('[data-x]').onclick = function () { openList(sid, task ? task.li : undefined); };
+    var fr = siteBox.querySelector('iframe');
+    fr.onload = function () {
+      var ld = siteBox && siteBox.querySelector('.site-load'); if (ld) ld.remove();
+      /* тот же сайт (alantesterr.github.io): прячем шапку сайта, чтобы было похоже на программу; локально (другой адрес) — как есть */
+      try {
+        var d = fr.contentDocument; if (!d) return;
+        var s = d.createElement('style'); s.textContent = 'header,.subj,.tabs,.top,.brand,footer,.toTop{display:none!important}body{padding-top:0!important}';
+        d.head.appendChild(s);
+        if (anchor) { var a = d.getElementById(anchor); if (a) { var det = a.closest('details'); if (det) det.open = true; setTimeout(function () { a.scrollIntoView(); }, 300); } }
+      } catch (e) {}
+    };
+  }
+  function siteImg(s) {   /* «[рисунок: подпись — img/x.png]» → картинка с сайта */
+    return md(s).replace(/\[рисунок:\s*([^\]]*?)\s*—\s*(img\/[^\]\s]+)\]/g, function (_, cap, src) { return '<figure class="tk-img"><img src="' + SUBJ.arch.site + src + '" alt="' + cap + '" loading="lazy"><figcaption>' + cap + '</figcaption></figure>'; });
+  }
+  var SRC = { teacher_lab: 'из методички преподавателя', teacher_lecture: 'из лекции преподавателя', umkd_syllabus: 'из УМКД / силлабуса', added: 'дополнительное' };
+  function siteTaskWin(t, l) {
+    var solved = save()[t.id];
+    tw = makeWin('prx-task', t.name + ' · ' + (l.short || ''), '<div class="tk-scroll">' +
+      '<p class="tk-src">' + (SRC[t.src] ? '<span class="src-badge ' + (t.src === 'added' ? 'add' : 'exam') + '">' + esc(SRC[t.src]) + '</span>' : '') + (t.ex ? ' <span class="src-badge add">пример из методички</span>' : '') + '</p>' +
+      '<div class="tk-text">' + siteImg(t.text || '') + '</div>' +
+      (t.tools && t.tools.length ? '<p class="tk-tools">🧰 На стенде слева: <b>' + esc(t.tools.join(', ')) + '</b></p>' : '') +
+      (t.solution ? '<details class="tk-ref"><summary>📄 Решение и разбор</summary><div class="tk-sol">' + siteImg(t.solution) + '</div></details>' : '') +
+      '<div class="tk-res">' + (solved ? '<p class="tk-ok">✓ Это задание ты уже сделал.</p>' : '') + '</div></div>' +
+      '<div class="prx-bar"><button class="w2k primary" data-done>' + (solved ? '✓ Сделано' : '✓ Я сделал задание') + '</button><span class="grow"></span><button class="w2k" data-studio title="Свободная сборка схем">⚡ EWB-студия</button><button class="w2k" data-list>📁 К списку</button></div>', { ico: '📝', min: true });
+    tw.querySelector('[data-x]').onclick = tw.querySelector('[data-list]').onclick = function () { openList(task.sid, task.li); };
+    tw.querySelector('[data-done]').onclick = function () { markSolved(t, 'Задание отмечено как сделанное.'); this.textContent = '✓ Сделано'; };
+    tw.querySelector('[data-studio]').onclick = function () { openSite(task.sid, 't16', 'EWB-студия'); };
+  }
   function openTask(sid, li, ti) {
     closeWin(); hideTask(); curSid = sid;
     var od = document.querySelector('.prx-open'); if (od) od.remove();
     var l = labs[sid][li], t = l.tasks[ti]; task = { sid: sid, li: li, ti: ti, t: t }; PR._ran = false;
+    if (SUBJ[sid].site) { openSite(sid, t.anchor, l.title); siteTaskWin(t, l); return; }
     if (t.kind === 'vcl' && t.vcl) openVcl(t); else openConsole(t);
     taskWin(t, l);
   }

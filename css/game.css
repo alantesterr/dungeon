@@ -768,3 +768,11 @@ details.my-note.drop{animation:briefDrop .8s cubic-bezier(.2,.8,.3,1),briefGlow 
 .prx-task .fp-edit{background:#fff;border:2px solid;border-color:#808080 #fff #fff #808080;height:21px;padding:1px 3px}
 .prx-task .fp-pan{border:2px solid;border-color:#fff #808080 #808080 #fff;display:flex;align-items:center;justify-content:center}
 .prx-task .fp-note{font-size:11px;color:#555;margin:2px 0}
+.prx-site{left:6px;top:6px;bottom:6px;right:min(440px,47vw)}
+.prx-site .prx-b{position:relative;background:#fff}
+.prx-site iframe{flex:1;width:100%;height:100%;border:0;background:#fff}
+.prx-site .site-load{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:13px Tahoma;color:#555;background:#d4d0c8}
+.prx-task .tk-img{margin:6px 0;text-align:center}.prx-task .tk-img img{max-width:100%;border:1px solid #c0c0c0;background:#fff}
+.prx-task .tk-img figcaption{font-size:11px;color:#555}
+.prx-task .tk-tools{background:#eef3ff;border:1px solid #b9c8ef;padding:4px 6px}
+.prx-task .tk-src{margin:0 0 6px}
