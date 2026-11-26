@@ -15,8 +15,6 @@ const jget=(k,d)=>{ try{ const s=store.get(k); return s?JSON.parse(s):d; }catch(
 /* ================= шаблоны файлов ================= */
 const consoleCpp=()=>`${SEP}
 
-#include <iostream.h>
-#include <conio.h>
 #pragma hdrstop
 
 ${SEP}
@@ -24,8 +22,6 @@ ${SEP}
 #pragma argsused
 int main(int argc, char* argv[])
 {
-        cout << "Hello, World!" << endl;
-        getch();
         return 0;
 }
 ${SEP}
@@ -334,7 +330,9 @@ const MENU={
   Project:[['Add New Form','newForm'],['Add New Unit','newUnit'],['Remove from Project…','remove'],'-',['View Source (Project1.cpp)','viewSrc'],'-',['Make Project1','make','Ctrl+F9'],['Build Project1','make'],'-',['Options…','options','Shift+Ctrl+F11']],
   Run:[['Run','run','F9'],['Program Reset','reset','Ctrl+F2']],
   Component:[['New Component…','na'],['Install Component…','na']],
+  Database:[['Explore','na'],['SQL Monitor','na'],['Form Wizard…','na']],
   Tools:[['Environment Options…','na'],['Editor Options…','na']],
+  Window:[['Object Inspector','oi'],['Project Manager','pm']],
   Help:[['Что умеет этот C++Builder','help','F1'],['Горячие клавиши','keys'],'-',['About…','about']],
 };
 const KEYS=[['F9','Run — запуск'],['Ctrl+F2','Program Reset — остановить программу'],['Ctrl+F9','Make — только скомпилировать'],['F12','форма ⇄ код'],['Shift+F12','View Form — список форм'],['Ctrl+F12','View Unit — список модулей'],['Alt+F11','File → Include Unit Hdr'],['Shift+Ctrl+F11','Project → Options'],['F11','Object Inspector'],['Ctrl+S / Shift+Ctrl+S','Save All'],['Del','удалить компонент'],['Ctrl+C / Ctrl+V','копировать / вставить компонент'],['стрелки','сдвинуть компонент (Shift — размер)'],['Ctrl+F, F3','поиск в коде'],['Alt+G','перейти к строке']];
@@ -661,7 +659,7 @@ function makeIDE(){
     ls.addEventListener('dblclick',e=>{ const d=e.target.closest('[data-n]'); if(!d) return; syncEditorOut(); save(true); const p=loadSaved(d.dataset.n); closeDlg(); if(p) setProject(p); });
     b.addEventListener('click',e=>{ const x=e.target.closest('[data-ex]'); if(!x) return; closeDlg(); openExample(x.dataset.ex); });
   }
-  function uniqName(base){ const l=list(); if(!l.includes(base)) return base; let k=2; while(l.includes(base+k)) k++; return base+k; }
+  function uniqName(base){ if(G.PR&&G.PR.active) return base; const l=list(); if(!l.includes(base)) return base; let k=2; while(l.includes(base+k)) k++; return base+k; }
   function openExample(id){ const ex=EXAMPLES.find(x=>x[0]===id); if(!ex) return; syncEditorOut(); if(prj) save(true); const p=ex[2](); p.name=uniqName(p.name); setProject(p); status('Открыт пример. Жми F9 (Run)'); }
   function saveAsDlg(){ dialog('Save Project As',`<label>Имя проекта: <input class="nm" value="${esc(prj.name)}"></label><p style="font-size:11px">Только латинские буквы, цифры и _ (как имя .exe).</p>`,[['Save',bx=>{ const n=bx.querySelector('.nm').value.trim(); if(!/^[A-Za-z_]\w*$/.test(n)){ status('Недопустимое имя проекта'); return false; } syncEditorOut(); const old=prj.name; prj.name=n; save(true); if(old!==n) status('Проект сохранён как '+n); redrawAll(); return true; }],['Cancel']],bx=>bx.querySelector('.nm').select()); }
   function exportFile(){ syncEditorOut(); const blob=new Blob([JSON.stringify(prjJSON(prj),null,1)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=prj.name+'.bpr.json'; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },500); status('Файл '+prj.name+'.bpr.json скачан'); }
@@ -1073,7 +1071,7 @@ function makeIDE(){
     get(){ syncEditorOut(); return prj; }, hide(){ syncEditorOut(); if(prj) save(true); stopRun(); closeDlg(); root.hidden=true; document.documentElement.style.overflow=''; }, root,
     show(p){
       root.hidden=false; document.documentElement.style.overflow='hidden';
-      if(p){ if(prj){ syncEditorOut(); save(true); } p.name=uniqName(p.name); setProject(p); }
+      if(p){ if(prj){ syncEditorOut(); save(true); } if(!p.dgKeep) p.name=uniqName(p.name); setProject(p); }
       else if(!prj){ const n=store.get(KEY+'cur'); const s=n&&loadSaved(n); setProject(s||newProject('vcl')); }
       else redrawAll();
       root.focus({preventScroll:true});

@@ -74,6 +74,62 @@
       pal.addEventListener('click', function () { setTimeout(function () { a.classList.toggle('on', !root.querySelector('.pi.on')); }, 0); });
     }
     root.classList.add('bcb6');
+    floatLayout(root);
+  }
+
+  /* ---------- раскладка «отдельными окнами», как в настоящем C++Builder 6 ---------- */
+  var cap = function (t, btns) { return '<div class="w6-cap"><span class="w6-t">' + t + '</span>' + (btns || '<i>_</i><i>□</i><i class="x">×</i>') + '</div>'; };
+  function floatLayout(root) {
+    root.classList.add('flo');
+    var left = root.querySelector('.bx-left'), oi = root.querySelector('.oi'), ed = root.querySelector('.bx-ed'), st = root.querySelector('.bx-status');
+    /* Object TreeView над Object Inspector */
+    if (left && !root.querySelector('.otv')) {
+      var otv = document.createElement('div'); otv.className = 'otv';
+      otv.innerHTML = cap('Object TreeView', '<i class="x">×</i>') + '<div class="otv-tools"><i>✚</i><i>✖</i><i>▲</i><i>▼</i></div><div class="otv-tree"></div>';
+      left.insertBefore(otv, left.firstChild);
+      var oih = oi && oi.querySelector('.oi-h'); if (oih) oih.outerHTML = cap('Object Inspector', '<i class="x">×</i>');
+    }
+    /* окно редактора: заголовок «Unit1.cpp», ClassExplorer слева, внизу «строка: столбец | Insert» и вкладки */
+    if (ed && !ed.querySelector('.w6-cap')) {
+      ed.insertAdjacentHTML('afterbegin', cap('Unit1.cpp'));
+      var cls = document.createElement('div'); cls.className = 'clsx'; cls.innerHTML = '<div class="clsx-h"><span>⊞</span> <b>Project1 - Classes</b></div><div class="clsx-tree"></div>';
+      ed.insertBefore(cls, ed.querySelector('.bx-ftabs'));
+      var foot = document.createElement('div'); foot.className = 'ed-foot'; ed.appendChild(foot);
+      if (st) foot.appendChild(st);
+      var bt = ed.querySelector('.bx-btabs'); if (bt) foot.appendChild(bt);
+    }
+    var tick = function () {
+      if (root.hidden) return;
+      var ide = CPP.ide && CPP.ide(); if (!ide || !ide.get) return;
+      var prj; try { prj = ide.get(); } catch (e) { return; } if (!prj) return;
+      root.classList.toggle('con-prj', prj.kind === 'console');
+      var on = root.querySelector('.bx-ftabs span.on'), name = on ? on.textContent.replace(/×$/, '').trim() : 'Unit1';
+      if (!/\.(cpp|h|bpr)$/.test(name)) name += '.cpp';
+      var t = ed && ed.querySelector('.w6-t'); if (t && t.textContent !== name) t.textContent = name;
+      /* вкладки редактора подписаны с расширением, как в Builder: Unit1.cpp, Project1.cpp */
+      root.querySelectorAll('.bx-ftabs span').forEach(function (s) { var n = s.firstChild; if (n && n.nodeType === 3 && !/\.(cpp|h|bpr)\s*$/.test(n.nodeValue)) n.nodeValue = n.nodeValue.trim() + '.cpp'; });
+      /* ClassExplorer: классы из кода всех модулей */
+      var code = prj.units.map(function (u) { return u.cpp || ''; }).concat(prj.forms.map(function (f) { return f.code || ''; })).join('\n');
+      var names = []; code.replace(/\bclass\s+(?:PACKAGE\s+)?([A-Za-z_]\w*)/g, function (_, n) { if (names.indexOf(n) < 0) names.push(n); });
+      prj.forms.forEach(function (f) { var n = 'T' + (f.fn || 'Form1'); if (names.indexOf(n) < 0) names.unshift(n); });
+      var ct = root.querySelector('.clsx-tree'), ch = root.querySelector('.clsx-h b');
+      if (ch) ch.textContent = (prj.name || 'Project1') + ' - Classes';
+      var ch2 = names.map(function (n) { return '<div>⊞ <span class="ci">C</span>' + n + '</div>'; }).join('');
+      if (ct && ct.innerHTML !== ch2) ct.innerHTML = ch2;
+      /* Object TreeView: форма и её компоненты */
+      var tree = root.querySelector('.otv-tree');
+      if (tree) {
+        var sel = root.querySelector('.oi-sel'), fname = sel && sel.value ? sel.value.split(':')[0] : '';
+        var f = prj.forms.find(function (p) { return p.fn === fname || p.form && p.form.Name === fname; }) || prj.forms.find(function (p) { return p.fn === prj.main; }) || prj.forms[0];
+        var h = '';
+        if (f) {
+          var fn = f.fn || (f.form && f.form.Name) || 'Form1';
+          h = '<div class="tv-r"><span class="ti-ic">▣</span>' + fn + '</div>' + (f.comps || []).map(function (c) { return '<div class="tv-c">├ <span class="ti-ic">' + (V.ICON[c.vcl] ? '◇' : '·') + '</span>' + c.Name + '</div>'; }).join('');
+        }
+        if (tree.innerHTML !== h) tree.innerHTML = h;
+      }
+    };
+    setInterval(tick, 900); tick();
   }
   var open0 = CPP.openIDE;
   CPP.openIDE = function (p) { open0(p); var ide = CPP.ide && CPP.ide(); if (ide && ide.root) skin(ide.root); };

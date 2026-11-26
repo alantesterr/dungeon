@@ -679,6 +679,7 @@
       { text: '📝 ' + (window.innerWidth < 600 ? nNotes : 'Мои записи · ' + nNotes), x: 404, y: A.FLOOR_Y - 46, color: '#CECBF6' }].concat(caseLbl));
     S.tips = S.tips || {};
     var chips = '<div class="lib-chips">' + '<button class="lchip err' + (L.err.n ? '' : ' ok') + '" data-sh="err">📕 Ошибки <b>' + L.err.n + '</b></button>' + '<button class="lchip notes" data-notes>📝 Мои записи <b>' + nNotes + '</b></button>' +
+      (window.PR && PR.has(sid) ? (function (p) { return '<button class="lchip labs' + (p.pct >= 100 ? ' gold' : '') + '" data-prac title="Лабораторные работы за компьютером: решено ' + p.done + ' из ' + p.total + '"><span>💻 Лабораторные</span><i style="--p:' + p.pct + '%"></i><b>' + (p.total ? p.done + '/' + p.total : '…') + '</b></button>'; })(PR.progress(sid)) : '') +
       libFloors().map(function (f) { var st = shelfStat(f); return '<button class="lchip' + (st.pct >= 100 ? ' gold' : '') + '" data-sh="' + f.n + '" title="' + esc(f.title) + '"><span>' + esc(shelfLabel(f)) + '</span><i style="--p:' + st.pct + '%"></i><b>' + st.pct + '%</b></button>'; }).join('') + '</div>';
     var tip = !S.tips.lib1 ? '<div class="tip lib-tip"><b>Как тут всё устроено</b><span>👇 Нажми <b>«▶ Всё подряд»</b> — и сразу начнёшь отвечать на вопросы по всем темам. Каждая полка в шкафу — тема: верный ответ ставит на неё книгу. Ошибки летят в красный шкаф в углу. Нажми на полку — герой подойдёт к ней.</span><button class="btn ghost" data-tipok="lib1">Понятно</button></div>' : '';
     var goAll = function () { S.tips.lib1 = 1; D.persist(); S.arenaLast = { s: sid, c: 'all' }; D.persist(); buildArena(sid, 'all', 0); };
@@ -693,7 +694,7 @@
     panel.querySelector('[data-all]').onclick = goAll;
     panel.querySelector('[data-exam]').onclick = goExam;
     var tsb = panel.querySelector('[data-tsel]'); if (tsb) tsb.onclick = function () { openTopicPick(sid, enterLib); };
-    var prb = panel.querySelector('[data-prac]'); if (prb) prb.onclick = function () { PR.open(sid); };
+    panel.querySelectorAll('[data-prac]').forEach(function (b) { b.onclick = function () { PR.open(sid); }; });
     panel.querySelector('[data-notes]').onclick = function () { openNotes(); };
     panel.querySelectorAll('[data-tipok]').forEach(function (b) { b.onclick = function () { S.tips[b.getAttribute('data-tipok')] = 1; D.persist(); b.parentNode.remove(); }; });
     panel.querySelectorAll('[data-sh]').forEach(function (b) { b.onclick = function () { var k = b.getAttribute('data-sh'); if (k === 'err') return openErrShelf(); openShelf(floorBy(+k)); }; });
