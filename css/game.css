@@ -888,3 +888,6 @@ details.my-note.drop{animation:briefDrop .8s cubic-bezier(.2,.8,.3,1),briefGlow 
 .tb-st{font:12px Tahoma,sans-serif;color:#000;padding:3px 6px}
 .tb-con[hidden]{display:none}
 .prx-task .tk-fig1 img{max-width:100%}
+.tr-vcl{margin:8px 0;position:relative}
+.tr-vcl .tr-oi-hl{outline:2px solid #e8a400;background:#fff4c2}
+.tr-vcode pre{max-height:180px;overflow:auto;font-size:12.5px;margin:4px 0}.tr-vcode summary{cursor:pointer;color:var(--violet2)}

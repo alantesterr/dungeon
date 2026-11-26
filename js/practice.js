@@ -47,6 +47,8 @@
   PR.loadCpp = function () {
     if (!document.querySelector('link[data-pr="cpp"]')) { var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = SUBJ.cpp.css + VER; l.setAttribute('data-pr', 'cpp'); document.head.appendChild(l); }
     var c = Promise.resolve(); ['cpp-parse', 'cpp-lib', 'cpp-run', 'cpp-stdlib', 'cpp-ui'].forEach(function (n) { c = c.then(function () { return loadScript('js/cpp/' + n + '.js'); }); }); return c; };
+  /* интерпретатор + мини-Builder сайта (для «🧪 Попробовать» в вопросах про формы) */
+  PR.loadVcl = function () { return PR.loadCpp().then(function () { return loadScript('js/cpp/vcl.js'); }).then(function () { return loadScript('js/cpp/vcl-ui.js'); }); };
   function load(sid) {
     if (loading[sid]) return loading[sid];
     var cfg = SUBJ[sid];

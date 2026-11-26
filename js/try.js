@@ -312,6 +312,184 @@
     }
   };
 
+  /* ================= формы (VCL): маленький проект в мини-Builder с сайта (.vclw) ================= */
+  var VP = {
+    TEdit: 'Text ReadOnly MaxLength Color Font Visible Enabled Width Height Left Top Hint ShowHint',
+    TLabel: 'Caption AutoSize Transparent Alignment WordWrap Color Font Visible Enabled Width Height Left Top Hint ShowHint',
+    TButton: 'Caption Font Visible Enabled Width Height Left Top Hint ShowHint',
+    TMemo: 'Lines ReadOnly WordWrap Color Font Visible Enabled Width Height Left Top',
+    TStaticText: 'Caption AutoSize Alignment BorderStyle Color Font Visible',
+    TBitBtn: 'Kind Caption Font Visible Enabled',
+    TCheckBox: 'Checked Caption Font Visible Enabled',
+    TPanel: 'Caption Color Font Visible Width Height',
+    TTimer: 'Interval Enabled',
+    TForm: 'Caption Color Width Height Font'
+  };
+  var VE = {
+    TEdit: 'OnChange OnClick OnDblClick OnEnter OnExit OnKeyPress OnKeyDown OnMouseMove',
+    TLabel: 'OnClick OnDblClick OnMouseDown OnMouseMove OnMouseUp',
+    TButton: 'OnClick OnEnter OnExit OnMouseDown OnMouseMove OnMouseUp',
+    TMemo: 'OnChange OnClick OnDblClick OnKeyPress OnMouseMove',
+    TTimer: 'OnTimer',
+    TForm: 'OnCreate OnShow OnActivate OnClick OnDblClick OnMouseDown OnMouseMove OnMouseUp OnKeyPress OnKeyDown OnResize'
+  };
+  var VC = [[/TEdit|Edit\d|поле ввода|поля ввода/i, 'TEdit'], [/TMemo|Memo|многострочн/i, 'TMemo'], [/StaticText/i, 'TStaticText'], [/BitBtn/i, 'TBitBtn'], [/TLabel|Label\d?|надпис/i, 'TLabel'],
+    [/TButton|Button\d?|кнопк/i, 'TButton'], [/Timer|таймер/i, 'TTimer'], [/CheckBox|флаж/i, 'TCheckBox'], [/TPanel|Panel|панел/i, 'TPanel'], [/TForm|Form\d|форм[аыуе]|окн[оа]/i, 'TForm']];
+  var PWHY = {
+    ReadOnly: 'только чтение: текст видно и можно выделить, но менять нельзя', AutoSize: 'размер сам подстраивается под текст — заданные вручную Width и Height не учитываются',
+    Visible: 'показывать ли компонент (Hide() — то же, что Visible = false, Show() — Visible = true)', Enabled: 'доступен ли компонент: при false он серый и не реагирует',
+    Transparent: 'прозрачный фон надписи — сквозь неё видно то, что под ней', WordWrap: 'перенос длинного текста на следующие строки',
+    Alignment: 'выравнивание текста внутри: taLeftJustify, taCenter, taRightJustify', MaxLength: 'сколько символов максимум можно ввести (0 — без ограничения)',
+    Caption: 'надпись на компоненте (у формы — текст в заголовке окна)', Text: 'сам текст в поле ввода — из кода его читают как Edit1->Text',
+    Font: 'шрифт: Font->Size — размер, Font->Color — цвет, Font->Style — жирный/курсив', Color: 'цвет фона', Width: 'ширина в пикселях', Height: 'высота в пикселях',
+    Left: 'расстояние от левого края формы', Top: 'расстояние от верха формы', Hint: 'текст всплывающей подсказки (видна, только если ShowHint = true)', ShowHint: 'показывать ли подсказку Hint при наведении мыши',
+    Interval: 'через сколько миллисекунд срабатывает OnTimer (1000 = раз в секунду)', Kind: 'готовый вид кнопки BitBtn: bkOK, bkCancel, bkClose — с картинкой и надписью',
+    BorderStyle: 'рамка: sbsNone — нет, sbsSingle — линия, sbsSunken — вдавленная', Checked: 'стоит ли галочка', Lines: 'строки многострочного поля: Lines->Add, Insert, Delete, Clear, Count, Strings[i]'
+  };
+  var EWHY = { OnClick: 'щёлкнули по компоненту', OnDblClick: 'щёлкнули два раза', OnMouseDown: 'нажали кнопку мыши (ещё не отпустили); параметр Shift говорит, зажаты ли Shift, Alt, Ctrl',
+    OnMouseUp: 'отпустили кнопку мыши', OnMouseMove: 'мышь двигается над компонентом; X и Y — где она', OnKeyPress: 'нажали клавишу с символом; Key — сам символ',
+    OnKeyDown: 'нажали любую клавишу (даже стрелку или F1); Key — её код', OnChange: 'изменился текст', OnEnter: 'компонент получил фокус (в него перешли)', OnExit: 'компонент потерял фокус',
+    OnCreate: 'форма создаётся в памяти — ещё до показа; тут готовят начальные значения', OnShow: 'форму показывают', OnActivate: 'форма стала активной',
+    OnResize: 'изменился размер', OnTimer: 'прошло Interval миллисекунд — срабатывает снова и снова, пока Enabled = true' };
+  var ARGS = { OnMouseMove: 'TObject *Sender, TShiftState Shift, int X, int Y', OnMouseDown: 'TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y', OnMouseUp: 'TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y',
+    OnKeyPress: 'TObject *Sender, char &Key', OnKeyDown: 'TObject *Sender, WORD &Key, TShiftState Shift' };
+  function vclFind(q) {
+    var rights = (q.opts || []).filter(function (o) { return o.right; }), ra = rights.map(function (o) { return o.t; }).join(' ') + ' ' + (q.answer || '');
+    var all = String(q.q || '') + ' ' + String(q.tr || '') + ' ' + ra + ' ' + rights.map(function (o) { return o.tr || ''; }).join(' ');
+    var comp = null; for (var i = 0; i < VC.length; i++) if (VC[i][0].test(String(q.q || '') + ' ' + String(q.tr || ''))) { comp = VC[i][1]; break; }
+    var cm = ra.match(/\b(Edit|Button|Label|Memo|StaticText|BitBtn|Timer|CheckBox|Panel)\d*\s*->/); if (cm) comp = 'T' + cm[1];   /* компонент из кода ответа важнее */
+    if (/BorderStyle/.test(ra) && comp !== 'TStaticText') return null;   /* BorderStyle формы в мини-Builder не показать */
+    var words = (ra.match(/[A-Za-z]+/g) || []);
+    /* ответ — фраза, а в вопросе назван особый признак (AutoSize, MaxLength…) — показываем его */
+    if (words.length > 2) { var qw = (String(q.q || '') + ' ' + String(q.tr || '')).match(/\b(AutoSize|MaxLength|ReadOnly|Transparent|WordWrap|Alignment|ShowHint|Interval|Kind)\b/); if (qw) words = [qw[1]].concat(words); }
+    var kind = null, name = null;
+    if (/Shift\.Contains|ssAlt|ssShift|ssCtrl/.test(ra)) { kind = 'shift'; comp = 'TLabel'; }
+    else if (/Now\(\)|TimeString/.test(ra)) { kind = 'now'; comp = 'TLabel'; }
+    else if (/Lines\s*->\s*(Add|Insert|Delete|Clear|Count|Strings|Text)/.test(ra) || /^(Lines)$/.test(ra.trim())) { kind = 'lines'; comp = 'TMemo'; }
+    else if (/^\s*(Hide|Show)\b/.test(ra)) { kind = 'hide'; comp = comp && comp !== 'TForm' && comp !== 'TTimer' ? comp : 'TEdit'; }
+    else {
+      var inComp = function (c, w) { return (' ' + (VP[c] || '') + ' ').indexOf(' ' + w + ' ') >= 0; }, inEv = function (c, w) { return (' ' + (VE[c] || '') + ' ').indexOf(' ' + w + ' ') >= 0; };
+      var order = (comp ? [comp] : []).concat(['TEdit', 'TLabel', 'TButton', 'TMemo', 'TForm', 'TTimer', 'TStaticText', 'TBitBtn', 'TCheckBox', 'TPanel']);
+      for (var k = 0; k < words.length && !kind; k++) {
+        var w = words[k] === 'Enable' ? 'Enabled' : words[k], ev = /^On/.test(w) ? w : 'On' + w;
+        for (var j = 0; j < order.length; j++) {
+          if (inEv(order[j], ev) && (/^On/.test(w) || EWHY[ev])) { kind = 'event'; name = ev; comp = order[j]; break; }
+          if (inComp(order[j], w)) { kind = 'prop'; name = w; comp = order[j]; break; }
+        }
+      }
+      if (kind === 'event' && /^(OnCreate|OnShow|OnActivate|OnResize)$/.test(name)) comp = 'TForm';
+      if (kind === 'prop' && name === 'Font' && /Size/.test(ra)) name = 'FontSize';
+    }
+    if (!kind) return null;
+    return { kind: 'vcl', label: 'Как в Builder: ' + (kind === 'prop' ? (name === 'FontSize' ? 'Font->Size' : name) : kind === 'event' ? name : kind === 'lines' ? 'Memo->Lines' : kind === 'hide' ? 'Hide() / Show()' : kind === 'shift' ? 'Shift в OnMouseDown' : 'Now()'), v: { kind: kind, name: name, comp: comp } };
+  }
+  /* собрать проект: форма + нужный компонент + кнопка «Показать» + надпись/журнал; код — только то, что нужно */
+  function vclBuild(v) {
+    var C = v.comp, N = C === 'TForm' ? 'Form1' : C.slice(1) + '1', P = v.name, comps = [], code = '', form = { Caption: 'Form1', Width: 430, Height: 260 }, why = '', tip = '', sel = N, row = P;
+    var base = { TEdit: { Text: 'Привет', Width: 150 }, TLabel: { Caption: 'Надпись Label1 с длинным текстом', AutoSize: false, Width: 120, Height: 34, Color: 'clWhite' }, TButton: { Caption: 'Button1', Width: 110 },
+      TMemo: { Width: 190, Height: 110 }, TStaticText: { Caption: 'StaticText1', Width: 140, Height: 24, AutoSize: false }, TBitBtn: { Caption: 'BitBtn1', Width: 110, Height: 30 }, TCheckBox: { Caption: 'Флажок', Width: 120 }, TPanel: { Caption: 'Panel1', Width: 150, Height: 60 },
+      TTimer: { Interval: 1000 } };
+    var add = function (o) { comps.push(o); return o; };
+    var tgt = C === 'TForm' ? null : add(Object.assign({ type: C, Name: N, Left: 16, Top: 16 }, base[C] || {}));
+    var H = function (fn, body, args) { return 'void __fastcall TForm1::' + fn + '(' + (args || 'TObject *Sender') + ')\n{\n' + body + '}\n//---------------------------------------------------------------------------\n'; };
+    var btn = function (name, cap, top, left) { return add({ type: 'TButton', Name: name, Left: left || 16, Top: top, Width: 130, Caption: cap, events: { OnClick: name + 'Click' } }); };
+    var info = function (cap) { return add({ type: 'TLabel', Name: 'Label9', Left: 16, Top: 196, Caption: cap || '…', Width: 260 }); };
+    var log = function () { return add({ type: 'TMemo', Name: 'Memo9', Left: 232, Top: 16, Width: 180, Height: 170, Lines: '' }); };
+    if (v.kind === 'prop') {
+      var bools = /^(ReadOnly|AutoSize|Visible|Enabled|Transparent|WordWrap|ShowHint|Checked)$/;
+      var lines;
+      if (bools.test(P)) {
+        if (P === 'Transparent') { form.Color = 'clSkyBlue'; tgt.Color = 'clWhite'; }
+        if (P === 'WordWrap' && C === 'TLabel') { tgt.Height = 60; }
+        if (P === 'ShowHint') tgt.Hint = 'Я подсказка!';
+        if (tgt && tgt[P] == null) tgt[P] = /^(Enabled|Visible)$/.test(P);   /* явное начальное значение, иначе первое переключение «не видно» */
+        lines = '  ' + N + '->' + P + ' = !' + N + '->' + P + ';   // переключаем true / false\n  if (' + N + '->' + P + ') Label9->Caption = "' + P + ' = true";\n  else Label9->Caption = "' + P + ' = false";\n';
+        tip = 'нажимай «Переключить ' + P + '» и смотри на ' + N + (P === 'ShowHint' ? ' (наведи на него мышь)' : P === 'ReadOnly' ? ' (попробуй что-нибудь напечатать в поле)' : '') + '.';
+      } else if (P === 'Caption' || P === 'Text') { lines = '  ' + N + '->' + P + ' = "Новый текст!";\n'; tip = 'нажми кнопку — ' + P + ' поменяется.'; if (C === 'TForm') tip = 'нажми кнопку — поменяется заголовок окна.'; }
+      else if (/^(Width|Height|Left|Top)$/.test(P)) { lines = '  ' + N + '->' + P + ' = ' + N + '->' + P + ' + 30;\n  Label9->Caption = "' + P + ' = " + IntToStr(' + N + '->' + P + ');\n'; tip = 'каждое нажатие — ' + P + ' + 30 пикселей.'; }
+      else if (P === 'Font' || P === 'FontSize') { lines = '  ' + N + '->Font->Size = ' + N + '->Font->Size + 3;\n  Label9->Caption = "Font->Size = " + IntToStr(' + N + '->Font->Size);\n'; row = 'Font'; tip = 'каждое нажатие — шрифт больше.'; P = 'Font'; }
+      else if (P === 'Color') { lines = '  ' + N + '->Color = clYellow;\n'; tip = 'нажми — фон станет жёлтым.'; }
+      else if (P === 'Alignment') { lines = '  if (' + N + '->Alignment == taLeftJustify) ' + N + '->Alignment = taCenter;\n  else if (' + N + '->Alignment == taCenter) ' + N + '->Alignment = taRightJustify;\n  else ' + N + '->Alignment = taLeftJustify;\n'; tgt.Width = 200; tgt.Caption = 'Текст'; tip = 'нажимай — текст поедет: слева → по центру → справа.'; }
+      else if (P === 'MaxLength') { lines = '  ' + N + '->MaxLength = 3;\n  ' + N + '->Text = "";\n  Label9->Caption = "MaxLength = 3: попробуй ввести 10 букв";\n'; tip = 'нажми кнопку, потом печатай в поле — больше 3 символов не войдёт.'; }
+      else if (P === 'Hint') { tgt.ShowHint = true; lines = '  ' + N + '->Hint = "Подсказка из кода";\n  ' + N + '->ShowHint = true;\n'; tip = 'нажми кнопку и наведи мышь на ' + N + '.'; }
+      else if (P === 'Interval') { add({ type: 'TLabel', Name: 'Label8', Left: 160, Top: 20, Caption: '0' }); tgt.events = { OnTimer: 'Timer1Timer' }; code += H('Timer1Timer', '  Label8->Caption = IntToStr(StrToInt(Label8->Caption) + 1);\n'); lines = '  if (Timer1->Interval == 1000) Timer1->Interval = 200; else Timer1->Interval = 1000;\n  Label9->Caption = "Interval = " + IntToStr(Timer1->Interval) + " мс";\n'; tip = 'счётчик растёт раз в секунду; нажми — станет быстрее (200 мс).'; }
+      else if (P === 'Kind') { lines = '  if (BitBtn1->Kind == bkOK) BitBtn1->Kind = bkCancel;\n  else if (BitBtn1->Kind == bkCancel) BitBtn1->Kind = bkClose;\n  else BitBtn1->Kind = bkOK;\n'; tip = 'нажимай — кнопка BitBtn1 меняет вид.'; }
+      else if (P === 'BorderStyle') { lines = '  if (StaticText1->BorderStyle == sbsSunken) StaticText1->BorderStyle = sbsSingle;\n  else StaticText1->BorderStyle = sbsSunken;\n'; tip = 'нажимай — рамка то вдавленная, то линия.'; }
+      else if (P === 'Lines') { v.kind = 'lines'; }
+      else return null;
+      if (v.kind === 'prop') { btn('Button9', P === 'Font' ? 'Шрифт больше' : bools.test(P) ? 'Переключить ' + P : 'Показать', 150, 16); info(); code += H('Button9Click', lines); why = '<b>' + C + ' → ' + P + '</b> — ' + (PWHY[P] || 'свойство компонента') + '.'; }
+    }
+    if (v.kind === 'event') {
+      var E = v.name, fn = (C === 'TForm' ? 'Form' : N) + E.slice(2), body;
+      if (E === 'OnTimer') { tgt.events = { OnTimer: fn }; add({ type: 'TLabel', Name: 'Label9', Left: 16, Top: 60, Caption: '0' }); body = '  Label9->Caption = IntToStr(StrToInt(Label9->Caption) + 1);   // каждый «тик» +1\n'; tip = 'счётчик растёт сам — это срабатывает OnTimer.'; }
+      else {
+        if (E === 'OnMouseMove') { info('Подвигай мышью над ' + N); body = '  Label9->Caption = "OnMouseMove: X=" + IntToStr(X) + "  Y=" + IntToStr(Y);\n'; }
+        else {
+          log();
+          body = E === 'OnKeyPress' ? '  Memo9->Lines->Add(AnsiString("OnKeyPress: ") + Key);\n' : E === 'OnKeyDown' ? '  Memo9->Lines->Add("OnKeyDown: код " + IntToStr(Key));\n' :
+            /OnMouse(Down|Up)/.test(E) ? '  Memo9->Lines->Add("' + E + ': X=" + IntToStr(X) + " Y=" + IntToStr(Y));\n' : E === 'OnChange' ? '  Memo9->Lines->Add("OnChange: " + ' + N + '->Text);\n' :
+            E === 'OnResize' ? '  Memo9->Lines->Add("OnResize: ширина " + IntToStr(Form1->Width));\n' : '  Memo9->Lines->Add("' + E + '");\n';
+          if (E === 'OnEnter' || E === 'OnExit') add({ type: 'TEdit', Name: 'Edit8', Left: 16, Top: 100, Width: 150, Text: 'сюда щёлкни' });
+          if (E === 'OnResize') { btn('Button9', 'Width + 40', 150, 16); code += H('Button9Click', '  Form1->Width = Form1->Width + 40;\n'); }
+        }
+        if (C === 'TForm') form.events = (function (o) { o[E] = fn; return o; })({}); else tgt.events = (function (o) { o[E] = fn; return o; })({});
+        tip = { OnClick: 'щёлкни по ' + N + '.', OnDblClick: 'щёлкни по ' + N + ' два раза.', OnMouseDown: 'нажми мышью на ' + N + '.', OnMouseUp: 'нажми и отпусти мышь на ' + N + '.', OnMouseMove: 'води мышью над ' + N + '.',
+          OnKeyPress: 'щёлкни в ' + N + ' и печатай.', OnKeyDown: 'щёлкни в ' + N + ' и жми клавиши.', OnChange: 'меняй текст в ' + N + '.', OnEnter: 'щёлкни в ' + N + ', потом в Edit8 — и обратно.', OnExit: 'щёлкни в ' + N + ', потом в Edit8.',
+          OnCreate: 'строчка в журнале появилась сама, ещё до того, как ты что-то нажал.', OnShow: 'строчка появилась, когда окно показали.', OnActivate: 'строчка появилась, когда окно стало активным.', OnResize: 'нажми «Width + 40» или потяни край окна.' }[E] || '';
+      }
+      code += H(fn, body, ARGS[E]);
+      why = 'Событие <b>' + E + '</b>' + (C === 'TForm' ? ' формы' : ' у ' + C) + ' — ' + (EWHY[E] || '') + '. Обработчик создают двойным щелчком в Object Inspector → Events.'; row = E;
+    }
+    if (v.kind === 'lines') {
+      tgt.Lines = 'первая строка'; sel = 'Memo1'; row = 'Lines';
+      btn('Button9', 'Lines->Add', 140, 16); btn('Button8', 'Lines->Insert(0, …)', 140, 150); btn('Button7', 'Lines->Delete(0)', 172, 16); btn('Button6', 'Lines->Clear()', 172, 150);
+      add({ type: 'TLabel', Name: 'Label9', Left: 16, Top: 206, Caption: '…', Width: 380 });
+      var show = '  Label9->Caption = "Count = " + IntToStr(Memo1->Lines->Count);\n';
+      code += H('Button9Click', '  Memo1->Lines->Add("новая строка в конце");\n' + show) + H('Button8Click', '  Memo1->Lines->Insert(0, "вставлена в начало");\n' + show) +
+        H('Button7Click', '  if (Memo1->Lines->Count > 0) Memo1->Lines->Delete(0);   // удалить первую\n' + show) + H('Button6Click', '  Memo1->Lines->Clear();\n' + show);
+      why = '<b>Memo1->Lines</b> — строки многострочного поля. <code>Add</code> — в конец, <code>Insert(i, s)</code> — на место i, <code>Delete(i)</code> — убрать строку i (с нуля), <code>Clear()</code> — всё стереть, <code>Count</code> — сколько строк, <code>Strings[i]</code> — строка номер i, <code>Text</code> — весь текст одной строкой.';
+      tip = 'нажимай кнопки и смотри, как меняется Memo1 и Count.';
+    }
+    if (v.kind === 'hide') {
+      btn('Button9', N + '->Hide()', 150, 16); btn('Button8', N + '->Show()', 150, 150); info();
+      code += H('Button9Click', '  ' + N + '->Hide();   // то же, что Visible = false\n  Label9->Caption = "Visible = false";\n') + H('Button8Click', '  ' + N + '->Show();   // то же, что Visible = true\n  Label9->Caption = "Visible = true";\n');
+      why = '<b>Hide()</b> прячет компонент (Visible = false), <b>Show()</b> показывает (Visible = true). Это методы — их вызывают из кода со скобками.'; tip = 'нажимай Hide и Show.'; row = 'Visible';
+    }
+    if (v.kind === 'shift') {
+      log(); tgt.events = { OnMouseDown: 'Label1MouseDown' }; tgt.Caption = 'Нажми сюда мышью (с Shift, Alt, Ctrl)';
+      code += H('Label1MouseDown', '  if (Shift.Contains(ssShift)) Memo9->Lines->Add("зажат Shift");\n  else if (Shift.Contains(ssAlt)) Memo9->Lines->Add("зажат Alt");\n  else if (Shift.Contains(ssCtrl)) Memo9->Lines->Add("зажат Ctrl");\n  else Memo9->Lines->Add("просто щелчок");\n', ARGS.OnMouseDown);
+      why = 'В обработчике <b>OnMouseDown</b> параметр <b>Shift</b> — набор зажатых клавиш. Проверка: <code>Shift.Contains(ssShift)</code>, <code>ssAlt</code>, <code>ssCtrl</code>.'; tip = 'нажимай на надпись с зажатым Shift, Alt или Ctrl.'; row = 'OnMouseDown';
+    }
+    if (v.kind === 'now') {
+      btn('Button9', 'Который час?', 150, 16); tgt.Caption = '—'; tgt.Width = 200; tgt.Color = 'clBtnFace';
+      code += H('Button9Click', '  Label1->Caption = Now().TimeString();   // Now() — текущие дата и время\n');
+      why = '<b>Now()</b> возвращает текущие дату и время, <b>.TimeString()</b> — только время строкой. Для часов это ставят в OnTimer.'; tip = 'нажми кнопку.'; row = 'Caption';
+    }
+    if (!code) return null;
+    return { cfg: { form: form, comps: comps, code: code }, why: why, tip: tip, sel: sel, row: row };
+  }
+  function vclPane(box, it) {
+    var b = vclBuild(JSON.parse(JSON.stringify(it.v)));
+    if (!b) { box.innerHTML = '<p class="tr-why">Для этого вопроса примера пока нет.</p>'; return; }
+    var id = 'try-vcl';
+    box.innerHTML = '<p class="tr-why">' + b.why + '</p><p class="tr-mini">Я положил на форму нужные компоненты и написал только нужный код (смотри Unit1.cpp внизу). Программа уже запущена: ' + esc(b.tip) + ' Закроешь окно (×) — вернёшься в Builder, можно менять свойства в Object Inspector и запускать снова (F9).</p>' +
+      '<details class="tr-vcode" open><summary>Код, который я написал в Unit1.cpp</summary><pre class="cpp-code">' + (window.CPP && CPP.highlight ? CPP.highlight(b.cfg.code.replace(/\/\/-+\n/g, '').trim()) : esc(b.cfg.code)) + '</pre></details>' +
+      '<div class="tr-vcl"><div class="vclw" data-id="' + id + '" data-title="— пример"><script type="application/json" data-role="vcl">' + JSON.stringify(b.cfg).replace(/</g, '\\u003c') + '</script></div></div>';
+    var go = function () {
+      try { localStorage.removeItem('vclw:' + id); } catch (e) {}
+      CPP.initVcl(box.querySelector('.tr-vcl'));
+      var pc = box.querySelector('.tr-vcode pre'); if (pc && CPP.highlight && !pc.querySelector('b,i')) pc.innerHTML = CPP.highlight(b.cfg.code.replace(/\/\/-+\n/g, '').trim());
+      var w = box.querySelector('.vclw'), s = w.querySelector('.oi-sel');
+      if (s) { var o = [].filter.call(s.options, function (x) { return x.textContent.indexOf(b.sel + ':') === 0; })[0]; if (o) { s.value = o.value; s.dispatchEvent(new Event('change', { bubbles: true })); } }
+      if (/^On/.test(b.row || '')) { var et = w.querySelector('[data-oi="e"]'); if (et) et.click(); }
+      setTimeout(function () {
+        var rows = w.querySelectorAll('.oi-grid > *'); [].forEach.call(rows, function (r) { if (r.firstElementChild && r.firstElementChild.textContent.trim() === b.row) { r.classList.add('tr-oi-hl'); try { r.scrollIntoView({ block: 'nearest' }); } catch (e) {} } });
+        var rb = w.querySelector('[data-a="run"]'); if (rb) rb.click();
+      }, 150);
+    };
+    if (window.CPP && CPP.initVcl) go(); else (window.PR && PR.loadVcl ? PR.loadVcl() : Promise.reject()).then(go, function () { box.insertAdjacentHTML('beforeend', '<p class="tr-bad">Не получилось загрузить Builder.</p>'); });
+  }
+
   /* ================= поиск примеров ================= */
   T.find = function (q, sid) {
     if (!q) return [];
@@ -322,7 +500,7 @@
       /* пример «про команду» — только для вопросов по обычному C/C++ (темы 1–6), не про формы, компоненты, классы и файлы */
       var all = String(q.q || '') + ' ' + String(q.tr || '') + ' ' + (q.opts || []).filter(function (o) { return o.right; }).map(function (o) { return o.t + ' ' + (o.tr || ''); }).join(' ');
       if (q.topic > 6 || /\bT[A-Z][a-z]+|VCL|Memo|Edit\d|Label|Button|Sender|Caption|Hint|Form\d|fopen|fprintf|fscanf|fgets|fputs|#define/.test(all) ||
-        /НЕ ТОЧНО|УМКД|компонент|класс[ауео ]|объект|конструктор|деструктор|метод|наследов|полиморф|свойств|событи|обработчик|на форм|файл|директив/i.test(all)) return out;
+        /НЕ ТОЧНО|УМКД|компонент|класс[ауео ]|объект|конструктор|деструктор|метод|наследов|полиморф|свойств|событи|обработчик|на форм|файл|директив/i.test(all)) { var vd = vclFind(q); return vd ? [vd] : out; }
       /* английские слова (while, for, if, true…) ищем только в коде: в обычном тексте «while the program runs» — не цикл */
       var code = [], noCode = function (s) { return String(s || '').replace(/```[\s\S]*?```|`[^`]+`/g, function (m) { code.push(m.replace(/`/g, ' ')); return ' '; }); };
       var qq = noCode(q.q), qtr = noCode(q.tr);
@@ -340,7 +518,7 @@
 
   /* ================= окно ================= */
   var ov = null;
-  T.close = function () { var was = !!ov; if (ov) { ov.remove(); ov = null; } T.active = false; if (was && T.onClose) { var f = T.onClose; T.onClose = null; f(); } };
+  T.close = function () { try { localStorage.removeItem('vclw:try-vcl'); } catch (e) {} var was = !!ov; if (ov) { ov.remove(); ov = null; } T.active = false; if (was && T.onClose) { var f = T.onClose; T.onClose = null; f(); } };
   /* ---------- C++: как в Builder — окно Unit1.cpp и отдельное окно программы (ввод и вывод вместе) ---------- */
   function cppPane(box, it) {
     var code, why, preset = '';
@@ -411,7 +589,7 @@
       '<div class="tr-box"></div><footer><button class="btn primary" data-x>Понятно — назад</button></footer></div>';
     document.body.appendChild(ov);
     var box = ov.querySelector('.tr-box');
-    var show = function (i) { var it = list[i]; ov.querySelectorAll('[data-tab]').forEach(function (b) { b.classList.toggle('on', +b.getAttribute('data-tab') === i); }); if (it.kind === 'cpp') cppPane(box, it); else TOOLS[it.tool](box, it.init); };
+    var show = function (i) { var it = list[i]; ov.querySelectorAll('[data-tab]').forEach(function (b) { b.classList.toggle('on', +b.getAttribute('data-tab') === i); }); if (it.kind === 'cpp') cppPane(box, it); else if (it.kind === 'vcl') vclPane(box, it); else TOOLS[it.tool](box, it.init); };
     ov.querySelectorAll('[data-tab]').forEach(function (b) { b.onclick = function () { show(+b.getAttribute('data-tab')); }; });
     ov.querySelectorAll('[data-x]').forEach(function (b) { b.onclick = T.close; });
     ov.addEventListener('mousedown', function (e) { if (e.target === ov) T.close(); });
@@ -419,5 +597,5 @@
     show(0);
     setTimeout(function () { var x = ov && ov.querySelector('header [data-x]'); if (x) x.focus(); }, 30);
   };
-  T._build = buildRun; T._arch = archFind;
+  T._build = buildRun; T._arch = archFind; T._vcl = vclFind; T._vb = vclBuild;
 })();
