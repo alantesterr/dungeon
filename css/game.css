@@ -684,3 +684,53 @@ details.my-note.drop{animation:briefDrop .8s cubic-bezier(.2,.8,.3,1),briefGlow 
 .src-badge{display:inline-block;margin:0 0 6px;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.2px}
 .src-badge.exam{background:#3d2f10;color:#FAC775;border:1px solid #BA7517}
 .src-badge.add{background:#26252b;color:#B4B2A9;border:1px solid #5F5E5A}
+
+/* ===== 💻 Практика: комната с компьютером и окна в стиле Windows 2000 ===== */
+.pr-door{border-color:#7F77DD!important;color:#CECBF6!important}
+.pr-door small{opacity:.8;font-weight:400;margin-left:4px}
+.prx-room{position:fixed;inset:0;z-index:999;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.prx-room canvas{width:min(100vw,177.8vh);height:auto;image-rendering:pixelated;transition:none}
+.prx-room .prx-cap{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;gap:14px;align-items:center;background:rgba(20,16,30,.85);color:#e8e4f8;padding:8px 14px;border-radius:10px;font:15px/1.3 system-ui,sans-serif;border:1px solid #534AB7}
+.prx-room .prx-flash{position:absolute;inset:0;background:#3a6ea5;opacity:0;pointer-events:none}
+.prx-room.desk canvas,.prx-room.desk .prx-cap{display:none}
+.prx-room.desk{background:#3a6ea5}
+.prx-room.desk .prx-flash{opacity:1!important}
+.prx{position:fixed;z-index:1002;background:#d4d0c8;color:#000;font:12px Tahoma,"MS Sans Serif",Arial,sans-serif;border:2px solid;border-color:#fff #404040 #404040 #fff;box-shadow:1px 1px 0 #000;display:flex;flex-direction:column}
+.prx .prx-t{background:linear-gradient(90deg,#0a246a,#a6caf0);color:#fff;font-weight:700;padding:3px 3px 3px 5px;display:flex;align-items:center;gap:6px;cursor:move;user-select:none;flex:none}
+.prx .prx-t .ico{font-size:12px}
+.prx .prx-t .tt{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prx .prx-t button{width:18px;height:16px;padding:0;font:bold 11px/12px Tahoma;background:#d4d0c8;color:#000;border:1px solid;border-color:#fff #404040 #404040 #fff;cursor:pointer}
+.prx .prx-b{flex:1;min-height:0;display:flex;flex-direction:column}
+.prx.mini .prx-b{display:none}
+.prx .w2k{font:12px Tahoma,sans-serif;padding:4px 12px;background:#d4d0c8;color:#000;border:1px solid;border-color:#fff #404040 #404040 #fff;box-shadow:inset -1px -1px 0 #808080;cursor:pointer;min-width:75px}
+.prx .w2k:active{border-color:#404040 #fff #fff #404040;box-shadow:inset 1px 1px 0 #808080}
+.prx .w2k.primary{outline:1px solid #000;font-weight:700}
+.prx .prx-bar{display:flex;gap:8px;align-items:center;padding:6px 8px;border-top:1px solid #808080;flex:none}
+.prx .grow{flex:1}
+.prx-list{left:50%;top:50%;transform:translate(-50%,-50%);width:min(900px,96vw);height:min(600px,92vh)}
+.prx-list .lb-wrap{flex:1;min-height:0;display:flex;gap:6px;padding:6px}
+.prx-list .lb-tree{width:230px;flex:none;overflow:auto;background:#fff;border:2px solid;border-color:#808080 #fff #fff #808080}
+.prx-list .lb-it{display:flex;width:100%;gap:6px;align-items:center;text-align:left;background:none;border:0;padding:3px 6px;font:12px Tahoma,sans-serif;color:#000;cursor:pointer}
+.prx-list .lb-it.on{background:#0a246a;color:#fff}
+.prx-list .lb-n{width:28px;color:#808080}.prx-list .lb-it.on .lb-n{color:#a6caf0}
+.prx-list .lb-name{flex:1}.prx-list .lb-c{font-size:11px;color:#555}.prx-list .lb-c.full{color:#137a13;font-weight:700}.prx-list .lb-it.on .lb-c{color:#fff}
+.prx-list .lb-right{flex:1;min-width:0;overflow:auto;background:#fff;border:2px solid;border-color:#808080 #fff #fff #808080;padding:8px 10px}
+.prx-list h3{margin:0 0 8px;font:bold 13px Tahoma,sans-serif}
+.prx-list .lb-desc{margin:0 0 8px;font-size:12px}.prx-list .lb-desc summary{cursor:pointer;color:#0a246a}
+.prx-list .lb-tasks{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px}
+.prx-list .lb-task{display:flex;flex-direction:column;gap:2px;text-align:left;background:#d4d0c8;border:1px solid;border-color:#fff #404040 #404040 #fff;padding:6px 8px;font:12px Tahoma,sans-serif;color:#000;cursor:pointer}
+.prx-list .lb-task:hover{background:#e4e0d8}
+.prx-list .lb-task.ok{background:#dff3df}
+.prx-list .lb-task span{color:#333}.prx-list .lb-task em{color:#555;font-size:11px}
+.prx-task{right:12px;top:60px;width:min(420px,46vw);max-height:calc(100vh - 80px)}
+.prx-task .tk-scroll{overflow:auto;padding:8px 10px;background:#fff;border:2px solid;border-color:#808080 #fff #fff #808080;margin:6px;flex:1;min-height:0;font-size:13px;line-height:1.45}
+.prx-task .tk-note{background:#fff4d6;padding:4px 6px}
+.prx-task details{margin:8px 0}.prx-task summary{cursor:pointer;color:#0a246a;font-weight:700}
+.prx-task pre,.prx-task .tk-code{font:12px/1.35 "Courier New",monospace;background:#fff;border:1px solid #808080;padding:6px;overflow:auto;white-space:pre;max-height:260px;margin:4px 0}
+.prx-task .tk-ok{color:#137a13;font-weight:700}.prx-task .tk-bad{color:#c00;font-weight:700}.prx-task .tk-warn{color:#8a5a00}
+.prx-task .tk-t{border:1px solid #c0c0c0;padding:4px 6px;margin:4px 0}.prx-task .tk-t.ok{background:#eefaee}.prx-task .tk-t.bad{background:#fdeeee}
+.prx-task .tk-t span{display:block;color:#444}
+.prx-task .tk-cols{display:grid;grid-template-columns:1fr 1fr;gap:6px}.prx-task .tk-cols i{font-size:11px;color:#555}
+.prx-task .tk-hint{color:#333}
+.prx-vcl{left:8px;top:8px;right:min(440px,48vw);bottom:8px;overflow:auto}
+.prx-vcl .prx-b{overflow:auto;padding:6px;display:block}

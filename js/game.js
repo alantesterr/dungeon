@@ -686,12 +686,14 @@
     setPanel('<div class="lib-top"><div class="qtext">📚 ' + esc(A.libName(sid)) + '</div><span class="tag teal">книг на полках: ' + tot + ' из ' + all.length + ' · ' + pAll + '%</span></div>' + tip +
       '<div class="lib-dock"><button class="btn primary lib-all" data-all>▶ Всё подряд<small>вопросы из всех тем вперемешку</small></button>' +
       '<button class="btn ghost lib-ex" data-exam>🎓 Как на экзамене<small>' + EXAM_N + ' вопросов · ' + EXAM_MIN + ' мин</small></button></div>' +
-      (sj.drill ? '' : '<div class="row ts-row"><button class="btn ghost sm" data-tsel>⚙ Темы во «Всё подряд»: <b>' + esc(topicSelText(sid)) + '</b></button></div>') +
+      (sj.drill ? '' : '<div class="row ts-row"><button class="btn ghost sm" data-tsel>⚙ Темы во «Всё подряд»: <b>' + esc(topicSelText(sid)) + '</b></button>' +
+        (window.PR && PR.has(sid) ? '<button class="btn ghost sm pr-door" data-prac>💻 Практика <small>' + esc(PR.label(sid)) + '</small></button>' : '') + '</div>') +
       jailHtml() + '<p class="hint">Полки — это темы: нажми на полку в шкафу (или ниже), чтобы пройти тему, открыть лекцию или повторить пыльные книги.</p>' + chips);
     wireJail();
     panel.querySelector('[data-all]').onclick = goAll;
     panel.querySelector('[data-exam]').onclick = goExam;
     var tsb = panel.querySelector('[data-tsel]'); if (tsb) tsb.onclick = function () { openTopicPick(sid, enterLib); };
+    var prb = panel.querySelector('[data-prac]'); if (prb) prb.onclick = function () { PR.open(sid); };
     panel.querySelector('[data-notes]').onclick = function () { openNotes(); };
     panel.querySelectorAll('[data-tipok]').forEach(function (b) { b.onclick = function () { S.tips[b.getAttribute('data-tipok')] = 1; D.persist(); b.parentNode.remove(); }; });
     panel.querySelectorAll('[data-sh]').forEach(function (b) { b.onclick = function () { var k = b.getAttribute('data-sh'); if (k === 'err') return openErrShelf(); openShelf(floorBy(+k)); }; });
@@ -3036,6 +3038,8 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
 
   /* ---------- клавиатура ---------- */
   document.addEventListener('keydown', function (e) {
+    if (window.PR && PR.active) return;   /* за компьютером (💻 Практика) клавиши принадлежат Builder / EWB */
+    if (e.target && e.target.tagName === 'TEXTAREA') return;
     if (G.caveSkip && (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape')) { e.preventDefault(); G.caveSkip(); return; }   /* пропустить картинку спуска */
     if (BK) { if (e.key === 'Escape') { e.preventDefault(); closeBook(); } else if (e.key === 'ArrowRight') flip(1); else if (e.key === 'ArrowLeft') flip(-1); else if (e.key === 'Enter' && e.target.tagName !== 'SELECT') { e.preventDefault(); closeBook(); } return; }
     if (G.modal) { if (e.key === 'Escape') closeModal(); else if (e.key === 'Enter' && G.modalEnter && e.target.tagName !== 'BUTTON') { e.preventDefault(); G.modalEnter(); } return; }
@@ -3197,7 +3201,7 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
     setTimeout(function () { G.artReload = 0; }, 8000);
   }
   /* для проверки: мгновенно довести героя до цели (вкладка в фоне не анимируется) */
-  window.DGame = { G: G, bookFor: function (q) { return bookFor(q); }, liar: function () { G.liarForce = 1; }, pet: function (cb) { petRescue(cb || function () {}); }, cage: function () { G.cageForce = 1; }, ev: function (k, sid) { G.evForce = k; buildArena(sid || D.subjId, 'all', 1); }, go: function (s, a) { go(s, a); }, next: function () { goNext(); }, skip: function () { var h = G.hero; if (h.target != null) { h.x = h.target; h.target = null; var cb = h.onArrive; h.onArrive = null; if (cb) cb(); } } };
+  window.DGame = { G: G, lib: function () { if (G.scene === 'path') enterLib(); }, toast: function (m) { toast(m, '#9FE1CB'); }, bookFor: function (q) { return bookFor(q); }, liar: function () { G.liarForce = 1; }, pet: function (cb) { petRescue(cb || function () {}); }, cage: function () { G.cageForce = 1; }, ev: function (k, sid) { G.evForce = k; buildArena(sid || D.subjId, 'all', 1); }, go: function (s, a) { go(s, a); }, next: function () { goNext(); }, skip: function () { var h = G.hero; if (h.target != null) { h.x = h.target; h.target = null; var cb = h.onArrive; h.onArrive = null; if (cb) cb(); } } };
 
   /* ---------- старт ---------- */
   if (A.loadPets) A.loadPets();

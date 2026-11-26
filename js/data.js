@@ -221,7 +221,8 @@
           pTasks = pTasks.concat(tasks);
         });
         var pById = {}; pTasks.forEach(function (t) { pById[t.id] = t; });
-        if (pRooms.length) sj.floors.push({ n: 17, id: 'cpp-practice', label: 'Практика', title: 'Практика: пишем код по темам', texts: pTexts, pool: [], byId: {}, tasks: pTasks, taskById: pById, rooms: pRooms, final: false, practice: true, rk: 0, subj: 'cpp', syll: true });
+        /* старая «Практика» (задания конспекта) убрана в ноябре 2026: вместо неё комната «💻 Практика» с лабами (js/practice.js) */
+        if (false && pRooms.length) sj.floors.push({ n: 17, id: 'cpp-practice', label: 'Практика', title: 'Практика: пишем код по темам', texts: pTexts, pool: [], byId: {}, tasks: pTasks, taskById: pById, rooms: pRooms, final: false, practice: true, rk: 0, subj: 'cpp', syll: true });
         return sj.floors;
       }).catch(function (e) { console.warn('cpp practice', e); return sj.floors; });
     });
