@@ -2023,14 +2023,14 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     if (b && b.isConnected) { b.classList.remove('auto'); void b.offsetWidth; b.style.setProperty('--auto', AUTO.ms + 'ms'); b.classList.add('auto'); }
     AUTO.t = setTimeout(function () {
       var f = AUTO.fn; if (!f) return;
-      if (G.modal || BK || document.hidden) { AUTO.paused = true; return; }
+      if (G.modal || BK || document.hidden || (window.TRY && TRY.active)) { AUTO.paused = true; return; }
       if (AUTO.btn && !AUTO.btn.isConnected) { autoStop(); return; }   /* кнопки уже нет — экран сменился */
       autoStop(); f();
     }, AUTO.ms);
   }
   function autoStop() { clearTimeout(AUTO.t); AUTO.t = null; if (AUTO.btn) AUTO.btn.classList.remove('auto'); AUTO.fn = null; AUTO.btn = null; AUTO.paused = false; }
   function autoPause() { if (!AUTO.fn || AUTO.paused) return; clearTimeout(AUTO.t); AUTO.paused = true; if (AUTO.btn) AUTO.btn.classList.remove('auto'); }
-  function autoResume() { if (!AUTO.fn || !AUTO.paused || G.modal || BK || document.hidden) return; AUTO.paused = false; autoRun(); }
+  function autoResume() { if (!AUTO.fn || !AUTO.paused || G.modal || BK || document.hidden || (window.TRY && TRY.active)) return; AUTO.paused = false; autoRun(); }
   /* общие правила паузы */
   window.addEventListener('blur', autoPause);
   window.addEventListener('focus', function () { setTimeout(autoResume, 300); });
@@ -2481,8 +2481,8 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
     else if (m.dead && ok && !R.assisted) {
       /* верный ответ добил монстра — сразу идём дальше; «Объясни» успеет остановить переход */
       G.buttons = []; var row0 = document.createElement('div'); row0.className = 'row'; row0.style.marginTop = '10px';
-      row0.innerHTML = '<span class="hint">' + esc(monName(m)) + (m.guard ? ' исчез в облаке искр…' : ' повержен…') + '</span>' + (R.q ? '<button class="btn ghost" data-ex0>📖 Объясни</button>' : '');
-      panel.appendChild(row0); var q0 = R.q, exb = row0.querySelector('[data-ex0]'); if (exb) exb.onclick = function () { openExplain(q0); };
+      row0.innerHTML = '<span class="hint">' + esc(monName(m)) + (m.guard ? ' исчез в облаке искр…' : ' повержен…') + '</span>' + (R.q ? '<button class="btn ghost" data-ex0>📖 Объясни</button>' + (tryOk(R.q) ? '<button class="btn ghost" data-try0>🧪 Попробовать</button>' : '') : '');
+      panel.appendChild(row0); var q0 = R.q, exb = row0.querySelector('[data-ex0]'), trb = row0.querySelector('[data-try0]'); if (exb) exb.onclick = function () { openExplain(q0); }; if (trb) trb.onclick = function () { openTry(q0); };
       /* пауза: видно, что случилось; дальше — только кнопкой (события не пролистываются сами) */
       setTimeout(function () {
         if (G.room === R && R.mon === m) { G.buttons = [btn('Дальше', 'primary', 'Enter', goNext)]; var nb = document.createElement('button'); nb.className = 'btn primary'; nb.innerHTML = 'Дальше<kbd>Enter</kbd>'; nb.onclick = goNext; row0.appendChild(nb); autoArm(goNext, 'event', nb); var hn = row0.querySelector('.hint'); if (hn) hn.textContent = monName(m) + (m.guard ? ' исчез в облаке искр.' : ' повержен!'); }
@@ -2491,7 +2491,7 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
     }
     else if (m.dead) btns.push(btn('Дальше', 'primary', 'Enter', goNext));
     else btns.push(btn('Следующий вопрос', 'primary', 'Enter', ask));
-    if (R.q) { var qx = R.q; btns.push(btn('📖 Объясни', 'ghost', null, function () { openExplain(qx); })); btns.push(btn('🔎 Google', 'ghost', null, function () { openGoogle(qx); })); }
+    if (R.q) { var qx = R.q; btns.push(btn('📖 Объясни', 'ghost', null, function () { openExplain(qx); })); btns.push(btn('🔎 Google', 'ghost', null, function () { openGoogle(qx); }));  if (tryOk(qx)) btns.push(btn('🧪 Попробовать', 'ghost', null, function () { openTry(qx); })); }
     var row = document.createElement('div'); row.className = 'row'; row.style.marginTop = '12px';
     row.innerHTML = btns.map(function (b, i) { return '<button class="btn ' + b.cls + '" data-b2="' + i + '">' + esc(b.label) + (b.key ? '<kbd>' + b.key + '</kbd>' : '') + '</button>'; }).join('');
     panel.appendChild(row); G.buttons = btns;
@@ -2849,15 +2849,20 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
     if (!sec) { var rn = line.match(/разделы?\s+(\d+)/); if (rn) sec = tf.texts.filter(function (s) { return s.title.indexOf(rn[1] + '.') === 0; })[0] || null; }
     return { f: tf, sec: sec };
   }
+  /* «🧪 Попробовать»: живой пример к вопросу (js/try.js) — запустить код из вопроса, тренажёр Архитектуры */
+  function subjOfQ(q) { var f = floorOfQ(q) || (G.room && G.room.f); return (f && f.subj) || (D.save && D.save.subj) || ''; }
+  function tryOk(q) { try { return !!(window.TRY && q && !(G.room && G.room.f && G.room.f.exam && !G.room.answered) && TRY.find(q, subjOfQ(q)).length); } catch (e) { return false; } }
+  function openTry(q) { if (window.TRY) { autoPause(); TRY.onClose = function () { setTimeout(autoResume, 200); }; TRY.open(q, subjOfQ(q)); } }
   function openExplain(q) {
     var R = G.room, f = R && R.f, brief = !q.ex && R && f && f.texts.length ? briefHtml(q.q + ' ' + plainText(rightText(q))) : '', ref = exRef(q, f);
     var h = '<header class="md-top"><b>📖 Объяснение</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body ex-body">' +
       '<div class="ex-q">' + D.md(q.q) + '</div><p class="ex-right"><b>Правильный ответ:</b> ' + rightText(q) + '</p>' +
       (q.ex ? '<div class="ex-text">' + exHtml(q.ex) + '</div>' : '<p class="msg">Подробное пояснение к этому вопросу скоро появится.' + (brief ? ' А пока — кусок лекции по теме:' : '') + '</p>' + brief.replace('<details class="brief"', '<details class="brief" open')) +
       (ref ? '' : '<p class="hint">📍 ' + esc(refLine(f)) + '</p>') +
-      '<div class="row"><button class="btn primary" data-close>Понятно — назад в игру</button>' + (ref ? '<button class="btn ghost" data-lec>📖 ' + esc((ref.f.lab ? 'Лабы' : 'Лекция ' + ref.f.n) + (ref.sec ? ': ' + ref.sec.title : '')) + '</button>' : '') + '<button class="btn ghost" data-ggl>🔎 Спросить в Google</button></div></div>';
+      '<div class="row"><button class="btn primary" data-close>Понятно — назад в игру</button>' + (ref ? '<button class="btn ghost" data-lec>📖 ' + esc((ref.f.lab ? 'Лабы' : 'Лекция ' + ref.f.n) + (ref.sec ? ': ' + ref.sec.title : '')) + '</button>' : '') + '<button class="btn ghost" data-ggl>🔎 Спросить в Google</button>' + (tryOk(q) ? '<button class="btn ghost" data-try>🧪 Попробовать вживую</button>' : '') + '</div></div>';
     modal(h, function (el) {
       el.querySelector('[data-ggl]').onclick = function () { openGoogle(q); };
+      var tb = el.querySelector('[data-try]'); if (tb) tb.onclick = function () { openTry(q); };
       var lb = el.querySelector('[data-lec]');
       if (lb) lb.onclick = function () { closeModal(); openBook({ f: ref.f, start: Math.max(0, ref.f.texts.indexOf(ref.sec)), mark: ref.sec ? [ref.sec.id] : [], cur: ref.sec ? ref.sec.id : null }); };
     });
@@ -3040,6 +3045,7 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
   /* ---------- клавиатура ---------- */
   document.addEventListener('keydown', function (e) {
     if (window.PR && PR.active) return;   /* за компьютером (💻 Практика) клавиши принадлежат Builder / EWB */
+    if (window.TRY && TRY.active) return;   /* открыто окно «🧪 Попробовать» — клавиши его */
     if (e.target && e.target.tagName === 'TEXTAREA') return;
     if (G.caveSkip && (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape')) { e.preventDefault(); G.caveSkip(); return; }   /* пропустить картинку спуска */
     if (BK) { if (e.key === 'Escape') { e.preventDefault(); closeBook(); } else if (e.key === 'ArrowRight') flip(1); else if (e.key === 'ArrowLeft') flip(-1); else if (e.key === 'Enter' && e.target.tagName !== 'SELECT') { e.preventDefault(); closeBook(); } return; }

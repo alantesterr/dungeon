@@ -12,7 +12,7 @@
   var VER = (document.querySelector('script[src*="practice.js"]') || {}).src || '';
   VER = (VER.match(/\?v=\d+/) || [''])[0];
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
-  var md = function (s) { return D.md ? D.md(String(s || '')) : esc(s).replace(/\n/g, '<br>'); };
+  var md = function (s) { return (D.md ? D.md(String(s || '')) : esc(s).replace(/\n/g, '<br>')).replace(/\*\*([^*<]+)\*\*/g, '<b>$1</b>'); };
   var SUBJ = {
     cpp: { title: 'C++Builder 6', data: 'data/subjects/cpp/labs.json', js: ['cpp-parse', 'cpp-lib', 'cpp-run', 'cpp-stdlib', 'cpp-ui', 'vcl', 'vcl-ui', 'bcb-ide', 'bcb-skin'].map(function (n) { return 'js/cpp/' + n + '.js'; }), css: 'css/bcb.css' }
     , arch: { title: 'Electronics Workbench', site: 'https://alantesterr.github.io/contents/', data: 'data/subjects/arch/labs.json', js: [] }
@@ -41,7 +41,10 @@
   function topicTitle(sid, n) { var sj = D.SUBJ && D.SUBJ[sid], f = sj && sj.floors.filter(function (x) { return x.n === n; })[0]; return f ? f.title : ''; }
 
   /* ---------- загрузка скриптов и данных (только когда садимся за компьютер) ---------- */
-  function loadScript(src) { return new Promise(function (ok, bad) { var s = document.createElement('script'); s.src = src + VER; s.onload = ok; s.onerror = function () { bad(new Error('Не загрузился ' + src)); }; document.head.appendChild(s); }); }
+  var scripts = {};
+  function loadScript(src) { if (scripts[src]) return scripts[src]; return (scripts[src] = new Promise(function (ok, bad) { var s = document.createElement('script'); s.src = src + VER; s.onload = ok; s.onerror = function () { scripts[src] = null; bad(new Error('Не загрузился ' + src)); }; document.head.appendChild(s); })); }
+  /* только интерпретатор C++ (для «🧪 Попробовать» в тестах), без Builder */
+  PR.loadCpp = function () { var c = Promise.resolve(); ['cpp-parse', 'cpp-lib', 'cpp-run', 'cpp-stdlib'].forEach(function (n) { c = c.then(function () { return loadScript('js/cpp/' + n + '.js'); }); }); return c; };
   function load(sid) {
     if (loading[sid]) return loading[sid];
     var cfg = SUBJ[sid];
@@ -128,37 +131,102 @@
     return w;
   }
 
-  /* ---------- список лабораторных ---------- */
-  var curSid = null;
+  /* ---------- «Практикум»: как обычная программа — темы слева, задания с коротким описанием справа ---------- */
+  var curSid = null, view = { only: false, q: '' };
+  function plainT(s) { return String(s || '').replace(/```[\s\S]*?```/g, ' ').replace(/\[рисунок:[^\]]*\]/g, ' ').replace(/[*`#>|_]/g, '').replace(/\s+/g, ' ').trim(); }
+  /* «Коротко»: первое предложение условия без «Написать программу…» и без примера экрана */
+  function brief(t) {
+    var s = plainT(t.text || t.title).replace(/(Экран должен выглядеть|Рекомендуемый вид|Пример (экрана|работы)|Например)[\s\S]*$/i, '').trim();
+    if (/^[a-zа-я]\s*=/i.test(s)) return 'Вычисли по формуле: ' + s.replace(/\s*При\s[\s\S]*$/, '').slice(0, 90) + (s.length > 90 ? '…' : '');   /* тема 1: формулы */
+    s = s.replace(/^(Тема|Цель работы[^:]*|Контрольные задания[^:]*):\s*/i, '').replace(/^(Напи(шите|сать)|Составь(те)?|Созда(йте|ть)|Разработа(йте|ть))\s+(программу|приложение|функцию)\s*,?\s*(котор[а-яё]+\s+)?/i, '');
+    /* первое предложение; если оно короткое («Дано трёхзначное число.») — добавляем второе, где сама задача */
+    var parts = s.match(/[^.!?]+(?:[.!?](?=\s|$)|$)/g) || [s], b = '';
+    for (var i = 0; i < parts.length && (b.length < 45 || i < 1); i++) b += parts[i];
+    s = b.trim() || s;
+    s = s.charAt(0).toUpperCase() + s.slice(1);
+    return s.length > 130 ? s.slice(0, 127).replace(/\s+\S*$/, '') + '…' : s;
+  }
+  function tags(sid, t) {
+    if (SUBJ[sid].site) return (t.tools || []).slice(0, 3);
+    var c = String(t.ref || (t.vcl && t.vcl.ref && t.vcl.ref.code) || t.unit || ''), out = [];
+    if (t.kind === 'vcl') { out.push('форма'); var ty = []; ((t.vcl && t.vcl.ref && t.vcl.ref.comps) || []).forEach(function (x) { var n = String(x.type || '').slice(1); if (n && ty.indexOf(n) < 0) ty.push(n); }); out = out.concat(ty.slice(0, 3)); }
+    else out.push('консоль');
+    if (/\bclass\s+\w+/.test(c)) out.push('классы');
+    [[/\bswitch\b/, 'switch'], [/\bif\s*\(/, 'if'], [/\bfor\s*\(|\bwhile\s*\(/, 'циклы'], [/\w\s*\[\s*\w+\s*\]\s*\[/, 'матрица'], [/\w\[\s*\w*\s*\]/, 'массив'], [/strlen|strcpy|AnsiString|char\s+\w+\s*\[/, 'строки'], [/\bstruct\b/, 'struct'], [/fstream|FILE\s*\*|fopen/, 'файлы'], [/SetConsoleTextAttribute/, 'цвет'], [/\b(sqrt|pow|cos|sin|tan|fabs|exp|log|atan|acos|asin)\s*\(/, 'math']]
+      .forEach(function (p) { if (p[0].test(c) && out.indexOf(p[1]) < 0 && !(p[1] === 'массив' && out.indexOf('матрица') >= 0)) out.push(p[1]); });
+    if (out.indexOf('классы') < 0 && (c.match(/^\s*\w[\w\s\*&]*\s+\w+\s*\([^;{)]*\)\s*\{/gm) || []).filter(function (x) { return !/\bmain\s*\(|__fastcall/.test(x); }).length) out.push('функции');
+    return out.slice(0, 4);
+  }
+  function level(sid, t) { if (SUBJ[sid].site) return 0; var n = String(t.ref || (t.vcl && t.vcl.ref && t.vcl.ref.code) || '').split('\n').filter(function (x) { x = x.trim(); return x && !/^(#|\/\/|[{}]+;?$|return\b|getch|using\b|cout\s*<<\s*endl;$|int main|\}?\s*else\s*\{?$)/.test(x); }).length; return n < 14 ? 1 : n < 30 ? 2 : 3; }   /* сложность по строкам «с делом» */
+  function every(sid) { var out = []; (labs[sid] || []).forEach(function (l, li) { l.tasks.forEach(function (t, ti) { out.push({ li: li, ti: ti, t: t, l: l }); }); }); return out; }
+  function lastOf(sid) { var id = (D.save.labLast || {})[sid]; return id ? every(sid).filter(function (x) { return x.t.id === id; })[0] : null; }
+  function randomTask(sid, topic) {
+    var s = save(), all = every(sid), pool = all.filter(function (x) { return !s[x.t.id] && (topic == null || +x.l.topic === topic); });
+    if (!pool.length) pool = all.filter(function (x) { return !s[x.t.id]; });
+    if (!pool.length) pool = all;
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
   function openList(sid, focusLab) {
     closeWin(); hideTask();
-    var L = labs[sid] || [], s = save();
-    if (focusLab == null) { var first = byTopic(sid)[0]; focusLab = first ? first.labs[0] : 0; }
+    var L = labs[sid] || [], s = save(), topics = byTopic(sid);
+    var topicOfLab = function (i) { return +(L[i] || {}).topic; };
+    var curTopic = focusLab != null && L[focusLab] ? topicOfLab(focusLab) : (view.topic != null ? view.topic : (topics[0] || {}).n);
     var cnt = function (ids) { var d = 0, n = 0; ids.forEach(function (i) { L[i].tasks.forEach(function (t) { n++; if (s[t.id]) d++; }); }); return [d, n]; };
-    var tree = byTopic(sid).map(function (g) {
+    var bar = function (d, n) { return '<span class="pk-bar"><i style="width:' + (n ? Math.round(d * 100 / n) : 0) + '%"></i></span>'; };
+    var tree = topics.map(function (g) {
       var c = cnt(g.labs), tt = topicTitle(sid, g.n);
-      return '<div class="lb-topic' + (c[0] === c[1] ? ' full' : '') + '" title="' + esc(tt) + '"><span>📁 Тема ' + g.n + (tt ? ' · ' + esc(tt) : '') + '</span><em>' + c[0] + '/' + c[1] + '</em></div>' +
-        g.labs.map(function (i) {
-          var l = L[i], done = l.tasks.filter(function (t) { return s[t.id]; }).length;
-          return '<button class="lb-it' + (i === focusLab ? ' on' : '') + '" data-lab="' + i + '"><span class="lb-name">' + esc(l.short || l.title) + '</span><span class="lb-c' + (done === l.tasks.length ? ' full' : '') + '">' + done + '/' + l.tasks.length + '</span></button>';
-        }).join('');
+      return '<button class="pk-top' + (c[0] === c[1] ? ' full' : '') + '" data-top="' + g.n + '" title="' + esc(tt) + '"><span class="pk-num">' + g.n + '</span><span class="pk-tt">' + esc(tt || ('Тема ' + g.n)) + bar(c[0], c[1]) + '</span><em>' + c[0] + '/' + c[1] + '</em></button>';
     }).join('');
-    win = makeWin('prx-list', 'Лабораторные работы — ' + SUBJ[sid].title, '<div class="lb-wrap"><div class="lb-tree">' + tree + '</div><div class="lb-right"></div></div>' +
-      '<div class="prx-bar"><button class="w2k" data-free title="Как после запуска настоящей программы">' + (SUBJ[sid].site ? '⚡ Пустой EWB' : '🖥 Пустой Builder') + '</button><span class="grow">' + esc(PR.label(sid)) + '</span><button class="w2k" data-exit>🚪 Встать из-за компьютера</button></div>', { ico: '📁' });
+    var last = lastOf(sid), all = every(sid), done = all.filter(function (x) { return s[x.t.id]; }).length;
+    win = makeWin('prx-list pk', 'Практикум — ' + SUBJ[sid].title, '<div class="pk-tool">' +
+      (last ? '<button class="w2k primary" data-cont title="' + esc(last.t.name) + '">▶ Продолжить: ' + esc((last.l.short || '') + ' · ' + (last.t.name || '')) + '</button>' : '') +
+      '<button class="w2k" data-rand title="Нерешённое задание из выбранной темы">🎲 Случайное задание</button>' +
+      '<button class="w2k" data-free title="Как после запуска настоящей программы">' + (SUBJ[sid].site ? '⚡ Пустой EWB' : '🖥 Пустой Builder') + '</button>' +
+      '<label class="pk-chk"><input type="checkbox" data-only' + (view.only ? ' checked' : '') + '> только нерешённые</label>' +
+      '<input class="pk-find" data-find placeholder="🔍 Найти: массив, switch, кнопка…" value="' + esc(view.q) + '"></div>' +
+      '<div class="lb-wrap"><div class="lb-tree pk-tree">' + tree + '</div><div class="lb-right"></div></div>' +
+      '<div class="prx-bar"><span class="pk-all">Решено ' + done + ' из ' + all.length + bar(done, all.length) + '</span><span class="grow"></span><button class="w2k" data-exit>🚪 Встать из-за компьютера</button></div>', { ico: '📁' });
     win.querySelector('[data-x]').onclick = exit; win.querySelector('[data-exit]').onclick = exit;
     win.querySelector('[data-free]').onclick = function () { openFree(sid); };
+    var cb = win.querySelector('[data-cont]'); if (cb) cb.onclick = function () { openTask(sid, last.li, last.ti); };
     var right = win.querySelector('.lb-right');
-    var show = function (i) {
-      win.querySelectorAll('.lb-it').forEach(function (b) { b.classList.toggle('on', +b.getAttribute('data-lab') === i); });
-      var l = L[i];
-      right.innerHTML = '<h3>' + esc(l.title) + '</h3>' + (l.description ? '<details class="lb-desc"><summary>Текст лабы из методички</summary><div>' + md(l.description) + '</div></details>' : '') +
-        '<div class="lb-tasks">' + l.tasks.map(function (t, k) {
-          return '<button class="lb-task' + (s[t.id] ? ' ok' : '') + '" data-t="' + k + '"><b>' + (s[t.id] ? '✓ ' : '') + esc(t.name || ('Задание ' + (k + 1))) + '</b><span>' + esc(String(t.title || t.text || '').replace(/[*`#]/g, '').slice(0, 90)) + '</span><em>' + (SUBJ[sid].site ? esc((t.tools || []).join(', ') || (t.ex ? 'пример из методички' : 'задача с решением')) : (t.kind === 'vcl' ? 'форма (VCL)' : 'консоль') + (t.tests && t.tests.length ? ' · проверок: ' + t.tests.length : '')) + '</em></button>';
-        }).join('') + '</div>';
-      right.querySelectorAll('[data-t]').forEach(function (b) { b.onclick = function () { openTask(sid, i, +b.getAttribute('data-t')); }; });
+    var card = function (x) {
+      var t = x.t, ok = s[t.id], lv = level(sid, t);
+      return '<button class="lb-task pk-card' + (ok ? ' ok' : '') + '" data-li="' + x.li + '" data-ti="' + x.ti + '"><b>' + (ok ? '✅ ' : '') + esc(t.name || 'Задание') + (lv ? '<i class="pk-lv" title="сложность">' + '★★★'.slice(0, lv) + '<u>' + '★★★'.slice(lv) + '</u></i>' : '') + '</b>' +
+        '<span>' + esc(brief(t)) + '</span><em>' + tags(sid, t).map(function (g) { return '<s>' + esc(g) + '</s>'; }).join('') + '</em></button>';
     };
-    win.querySelectorAll('[data-lab]').forEach(function (b) { b.onclick = function () { show(+b.getAttribute('data-lab')); }; });
-    show(focusLab || 0);
+    var draw = function () {
+      win.querySelectorAll('[data-top]').forEach(function (b) { b.classList.toggle('on', +b.getAttribute('data-top') === curTopic && !view.q); });
+      var q = view.q.trim().toLowerCase(), h = '';
+      var keep = function (x) { if (view.only && s[x.t.id]) return false; if (!q) return true; return (x.t.name + ' ' + plainT(x.t.text) + ' ' + tags(sid, x.t).join(' ') + ' ' + (x.t.ref || '')).toLowerCase().indexOf(q) >= 0; };
+      if (q) {
+        var found = all.filter(keep);
+        h = '<h3>Найдено: ' + found.length + '</h3><div class="lb-tasks">' + found.slice(0, 80).map(card).join('') + '</div>';
+      } else {
+        var g = topics.filter(function (x) { return x.n === curTopic; })[0]; if (!g) { right.innerHTML = ''; return; }
+        var c = cnt(g.labs);
+        h = '<div class="pk-head"><h3>Тема ' + g.n + '. ' + esc(topicTitle(sid, g.n)) + '</h3><span>' + c[0] + ' из ' + c[1] + bar(c[0], c[1]) + '</span></div>';
+        g.labs.forEach(function (li) {
+          var l = L[li], xs = l.tasks.map(function (t, ti) { return { li: li, ti: ti, t: t, l: l }; }).filter(keep);
+          if (!xs.length) return;
+          var dn = l.tasks.filter(function (t) { return s[t.id]; }).length;
+          h += '<div class="pk-lab"><h4>' + esc(l.title) + ' <em>' + dn + '/' + l.tasks.length + '</em></h4>' + (l.description ? '<details class="lb-desc"><summary>Текст лабы из методички</summary><div>' + md(l.description) + '</div></details>' : '') + '<div class="lb-tasks">' + xs.map(card).join('') + '</div></div>';
+        });
+        if (!/pk-lab/.test(h)) h += '<p class="pk-empty">🎉 В этой теме всё решено! Сними галочку «только нерешённые», чтобы увидеть задания.</p>';
+      }
+      right.innerHTML = h; right.scrollTop = 0;
+      right.querySelectorAll('[data-li]').forEach(function (b) { b.onclick = function () { openTask(sid, +b.getAttribute('data-li'), +b.getAttribute('data-ti')); }; });
+    };
+    win.querySelectorAll('[data-top]').forEach(function (b) { b.onclick = function () { curTopic = view.topic = +b.getAttribute('data-top'); view.q = ''; win.querySelector('[data-find]').value = ''; draw(); }; });
+    win.querySelector('[data-only]').onchange = function () { view.only = this.checked; draw(); };
+    win.querySelector('[data-find]').oninput = function () { view.q = this.value; draw(); };
+    win.querySelector('[data-rand]').onclick = function () {
+      var x = randomTask(sid, curTopic), b = this; if (!x) return;
+      b.disabled = true; var k = 0, names = all.map(function (y) { return y.t.name; });
+      var spin = setInterval(function () { b.textContent = '🎲 ' + names[Math.floor(Math.random() * names.length)]; if (++k > 8) { clearInterval(spin); b.textContent = '🎲 ' + (x.l.short || '') + ' · ' + x.t.name; setTimeout(function () { openTask(sid, x.li, x.ti); }, 450); } }, 70);
+    };
+    draw();
+    var on = win.querySelector('.pk-top.on'); if (on) on.scrollIntoView({ block: 'nearest' });
   }
 
   /* ---------- задание ---------- */
@@ -238,22 +306,25 @@
   }
   var SRC = { teacher_lab: 'из методички преподавателя', teacher_lecture: 'из лекции преподавателя', umkd_syllabus: 'из УМКД / силлабуса', added: 'дополнительное' };
   function siteTaskWin(t, l) {
-    var solved = save()[t.id];
+    var solved = save()[t.id], tq = window.TRY ? { q: plainT(t.name) + '. ' + plainT(t.text).slice(0, 600) } : null;
     tw = makeWin('prx-task', t.name + ' · ' + (l.short || ''), '<div class="tk-scroll">' +
       '<p class="tk-src">' + (SRC[t.src] ? '<span class="src-badge ' + (t.src === 'added' ? 'add' : 'exam') + '">' + esc(SRC[t.src]) + '</span>' : '') + (t.ex ? ' <span class="src-badge add">пример из методички</span>' : '') + '</p>' +
-      '<div class="tk-text">' + siteImg(t.text || '') + '</div>' +
+      '<p class="tk-brief">🎯 <b>Коротко:</b> ' + esc(brief(t)) + '</p><div class="tk-text">' + siteImg(t.text || '') + '</div>' +
       (t.tools && t.tools.length ? '<p class="tk-tools">🧰 На стенде слева: <b>' + esc(t.tools.join(', ')) + '</b></p>' : '') +
+      (tq && TRY.find(tq, 'arch').length ? '<p class="tk-tools">🧪 Проверь себя на тренажёре: <button class="w2k" data-try>' + esc(TRY.find(tq, 'arch').map(function (x) { return x.label; }).join(' · ')) + '</button></p>' : '') +
       (t.solution ? '<details class="tk-ref"><summary>📄 Решение и разбор</summary><div class="tk-sol">' + siteImg(t.solution) + '</div></details>' : '') +
       '<div class="tk-res">' + (solved ? '<p class="tk-ok">✓ Это задание ты уже сделал.</p>' : '') + '</div></div>' +
       '<div class="prx-bar"><button class="w2k primary" data-done>' + (solved ? '✓ Сделано' : '✓ Я сделал задание') + '</button><span class="grow"></span><button class="w2k" data-studio title="Свободная сборка схем">⚡ EWB-студия</button><button class="w2k" data-list>📁 К списку</button></div>', { ico: '📝', min: true });
     tw.querySelector('[data-x]').onclick = tw.querySelector('[data-list]').onclick = function () { openList(task.sid, task.li); };
     tw.querySelector('[data-done]').onclick = function () { markSolved(t, 'Задание отмечено как сделанное.'); this.textContent = '✓ Сделано'; };
     tw.querySelector('[data-studio]').onclick = function () { openSite(task.sid, 't16', 'EWB-студия'); };
+    var trb = tw.querySelector('[data-try]'); if (trb) trb.onclick = function () { TRY.open(tq, 'arch'); };
   }
   function openTask(sid, li, ti) {
     closeWin(); hideTask(); curSid = sid;
     var od = document.querySelector('.prx-open'); if (od) od.remove();
     var l = labs[sid][li], t = l.tasks[ti]; task = { sid: sid, li: li, ti: ti, t: t }; PR._ran = false;
+    D.save.labLast = D.save.labLast || {}; D.save.labLast[sid] = t.id; try { D.persist(); } catch (e) {}
     if (SUBJ[sid].site) { openSite(sid, t.anchor, l.title); siteTaskWin(t, l); return; }
     if (t.kind === 'vcl' && t.vcl) openVcl(t); else openConsole(t);
     taskWin(t, l);
@@ -379,18 +450,40 @@
     res.innerHTML = (all ? '<p class="tk-ok">✓ Работает как в задании!</p>' : '<p class="tk-bad">Пока не всё работает.</p>') + rows;
     if (all) markSolved(t, 'Форма работает как надо — задание решено!');
   }
+  /* подсказки по одной: «💡 Подсказка 1 из N» → «Ещё подсказка», без спешки и без штрафа */
+  function hintList(t) {
+    var src = String(t.steps || '').trim(); if (!src) return [];
+    var parts = src.split(/\n(?=\s*\d+[.)]\s)/).map(function (x) { return x.trim(); }).filter(Boolean);
+    return parts.length > 1 ? parts : src.split(/\n{2,}/).map(function (x) { return x.trim(); }).filter(Boolean);
+  }
+  function hints(box, t) {
+    var list = hintList(t), k = 0; if (!box) return;
+    if (!list.length) { box.innerHTML = '<p class="tk-mini">Подсказок нет — если застрял, загляни в эталон ниже.</p>'; return; }
+    var draw = function () {
+      box.innerHTML = list.slice(0, k).map(function (h, i) { return '<div class="tk-hint"><b>💡 ' + (i + 1) + '.</b> ' + md(h.replace(/^\d+[.)]\s*/, '')) + '</div>'; }).join('') +
+        (k < list.length ? '<button class="w2k" data-hint>💡 ' + (k ? 'Ещё подсказка' : 'Подсказка') + ' (' + (k + 1) + ' из ' + list.length + ')</button>' : '<p class="tk-mini">Это все подсказки. Не выходит — открой эталон, разберись и напиши сам.</p>');
+      var b = box.querySelector('[data-hint]'); if (b) b.onclick = function () { k++; draw(); };
+    };
+    draw();
+  }
+  /* черновик сохраняется сам каждые несколько секунд — можно выйти и вернуться */
+  function autosave() {
+    if (!task || !window.CPP || !CPP.ide) return; var ide = CPP.ide(), prj = ide && ide.get && ide.get(); if (!prj || prj.kind !== 'console') return;
+    try { var j = JSON.stringify(CPP.IDE_TEST.prjJSON(prj)); if (j !== task.saved) { localStorage.setItem('dgLab:' + task.t.id, j); task.saved = j; } } catch (e) {}
+  }
   function taskWin(t, l) {
     var tests = t.tests || [];
-    tw = makeWin('prx-task', t.name + ' · ' + (l.short || ''), '<div class="tk-scroll"><div class="tk-text">' + md(t.text || t.title || '') + '</div>' +
+    tw = makeWin('prx-task', t.name + ' · ' + (l.short || ''), '<div class="tk-scroll"><p class="tk-brief">🎯 <b>Коротко:</b> ' + esc(brief(t)) + '</p><details class="tk-full" open><summary>Полное условие из методички</summary><div class="tk-text">' + md(t.text || t.title || '') + '</div></details>' +
       (t.note ? '<p class="tk-note">⚠ ' + md(t.note) + '</p>' : '') +
       (t.kind === 'vcl' ? formPic(t.vcl && t.vcl.ref) + '<details class="tk-livebox" open><summary>🧭 Делаем, как в настоящем Builder</summary><ol class="tk-live"></ol></details>' : '<details class="tk-livebox" open><summary>🧭 Делаем с нуля, как в настоящем Builder</summary><ol class="tk-live"></ol>' +
         '<p class="tk-skip">Уже умеешь? <a href="#" data-auto>Создать консольный проект за меня</a></p></details>') +
-      '<details class="tk-steps"><summary>💡 Подсказка: как решать по шагам</summary><div>' + md(t.steps || 'Подсказки нет — посмотри эталон.') + '</div></details>' +
+      '<div class="tk-hints"></div>' +
       '<details class="tk-ref"><summary>📄 Эталонное решение</summary><pre class="tk-code"></pre></details>' +
       '<div class="tk-res" aria-live="polite"></div></div>' +
       '<div class="prx-bar">' + (t.kind === 'vcl' ? '<button class="w2k primary" data-checkv>✔ Проверить' + ((t.vcl && t.vcl.checks || []).length ? ' (' + t.vcl.checks.length + ')' : '') + '</button><span class="grow"></span>' : '<button class="w2k primary" data-check>✔ Проверить' + (tests.length ? ' (' + tests.length + ')' : '') + '</button><span class="grow"></span>') +
       '<button class="w2k" data-list>📁 К списку</button></div>', { ico: '📝', min: true });
     tw.querySelector('.tk-code').textContent = t.ref || (t.vcl && t.vcl.ref ? t.vcl.ref.code : '') || t.unit || '';
+    hints(tw.querySelector('.tk-hints'), t);
     tw.querySelector('[data-x]').onclick = function () { openList(task.sid, task.li); };
     tw.querySelector('[data-list]').onclick = function () { openList(task.sid, task.li); };
     var ck = tw.querySelector('[data-check]'); if (ck) ck.onclick = check;
@@ -399,7 +492,7 @@
     };
     var cv = tw.querySelector('[data-checkv]'); if (cv) cv.onclick = checkVcl;
     if (t.kind === 'vcl') { clearInterval(PR.stepT); PR.stepT = setInterval(function () { if (!tw || !task || task.t !== t) { clearInterval(PR.stepT); return; } drawVclSteps(t); }, 900); drawVclSteps(t); }
-    if (t.kind !== 'vcl') { clearInterval(PR.stepT); PR.stepT = setInterval(function () { if (!tw || !task || task.t !== t) { clearInterval(PR.stepT); return; } drawSteps(t); }, 700); drawSteps(t); }
+    if (t.kind !== 'vcl') { clearInterval(PR.stepT); var tk = 0; PR.stepT = setInterval(function () { if (!tw || !task || task.t !== t) { clearInterval(PR.stepT); return; } drawSteps(t); if (++tk % 6 === 0) autosave(); }, 700); drawSteps(t); }
     if (save()[t.id]) tw.querySelector('.tk-res').innerHTML = '<p class="tk-ok">✓ Это задание ты уже решал.</p>';
   }
   function userCode() {
@@ -427,7 +520,7 @@
       h += '<div class="tk-t ' + (cmp.ok ? 'ok' : 'bad') + '"><b>Проверка ' + (i + 1) + (ts.label ? ' · ' + esc(ts.label) : '') + ' ' + (cmp.ok ? '✓' : '✗') + '</b>' + (cmp.msg ? '<span>' + esc(cmp.msg) + '</span>' : '') +
         (cmp.ok ? '' : '<div class="tk-cols"><div><i>Должно быть</i><pre>' + esc(exp.join('\n')) + '</pre></div><div><i>У тебя</i><pre>' + esc(got.join('\n')) + '</pre></div></div>') + '</div>';
     });
-    res.innerHTML = (all ? '<p class="tk-ok">✓ Все проверки пройдены!</p>' : '<p class="tk-bad">Есть ошибки — смотри, где вывод отличается.</p>') + h;
+    res.innerHTML = (all ? '<p class="tk-ok">✓ Все проверки пройдены!</p>' : '<p class="tk-bad">Почти! Ничего страшного — сравни «Должно быть» и «У тебя», поправь и проверь ещё раз. Черновик сохранён.</p>') + h;
     if (all) markSolved(t, 'Все проверки пройдены — задание решено!');
   }
   function markSolved(t, msg) {
@@ -442,7 +535,7 @@
   }
   document.addEventListener('bcb-hide', function () { if (PR.active && !vclBox) openList(curSid, task ? task.li : undefined); });
 
-  PR.open = function (sid) { if (!SUBJ[sid] || PR.active) return; curSid = sid; enterRoom(sid, function () { if (room) room.classList.add('desk'); openList(sid); }); };
+  PR.open = function (sid) { if (!SUBJ[sid] || PR.active) return; if (curSid !== sid) view = { only: false, q: '' }; curSid = sid; enterRoom(sid, function () { if (room) room.classList.add('desk'); openList(sid); }); };
 })();
 /* запуск программы (F9 или ▶ Run) в Builder — для шага «Нажми F9» */
 (function () {
