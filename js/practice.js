@@ -14,7 +14,7 @@
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var md = function (s) { return D.md ? D.md(String(s || '')) : esc(s).replace(/\n/g, '<br>'); };
   var SUBJ = {
-    cpp: { title: 'C++Builder 6', data: 'data/subjects/cpp/labs.json', js: ['cpp-parse', 'cpp-lib', 'cpp-run', 'cpp-stdlib', 'cpp-ui', 'vcl', 'vcl-ui', 'bcb-ide'].map(function (n) { return 'js/cpp/' + n + '.js'; }), css: 'css/bcb.css' }
+    cpp: { title: 'C++Builder 6', data: 'data/subjects/cpp/labs.json', js: ['cpp-parse', 'cpp-lib', 'cpp-run', 'cpp-stdlib', 'cpp-ui', 'vcl', 'vcl-ui', 'bcb-ide', 'bcb-skin'].map(function (n) { return 'js/cpp/' + n + '.js'; }), css: 'css/bcb.css' }
   };
   var labs = {}, loading = {};
   function save() { var S = D.save; S.labs = S.labs || {}; return S.labs; }

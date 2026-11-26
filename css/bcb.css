@@ -158,3 +158,24 @@ pre.cpp-code{background:var(--ed-bg);color:var(--ed-ink);border:1px solid var(--
 .vpop .pm{padding:2px 16px;cursor:default;white-space:nowrap} .vpop .pm:hover{background:#0a246a;color:#fff} .vpop .pm.dis{color:#808080}
 .vpop hr{border:0;border-top:1px solid #808080;border-bottom:1px solid #fff;margin:2px 0}
 @media (max-width:760px){ .bcb-main{grid-template-columns:minmax(0,1fr)} .oi{border-right:0;border-bottom:1px solid #808080} .oi-grid{max-height:200px} }
+
+/* ===== «шкурка» C++Builder 6 для игры (bcb-skin.js): значки как в Builder 6, редактор Courier New без номеров строк ===== */
+.bcb-pal .pi{width:28px;height:28px;padding:1px;flex:none}
+.bcb-pal .pi small{display:none}
+.bcb-pal .pi .bi,.pal-arrow .bi{display:block;margin:auto}
+.bcbx.bcb6 .bx-palw{position:relative}
+.pal-arrow{position:absolute;left:6px;bottom:2px;width:28px;height:28px;padding:1px;background:#d4d0c8;border:1px solid transparent;cursor:pointer}
+.pal-arrow.on{border-color:#808080 #fff #fff #808080;background:#e8e6e0}
+.bcbx.bcb6 .bx-palw .bcb-pal{padding-left:38px;min-height:34px;align-items:center}
+.bcbx.bcb6 .bx-palw .pal-tabs{flex-wrap:nowrap;overflow:hidden}
+.bcbx.bcb6 .bx-palw .ptab{font:11px Tahoma,"MS Sans Serif",sans-serif;padding:1px 6px;background:#d4d0c8;font-weight:400;white-space:nowrap}
+.bcbx.bcb6 .bx-palw .ptab.on{font-weight:400;position:relative;top:1px;padding-bottom:2px}
+.bcbx.bcb6 .bx-tools button .ti16{display:block;margin:auto}
+.bcbx.bcb6 .bx-tools button{font-size:0}
+.bcbx.bcb6 .bx-edw .ced{font:13px/1.25 "Courier New",Courier,monospace;--ed-s:#000080;--ed-n:#000080}
+.bcbx.bcb6 .ced .cg{color:transparent;min-width:24px;background:#f4f4f4;border-right:1px solid #c0c0c0}
+.bcbx.bcb6 .ced .cg .err{color:#fff}
+.bcbx.bcb6 .bx-edw .ro{font:13px/1.25 "Courier New",Courier,monospace}
+.bcbx.bcb6 .dz{background:#3a6ea5}
+.oi-grid .row>span:first-child{color:#000}
+.oi-grid input,.oi-grid select{color:#000080}
