@@ -680,3 +680,7 @@ details.my-note[open]>.nt-body{animation:richIn .45s ease-out}
 details.my-note.drop{animation:briefDrop .8s cubic-bezier(.2,.8,.3,1),briefGlow 1.6s ease-in-out .8s 2;border-color:#FAC775;transform-origin:top}
 .note-btn.hot{border-color:#FAC775;animation:briefGlow 1.6s ease-in-out 3}
 @media (prefers-reduced-motion:reduce){details.my-note.drop,.note-btn.hot{animation-duration:.01s!important}}
+/* метка источника вопроса */
+.src-badge{display:inline-block;margin:0 0 6px;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.2px}
+.src-badge.exam{background:#3d2f10;color:#FAC775;border:1px solid #BA7517}
+.src-badge.add{background:#26252b;color:#B4B2A9;border:1px solid #5F5E5A}

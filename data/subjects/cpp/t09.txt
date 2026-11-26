@@ -5,9 +5,10 @@
 <variant> Form Window <tr>Окно формы</tr>
 <variant> Form Unit <tr>Модуль формы</tr>
 <variant> External Library <tr>Внешняя библиотека</tr>
-<explain>Ответ: в Object Inspector — там на вкладке Properties задают свойства выбранного компонента (Caption, Color, Width…).
-Почему не другие: Code Editor — текст программы, Form Window — сама форма.
-По лекции: тема 9, раздел «Что такое IDE и C++Builder» — таблица частей IDE.</explain>
+<explain>Почему верно: свойства компонента (Caption, Color, Width…) меняют в Object Inspector — окне слева со списком свойств выделенного объекта.
+Ловушки: в Code Editor пишут код; в окне формы двигают компоненты; модуль формы — это файл Unit1.cpp.
+По лекции: тема 9, раздел «Что такое Object Inspector?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> A part of C++ Builder IDE that is used to examine and edit the properties and events for the currently selected object:
 <tr>Часть среды C++ Builder, в которой смотрят и меняют свойства и события выделенного сейчас объекта:</tr>
@@ -16,8 +17,10 @@
 <variant> Components Palette <tr>Палитра компонентов</tr>
 <variant> View Stack Window <tr>Окно стека</tr>
 <variant> Local Variables Window <tr>Окно локальных переменных</tr>
-<explain>Ответ: Object Inspector — смотреть и менять свойства (Properties) и события (Events) выделенного объекта.
-По лекции: тема 9, разделы «Что такое IDE…» и «Формулировки из теста».</explain>
+<explain>Почему верно: Object Inspector показывает и даёт менять свойства (вкладка Properties) и события (вкладка Events) выделенного объекта.
+Ловушки: в Code Editor пишут код; палитра — набор компонентов; окна стека и локальных переменных — для отладки.
+По лекции: тема 9, раздел «Что такое Object Inspector?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> A part of a C++ Builder IDE that holds the set of a program commands:
 <tr>Часть среды C++ Builder, в которой хранится набор команд программы:</tr>
@@ -26,8 +29,10 @@
 <variant> Components Palette <tr>Палитра компонентов</tr>
 <variant> Stack Window <tr>Окно стека</tr>
 <variant> Standard TollBar <tr>Стандартная панель инструментов</tr>
-<explain>Ответ: Code Editor — редактор кода, хранит команды программы (Unit1.cpp).
-По лекции: тема 9, раздел «Формулировки из теста».</explain>
+<explain>Почему верно: команды программы — это код, они пишутся и хранятся в Code Editor (редакторе кода).
+Ловушки: Object Inspector — свойства; палитра — компоненты; панели инструментов — кнопки.
+По лекции: тема 9, раздел «Назначение редактора исходного кода (Code Editor)?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> The self-contained building blocks that are carried on the form to create your applications:
 <tr>Самостоятельные «строительные блоки», которые кладут на форму, чтобы создать приложение:</tr>
@@ -36,8 +41,10 @@
 <variant> Events <tr>События</tr>
 <variant> Forms <tr>Формы</tr>
 <variant> Units <tr>Модули</tr>
-<explain>Ответ: Components (компоненты) — самостоятельные «кирпичики», которые кладут на форму, чтобы собрать приложение.
-По лекции: тема 9, раздел «Формулировки из теста».</explain>
+<explain>Почему верно: компоненты (кнопки, поля, метки) — «кубики LEGO», их берут с палитры и кладут на форму.
+Ловушки: функции и события — часть кода; формы — окна, на которые кладут компоненты; модули — файлы.
+По лекции: тема 9, раздел «Что такое палитра компонентов (Component Palette)?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> The components that look the same at the design stage and during the application execution:
 <tr>Компоненты, которые выглядят одинаково и при проектировании, и во время работы приложения:</tr>
@@ -46,8 +53,10 @@
 <variant> Parent components <tr>Родительские компоненты</tr>
 <variant> System components <tr>Системные компоненты</tr>
 <variant> Dialog components <tr>Компоненты-диалоги</tr>
-<explain>Ответ: Visual components (визуальные) — выглядят одинаково при проектировании и во время работы: Button, Edit, Label.
-По лекции: тема 9, раздел «Формулировки из теста».</explain>
+<explain>Почему верно: визуальные компоненты видны и при проектировании, и при работе: Button, Edit, Label.
+Ловушки: невизуальные (Timer) при работе не видны; «родительские», «системные» — не про видимость.
+По лекции: тема 9, раздел «Что такое палитра компонентов (Component Palette)?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Visual components are also called ...
 <tr>Визуальные компоненты также называют ...</tr>
@@ -56,8 +65,10 @@
 <variant> Dialogs <tr>Диалоги</tr>
 <variant> Tools <tr>Инструменты</tr>
 <variant> Methods <tr>Методы</tr>
-<explain>Ответ: Controls (элементы управления) — второе название визуальных компонентов.
-По лекции: тема 9, раздел «Формулировки из теста».</explain>
+<explain>Почему верно: визуальные компоненты называют элементами управления (controls): пользователь их видит и с ними работает.
+Ловушки: клавиши, диалоги, инструменты, методы — другое.
+По лекции: тема 9, раздел «Что такое палитра компонентов (Component Palette)?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> The components that invisible during the application execution:
 <tr>Компоненты, которые не видны во время работы приложения:</tr>
@@ -66,8 +77,10 @@
 <variant> Visual components <tr>Визуальные компоненты</tr>
 <variant> Methods <tr>Методы</tr>
 <variant> Dialogs <tr>Диалоги</tr>
-<explain>Ответ: Non-visual (невизуальные) — не видны во время работы программы: Timer, MainMenu, OpenDialog.
-По лекции: тема 9, раздел «Формулировки из теста».</explain>
+<explain>Почему верно: невизуальные (Timer, OpenDialog) видны только при проектировании значком, а во время работы их не видно.
+Ловушки: controls и визуальные — как раз видны.
+По лекции: тема 9, раздел «Что такое палитра компонентов (Component Palette)?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> What is Borland C++ Builder 6?
 <tr>Что такое Borland C++ Builder 6?</tr>
@@ -76,9 +89,10 @@
 <variant> Operating System <tr>Операционная система</tr>
 <variant> Graphics Library <tr>Графическая библиотека</tr>
 <variant> Low-Level Programming Language Compiler <tr>Компилятор низкоуровневого языка</tr>
-<explain>Ответ: Integrated Development Environment (IDE) — интегрированная среда разработки: редактор, дизайнер форм, компилятор и отладчик в одной программе.
-Ловушка: компилятор — только одна её часть.
-По лекции: тема 9, раздел «Что такое IDE и C++Builder».</explain>
+<explain>Почему верно: C++Builder — интегрированная среда разработки (IDE): в ней сразу редактор, компилятор, дизайнер форм и отладчик.
+Ловушки: «компилятор C++» — только одна её часть; ОС и графическая библиотека — неверно.
+По лекции: тема 9, раздел «Что такое интегрированная среда разработки (IDE)?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Which property of the StaticText component controls the alignment of text within an object?
 <tr>Какое свойство компонента StaticText управляет выравниванием текста внутри объекта?</tr>
@@ -87,8 +101,10 @@
 <variant> Position
 <variant> TextPosition
 <variant> TextAlignment
-<explain>Ответ: Alignment — выравнивание текста у StaticText (и Label): taLeftJustify, taCenter, taRightJustify.
-По лекции: тема 9, раздел «Формулировки из теста» (компоненты из лабы с часами), тема 11.</explain>
+<explain>Почему верно: выравнивание по-английски Alignment: taLeftJustify, taCenter, taRightJustify.
+Ловушки: TextAlign, Position, TextPosition, TextAlignment — таких свойств у StaticText нет.
+По лекции: тема 9, раздел «Что такое Object Inspector?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> What border type is set for StaticText when the BorderStyle property is set to sbsSunken?
 <tr>Какая рамка будет у StaticText, если BorderStyle = sbsSunken?</tr>
@@ -97,8 +113,10 @@
 <variant> Simple line <tr>Простая линия</tr>
 <variant> Double line <tr>Двойная линия</tr>
 <variant> The type is bound to the parent style. <tr>Тип зависит от стиля родителя.</tr>
-<explain>Ответ: Sunken border — вдавленная рамка. sbsNone — без рамки, sbsSingle — простая линия.
-По лекции: тема 9, раздел «Формулировки из теста».</explain>
+<explain>Почему верно: sbsSunken — sunken = «вдавленный»: рамка выглядит утопленной.
+Ловушки: без рамки — sbsNone, простая — sbsSingle.
+По лекции: тема 9, раздел «Что такое Object Inspector?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> What function is used to get the current time?
 <tr>Какая функция используется, чтобы получить текущее время?</tr>
@@ -107,8 +125,10 @@
 <variant> CurrentTime()
 <variant> DateTime.Now()
 <variant> DateTime x->Now();
-<explain>Ответ: Now().TimeString() — текущее время строкой; Now() возвращает дату и время, TimeString() берёт время.
-По лекции: тема 9, раздел «Формулировки из теста».</explain>
+<explain>Почему верно: Now() возвращает текущие дату и время (TDateTime), а .TimeString() превращает время в строку для Label.
+Ловушки: GetTime, CurrentTime, DateTime.Now() — функции из других языков или выдуманные.
+По лекции: тема 9, раздел «Что такое палитра компонентов (Component Palette)?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> How does the FormStyle property with the value fsStayOnTop affect a form?
 <tr>Как свойство FormStyle со значением fsStayOnTop влияет на форму?</tr>
@@ -117,9 +137,10 @@
 <variant> Makes the form transparent <tr>Делает форму прозрачной</tr>
 <variant> Hides the form in the system tray <tr>Прячет форму в системный трей</tr>
 <variant> Anchors the form to the top edge of the monitor screen <tr>Прикрепляет форму к верхнему краю экрана</tr>
-<explain>Ответ: форма всегда поверх других окон (Stay On Top).
-Почему не другие: модальность — ShowModal(), прозрачность — AlphaBlend.
-По лекции: тема 9, раздел «Формулировки из теста», и тема 11 (свойства формы).</explain>
+<explain>Почему верно: fsStayOnTop = «оставаться наверху»: форма всегда поверх других окон.
+Ловушки: модальной форму делает ShowModal(); прозрачность и трей — другие свойства.
+По лекции: тема 9, раздел «Что такое Object Inspector?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Which property of the BitBtn object is used to customize the button's appearance?
 <tr>Какое свойство объекта BitBtn используется для настройки внешнего вида кнопки?</tr>
@@ -128,8 +149,10 @@
 <variant> Appearance
 <variant> ButtonType
 <variant> ExternView
-<explain>Ответ: Kind — готовый вид кнопки BitBtn (bkOK, bkCancel, bkClose…).
-По лекции: тема 9, раздел «Формулировки из теста».</explain>
+<explain>Почему верно: у BitBtn свойство Kind выбирает готовый вид кнопки (bkOK, bkCancel, bkClose) — с картинкой и подписью.
+Ловушки: Style, Appearance, ButtonType, ExternView — таких свойств у BitBtn нет.
+По лекции: тема 9, раздел «Что такое Object Inspector?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Which component property, StaticText, when set to True, automatically adjusts the component's size?
 <tr>Какое свойство компонента StaticText, если поставить True, автоматически подгоняет его размер?</tr>
@@ -138,8 +161,10 @@
 <variant> AutoFit
 <variant> AutoAdjust
 <variant> Resizeable = true
-<explain>Ответ: AutoSize = true — размер компонента сам подгоняется под текст.
-По лекции: тема 9, раздел «Формулировки из теста», и тема 11.</explain>
+<explain>Почему верно: AutoSize = «авторазмер»: компонент сам подгоняет размер под текст.
+Ловушки: AutoResize, AutoFit, AutoAdjust — выдуманные имена.
+По лекции: тема 9, раздел «Что такое Object Inspector?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> What is the extension of project files in Borland C++ Builder?
 <tr>Какое расширение у файлов проекта в Borland C++ Builder?</tr>
@@ -148,9 +173,10 @@
 <variant> .h
 <variant> .exe
 <variant> .bcc
-<explain>Ответ: .bpr — файл проекта в Builder 6 (Project1.bpr).
-Почему не другие: .cpp — код, .h — заголовок, .exe — готовая программа.
-По лекции: тема 9, раздел «Проект, компиляция, запуск».</explain>
+<explain>Почему верно: файл проекта C++Builder 6 — .bpr (Borland Project).
+Ловушки: .cpp — модуль с кодом, .h — заголовок, .exe — готовая программа, .bcc — выдумка.
+По лекции: тема 9, раздел «Что такое проект в C++Builder?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> What is the Glyph property of the BitBtn component used for?
 <tr>Для чего свойство Glyph у компонента BitBtn?</tr>
@@ -159,6 +185,7 @@
 <variant> To set the color of the button <tr>Чтобы задать цвет кнопки</tr>
 <variant> To set the shape of the button <tr>Чтобы задать форму кнопки</tr>
 <variant> To change the location of the event handler <tr>Чтобы изменить место обработчика события</tr>
-<explain>Ответ: Glyph — картинка на кнопке BitBtn.
-Почему не другие: текст кнопки — Caption, цвет и форма — другие свойства.
-По лекции: тема 9, раздел «Формулировки из теста».</explain>
+<explain>Почему верно: Glyph = «значок»: картинка на кнопке BitBtn.
+Ловушки: текст на кнопке — Caption, цвет и форма задаются иначе.
+По лекции: тема 9, раздел «Что такое Object Inspector?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>

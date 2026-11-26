@@ -5,8 +5,10 @@
 <variant> Value
 <variant> Content
 <variant> EditText
-<explain>Ответ: Text — однострочный текст поля TEdit.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)», и тема 11.</explain>
+<explain>Почему верно: у TEdit (поле ввода) текст хранится в свойстве Text.
+Ловушки: Caption — у тех, кто только показывает надпись (Label, Button); Value, Content, EditText — нет таких свойств.
+По лекции: тема 15, раздел «Доп.: Edit, Label, Button — Text и Caption».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Which core property of the TLabel component is used to get or set the text it displays?
 <tr>Какое основное свойство TLabel используется, чтобы получить или задать показываемый текст?</tr>
@@ -15,8 +17,10 @@
 <variant> LabelText
 <variant> Value
 <variant> Content
-<explain>Ответ: Caption — текст, который показывает TLabel.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: TLabel — надпись, её текст — Caption («подпись»).
+Ловушки: Text — у полей ввода; LabelText, Value, Content — выдуманные.
+По лекции: тема 15, раздел «Доп.: Edit, Label, Button — Text и Caption».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Which core property of the TMemo component is used to access its textual content, typically as a collection of strings?
 <tr>Какое основное свойство TMemo даёт доступ к его тексту, обычно как к набору строк?</tr>
@@ -25,9 +29,10 @@
 <variant> Content
 <variant> MemoLines
 <variant> StringsList
-<explain>Ответ: Lines — текст TMemo как набор строк (TStrings).
-Ловушка: Text у Memo тоже есть (весь текст одной строкой), но «коллекция строк» — это Lines.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: у Memo (многострочного поля) строки лежат в Lines — списке TStrings: Lines->Strings[0], Lines->Count.
+Ловушки: Text у Memo тоже есть, но как набор строк — это Lines; MemoLines, StringsList — выдуманные.
+По лекции: тема 15, раздел «Доп.: Memo и его строки Lines».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Which method of the TStrings class (used by the Lines property of TMemo) should be used to append a new line of text to the end of a TMemo?
 <tr>Каким методом класса TStrings (его использует свойство Lines у TMemo) добавить новую строку в конец TMemo?</tr>
@@ -36,9 +41,10 @@
 <variant> Memo1->AppendLine("New line");
 <variant> Memo1->Lines->Append("New line");
 <variant> Memo1->Text.Add("New line");
-<explain>Ответ: Memo1->Lines->Add("New line"); — добавить строку в конец.
-Почему не другие: Insert требует номер позиции, AppendLine нет, у Text нет метода Add. Append в TStrings существует, но в базе ответ Add.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: Add добавляет строку в конец списка: Memo1->Lines->Add("…");.
+Ловушки: Insert требует номер позиции; Memo1->AppendLine и Text.Add не существуют. Append у TStrings есть, но в ключе ответ — Add.
+По лекции: тема 15, раздел «Доп.: Memo и его строки Lines».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> What is the correct way in C++Builder to copy the text from a TEdit component to a TLabel component?
 <tr>Как в C++Builder правильно скопировать текст из TEdit в TLabel?</tr>
@@ -47,8 +53,10 @@
 <variant> Label1->SetText(Edit1->Text);
 <variant> Label1->Value = Edit1->Text;
 <variant> Label1->Content = Edit1->Text;
-<explain>Ответ: Label1->Caption = Edit1->Text; — у метки текст в Caption, у поля — в Text.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: у Label текст — Caption, у Edit — Text. Слева то, куда пишем: Label1->Caption = Edit1->Text;.
+Ловушки: у Label нет Text, Value, Content; SetText — не метод Label.
+По лекции: тема 15, раздел «Доп.: Edit, Label, Button — Text и Caption».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> What is the correct sequence of C++Builder code to move (cut and paste) the text from EditSource to ButtonDestination?
 <tr>Какая последовательность кода C++Builder правильно перемещает (вырезает и вставляет) текст из EditSource в ButtonDestination?</tr>
@@ -57,9 +65,10 @@
 <variant> ButtonDestination->Caption = EditSource->Text; EditSource->Clear();
 <variant> MoveText(EditSource, ButtonDestination);
 <variant> ButtonDestination->Caption = EditSource->MoveText();
-<explain>Ответ: ButtonDestination->Caption = EditSource->Text; EditSource->Text = ""; — сначала скопировать, потом очистить источник.
-Ловушка: вариант с EditSource->Clear() тоже работает, но в базе правильный ответ — присвоить пустую строку.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: «переместить» = скопировать и очистить источник: ButtonDestination->Caption = EditSource->Text; EditSource->Text = "";. У кнопки текст — Caption.
+Ловушки: Text.Cut(), MoveText — не существуют; вариант с Clear() по ключу не засчитан.
+По лекции: тема 15, раздел «Доп.: Edit, Label, Button — Text и Caption».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Which method of TEdit is used to programmatically select all text within the component?
 <tr>Какой метод TEdit выделяет из кода весь текст в компоненте?</tr>
@@ -68,8 +77,10 @@
 <variant> Edit1->SetSelection(0, Edit1->Text.Length());
 <variant> Edit1->MarkAll();
 <variant> Edit1->FocusAndSelect();
-<explain>Ответ: Edit1->SelectAll(); — выделить весь текст.
-По лекции: тема 15, раздел «Текст между компонентами» — выделение и буфер обмена.</explain>
+<explain>Почему верно: SelectAll() — «выделить всё».
+Ловушки: SelectText, MarkAll, FocusAndSelect не существуют; SetSelection — не метод TEdit.
+По лекции: тема 15, раздел «Доп.: выделение текста и буфер обмена».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Which method of the Lines object of a TMemo component is used to programmatically clear all its text content?
 <tr>Какой метод объекта Lines у TMemo очищает из кода весь текст?</tr>
@@ -78,9 +89,10 @@
 <variant> Memo1->Lines->Empty();
 <variant> Memo1->Lines->RemoveAll();
 <variant> Memo1->Clear();
-<explain>Ответ: Memo1->Lines->Clear(); — очистить все строки.
-Ловушка: Memo1->Clear() тоже есть, но вопрос про метод объекта Lines.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: строки Memo лежат в Lines, а очищает список Lines->Clear().
+Ловушки: ClearText, Lines->Empty, RemoveAll не существуют. Memo1->Clear() тоже работает, но по ключу — Lines->Clear().
+По лекции: тема 15, раздел «Доп.: Memo и его строки Lines».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> How do you programmatically copy the first line of text from Memo1 into Edit1?
 <tr>Как из кода скопировать первую строку текста из Memo1 в Edit1?</tr>
@@ -89,8 +101,10 @@
 <variant> Edit1->Text = Memo1->Lines->First();
 <variant> Edit1->Text = Memo1->Strings[0];
 <variant> Edit1->Text = Memo1->Lines[0];
-<explain>Ответ: Edit1->Text = Memo1->Lines->Strings[0]; — первая строка Memo (нумерация с 0).
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: первая строка — индекс 0 в Lines->Strings: Edit1->Text = Memo1->Lines->Strings[0];.
+Ловушки: Get(0), First() — не так; Memo1->Strings и Memo1->Lines[0] — неверные обращения (Lines — указатель).
+По лекции: тема 15, раздел «Доп.: Memo и его строки Lines».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> (НЕ ТОЧНО) Which property of TEdit must be set to false to allow programmatic changes to its Text property? (Какое свойство TEdit нужно поставить в false, чтобы можно было менять его Text из кода?)
 <variantright> ReadOnly
@@ -98,9 +112,10 @@
 <variant> Visible
 <variant> CanWrite
 <variant> Locked
-<explain>Ответ: ReadOnly — по ключу базы.
-Вопрос составлен неверно: ReadOnly мешает только ручному вводу, а из кода Text можно менять всегда. На экзамене выбирай ReadOnly.
-По лекции: тема 15, раздел «Текст между компонентами», и тема 11 (ReadOnly).</explain>
+<explain>Почему верно (по ключу): ReadOnly.
+⚠ Вопрос составлен неверно: ReadOnly запрещает только ручной ввод, а из кода Text можно менять всегда. На экзамене выбирай ReadOnly.
+По лекции: тема 15, раздел «Доп.: Edit, Label, Button — Text и Caption».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> How do you copy all the text content from one TMemo (MemoSource) to another (MemoDest), replacing the destination's existing content?
 <tr>Как скопировать весь текст из одного TMemo (MemoSource) в другой (MemoDest), заменив то, что было в нём?</tr>
@@ -109,9 +124,10 @@
 <variant> MemoDest->Text = MemoSource->Text;
 <variant> MemoDest->CopyLines(MemoSource->Lines);
 <variant> MemoDest->Lines->ReplaceWith(MemoSource->Lines);
-<explain>Ответ: MemoDest->Lines->Assign(MemoSource->Lines); — Assign копирует все строки, заменяя старое содержимое.
-Ловушка: MemoDest->Lines = MemoSource->Lines; присвоило бы указатель, а не скопировало строки.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: Assign копирует весь список строк, заменяя старый.
+Ловушки: присвоить указатель (Lines = Lines) нельзя; CopyLines и ReplaceWith не существуют. Через Text тоже скопируется, но по ключу — Assign.
+По лекции: тема 15, раздел «Доп.: Memo и его строки Lines».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> How do you programmatically copy the entire multi-line content from TMemo into a standard TEdit (assuming the TEdit is capable of handling the entire string, though it won't display lines)?
 <tr>Как из кода скопировать весь многострочный текст из TMemo в обычный TEdit (считаем, что TEdit вместит всю строку, хотя строки показывать не будет)?</tr>
@@ -120,8 +136,10 @@
 <variant> Edit1->Text = Memo1->Lines->AllText;
 <variant> Edit1->Text = Memo1->GetText();
 <variant> Edit1->SetText(Memo1->Lines->Text);
-<explain>Ответ: Edit1->Text = Memo1->Lines->Text; — весь текст Memo одной строкой (в Edit видна только одна строка).
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: Lines->Text — весь текст списка одной строкой (с переводами строк).
+Ловушки: AllText, GetText() — нет таких; SetText — не метод TEdit.
+По лекции: тема 15, раздел «Доп.: Memo и его строки Lines».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Which method of the TStrings object is used to insert a new string at a specific index (e.g., at the beginning of the list)?
 <tr>Какой метод объекта TStrings вставляет новую строку в заданную позицию (например, в начало списка)?</tr>
@@ -130,9 +148,10 @@
 <variant> Memo1->Lines->Put(0, "New first line");
 <variant> Memo1->Lines->Set(0, "New first line");
 <variant> Memo1->Lines->AppendAt(0, "New first line");
-<explain>Ответ: Memo1->Lines->Insert(0, "New first line"); — вставить строку на позицию 0 (в начало).
-Почему не другие: Add не принимает номер, Put, Set и AppendAt здесь не подходят.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: Insert(позиция, строка) вставляет в нужное место; Insert(0, …) — в самое начало.
+Ловушки: Add всегда пишет в конец и номер не принимает; Put и Set заменяют существующую строку; AppendAt не существует.
+По лекции: тема 15, раздел «Доп.: Memo и его строки Lines».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Which property is used to programmatically get the number of lines currently contained within a TMemo component?
 <tr>Какое свойство используется, чтобы из кода узнать количество строк в TMemo?</tr>
@@ -141,8 +160,10 @@
 <variant> Memo1->Lines->Size
 <variant> Memo1->TextLength
 <variant> Memo1->NumLines
-<explain>Ответ: Memo1->Lines->Count — количество строк.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: количество элементов TStrings — Count: Memo1->Lines->Count.
+Ловушки: Length, Size, NumLines — так у TStrings не называется; TextLength — длина текста в символах.
+По лекции: тема 15, раздел «Доп.: Memo и его строки Lines».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> How do you programmatically remove the last line from a TMemo component?
 <tr>Как из кода удалить последнюю строку из TMemo?</tr>
@@ -151,9 +172,10 @@
 <variant> Memo1->Lines->Cut(Memo1->Lines->Count - 1);
 <variant> Memo1->Lines->Delete(LAST_LINE);
 <variant> Memo1->Lines->Strings[Memo1->Lines->Count - 1] = "";
-<explain>Ответ: Memo1->Lines->Delete(Memo1->Lines->Count - 1); — последняя строка имеет номер Count−1.
-Ловушка: присвоить последней строке "" — строка останется, только пустая.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: последняя строка имеет индекс Count-1 (нумерация с 0), а удаляет её Delete(индекс).
+Ловушки: RemoveLast, Cut, LAST_LINE не существуют; присвоить "" — строка станет пустой, но не удалится.
+По лекции: тема 15, раздел «Доп.: Memo и его строки Lines».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Which property of the TButton component (or TSpeedButton) is used to display text on its surface?
 <tr>Какое свойство TButton (или TSpeedButton) используется, чтобы показать текст на кнопке?</tr>
@@ -162,8 +184,10 @@
 <variant> ButtonText
 <variant> Label
 <variant> Title
-<explain>Ответ: Caption — текст на кнопке (TButton, TSpeedButton).
-По лекции: тема 11, раздел «Свойства Button, Edit, Label».</explain>
+<explain>Почему верно: надпись на кнопке — Caption (как у Label).
+Ловушки: Text — у полей ввода; ButtonText, Label, Title — выдуманные.
+По лекции: тема 15, раздел «Доп.: Edit, Label, Button — Text и Caption».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> How do you programmatically copy the currently selected text within an TEdit component to the system Clipboard?
 <tr>Как из кода скопировать выделенный в TEdit текст в системный буфер обмена?</tr>
@@ -172,8 +196,10 @@
 <variant> Edit1->CopySelection();
 <variant> TClipboard::CopyFrom(Edit1->SelText);
 <variant> Edit1->SelectedText.CopyToClipboard();
-<explain>Ответ: Edit1->CopyToClipboard(); — скопировать выделенный текст в буфер обмена.
-По лекции: тема 15, раздел «Текст между компонентами» — буфер обмена.</explain>
+<explain>Почему верно: CopyToClipboard() копирует выделенный текст в буфер обмена (как Ctrl+C).
+Ловушки: Clipboard()->Copy(Edit1), CopySelection, TClipboard::CopyFrom — не так работает.
+По лекции: тема 15, раздел «Доп.: выделение текста и буфер обмена».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Which method of TEdit is used to programmatically move (cut) the currently selected text to the system Clipboard?
 <tr>Какой метод TEdit из кода перемещает (вырезает) выделенный текст в системный буфер обмена?</tr>
@@ -182,8 +208,10 @@
 <variant> Edit1->MoveSelection();
 <variant> TClipboard::CutFrom(Edit1->SelText);
 <variant> Edit1->ClearSelection();
-<explain>Ответ: Edit1->CutToClipboard(); — вырезать выделенный текст в буфер.
-По лекции: тема 15, раздел «Текст между компонентами» — буфер обмена.</explain>
+<explain>Почему верно: CutToClipboard() вырезает выделенное в буфер (как Ctrl+X).
+Ловушки: ClearSelection только удаляет без буфера; CopyAndClear, MoveSelection — выдуманные.
+По лекции: тема 15, раздел «Доп.: выделение текста и буфер обмена».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> If you want to append text from an TEdit to a TMemo, followed by a standard newline character, which line of code is correct?
 <tr>Если нужно добавить текст из TEdit в TMemo с переходом на новую строку, какая строка кода правильная?</tr>
@@ -192,8 +220,10 @@
 <variant> Memo1->Lines->Text += Edit1->Text;
 <variant> Memo1->AddText(Edit1->Text);
 <variant> Memo1->Lines->Strings[Memo1->Lines->Count] = Edit1->Text;
-<explain>Ответ: Memo1->Lines->Add(Edit1->Text); — Add сам добавляет строку с переходом на новую строку, "\n" не нужен.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: Lines->Add добавляет строку целиком и сам переводит на новую, отдельный \n не нужен.
+Ловушки: AddText нет; Strings[Count] — за границей списка; Text += — склеит без нужной строки.
+По лекции: тема 15, раздел «Доп.: Memo и его строки Lines».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Which property of TEdit is used to programmatically set the starting position of the text selection?
 <tr>Какое свойство TEdit задаёт из кода начальную позицию выделения текста?</tr>
@@ -202,8 +232,10 @@
 <variant> CursorPos
 <variant> TextIndex
 <variant> SelectionStart
-<explain>Ответ: SelStart — с какого символа начинается выделение.
-По лекции: тема 15, раздел «Текст между компонентами» — выделение.</explain>
+<explain>Почему верно: SelStart (Selection Start) — откуда начинается выделение.
+Ловушки: SelectionBegin, CursorPos, TextIndex, SelectionStart — не свойства TEdit.
+По лекции: тема 15, раздел «Доп.: выделение текста и буфер обмена».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> (НЕ ТОЧНО) If you attempt to assign a multi-line string (with line breaks) to a TEdit's Text property, what is the most common result in VCL/FMX? (Если присвоить свойству Text у TEdit многострочный текст (с переносами строк), что обычно получится в VCL/FMX?)
 <variantright> Only the text up to the first line break will be displayed. <tr>Покажется только текст до первого переноса строки.</tr>
@@ -211,9 +243,10 @@
 <variant> The line breaks will be converted to spaces. <tr>Переносы строк превратятся в пробелы.</tr>
 <variant> The text will be displayed correctly as multi-line (if multiline property is true). <tr>Текст правильно покажется в несколько строк (если включено свойство multiline).</tr>
 <variant> The TEdit will automatically resize its height to accommodate the text. <tr>TEdit сам увеличит высоту под текст.</tr>
-<explain>Ответ: будет показан только текст до первого переноса строки — по ключу базы.
-Вопрос спорный: в VCL переносы внутри однострочного TEdit часто выглядят как странные символы. На экзамене выбирай первый вариант.
-По лекции: тема 15, раздел «Текст между компонентами» (в Edit видна одна строка).</explain>
+<explain>Почему верно (по ключу): TEdit однострочный, поэтому показывается только текст до первого переноса строки.
+⚠ Спорно: в VCL переносы могут показаться как непонятные символы. На экзамене выбирай первый вариант.
+По лекции: тема 15, раздел «Доп.: Edit, Label, Button — Text и Caption».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> Which property of TEdit determines the length of the currently selected text?
 <tr>Какое свойство TEdit задаёт длину выделенного сейчас текста?</tr>
@@ -222,8 +255,10 @@
 <variant> TextLength
 <variant> SelEnd
 <variant> SelectedSize
-<explain>Ответ: SelLength — длина выделенного текста.
-По лекции: тема 15, раздел «Текст между компонентами» — выделение.</explain>
+<explain>Почему верно: SelLength (Selection Length) — длина выделения.
+Ловушки: SelectionSize, SelEnd, SelectedSize — нет таких; TextLength — длина всего текста.
+По лекции: тема 15, раздел «Доп.: выделение текста и буфер обмена».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> If the TMemo component is very large, which is the most memory-efficient way to clear its contents?
 <tr>Если в TMemo очень много текста, какой способ очистить его самый экономный по памяти?</tr>
@@ -232,8 +267,10 @@
 <variant> Memo1->Lines->Assign(NULL);
 <variant> Memo1->Lines->Count = 0;
 <variant> Memo1->ClearContent();
-<explain>Ответ: Memo1->Lines->Clear(); — освобождает все строки сразу, самый экономный способ.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: Lines->Clear() очищает список напрямую — самый правильный и экономный способ.
+Ловушки: Text = "" и Assign(NULL) тоже очистят, но по ключу — Clear(); Count = 0 — Count только для чтения.
+По лекции: тема 15, раздел «Доп.: Memo и его строки Lines».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> To transfer the text of a TLabel to the third line of a TMemo (overwriting the existing content at that line), which index should be used with the Strings property?
 <tr>Чтобы перенести текст TLabel в третью строку TMemo (заменив то, что было в этой строке), какой индекс нужно указать у свойства Strings?</tr>
@@ -242,8 +279,10 @@
 <variant> Memo1->Lines->Count - 3
 <variant> 4
 <variant> Memo1->Lines->IndexOf("Third Line")
-<explain>Ответ: 2. Strings нумеруются с 0, поэтому третья строка — Strings[2].
-По лекции: тема 15, раздел «Текст между компонентами» — «третья строка — Strings[2]».</explain>
+<explain>Почему верно: нумерация строк с 0: первая — 0, вторая — 1, третья — 2.
+Ловушки: 3 — забыли, что счёт с нуля; Count-3 и IndexOf ищут не то.
+По лекции: тема 15, раздел «Доп.: Memo и его строки Lines».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> When moving text from an TEdit to another component, the best practice is to clear the source TEdit using:
 <tr>При перемещении текста из TEdit в другой компонент лучше всего очистить исходный TEdit так:</tr>
@@ -252,8 +291,10 @@
 <variant> EditSource->Reset();
 <variant> EditSource->SetText(NULL);
 <variant> EditSource->Value = NULL;
-<explain>Ответ: EditSource->Text = ""; — по ключу базы лучший способ очистить источник.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: очистить TEdit — присвоить пустую строку: EditSource->Text = "";. В ключе ожидают именно это.
+Ловушки: Clear() тоже есть, но по ключу не он; Reset, SetText(NULL), Value — неверно.
+По лекции: тема 15, раздел «Доп.: Edit, Label, Button — Text и Caption».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> If you want to copy the entire contents of a TMemo to the system Clipboard, which two methods can you combine?
 <tr>Если нужно скопировать всё содержимое TMemo в системный буфер обмена, какие два метода можно совместить?</tr>
@@ -262,8 +303,10 @@
 <variant> Memo1->CopyAllToClipboard();
 <variant> Memo1->Lines->CopyToClipboard();
 <variant> CopyFrom(Memo1->Lines->Text) on the TClipboard. <tr>CopyFrom(Memo1->Lines->Text) у TClipboard.</tr>
-<explain>Ответ: SelectAll(), потом CopyToClipboard() у самого TMemo — выделить всё и скопировать.
-По лекции: тема 15, раздел «Текст между компонентами» — «Весь Memo в буфер».</explain>
+<explain>Почему верно: скопировать всё — сначала выделить всё (SelectAll), потом скопировать выделенное (CopyToClipboard).
+Ловушки: CopyAllToClipboard и Lines->CopyToClipboard не существуют.
+По лекции: тема 15, раздел «Доп.: выделение текста и буфер обмена».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> What is the effect of setting a TButton's Caption property to an empty string ("")?
 <tr>Что будет, если поставить у TButton свойство Caption равным пустой строке ("")?</tr>
@@ -272,8 +315,10 @@
 <variant> The button's size will automatically shrink to its minimum dimension. <tr>Кнопка сама уменьшится до минимального размера.</tr>
 <variant> The button will display an error message. <tr>Кнопка покажет сообщение об ошибке.</tr>
 <variant> The button will display its component name. <tr>Кнопка покажет своё имя компонента.</tr>
-<explain>Ответ: текст на кнопке полностью пропадёт; сама кнопка останется видимой и того же размера.
-По лекции: тема 11, раздел «Свойства Button, Edit, Label» (Caption = "" — текста нет).</explain>
+<explain>Почему верно: Caption = "" просто убирает надпись. Кнопка остаётся на месте и того же размера.
+Ловушки: спрятать — Visible = false; размер сам не уменьшится; имя компонента не покажется.
+По лекции: тема 15, раздел «Доп.: Edit, Label, Button — Text и Caption».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> What property of TEdit must be checked before attempting to use CutToClipboard() to ensure there is actually text selected?
 <tr>Какое свойство TEdit нужно проверить перед вызовом CutToClipboard(), чтобы убедиться, что текст действительно выделен?</tr>
@@ -282,8 +327,10 @@
 <variant> Text.Length > 0
 <variant> SelectionActive
 <variant> CanCut
-<explain>Ответ: SelLength > 0 — значит, что-то выделено, и вырезать есть что.
-По лекции: тема 15, раздел «Текст между компонентами» — буфер обмена.</explain>
+<explain>Почему верно: если SelLength > 0, значит что-то выделено и есть что вырезать.
+Ловушки: SelectionActive и CanCut — нет таких; Text.Length > 0 проверяет весь текст, а не выделение.
+По лекции: тема 15, раздел «Доп.: выделение текста и буфер обмена».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> (НЕ ТОЧНО) What is the VCL property of a TMemo that, if set to false, prevents the user from manually typing, but still allows programmatic text assignment? (Какое свойство VCL у TMemo запрещает пользователю печатать вручную, но всё равно позволяет менять текст из кода? (В вопросе ошибка: правильно — если поставить ReadOnly = true, а не false.))
 <variantright> ReadOnly
@@ -291,8 +338,10 @@
 <variant> AllowEdit
 <variant> UserEditable
 <variant> CanEdit
-<explain>Ответ: ReadOnly (в вопросе ошибка: ставить нужно true, а не false). Пользователь не печатает, а из кода текст меняется.
-По лекции: тема 15, раздел «Текст между компонентами» — последний абзац.</explain>
+<explain>Почему верно: ReadOnly запрещает пользователю печатать, а из кода текст менять можно.
+⚠ В вопросе ошибка: ReadOnly нужно поставить в true, а не false. Ответ — ReadOnly.
+По лекции: тема 15, раздел «Доп.: Memo и его строки Lines».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> How can you programmatically concatenate the Caption of Label1 and the Text of Edit1 and place the result into Memo1?
 <tr>Как из кода склеить Caption у Label1 и Text у Edit1 и поместить результат в Memo1?</tr>
@@ -301,6 +350,7 @@
 <variant> Memo1->Text = Label1->Caption + Edit1->Text;
 <variant> Memo1->AddStrings(Label1->Caption, Edit1->Text);
 <variant> Memo1->Lines->Insert(0, Label1->Caption + Edit1->Text);
-<explain>Ответ: Memo1->Lines->Add(Label1->Caption + Edit1->Text); — строки AnsiString склеиваются знаком +, и результат добавляется строкой в Memo.
-Почему не другие: Append и AddStrings не принимают два аргумента; Memo1->Text = … заменило бы весь текст.
-По лекции: тема 15, раздел «Текст между компонентами (для теста)».</explain>
+<explain>Почему верно: строки склеиваются плюсом, а Lines->Add добавляет результат новой строкой в Memo.
+Ловушки: Append с двумя аргументами и AddStrings так не работают; Text = … сотрёт всё; Insert(0,…) — в начало, а не просто добавить.
+По лекции: тема 15, раздел «Доп.: Memo и его строки Lines».
+Источник: тест физиков «question_c++_OOP_2025».</explain>

@@ -2136,6 +2136,18 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     else if (bl[bi + 1] && /^(code|out)$/.test(bl[bi + 1].t)) pick.push(bl[bi + 1]);
     return '<details class="brief"' + (R.briefOpen ? ' open' : '') + '><summary>Кратко из лекции</summary><div class="rich">' + D.blocks(pick) + '</div></details>';
   }
+  /* откуда вопрос: «⭐ экзамен» — база преподавателя (будет на экзамене), «дополнительный» — придуман для тренировки */
+  function srcKind(q) {
+    var ex = String(q && q.ex || ''), src = (ex.match(/Источник:\s*([^\n]*)/) || [])[1] || '';
+    if (/⭐/.test(ex) || /экзамен|база ФИК|OOP_2025|150 вопросов/i.test(src)) return 'exam';
+    if (/дополнительн/i.test(src) || (D.subjId === 'arch' && !/⭐/.test(ex))) return 'add';
+    return '';
+  }
+  function srcBadge(q) {
+    var k = srcKind(q);
+    return k === 'exam' ? '<span class="src-badge exam" title="Вопрос из базы преподавателя — такие будут на экзамене">⭐ экзамен</span>' :
+      k === 'add' ? '<span class="src-badge add" title="Дополнительный вопрос для тренировки (не из базы преподавателя)">дополнительный</span>' : '';
+  }
   function wireBrief() { var R = G.room, det = panel.querySelector('details.brief'); if (det) det.ontoggle = function () { R.briefOpen = det.open; }; }
   function ask() {
     var R = G.room, m = R.mon, M = A.MON[m.key], it = m.items[0];
@@ -2156,7 +2168,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     if (!R.f.exam && R.f.texts && R.f.texts.length) briefHtml(q.q + ' ' + (right || ''));   /* только чтобы книга знала нужный раздел; «Кратко из лекции» больше не показываем */
     var brief = '';
     R.noteNow = hadErr;
-    var h = head + tipHtml('q3') + '<div class="qtext">' + D.md(q.q) + '</div>' + (q.img ? '<div class="qimg"><img src="' + esc(q.img) + '" alt="Картинка к вопросу"></div>' : '') + noteBlock(q);
+    var h = head + tipHtml('q3') + srcBadge(q) + '<div class="qtext">' + D.md(q.q) + '</div>' + (q.img ? '<div class="qimg"><img src="' + esc(q.img) + '" alt="Картинка к вопросу"></div>' : '') + noteBlock(q);
     if (q.type === 'keyboard') h += '<div class="kb"><input id="kbIn" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Что выведет программа? Впиши ответ"><button class="btn primary" id="kbGo">Ответить<kbd>Enter</kbd></button></div>';
     else {
       var order = q.opts.map(function (_, i) { return i; }); for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var tt = order[i]; order[i] = order[j]; order[j] = tt; }

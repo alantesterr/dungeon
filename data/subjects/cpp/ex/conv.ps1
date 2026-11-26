@@ -205,6 +205,8 @@ $script:noEx = 0; $script:enLeft = @(); $script:umLog = @()
 foreach ($n in ($lec.Keys | Sort-Object)) {
   $script:qi2 = 0
   $nn = '{0:D2}' -f $n
+  # с ноября 2026 lNN/tNN собраны из базы сайта (см. ex\hand_all.txt) — не перезаписываем
+  if (Test-Path (Join-Path $Out 'ex\hand_all.txt')) { $topics += [ordered]@{ n = $n; rk = $(if ($n -le 6) { 1 } else { 2 }); title = $titles[$n]; file = "t$nn.txt"; lecture = "l$nn.txt" }; continue }
   [IO.File]::WriteAllText((Join-Path $Out "l$nn.txt"), (ConvLecture $n), $enc)
   [IO.File]::WriteAllText((Join-Path $Out "t$nn.txt"), (ConvTests $n), $enc)
   $rk = $(if ($n -le 6) { 1 } else { 2 })

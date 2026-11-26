@@ -5,10 +5,10 @@
 <variant> __public
 <variant> __member
 <variant> __accessor
-<explain>Ответ: __property — ключевое слово C++Builder для свойства: __property int Age = {read = FAge, write = SetAge};
-Почему не другие: __attribute, __public, __member, __accessor в C++Builder для свойств не используются.
-По лекции: тема 14, раздел «Свойства в C++Builder: __property».</explain>
-
+<explain>Почему верно: в C++Builder свойство объявляют расширением __property: __property int Count = {read=FCount, write=FCount};.
+Ловушки: __attribute, __public, __member, __accessor — не ключевые слова Builder.
+По лекции: тема 14, раздел «Как реализуются свойства в пользовательском классе?».
+Источник: тест физиков «question_c++_OOP_2025».</explain>
 
 <question> (УМКД) What is a property of a class?
 <tr>(УМКД) Что такое свойство класса?</tr>
