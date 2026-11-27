@@ -892,8 +892,10 @@ details.my-note.drop{animation:briefDrop .8s cubic-bezier(.2,.8,.3,1),briefGlow 
 .tr-vcl .tr-oi-hl{outline:2px solid #e8a400;background:#fff4c2}
 .tr-vcode pre{max-height:180px;overflow:auto;font-size:12.5px;margin:4px 0}.tr-vcode summary{cursor:pointer;color:var(--violet2)}
 /* v111: «📋 Задания» в пустом Builder */
-.pk-dockbtn{position:fixed;left:12px;bottom:12px;z-index:1003;font:700 13px Tahoma,sans-serif;padding:6px 12px;box-shadow:2px 2px 0 #000}
-.prx-pick{left:12px;bottom:52px;width:min(560px,94vw);height:min(470px,70vh)}
+.pk-dockbtn{position:fixed;right:14px;top:46px;z-index:1003;font:700 14px Tahoma,sans-serif;padding:7px 14px;background:linear-gradient(#ffe27a,#f5a623)!important;color:#3a2400!important;border:2px solid #8a5a00!important;border-radius:4px;box-shadow:2px 2px 0 #000;cursor:pointer;animation:pkPulse 2.4s ease-in-out 3}
+.pk-dockbtn:hover{background:linear-gradient(#fff0a8,#ffb847)!important}
+@keyframes pkPulse{50%{box-shadow:0 0 0 6px rgba(245,166,35,.45),2px 2px 0 #000}}
+.prx-pick{right:14px;top:88px;width:min(560px,94vw);height:min(470px,70vh)}
 .prx-pick .pp-wrap{display:grid;grid-template-columns:200px minmax(0,1fr);gap:6px;margin:6px;flex:1;min-height:0}
 .prx-pick .pp-top,.prx-pick .pp-list{overflow:auto;background:#fff;border:2px solid;border-color:#808080 #fff #fff #808080}
 .prx-pick .pp-t{display:block;width:100%;text-align:left;border:0;background:none;padding:4px 6px;font:12px Tahoma,sans-serif;cursor:pointer}
@@ -953,3 +955,22 @@ details.my-note.drop{animation:briefDrop .8s cubic-bezier(.2,.8,.3,1),briefGlow 
 @media (max-width:760px){.asw,.asw.side{inset:0;right:0}.as-main,.as-low{grid-template-columns:1fr}.as-main{grid-template-rows:minmax(160px,1fr) auto}.as-side{max-height:34vh;border-top:1px solid #b8b4aa}.as-low{height:auto}.as-con{height:120px}.as-expl{max-height:30vh}}
 .hud-home{padding:0 10px;gap:5px}
 @media (max-width:520px){.hud-home span{display:none}}
+/* v112: книга темы в подвале — список заданий */
+.bm-pop{position:absolute;right:max(12px,4vw);top:8vh;width:min(440px,92vw);max-height:76vh;display:flex;flex-direction:column;background:#f4ead2;color:#2a1d10;border:3px solid #6b4a2f;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.6);font:14px/1.35 system-ui,sans-serif;z-index:3}
+.bm-h{display:flex;align-items:baseline;gap:8px;padding:9px 12px;background:#6b4a2f;color:#fff3d6}.bm-h span{flex:1;font-size:12px;opacity:.85;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bm-h em{font-style:normal;font-size:12px}
+.bm-x{background:#c0392b;color:#fff;border:0;border-radius:4px;width:24px;height:22px;cursor:pointer;font-weight:700}
+.bm-list{overflow:auto;padding:8px;display:grid;gap:6px}
+.bm-it{text-align:left;background:#fffaf0;border:1px solid #c9b28a;border-radius:6px;padding:7px 9px;cursor:pointer;font:inherit;color:inherit}
+.bm-it:hover{background:#fff3c4;border-color:#8a5a00}.bm-it.ok{background:#eaf6e4}.bm-it b small{font-weight:400;color:#8a6a40;margin-left:4px}.bm-it span{display:block;font-size:12.5px;color:#5a4630;margin-top:2px}
+.bm-f{padding:6px 10px 10px}
+/* v112: рабочий стол Архитектуры */
+.prx-desktop{position:fixed;inset:0;z-index:1001;background:radial-gradient(ellipse at 60% 40%,#3d7fb3,#1f4f7a 70%,#173b5c);font:13px Tahoma,"Segoe UI",sans-serif;color:#fff}
+.dk-icons{position:absolute;left:18px;top:18px;display:grid;grid-auto-flow:row;gap:14px}
+.dk-ic{width:104px;display:flex;flex-direction:column;align-items:center;gap:5px;background:none;border:1px solid transparent;border-radius:4px;padding:6px 4px;color:#fff;cursor:pointer;font:inherit}
+.dk-ic:hover,.dk-ic:focus{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4)}
+.dk-i{font-size:38px;line-height:1;filter:drop-shadow(1px 2px 1px rgba(0,0,0,.5))}.dk-n{text-align:center;text-shadow:1px 1px 1px #000;font-size:12.5px}
+.dk-note{position:absolute;right:20px;top:20px;width:min(320px,60vw);background:rgba(255,255,225,.95);color:#222;border:1px solid #888;border-radius:6px;padding:10px 12px;line-height:1.5;box-shadow:2px 3px 8px rgba(0,0,0,.35)}.dk-note>b{display:block;margin-bottom:3px}
+.dk-bar{position:absolute;left:0;right:0;bottom:0;height:36px;display:flex;align-items:center;gap:10px;padding:0 6px;background:linear-gradient(#d4d0c8,#bdb9b0);color:#000;border-top:2px solid #fff}
+.dk-start{font:700 13px Tahoma,sans-serif;padding:4px 12px;background:linear-gradient(#5fb45f,#2f8a2f);color:#fff;border:1px solid #24692a;border-radius:4px;cursor:pointer}
+.dk-task,.dk-clock{font-size:12px;padding:3px 8px;border:1px solid;border-color:#808080 #fff #fff #808080}
+@media (max-width:600px){.dk-icons{grid-template-columns:repeat(3,1fr);right:10px}.dk-note{top:auto;bottom:48px;left:10px;right:10px;width:auto}}

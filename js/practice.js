@@ -140,9 +140,23 @@
     var cv = room.querySelector('canvas'), c = cv.getContext('2d'), t0 = performance.now(), ready = false, finished = false, cap = room.querySelector('.prx-cap span');
     var B = { sid: sid, prog: [], hv: null }, mode = back ? 'idle' : 'down', hx = back ? 266 : 10, tSit = 0, wantTopic = null, myRoom = room;
     var dataP = load(sid).then(function () { ready = true; B.prog = topicProg(sid); idleCap(); }, function (e) { ready = 'err'; cap.textContent = 'Ошибка загрузки: ' + e.message; });
-    var idleCap = function () { if (mode !== 'idle' || !ready) return; var d = 0, n = 0; B.prog.forEach(function (b) { d += b.d; n += b.tot; }); cap.innerHTML = 'Решено <b>' + d + ' из ' + n + '</b>. Нажми на книгу темы или на компьютер.'; };
-    var sitDown = function (topic) { if (mode === 'sit' || mode === 'go') return; wantTopic = topic; mode = 'go'; B.walk = true; cap.textContent = 'иду к компьютеру…'; };
-    var finish = function () { if (finished) return; finished = true; var go = function () { if (wantTopic != null) view.topic = wantTopic; done(); }; if (ready === true) go(); else dataP.then(function () { if (ready === true) go(); }); };
+    var idleCap = function () { if (mode !== 'idle' || !ready) return; var d = 0, n = 0; B.prog.forEach(function (b) { d += b.d; n += b.tot; }); cap.innerHTML = 'Решено <b>' + d + ' из ' + n + '</b>. 📗 Книга — задания темы · 💻 компьютер — с чистого листа.'; };
+    var sitDown = function (want) { if (mode === 'sit' || mode === 'go') return; var bp = room.querySelector('.bm-pop'); if (bp) bp.remove(); wantTopic = want; mode = 'go'; B.walk = true; cap.textContent = 'иду к компьютеру…'; };
+    var finish = function () { if (finished) return; finished = true; var go = function () { done(wantTopic); }; if (ready === true) go(); else dataP.then(function () { if (ready === true) go(); }); };
+    /* книга темы: задания этой темы прямо в подвале — выбрал, и сразу садишься за это задание */
+    var bookPop = function (n) {
+      var old = room.querySelector('.bm-pop'); if (old) old.remove();
+      var L = labs[sid] || [], s0 = save(), g = byTopic(sid).filter(function (x) { return x.n === n; })[0]; if (!g) return;
+      var items = []; g.labs.forEach(function (li) { L[li].tasks.forEach(function (t, ti) { items.push({ li: li, ti: ti, t: t, l: L[li] }); }); });
+      var d = 0; items.forEach(function (x) { if (s0[x.t.id]) d++; });
+      var pop = el('<div class="bm-pop" role="dialog" aria-label="Задания темы"><div class="bm-h"><b>📗 Тема ' + n + '</b><span>' + esc(topicTitle(sid, n)) + '</span><em>' + d + ' из ' + items.length + '</em><button class="bm-x" title="Закрыть">×</button></div>' +
+        '<div class="bm-list">' + items.map(function (x, i) { return '<button class="bm-it' + (s0[x.t.id] ? ' ok' : '') + '" data-i="' + i + '"><b>' + (s0[x.t.id] ? '✅ ' : x.t.kind === 'vcl' ? '🗔 ' : '📄 ') + esc(x.t.name || 'Задание') + ' <small>' + esc(x.l.short || '') + '</small></b><span>' + esc(brief(x.t)) + '</span></button>'; }).join('') + '</div>' +
+        '<div class="bm-f"><button class="btn ghost sm" data-rnd>🎲 Случайное нерешённое</button></div></div>');
+      room.appendChild(pop);
+      pop.querySelector('.bm-x').onclick = function () { pop.remove(); };
+      pop.querySelectorAll('[data-i]').forEach(function (b) { b.onclick = function () { var x = items[+b.getAttribute('data-i')]; sitDown({ li: x.li, ti: x.ti }); }; });
+      pop.querySelector('[data-rnd]').onclick = function () { var x = randomTask(sid, n); if (x) sitDown({ li: x.li, ti: x.ti }); };
+    };
     room.querySelector('[data-pc]').onclick = function () { if (mode === 'sit') { finish(); return; } sitDown(null); };
     room.querySelector('[data-up]').onclick = function () { leaveRoom(); PR.active = false; task = null; if (window.DGame && DGame.lib) DGame.lib(); };
     var pt = function (e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * 640, y: (e.clientY - r.top) / r.height * 360 }; };
@@ -153,9 +167,9 @@
       return null;
     };
     cv.addEventListener('mousemove', function (e) { if (mode !== 'idle') return; var h = hit(pt(e)); B.hv = h; cv.style.cursor = h != null ? 'pointer' : '';
-      if (typeof h === 'number') { var b = B.prog[h]; cap.innerHTML = '📗 <b>Тема ' + b.n + '</b> · ' + esc(b.title || '') + ' — решено <b>' + b.d + ' из ' + b.tot + '</b>' + (b.d >= b.tot && b.tot ? ' ✨' : ''); }
-      else if (h === 'pc') cap.textContent = '💻 Сесть за компьютер — список лаб'; else if (h === 'up') cap.textContent = '⬆ Подняться в библиотеку'; else idleCap(); });
-    cv.addEventListener('click', function (e) { if (mode !== 'idle') { if (mode === 'down') { mode = 'idle'; hx = 120; idleCap(); } return; } var h = hit(pt(e)); if (typeof h === 'number') sitDown(B.prog[h].n); else if (h === 'pc') sitDown(null); else if (h === 'up') room.querySelector('[data-up]').click(); });
+      if (typeof h === 'number') { var b = B.prog[h]; cap.innerHTML = '📗 <b>Тема ' + b.n + '</b> · ' + esc(b.title || '') + ' — решено <b>' + b.d + ' из ' + b.tot + '</b>' + (b.d >= b.tot && b.tot ? ' ✨' : '') + ' · нажми — выбрать задание'; }
+      else if (h === 'pc') cap.textContent = sid === 'arch' ? '💻 Включить компьютер — EWB, ассемблер, задачи' : '💻 Сесть за компьютер — чистый C++Builder'; else if (h === 'up') cap.textContent = '⬆ Подняться в библиотеку'; else idleCap(); });
+    cv.addEventListener('click', function (e) { if (mode !== 'idle') { if (mode === 'down') { mode = 'idle'; hx = 120; idleCap(); } return; } var h = hit(pt(e)); if (typeof h === 'number') bookPop(B.prog[h].n); else if (h === 'pc') sitDown(null); else if (h === 'up') room.querySelector('[data-up]').click(); });
     var last = t0;
     (function frame(now) {
       if (room !== myRoom || !room) return;
@@ -247,7 +261,7 @@
       '<div class="prx-bar"><span class="pk-all">Решено ' + done + ' из ' + all.length + bar(done, all.length) + '</span><span class="grow"></span><button class="w2k" data-exit>🚪 Встать из-за компьютера</button></div>', { ico: '📁' });
     win.querySelector('[data-x]').onclick = exit; win.querySelector('[data-exit]').onclick = exit;
     win.querySelector('[data-free]').onclick = function () { openFree(sid); };
-    var ab = win.querySelector('[data-asm]'); if (ab) ab.onclick = function () { closeWin(); hideTask(); task = null; Promise.resolve().then(function () { var c = null; try { c = localStorage.getItem('dgAsm:free'); } catch (e) {} ASM.studio({ title: 'Source.asm', code: c, onTasks: function () { pickWin(sid); }, onChange: function (v) { try { localStorage.setItem('dgAsm:free', v); } catch (e) {} }, onClose: function () { openList(sid); } }); }); };
+    var ab = win.querySelector('[data-asm]'); if (ab) ab.onclick = function () { asmFree(sid); };
     var cb = win.querySelector('[data-cont]'); if (cb) cb.onclick = function () { openTask(sid, last.li, last.ti); };
     var right = win.querySelector('.lb-right');
     var card = function (x) {
@@ -291,7 +305,9 @@
 
   /* ---------- задание ---------- */
   var task = null, tw = null, vclBox = null;
-  function hideTask() { if (window.ASM) ASM.close(); if (pb) { pb.remove(); pb = null; } if (pkw) { pkw.remove(); pkw = null; } if (tw) { tw.remove(); tw = null; } if (vclBox) { vclBox.remove(); vclBox = null; } if (siteBox) { siteBox.remove(); siteBox = null; } var ide = window.CPP && CPP.ide && CPP.ide(); if (ide) ide.hide(); }
+  var hiding = false;
+  function hideTask() { hiding = true; try { hideTask0(); } finally { hiding = false; } }
+  function hideTask0() { if (window.ASM) ASM.close(); if (pb) { pb.remove(); pb = null; } if (pkw) { pkw.remove(); pkw = null; } if (tw) { tw.remove(); tw = null; } if (vclBox) { vclBox.remove(); vclBox = null; } if (siteBox) { siteBox.remove(); siteBox = null; } var ide = window.CPP && CPP.ide && CPP.ide(); if (ide) ide.hide(); }
   function startCode(t) {
     if (t.start) return t.start;
     return '#include <iostream.h>\n#include <conio.h>\n#include <math.h>\n\nint main()\n{\n  // ' + String(t.name || 'Задание') + ': напиши решение здесь\n\n  getch();\n  return 0;\n}\n';
@@ -302,7 +318,7 @@
     if (SUBJ[sid].site) { openSite(sid, 't16', 'Electronics Workbench — свободная сборка'); return; }
     var p = CPP.IDE_TEST.newProject('vcl', 'Project1'); p.dgKeep = true;
     CPP.openIDE(p); pickBtn(sid);
-    if (window.DGame && DGame.toast) DGame.toast('💻 Пустой Builder. Задание — кнопка «📋 Задания» внизу слева (или File → Open Project)');
+    if (window.DGame && DGame.toast) DGame.toast('💻 Чистый Builder. Задание — жёлтая кнопка «📋 Задания» справа вверху');
   }
   /* File → Open Project: окно открытия файла Windows с папками «Тема 01 … Тема 15» */
   function openDialog(sid) {
@@ -341,14 +357,15 @@
   }, true);
   /* ---------- Архитектура: «компьютер» показывает учебный сайт автора (тот же адрес alantesterr.github.io) —
      там живые окна EWB, пошаговый ассемблер и калькуляторы. Открываем нужную тему / задание по якорю #id. ---------- */
-  var siteBox = null;
+  var siteBox = null, siteBack = null;
   function openSite(sid, anchor, title) {
     if (siteBox) siteBox.remove();
     var url = SUBJ[sid].site + '#' + (anchor || 't1');
     siteBox = el('<div class="prx prx-site"><div class="prx-t"><span class="ico">⚡</span><span class="tt">' + esc(SUBJ[sid].title) + ' — ' + esc(title || '') + '</span><button data-x title="К списку">×</button></div>' +
       '<div class="prx-b"><iframe title="Лабораторный стенд" src="' + esc(url) + '" loading="eager"></iframe><div class="site-load">Загружается стенд…</div></div></div>');
     document.body.appendChild(siteBox);
-    siteBox.querySelector('[data-x]').onclick = function () { openList(sid, task ? task.li : undefined); };
+    var sb0 = siteBack; siteBack = null;
+    siteBox.querySelector('[data-x]').onclick = function () { if (!task && sb0) { siteBox.remove(); siteBox = null; sb0(); return; } openList(sid, task ? task.li : undefined); };
     var fr = siteBox.querySelector('iframe');
     fr.onload = function () {
       var ld = siteBox && siteBox.querySelector('.site-load'); if (ld) ld.remove();
@@ -736,13 +753,40 @@
     var r = tw && tw.querySelector('.tk-res'); if (r && !/tk-ok/.test(r.innerHTML)) r.insertAdjacentHTML('afterbegin', '<p class="tk-ok">✓ ' + esc(msg) + '</p>');
     try { if (window.DA && DA.sfx) DA.sfx('ok'); } catch (e) {}
   }
+  /* сел за компьютер: через книгу — сразу задание; через компьютер — C++: чистый Builder, Архитектура: рабочий стол */
+  function boot(sid, want) {
+    if (room) room.classList.add('desk');
+    if (want && want.li != null) return openTask(sid, want.li, want.ti);
+    if (SUBJ[sid].site) return openDesktop(sid);
+    openFree(sid);
+  }
   function exit() {
     var sid = curSid; hideTask(); closeWin(); task = null;
-    enterRoom(sid, function () { if (room) room.classList.add('desk'); openList(sid); }, true);   /* встал из-за компьютера — снова в подвале */
+    enterRoom(sid, function (w) { boot(sid, w); }, true);   /* встал из-за компьютера — снова в подвале */
   }
-  document.addEventListener('bcb-hide', function () { if (PR.active && !vclBox) openList(curSid, task ? task.li : undefined); });
+  /* ---------- рабочий стол «как на Windows» (Архитектура): EWB, ASM-студия, блокнот задач, учебный сайт ---------- */
+  function asmFree(sid, back) {
+    closeWin(); hideTask(); task = null;
+    var c = null; try { c = localStorage.getItem('dgAsm:free'); } catch (e) {}
+    ASM.studio({ title: 'Source.asm', code: c, onTasks: function () { pickWin(sid); }, onChange: function (v) { try { localStorage.setItem('dgAsm:free', v); } catch (e) {} }, onClose: function () { back ? back() : openList(sid); } });
+  }
+  function openDesktop(sid) {
+    closeWin(); hideTask(); task = null; curSid = sid;
+    var s0 = save(), all = every(sid), done = all.filter(function (x) { return s0[x.t.id]; }).length;
+    var apps = [['ewb', '⚡', 'Electronics Workbench', 'собрать схему'], ['asm', '⚙', 'ASM-студия', 'ассемблер x86 по шагам'], ['tasks', '📒', 'Блокнот задач', 'все лабы по темам'], ['site', '🌐', 'Учебный сайт', 'лекции и стенды'], ['off', '⏻', 'Выключить', 'встать из-за компьютера']];
+    win = el('<div class="prx-desktop" role="application" aria-label="Рабочий стол"><div class="dk-icons">' + apps.map(function (a) { return '<button class="dk-ic" data-app="' + a[0] + '" title="' + esc(a[3]) + '"><span class="dk-i">' + a[1] + '</span><span class="dk-n">' + esc(a[2]) + '</span></button>'; }).join('') + '</div>' +
+      '<div class="dk-note"><b>💡 Что открыть?</b><span>⚡ <b>EWB</b> — схемы (темы 3–7, 16)<br>⚙ <b>ASM-студия</b> — программы на ассемблере (темы 8–9)<br>📒 <b>Блокнот задач</b> — выбрать лабу по теме</span></div>' +
+      '<div class="dk-bar"><button class="dk-start">🪟 Пуск</button><span class="dk-task">Решено лаб: <b>' + done + ' из ' + all.length + '</b></span><span class="grow"></span><span class="dk-clock"></span></div></div>');
+    document.body.appendChild(win);
+    var ck = win.querySelector('.dk-clock'), tick = function () { if (!win || !ck.isConnected) return; var d = new Date(); ck.textContent = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2); setTimeout(tick, 15000); }; tick();
+    var back = function () { openDesktop(sid); };
+    var act = { ewb: function () { closeWin(); siteBack = back; openSite(sid, 't16', 'Electronics Workbench — свободная сборка'); }, asm: function () { asmFree(sid, back); }, tasks: function () { openList(sid); }, site: function () { closeWin(); siteBack = back; openSite(sid, 't1', 'Учебный сайт'); }, off: exit };
+    win.querySelectorAll('[data-app]').forEach(function (b) { b.onclick = function () { act[b.getAttribute('data-app')](); }; });
+    win.querySelector('.dk-start').onclick = function () { act.tasks(); };
+  }
+  document.addEventListener('bcb-hide', function () { if (!PR.active || vclBox || hiding) return; if (task) openList(curSid, task.li); else exit(); });
 
-  PR.open = function (sid) { if (!SUBJ[sid] || PR.active) return; if (curSid !== sid) view = { only: false, q: '' }; curSid = sid; enterRoom(sid, function () { if (room) room.classList.add('desk'); openList(sid); }); };
+  PR.open = function (sid) { if (!SUBJ[sid] || PR.active) return; if (curSid !== sid) view = { only: false, q: '' }; curSid = sid; enterRoom(sid, function (w) { boot(sid, w); }); };
 })();
 /* запуск программы (F9 или ▶ Run) в Builder — для шага «Нажми F9» */
 (function () {

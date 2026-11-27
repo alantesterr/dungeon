@@ -450,9 +450,9 @@
   /* что можно нажать на сцене (в координатах холста 480×270) */
   function hotspots() {
     if (G.scene === 'house') return [{ x0: 4, x1: 52, y0: 126, y1: 216, fn: toDungeon }, { x0: SAGE_X - 22, x1: SAGE_X + 22, y0: 150, y1: 216, fn: openShop }, { x0: 424, x1: 476, y0: 86, y1: 132, fn: toLake }];
-    if (G.scene === 'hall') return DOORS.filter(function (d) { return D.SUBJ[d[0]]; }).map(function (d) {
+    if (G.scene === 'hall') return [{ x0: HS.x - 34, x1: HS.x + 34, y0: HS.y - 6, y1: HS.y + 30, fn: function () { walkTo(HS.x, function () { go('house'); }); } }].concat(DOORS.filter(function (d) { return D.SUBJ[d[0]]; }).map(function (d) {
       var w = d[0] === 'cpp' ? 48 : 39; return { x0: d[1] - w, x1: d[1] + w, y0: A.FLOOR_Y - w * 2 - 8, y1: A.FLOOR_Y + 4, fn: function () { enterDoor(d); } };
-    });
+    }));
     if (G.scene === 'path') return libSpots();
     if (G.scene === 'event') return evSpots();
     if (G.scene === 'lake') return [{ x0: 8, x1: 62, y0: A.FLOOR_Y - 70, y1: A.FLOOR_Y + 10, fn: function () { G.ev = null; go('house'); } }];
@@ -604,6 +604,8 @@
     setPanel('<div class="qtext">Холл</div><p class="hint">Нажми на <b>дверь</b> предмета — герой войдёт в его подземелье. Процент — сколько вопросов ты хотя бы раз решил верно.</p>');
     var last = DOORS.filter(function (d) { return d[0] === D.subjId && D.SUBJ[d[0]]; })[0] || open[0];
     G.buttons = last ? [btn('Войти', 'primary', 'Enter', function () { enterDoor(last); })] : [];
+    panel.insertAdjacentHTML('beforeend', '<div class="row" style="margin-top:8px"><button class="btn ghost sm" data-home>🏠 Домой — табличка над лестницей</button></div>');
+    panel.querySelector('[data-home]').onclick = function () { walkTo(HS.x, function () { go('house'); }); };
   }
   function enterDoor(d) { D.useSubject(d[0]); A.hallGlow = d[0]; walkTo(d[1], function () { go('path'); }); }
   /* выбор режима у двери предмета: тропа знаний, всё подряд (у ИКТ — хаос по уровням) и как на экзамене */
@@ -695,7 +697,7 @@
       { text: '📝 ' + (window.innerWidth < 600 ? nNotes : 'Мои записи · ' + nNotes), x: 404, y: A.FLOOR_Y - 46, color: '#CECBF6' }].concat(caseLbl).concat(window.PR && PR.has(sid) ? [{ text: window.innerWidth < 600 ? '🕯 Лабы' : '🕯 Подвал · лабы ⬇', x: HATCH.x + HATCH.w / 2, y: HATCH.y + HATCH.h + 12, color: '#9FE1CB' }] : []));
     S.tips = S.tips || {};
     var chips = '<div class="lib-chips">' + '<button class="lchip err' + (L.err.n ? '' : ' ok') + '" data-sh="err">📕 Ошибки <b>' + L.err.n + '</b></button>' + '<button class="lchip notes" data-notes>📝 Мои записи <b>' + nNotes + '</b></button>' +
-      (window.PR && PR.has(sid) ? (function (p) { return '<button class="lchip labs' + (p.pct >= 100 ? ' gold' : '') + '" data-prac title="Лабораторные работы за компьютером: решено ' + p.done + ' из ' + p.total + '"><span>💻 Лабораторные</span><i style="--p:' + p.pct + '%"></i><b>' + (p.total ? p.done + '/' + p.total : '…') + '</b></button>'; })(PR.progress(sid)) : '') +
+      (false ? (function (p) { return '<button class="lchip labs' + (p.pct >= 100 ? ' gold' : '') + '" data-prac title="Лабораторные работы за компьютером: решено ' + p.done + ' из ' + p.total + '"><span>💻 Лабораторные</span><i style="--p:' + p.pct + '%"></i><b>' + (p.total ? p.done + '/' + p.total : '…') + '</b></button>'; })(PR.progress(sid)) : '') +
       libFloors().map(function (f) { var st = shelfStat(f); return '<button class="lchip' + (st.pct >= 100 ? ' gold' : '') + '" data-sh="' + f.n + '" title="' + esc(f.title) + '"><span>' + esc(shelfLabel(f)) + '</span><i style="--p:' + st.pct + '%"></i><b>' + st.pct + '%</b></button>'; }).join('') + '</div>';
     var tip = !S.tips.lib1 ? '<div class="tip lib-tip"><b>Как тут всё устроено</b><span>👇 Нажми <b>«▶ Всё подряд»</b> — и сразу начнёшь отвечать на вопросы по всем темам. Каждая полка в шкафу — тема: верный ответ ставит на неё книгу. Ошибки летят в красный шкаф в углу. Нажми на полку — герой подойдёт к ней.</span><button class="btn ghost" data-tipok="lib1">Понятно</button></div>' : '';
     var goAll = function () { S.tips.lib1 = 1; D.persist(); S.arenaLast = { s: sid, c: 'all' }; D.persist(); buildArena(sid, 'all', 0); };
@@ -704,7 +706,7 @@
       '<div class="lib-dock"><button class="btn primary lib-all" data-all>▶ Всё подряд<small>вопросы из всех тем вперемешку</small></button>' +
       '<button class="btn ghost lib-ex" data-exam>🎓 Как на экзамене<small>' + EXAM_N + ' вопросов · ' + EXAM_MIN + ' мин</small></button></div>' +
       (sj.drill ? '' : '<div class="row ts-row"><button class="btn ghost sm" data-tsel>⚙ Темы во «Всё подряд»: <b>' + esc(topicSelText(sid)) + '</b></button>' +
-        (window.PR && PR.has(sid) ? '<button class="btn ghost sm pr-door" data-prac>💻 Практика <small>' + esc(PR.label(sid)) + '</small></button>' : '') + '</div>') +
+        (false ? '<button class="btn ghost sm pr-door" data-prac>💻 Практика <small>' + esc(PR.label(sid)) + '</small></button>' : '') + '</div>') +
       jailHtml() + '<p class="hint">Полки — это темы: нажми на полку в шкафу (или ниже), чтобы пройти тему, открыть лекцию или повторить пыльные книги.</p>' + chips);
     wireJail();
     panel.querySelector('[data-all]').onclick = goAll;
@@ -1457,6 +1459,17 @@
   }
 
   /* табличка «🏠 Домой» у озера: столбик со стрелкой — нажми, и ты в домике */
+  /* холл: висячая табличка «⬆ ДОМОЙ» над лестницей наверх, между дверями C++ и Философии */
+  var HS = { x: 244, y: 22 };
+  function hallSign(c, t) {
+    var x = HS.x, y = HS.y, sw = Math.sin(t / 900) * 0.04;
+    c.strokeStyle = '#6b5a44'; c.lineWidth = 1; c.beginPath(); c.moveTo(x - 20, 0); c.lineTo(x - 20, y); c.moveTo(x + 20, 0); c.lineTo(x + 20, y); c.stroke();
+    c.save(); c.translate(x, y); c.rotate(sw);
+    c.fillStyle = '#3a2412'; c.fillRect(-32, -1, 64, 24); c.fillStyle = '#9a6a3a'; c.fillRect(-30, 1, 60, 20); c.fillStyle = '#c08a50'; c.fillRect(-30, 1, 60, 2);
+    c.fillStyle = '#fff6dc'; c.font = 'bold 10px system-ui,sans-serif'; c.textAlign = 'center'; c.fillText('ДОМОЙ', 5, 15); c.beginPath(); c.moveTo(-23, 15); c.lineTo(-18, 6); c.lineTo(-13, 15); c.closePath(); c.fill(); c.fillRect(-19.5, 13, 3, 4);
+    c.restore();
+    var g2 = 0.5 + 0.5 * Math.sin(t / 500); c.fillStyle = 'rgba(250,199,117,' + (0.08 + g2 * 0.14).toFixed(2) + ')'; c.fillRect(x - 34, y - 3, 68, 28);
+  }
   function homeSign(c, t) {
     var x = 34, y = A.FLOOR_Y + 8, sw = Math.sin(t / 1100) * 0.03;
     c.fillStyle = '#4a3018'; c.fillRect(x - 2, y - 58, 5, 58);
@@ -3193,7 +3206,7 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
       else { h.x += Math.sign(d) * Math.min(Math.abs(d), dt * 0.12); h.dir = Math.sign(d); walking = true; }
     }
     if (G.scene === 'house') { A.bgHouse(c, t); c.fillStyle = 'rgba(0,0,0,.35)'; c.beginPath(); c.ellipse(SAGE_X, A.FLOOR_Y + 8, 16, 4, 0, 0, 7); c.fill(); A.drawMonster(c, 'sage', 'idle', t, SAGE_X, A.FLOOR_Y + 8); drawIntruder(c, t); lakeSign(c, t); }
-    else if (G.scene === 'hall') A.bgHall(c, t);
+    else if (G.scene === 'hall') { A.bgHall(c, t); hallSign(c, t); }
     else if (G.scene === 'path' && G.lib) { if (A.bgLib) A.bgLib(c, t, G.lib); else { A.bgHall(c, t); needArt(); } libHatch(c, t); }
     else if ((G.scene === 'event' || G.scene === 'lake') && G.ev) { if (A.bgEv) A.bgEv(c, t, G.ev); else { A.bgRoom(c, t, { theme: 'crypt' }); needArt(); } if (G.scene === 'lake') homeSign(c, t); }   /* файл рисовки не загрузился — не застываем, а догружаем */
     else if (G.scene === 'room' && G.room) A.bgRoom(c, t, { theme: themeOf(G.room.f), exit: true, exitOpen: G.room.objs.every(function (o) { return o.type !== 'mon' || o.dead; }), seed: G.room.k, goo: G.room.floor % 3 === 0, hole: G.room.floor % 2 === 0 });
