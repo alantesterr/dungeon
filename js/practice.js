@@ -307,7 +307,7 @@
   var task = null, tw = null, vclBox = null;
   var hiding = false;
   function hideTask() { hiding = true; try { hideTask0(); } finally { hiding = false; } }
-  function hideTask0() { if (window.ASM) ASM.close(); if (pb) { pb.remove(); pb = null; } if (pkw) { pkw.remove(); pkw = null; } if (tw) { tw.remove(); tw = null; } if (vclBox) { vclBox.remove(); vclBox = null; } if (siteBox) { siteBox.remove(); siteBox = null; } var ide = window.CPP && CPP.ide && CPP.ide(); if (ide) ide.hide(); }
+  function hideTask0() { if (window.AP) AP.close(); if (window.ASM) ASM.close(); if (pb) { pb.remove(); pb = null; } if (pkw) { pkw.remove(); pkw = null; } if (tw) { tw.remove(); tw = null; } if (vclBox) { vclBox.remove(); vclBox = null; } if (siteBox) { siteBox.remove(); siteBox = null; } var ide = window.CPP && CPP.ide && CPP.ide(); if (ide) ide.hide(); }
   function startCode(t) {
     if (t.start) return t.start;
     return '#include <iostream.h>\n#include <conio.h>\n#include <math.h>\n\nint main()\n{\n  // ' + String(t.name || 'Задание') + ': напиши решение здесь\n\n  getch();\n  return 0;\n}\n';
@@ -465,12 +465,9 @@
     var l = labs[sid][li], t = l.tasks[ti]; task = { sid: sid, li: li, ti: ti, t: t }; PR._ran = false;
     D.save.labLast = D.save.labLast || {}; D.save.labLast[sid] = t.id; try { D.persist(); } catch (e) {}
     if (SUBJ[sid].site) {
-      Promise.resolve().then(function () { return ASM.data(); }).then(function (A) {
-        if (!task || task.t !== t) return;
-        var ks = (A.tasks || {})[t.id];
-        if (ks) { asmTask(t, l, A, ks, keepAsm); return; }
-        openSite(sid, t.anchor, l.title); siteTaskWin(t, l);
-      }, function () { openSite(sid, t.anchor, l.title); siteTaskWin(t, l); });
+      /* v113: все задания Архитектуры — внутри компьютера, каждое в своём приложении (EWB / ASM / Тетрадь / Блокнот) */
+      if (window.AP) { AP.openTask(t.id, { onExit: function () { openDesktop(sid); } }); return; }
+      openSite(sid, t.anchor, l.title); siteTaskWin(t, l);
       return;
     }
     if (keep) { if (t.kind === 'vcl') ensureVclCheck(); }   /* выбрал задание в пустом Builder — твой проект остаётся, решаешь в нём */
@@ -773,19 +770,22 @@
   function openDesktop(sid) {
     closeWin(); hideTask(); task = null; curSid = sid;
     var s0 = save(), all = every(sid), done = all.filter(function (x) { return s0[x.t.id]; }).length;
-    var apps = [['ewb', '⚡', 'Electronics Workbench', 'собрать схему'], ['asm', '⚙', 'ASM-студия', 'ассемблер x86 по шагам'], ['tasks', '📒', 'Блокнот задач', 'все лабы по темам'], ['site', '🌐', 'Учебный сайт', 'лекции и стенды'], ['off', '⏻', 'Выключить', 'встать из-за компьютера']];
+    var apps = [['ewb', '⚡', 'Electronics Workbench', 'схемы — темы 3–7'], ['asm', '⚙', 'ASM-студия', 'ассемблер — темы 8–9'], ['calc', '🧮', 'Тетрадь', 'расчёты с проверкой — темы 1, 2, 4, 9–15'], ['note', '📒', 'Блокнот', 'теория и вопросы'], ['tasks', '📁', 'Все задания', 'список по темам'], ['site', '🌐', 'Учебный сайт', 'лекции и стенды'], ['off', '⏻', 'Выключить', 'встать из-за компьютера']];
     win = el('<div class="prx-desktop" role="application" aria-label="Рабочий стол"><div class="dk-icons">' + apps.map(function (a) { return '<button class="dk-ic" data-app="' + a[0] + '" title="' + esc(a[3]) + '"><span class="dk-i">' + a[1] + '</span><span class="dk-n">' + esc(a[2]) + '</span></button>'; }).join('') + '</div>' +
-      '<div class="dk-note"><b>💡 Что открыть?</b><span>⚡ <b>EWB</b> — схемы (темы 3–7, 16)<br>⚙ <b>ASM-студия</b> — программы на ассемблере (темы 8–9)<br>📒 <b>Блокнот задач</b> — выбрать лабу по теме</span></div>' +
+      '<div class="dk-note"><b>💡 Что открыть?</b><span>⚡ <b>EWB</b> — схемы (темы 3–7)<br>⚙ <b>ASM-студия</b> — ассемблер (темы 8–9)<br>🧮 <b>Тетрадь</b> — расчёты с проверкой ответов<br>📒 <b>Блокнот</b> — теория и контрольные вопросы<br>В каждой программе — только её задания (📋 Задания).</span></div>' +
       '<div class="dk-bar"><button class="dk-start">🪟 Пуск</button><span class="dk-task">Решено лаб: <b>' + done + ' из ' + all.length + '</b></span><span class="grow"></span><span class="dk-clock"></span></div></div>');
     document.body.appendChild(win);
     var ck = win.querySelector('.dk-clock'), tick = function () { if (!win || !ck.isConnected) return; var d = new Date(); ck.textContent = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2); setTimeout(tick, 15000); }; tick();
     var back = function () { openDesktop(sid); };
-    var act = { ewb: function () { closeWin(); siteBack = back; openSite(sid, 't16', 'Electronics Workbench — свободная сборка'); }, asm: function () { asmFree(sid, back); }, tasks: function () { openList(sid); }, site: function () { closeWin(); siteBack = back; openSite(sid, 't1', 'Учебный сайт'); }, off: exit };
+    var ap = function (a) { return function () { closeWin(); AP.open(a, { onExit: back }); }; };
+    var act = { ewb: ap('ewb'), asm: ap('asm'), calc: ap('calc'), note: ap('note'), tasks: function () { openList(sid); }, site: function () { closeWin(); siteBack = back; openSite(sid, 't1', 'Учебный сайт'); }, off: exit };
     win.querySelectorAll('[data-app]').forEach(function (b) { b.onclick = function () { act[b.getAttribute('data-app')](); }; });
     win.querySelector('.dk-start').onclick = function () { act.tasks(); };
   }
   document.addEventListener('bcb-hide', function () { if (!PR.active || vclBox || hiding) return; if (task) openList(curSid, task.li); else exit(); });
 
+  PR.util = { brief: brief, siteImg: siteImg, plainT: plainT, md: md, hints: hints };
+  PR.labs = function (sid) { return labs[sid]; };
   PR.open = function (sid) { if (!SUBJ[sid] || PR.active) return; if (curSid !== sid) view = { only: false, q: '' }; curSid = sid; enterRoom(sid, function (w) { boot(sid, w); }); };
 })();
 /* запуск программы (F9 или ▶ Run) в Builder — для шага «Нажми F9» */
