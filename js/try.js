@@ -139,6 +139,37 @@
   function baseWords(t) { var found = []; BASE_W.forEach(function (b) { var m = t.search(b[0]); if (m >= 0) found.push([m, b[1]]); }); return found.sort(function (a, b) { return a[0] - b[0]; }).map(function (x) { return x[1]; }); }
   /* \b в JS не понимает кириллицу — своя «граница слова» */
   function W(word) { return new RegExp('(^|[^А-Яа-яЁёA-Za-z-])' + word + '(?=$|[^А-Яа-яЁёA-Za-z-])', 'i'); }
+  /* ⚙ ассемблер: короткая программа про команду из вопроса — проходится по шагам в ASM-студии */
+  var AH = 'INCLUDE Irvine32.inc\n', AE = '    call DumpRegs\n    exit\nmain ENDP\nEND main';
+  var ASMD = [
+    [/\b(adc|sbb)\b|перенос\w* (в|из) старш/i, 'ADC — сложение с переносом', AH + '.data\n    N1 DW 60000\n    N2 DW 10000\n.code\nmain PROC\n    xor eax, eax\n    xor edx, edx\n    mov ax, N1       ; AX = 60000\n    add ax, N2       ; 70000 не влезает в 16 бит → CF = 1\n    adc dx, 0        ; DX = 0 + 0 + CF — поймали перенос\n' + AE],
+    [/\bcbw\b|\bcwd\b|\bmovsx\b|\bmovzx\b|расширени\w* знак|знаков\w* расширени|расшир/i, 'CBW — расширение со знаком', AH + '.data\n    A DB -25\n    B DB 40\n.code\nmain PROC\n    xor eax, eax\n    mov al, A        ; AL = E7h = -25\n    cbw              ; AX = FFE7h — всё ещё -25\n    mov bx, ax\n    mov al, B        ; AL = 28h = 40\n    mov ah, 0        ; беззнаковое расширение: AX = 0028h\n    add bx, ax       ; BX = -25 + 40 = 15\n' + AE],
+    [/\b(i?mul)\b|умножени/i, 'MUL — умножение', AH + '.code\nmain PROC\n    xor edx, edx\n    mov eax, 300\n    mov ebx, 200\n    mul ebx          ; EDX:EAX = 300 * 200 = 60000\n    mov al, 20\n    mov bl, 15\n    mul bl           ; AX = 20 * 15 = 300 — не влезло в байт, CF = 1\n' + AE],
+    [/\b(i?div)\b|делени|остат/i, 'DIV — деление с остатком', AH + '.code\nmain PROC\n    xor edx, edx     ; старшая часть делимого = 0!\n    mov eax, 17\n    mov ebx, 5\n    div ebx          ; EAX = 3 (частное), EDX = 2 (остаток)\n' + AE],
+    [/\b(cmp|jmp|je|jne|jz|jnz|jg|jl|jge|jle|ja|jb)\b|переход|сравнени|ветвлени/i, 'CMP + переход', AH + '.data\n    msgBig BYTE "A > B",0\n    msgSmall BYTE "A <= B",0\n.code\nmain PROC\n    mov eax, 7\n    cmp eax, 5       ; 7 - 5: флаги без записи\n    jg  big          ; больше (со знаком) → прыжок\n    mov edx, OFFSET msgSmall\n    jmp show\nbig:\n    mov edx, OFFSET msgBig\nshow:\n    call WriteString\n    call Crlf\n    exit\nmain ENDP\nEND main'],
+    [/\bloop\b|\bцикл/i, 'LOOP — цикл', AH + '.code\nmain PROC\n    xor eax, eax\n    mov ecx, 5       ; повторить 5 раз\nL1:\n    add eax, ecx     ; 5 + 4 + 3 + 2 + 1\n    loop L1          ; ECX - 1; если не 0 — снова\n    call WriteDec    ; 15\n    call Crlf\n    exit\nmain ENDP\nEND main'],
+    [/\b(push|pop)\b|стек/i, 'PUSH / POP — стек', AH + '.code\nmain PROC\n    mov eax, 1\n    mov ebx, 2\n    push eax         ; в стек 1\n    push ebx         ; в стек 2 (сверху)\n    pop eax          ; EAX = 2 — снимаем верхнее\n    pop ebx          ; EBX = 1 — поменялись местами\n' + AE],
+    [/\b(shl|shr|sar|sal|rol|ror)\b|сдвиг/i, 'SHL / SHR — сдвиги', AH + '.code\nmain PROC\n    mov eax, 5\n    shl eax, 3       ; 5 * 8 = 40\n    shr eax, 1       ; 40 / 2 = 20\n    mov ebx, -16\n    sar ebx, 2       ; -16 / 4 = -4 (знак сохранился)\n' + AE],
+    [/\b(and|or|xor|not|test)\b|логическ\w* команд|маск/i, 'AND / OR / XOR — побитовые', AH + '.code\nmain PROC\n    mov eax, 1100b\n    and eax, 1010b   ; 1000b — 1 только где оба 1\n    mov ebx, 1100b\n    or  ebx, 1010b   ; 1110b — хотя бы один 1\n    xor ecx, ecx     ; обнулить регистр\n' + AE],
+    [/\b(inc|dec|neg)\b/i, 'INC / DEC / NEG', AH + '.code\nmain PROC\n    mov eax, 9\n    inc eax          ; 10, CF не трогает\n    dec eax          ; 9\n    neg eax          ; -9\n' + AE],
+    [/\b(load|store)\b/i, 'LOAD / STORE — учебная модель', '; Старт: [200]=25 [201]=15 [202]=0\nLOAD R1, [200]    ; из памяти в регистр\nLOAD R2, [201]\nADD R3, R1, R2    ; АЛУ — только с регистрами\nSTORE [202], R3   ; результат обратно в память'],
+    [/writeint|writedec|writestring|irvine|crlf|вывести на экран/i, 'Вывод в Irvine32', AH + '.data\n    num DWORD -5\n    msg BYTE "Value = ",0\n.code\nmain PROC\n    mov edx, OFFSET msg  ; адрес строки — в EDX\n    call WriteString\n    mov eax, num         ; число — всегда в EAX\n    call WriteInt        ; со знаком: -5\n    call Crlf\n    call WriteDec        ; без знака: 4294967291\n    call Crlf\n    exit\nmain ENDP\nEND main'],
+    [/\b(db|dw|dd|dword|word|byte)\b|объявлени\w* (данн|переменн)/i, 'DB / DW / DD — размеры данных', AH + '.data\n    b1 DB 200        ; байт — 8 бит\n    w1 DW 50000      ; слово — 16 бит\n    d1 DD 3000000    ; двойное слово — 32 бита\n.code\nmain PROC\n    xor eax, eax\n    mov al, b1\n    mov bx, w1\n    mov ecx, d1\n' + AE],
+    [/флаг|\b(cf|zf|sf|of)\b|переполнени/i, 'Флаги CF, OF, ZF, SF', AH + '.code\nmain PROC\n    mov al, 255\n    add al, 1        ; 0 и перенос: CF = 1, ZF = 1\n    mov bl, 127\n    add bl, 1        ; -128 со знаком: OF = 1, SF = 1\n' + AE],
+    [/\b(mov|eax|ax|al|ah|ebx|bx)\b|регистр\w*|ассемблер|машинн\w* команд|\bmasm\b/i, 'MOV и регистры', AH + '.code\nmain PROC\n    xor eax, eax     ; обнулить\n    mov eax, 12345678h\n    mov ax, 0ABCDh   ; меняется только младшее слово\n    mov ah, 11h      ; только старший байт AX\n    mov al, 22h      ; только младший байт\n    mov ebx, eax     ; копия — флаги не меняются\n' + AE]
+  ];
+  function asmFind(q) {
+    var all = plain(q.q) + ' ' + plain(rightOf(q));
+    if (/вентил|триггер|мультиплекс|кэш|sram|dram|pentium|80486|уровн\w* памят|схем|таблиц\w* истинност|сегмент|режим/i.test(all) && !/\b(mov|add|adc|cbw|push|pop)\b/i.test(all)) return null;
+    if (!/ассемблер|\b(mov|add|adc|sub|sbb|cbw|cwd|movsx|movzx|inc|dec|mul|imul|div|idiv|neg|cmp|jmp|je|jne|jg|jl|loop|push|pop|shl|shr|sar|load|store|eax|ax|al|ah|bx|cx|dx|sp|ip|eip|irvine|masm|writeint|writedec)\b|флаг\w* (cf|zf|of|sf|переноса|переполн)/i.test(all)) return null;
+    /* в вопросе сама программа («mov al,-25 / cbw», «MOV EAX,5; ADD EAX,EBX») — её и запускаем */
+    var cmds = (String(q.q || '').match(/\b(mov|movzx|movsx|add|adc|sub|sbb|inc|dec|neg|cbw|cwd|xor|and|or|shl|shr|mul|div|push|pop)\b\s*[a-z0-9,\s\-−]*/gi) || []).map(function (c) { return c.replace(/−/g, '-').replace(/\s*,\s*/g, ', ').trim(); }).filter(function (c) { return /^(cbw|cwd)$/i.test(c) || /,|\s/.test(c); });
+    if (cmds.length >= 2) {
+      try { var src = AH + '.code\nmain PROC\n' + (/\be[a-d]x\b/i.test(cmds.join(' ')) ? '' : '    xor eax, eax\n    xor ebx, ebx\n    xor ecx, ecx\n') + cmds.map(function (c) { return '    ' + c.toLowerCase(); }).join('\n') + '\n' + AE; if (window.ASM) ASM.assemble(src); return { tool: 'asm', label: '⚙ Ассемблер: код из вопроса', init: { code: src } }; } catch (e) {}
+    }
+    for (var i = 0; i < ASMD.length; i++) if (ASMD[i][0].test(all)) return { tool: 'asm', label: '⚙ Ассемблер: ' + ASMD[i][1], init: { code: ASMD[i][2] } };
+    return null;
+  }
   function archFind(q) {
     var t = plain(q.q), r = plain(rightOf(q)), both = t + ' ' + r, out = [], m;
     var has = function (tool) { return out.some(function (o) { return o.tool === tool; }); };
@@ -170,6 +201,7 @@
       W('ИЛИ').test(r) || /\bOR\b|дизъюнкц|логическ[а-яё]* сложени/i.test(r) ? 'OR' : W('НЕ').test(r) || /\bNOT\b|инвер|отрицани/i.test(r) ? 'NOT' : W('И').test(r) || /\bAND\b|конъюнкц|логическ[а-яё]* умножени/i.test(r) ? 'AND' : '';
     if (!g && /вентил|логическ[а-яё]* элемент|таблиц[а-яё]* истинност|кружок на выходе/i.test(t)) g = /кружок|инверс/i.test(both) ? 'NAND' : 'AND';
     if (g && !has('gate')) out.push({ tool: 'gate', label: 'Логические вентили', init: { g: g } });
+    var am = asmFind(q); if (am) out.push(am);
     return out;
   }
 
@@ -195,6 +227,10 @@
   }
   var bits = function (n, w) { var s = (n >>> 0).toString(2); while (s.length < w) s = '0' + s; return s.slice(-w); };
   var TOOLS = {
+    asm: function (box, o) {
+      box.innerHTML = '<p class="tr-why">Жми <b>⏭ Шаг</b> — выполнится одна команда: подсветится строка, изменённые регистры и флаги, а справа внизу — что она сделала и почему. Код можно менять — соберётся сам.</p><div class="tr-asm"><div></div></div>';
+      if (window.ASM) ASM.mount(box.querySelector('.tr-asm > div'), o.code);
+    },
     conv: function (box, o) {
       box.innerHTML = '<div class="tr-row"><label>Число <input class="tr-in" data-n value="' + esc(o.num) + '"></label><label>из <select data-f>' + [2, 8, 10, 16].map(function (b) { return '<option' + (b === o.from ? ' selected' : '') + '>' + b + '</option>'; }).join('') + '</select></label><label>в <select data-t>' + [2, 8, 10, 16].map(function (b) { return '<option' + (b === o.to ? ' selected' : '') + '>' + b + '</option>'; }).join('') + '</select></label></div><div class="tr-out"></div>' +
         '<p class="tr-why">Зачем: компьютер хранит всё в двоичной (0 и 1), а шестнадцатеричной программисты коротко записывают байты — одна цифра = 4 бита (тетрада), восьмеричная цифра = 3 бита (триада).</p>';
@@ -361,7 +397,11 @@
     if (/BorderStyle/.test(ra) && comp !== 'TStaticText') return null;   /* BorderStyle формы в мини-Builder не показать */
     var words = (ra.match(/[A-Za-z]+/g) || []);
     /* ответ — фраза, а в вопросе назван особый признак (AutoSize, MaxLength…) — показываем его */
-    if (words.length > 2) { var qw = (String(q.q || '') + ' ' + String(q.tr || '')).match(/\b(AutoSize|MaxLength|ReadOnly|Transparent|WordWrap|Alignment|ShowHint|Interval|Kind)\b/); if (qw) words = [qw[1]].concat(words); }
+    if (words.length > 2 || !words.length) {   /* ответ — фраза: берём свойство / событие, названное в самом вопросе (Enabled, Visible, Interval…) */
+      var known = ' ' + Object.keys(VP).map(function (k) { return VP[k]; }).join(' ') + ' ' + Object.keys(VE).map(function (k) { return VE[k]; }).join(' ') + ' ';
+      var qws = ((String(q.q || '') + ' ' + String(q.tr || '')).match(/\b[A-Z][A-Za-z]+\b/g) || []).map(function (w) { return w === 'Enable' ? 'Enabled' : w; }).filter(function (w) { return !/^(BorderStyle|Font|Width|Height|Left|Top)$/.test(w) && known.indexOf(' ' + w + ' ') >= 0; });
+      if (qws.length) words = qws.concat(words);
+    }
     var kind = null, name = null;
     if (/Shift\.Contains|ssAlt|ssShift|ssCtrl/.test(ra)) { kind = 'shift'; comp = 'TLabel'; }
     else if (/Now\(\)|TimeString/.test(ra)) { kind = 'now'; comp = 'TLabel'; }
@@ -490,6 +530,15 @@
     if (window.CPP && CPP.initVcl) go(); else (window.PR && PR.loadVcl ? PR.loadVcl() : Promise.reject()).then(go, function () { box.insertAdjacentHTML('beforeend', '<p class="tr-bad">Не получилось загрузить Builder.</p>'); });
   }
 
+  /* ООП (темы 7–8): класс, объект, конструктор/деструктор, наследование, virtual — запускается в консоли */
+  var HC = '#include <iostream.h>\n\n';
+  var OOPD = [
+    { re: /конструктор|деструктор|constructor|destructor|~\w+\s*\(/i, n: 'конструктор и деструктор', why: '<b>Конструктор</b> вызывается сам, когда объект создаётся, <b>деструктор</b> (~) — когда объект исчезает (конец блока или delete). Смотри порядок строк: b исчезает раньше a.', code: HC + 'class Box\n{\npublic:\n  int n;\n  Box(int x) { n = x; cout << "konstruktor Box(" << n << ")" << endl; }\n  ~Box() { cout << "destruktor ~Box(" << n << ")" << endl; }\n};\n\nint main()\n{\n  Box a(1);\n  {\n    Box b(2);\n    cout << "vnutri bloka" << endl;\n  }\n  Box *p = new Box(3);\n  delete p;\n  cout << "konec main" << endl;\n  return 0;\n}\n' },
+    { re: /virtual|полиморф|polymorph|переопредел|override/i, n: 'virtual и полиморфизм', why: '<b>virtual</b>: по указателю на базовый класс вызывается метод <b>настоящего</b> объекта. Убери слово virtual и запусти ещё раз — оба скажут «...».', code: HC + 'class Animal\n{\npublic:\n  virtual void say() { cout << "..." << endl; }\n};\nclass Dog : public Animal\n{\npublic:\n  void say() { cout << "Gav!" << endl; }\n};\nclass Cat : public Animal\n{\npublic:\n  void say() { cout << "Myau!" << endl; }\n};\n\nint main()\n{\n  Animal *zoo[2];\n  zoo[0] = new Dog;\n  zoo[1] = new Cat;\n  for (int i = 0; i < 2; i++) zoo[i]->say();\n  return 0;\n}\n' },
+    { re: /наслед|inherit|базов|derived|base class|производн|родител/i, n: 'наследование', why: 'Класс-наследник получает поля и методы базового и добавляет свои. <b>Dog</b> умеет всё, что <b>Animal</b>, плюс лаять.', code: HC + 'class Animal\n{\npublic:\n  int legs;\n  void walk() { cout << "idu na " << legs << " lapah" << endl; }\n};\nclass Dog : public Animal\n{\npublic:\n  void bark() { cout << "Gav!" << endl; }\n};\n\nint main()\n{\n  Dog d;\n  d.legs = 4;   // pole iz Animal\n  d.walk();     // metod iz Animal\n  d.bark();     // svoy metod\n  return 0;\n}\n' },
+    { re: /private|public|protected|инкапсул|encapsul|доступ/i, n: 'private и public', why: '<b>private</b> — видно только внутри класса, <b>public</b> — снаружи. Поле прячут и меняют через метод, который проверяет значение. Убери // перед a.money = -5 — будет ошибка компиляции.', code: HC + 'class Account\n{\nprivate:\n  int money;\npublic:\n  Account() { money = 0; }\n  void put(int x) { if (x > 0) money += x; else cout << "nelzya: " << x << endl; }\n  int get() { return money; }\n};\n\nint main()\n{\n  Account a;\n  a.put(100);\n  a.put(-5);\n  // a.money = -5;   // oshibka: money - private\n  cout << "na schetu: " << a.get() << endl;\n  return 0;\n}\n' },
+    { re: /класс|объект|экземпляр|instance|object|class|метод|method|поле|field/i, n: 'класс и объекты', why: '<b>Класс</b> — чертёж, <b>объект</b> (экземпляр) — вещь по чертежу в памяти. У каждого объекта свои поля: поменяли у a — у b не изменилось. Методы общие.', code: HC + 'class Point\n{\npublic:\n  int x, y;\n  void show() { cout << "(" << x << ", " << y << ")" << endl; }\n};\n\nint main()\n{\n  Point a, b;      // dva obekta - dva mesta v pamyati\n  a.x = 1; a.y = 2;\n  b.x = 10; b.y = 20;\n  a.show();\n  b.show();\n  cout << "sizeof(a) = " << sizeof(a) << " bayt" << endl;\n  return 0;\n}\n' }
+  ];
   /* ================= поиск примеров ================= */
   T.find = function (q, sid) {
     if (!q) return [];
@@ -500,7 +549,11 @@
       /* пример «про команду» — только для вопросов по обычному C/C++ (темы 1–6), не про формы, компоненты, классы и файлы */
       var all = String(q.q || '') + ' ' + String(q.tr || '') + ' ' + (q.opts || []).filter(function (o) { return o.right; }).map(function (o) { return o.t + ' ' + (o.tr || ''); }).join(' ');
       if (q.topic > 6 || /\bT[A-Z][a-z]+|VCL|Memo|Edit\d|Label|Button|Sender|Caption|Hint|Form\d|fopen|fprintf|fscanf|fgets|fputs|#define/.test(all) ||
-        /НЕ ТОЧНО|УМКД|компонент|класс[ауео ]|объект|конструктор|деструктор|метод|наследов|полиморф|свойств|событи|обработчик|на форм|файл|директив/i.test(all)) { var vd = vclFind(q); return vd ? [vd] : out; }
+        /НЕ ТОЧНО|УМКД|компонент|класс[ауео ]|объект|конструктор|деструктор|метод|наследов|полиморф|свойств|событи|обработчик|на форм|файл|директив/i.test(all)) {
+        var vd = vclFind(q); if (vd) return [vd];
+        if (!/\bT[A-Z][a-z]+|VCL|Memo|Edit\d|Label|Button|Form\d|компонент|на форм|событи|свойств|обработчик|файл|fopen|#define/i.test(all)) for (var oi = 0; oi < OOPD.length; oi++) if (OOPD[oi].re.test(all)) return [{ kind: 'cpp', label: 'Как работает: ' + OOPD[oi].n, demo: OOPD[oi] }];
+        return out;
+      }
       /* английские слова (while, for, if, true…) ищем только в коде: в обычном тексте «while the program runs» — не цикл */
       var code = [], noCode = function (s) { return String(s || '').replace(/```[\s\S]*?```|`[^`]+`/g, function (m) { code.push(m.replace(/`/g, ' ')); return ' '; }); };
       var qq = noCode(q.q), qtr = noCode(q.tr);

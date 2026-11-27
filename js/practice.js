@@ -64,57 +64,111 @@
   /* ---------- комната: стол, компьютер, герой садится и «ныряет» в монитор ---------- */
   var room = null;
   function el(h) { var d = document.createElement('div'); d.innerHTML = h; return d.firstChild; }
-  function drawRoom(c, t, hx, sit, on) {
-    var W = 640, H = 360; c.imageSmoothingEnabled = false;
-    c.fillStyle = '#1b1626'; c.fillRect(0, 0, W, H);
-    for (var y = 0; y < 250; y += 16) for (var x = (y / 16) % 2 ? -16 : 0; x < W; x += 32) { c.fillStyle = (x + y) % 3 ? '#2a2236' : '#2e2640'; c.fillRect(x + 1, y + 1, 30, 14); }
-    c.fillStyle = '#3b2a1e'; c.fillRect(0, 250, W, 110); for (var i = 0; i < W; i += 40) { c.fillStyle = '#33241a'; c.fillRect(i, 250, 2, 110); }
-    c.fillStyle = '#4a3526'; c.fillRect(0, 248, W, 4);
-    /* окно с луной */
-    c.fillStyle = '#0d1530'; c.fillRect(60, 60, 90, 70); c.fillStyle = '#e8e1b8'; c.beginPath(); c.arc(120, 85, 10, 0, 7); c.fill(); c.fillStyle = '#0d1530'; c.beginPath(); c.arc(126, 81, 9, 0, 7); c.fill();
-    c.strokeStyle = '#5a4630'; c.lineWidth = 4; c.strokeRect(60, 60, 90, 70); c.beginPath(); c.moveTo(105, 60); c.lineTo(105, 130); c.stroke();
-    /* полка с дискетами и книгами */
-    c.fillStyle = '#5a4630'; c.fillRect(470, 90, 120, 6); ['#c0392b', '#2e86c1', '#27ae60', '#f1c40f', '#8e44ad', '#7f8c8d'].forEach(function (col, k) { c.fillStyle = col; c.fillRect(478 + k * 17, 64, 13, 26); });
+  /* ---------- 🕯 ПОДВАЛ БИБЛИОТЕКИ (v111): спускаешься по лестнице; стол с компьютером, полка «книги прогресса» —
+     по книге на каждую тему лаб (корешок заполняется по мере решения, золотой — тема решена вся).
+     Нажми на книгу — сядешь за компьютер сразу в этой теме; на компьютер — к списку; «⬆ Наверх» — обратно в библиотеку. ---------- */
+  var BOOKC = { cpp: ['#1D9E75', '#3a7ca5', '#EF9F27', '#97C459', '#5DCAA5', '#c0392b', '#8e44ad', '#2f8f8a'], arch: ['#85B7EB', '#AFA9EC', '#3C3489', '#5a7bd0', '#e0a040', '#7f8c8d', '#c0392b', '#2e86c1'] };
+  function bookRects(n) { var out = [], per = 8; for (var i = 0; i < n; i++) { var r = Math.floor(i / per), k = i % per; out.push({ x: 474 + k * 18, y: r ? 150 : 82, w: 14, h: 44 }); } return out; }
+  function topicProg(sid) {
+    var L = labs[sid] || [], s = save();
+    return byTopic(sid).map(function (g) { var d = 0, n = 0; g.labs.forEach(function (li) { L[li].tasks.forEach(function (t) { n++; if (s[t.id]) d++; }); }); return { n: g.n, d: d, tot: n, title: topicTitle(sid, g.n) }; });
+  }
+  function drawRoom(c, t, hx, sit, on, B) {
+    var W = 640, H = 360; c.imageSmoothingEnabled = false; B = B || {};
+    /* каменные стены подвала */
+    c.fillStyle = '#16131c'; c.fillRect(0, 0, W, H);
+    for (var y = 0; y < 250; y += 18) for (var x = (y / 18) % 2 ? -20 : 0; x < W; x += 40) { var sh = ((x * 7 + y * 13) % 5); c.fillStyle = ['#2a2630', '#2e2935', '#26222c', '#312b38', '#2b2731'][sh]; c.fillRect(x + 1, y + 1, 38, 16); }
+    c.fillStyle = 'rgba(80,140,90,.18)'; [[40, 30], [230, 12], [560, 40], [400, 220]].forEach(function (m) { c.fillRect(m[0], m[1], 22, 5); c.fillRect(m[0] + 4, m[1] + 5, 10, 4); });   /* мох */
+    /* балки потолка */
+    c.fillStyle = '#3b2a1e'; c.fillRect(0, 0, W, 12); [150, 330, 520].forEach(function (bx) { c.fillRect(bx, 0, 14, 30); c.fillStyle = '#2c1f16'; c.fillRect(bx, 26, 14, 4); c.fillStyle = '#3b2a1e'; });
+    /* пол — плиты */
+    c.fillStyle = '#2b2620'; c.fillRect(0, 250, W, 110); for (var i = 0; i < W; i += 48) { c.fillStyle = '#231f1a'; c.fillRect(i, 250, 2, 110); } c.fillStyle = '#231f1a'; c.fillRect(0, 300, W, 2);
+    c.fillStyle = '#3a3128'; c.fillRect(0, 248, W, 4);
+    /* лестница наверх (в библиотеку) — слева */
+    for (var k = 0; k < 8; k++) { c.fillStyle = k % 2 ? '#4a3a2a' : '#54432f'; c.fillRect(0, 250 - k * 17 - 10, 120 - k * 13, 10); c.fillStyle = '#2f2419'; c.fillRect(0, 250 - k * 17, 120 - k * 13, 7); }
+    c.fillStyle = 'rgba(255,220,140,' + (0.10 + 0.04 * Math.sin(t / 400)) + ')'; c.beginPath(); c.moveTo(0, 0); c.lineTo(70, 0); c.lineTo(20, 120); c.lineTo(0, 120); c.fill();   /* свет сверху из люка */
+    if (B.hv === 'up') { c.strokeStyle = '#FAC775'; c.lineWidth = 2; c.strokeRect(2, 120, 116, 130); }
+    /* факелы */
+    [200, 440].forEach(function (fx, n) { var fl = Math.sin(t / 70 + n) + Math.sin(t / 23 + n * 2) * 0.5;
+      c.fillStyle = '#4a3526'; c.fillRect(fx, 74, 6, 22); c.fillStyle = '#ff9a3a'; c.fillRect(fx - 2, 62 - fl, 10, 12); c.fillStyle = '#ffe07a'; c.fillRect(fx, 66 - fl, 6, 7);
+      var g = c.createRadialGradient(fx + 3, 70, 4, fx + 3, 70, 110); g.addColorStop(0, 'rgba(255,170,80,.20)'); g.addColorStop(1, 'rgba(255,150,60,0)'); c.fillStyle = g; c.fillRect(fx - 110, 0, 220, 260); });
+    /* полка «книги прогресса» */
+    var tp = B.prog || [], rs = bookRects(tp.length), cols = BOOKC[B.sid] || BOOKC.cpp;
+    c.fillStyle = '#4a3526'; c.fillRect(466, 126, 152, 6); c.fillRect(466, 194, 152, 6); c.fillStyle = '#5a4630'; c.fillRect(462, 60, 6, 142); c.fillRect(616, 60, 6, 142);
+    c.fillStyle = '#e8d6a8'; c.font = 'bold 9px monospace'; c.textAlign = 'center'; c.fillText('КНИГИ ПРОГРЕССА', 542, 56);
+    tp.forEach(function (b, i) {
+      var r = rs[i], pct = b.tot ? b.d / b.tot : 0, gold = b.tot && b.d >= b.tot, col = gold ? '#e8b84a' : cols[i % cols.length], lift = B.hv === i ? 6 : 0;
+      c.fillStyle = 'rgba(0,0,0,.35)'; c.fillRect(r.x + 2, r.y + 2, r.w, r.h);
+      c.fillStyle = pct ? col : '#4b4552'; c.globalAlpha = pct ? 1 : 0.75; c.fillRect(r.x, r.y - lift, r.w, r.h); c.globalAlpha = 1;
+      /* «налитая» часть корешка = доля решённых */
+      c.fillStyle = 'rgba(0,0,0,.38)'; c.fillRect(r.x + 2, r.y - lift + 4, r.w - 4, Math.round((r.h - 8) * (1 - pct)));
+      c.fillStyle = 'rgba(255,255,255,.25)'; c.fillRect(r.x + 1, r.y - lift, 2, r.h);
+      c.fillStyle = gold ? '#fff3c4' : '#f2ead8'; c.font = 'bold 8px monospace'; c.fillText(String(b.n), r.x + r.w / 2, r.y - lift + r.h - 3);
+      if (gold) { var sp = (t / 600 + i) % 1; c.fillStyle = 'rgba(255,240,180,' + (1 - sp).toFixed(2) + ')'; c.fillRect(r.x + 4, r.y - lift - 4 - sp * 10, 2, 2); }
+      if (B.hv === i) { c.strokeStyle = '#FAC775'; c.lineWidth = 2; c.strokeRect(r.x - 1, r.y - lift - 1, r.w + 2, r.h + 2); }
+    });
+    if (!tp.length) { c.fillStyle = '#8a8496'; c.font = '10px monospace'; c.fillText('загружаю…', 542, 110); }
     /* стол */
     c.fillStyle = '#6b4a2f'; c.fillRect(250, 200, 250, 12); c.fillStyle = '#553a24'; c.fillRect(262, 212, 10, 50); c.fillRect(478, 212, 10, 50);
-    /* системный блок */
-    c.fillStyle = '#d8d2c0'; c.fillRect(436, 212, 40, 50); c.fillStyle = '#b9b29c'; c.fillRect(441, 220, 30, 5); c.fillRect(441, 229, 30, 5); c.fillStyle = on ? '#3ce36b' : '#2b4a2f'; c.fillRect(466, 252, 5, 4);
-    /* монитор (ЭЛТ) */
+    c.fillStyle = '#d8d2c0'; c.fillRect(436, 212, 40, 50); c.fillStyle = '#b9b29c'; c.fillRect(441, 220, 30, 5); c.fillRect(441, 229, 30, 5); c.fillStyle = on || B.hv === 'pc' ? '#3ce36b' : '#2b4a2f'; c.fillRect(466, 252, 5, 4);
     c.fillStyle = '#d8d2c0'; c.fillRect(300, 110, 120, 92); c.fillStyle = '#b9b29c'; c.fillRect(340, 200, 40, 6); c.fillRect(325, 196, 70, 5);
     c.fillStyle = on ? '#3a6ea5' : '#101418'; c.fillRect(310, 120, 100, 70);
     if (on) {
       c.fillStyle = '#d4d0c8'; c.fillRect(316, 126, 88, 58); c.fillStyle = '#0a246a'; c.fillRect(316, 126, 88, 8);
-      c.fillStyle = '#fff'; c.fillRect(320, 138, 50, 42); c.fillStyle = '#000080'; for (var k = 0; k < 6; k++) c.fillRect(323, 141 + k * 6, 14 + (k * 13) % 30, 2);
+      c.fillStyle = '#fff'; c.fillRect(320, 138, 50, 42); c.fillStyle = '#000080'; for (var q = 0; q < 6; q++) c.fillRect(323, 141 + q * 6, 14 + (q * 13) % 30, 2);
       c.fillStyle = 'rgba(160,200,255,' + (0.12 + 0.08 * Math.sin(t / 90)) + ')'; c.fillRect(310, 120, 100, 70);
-    }
-    /* клавиатура, лампа */
-    c.fillStyle = '#cfc8b4'; c.fillRect(318, 204, 84, 6); c.fillStyle = '#e8d38a'; c.fillRect(462, 160, 8, 40); c.beginPath(); c.moveTo(450, 160); c.lineTo(482, 160); c.lineTo(472, 146); c.lineTo(460, 146); c.fill();
-    c.fillStyle = 'rgba(255,220,120,.08)'; c.beginPath(); c.moveTo(450, 160); c.lineTo(482, 160); c.lineTo(524, 250); c.lineTo(408, 250); c.fill();
-    /* стул: стоит слева от стола, герой сидит боком к монитору */
+    } else { c.fillStyle = 'rgba(60,227,107,' + (0.35 + 0.35 * Math.sin(t / 300)) + ')'; c.fillRect(314, 182, 4, 3); }   /* курсор ждёт */
+    if (B.hv === 'pc') { c.strokeStyle = '#FAC775'; c.lineWidth = 2; c.strokeRect(296, 106, 128, 102); }
+    c.fillStyle = '#cfc8b4'; c.fillRect(318, 204, 84, 6); c.fillStyle = '#e8d38a'; c.fillRect(262, 160, 8, 40); c.beginPath(); c.moveTo(250, 160); c.lineTo(282, 160); c.lineTo(272, 146); c.lineTo(260, 146); c.fill();
+    c.fillStyle = 'rgba(255,220,120,.08)'; c.beginPath(); c.moveTo(250, 160); c.lineTo(282, 160); c.lineTo(324, 250); c.lineTo(208, 250); c.fill();
+    /* кружка с чаем — пар */
+    c.fillStyle = '#c94f3d'; c.fillRect(425, 190, 9, 10); c.fillStyle = 'rgba(230,230,240,.35)'; for (var v = 0; v < 3; v++) { var ph = (t / 900 + v / 3) % 1; c.fillRect(428 + Math.sin(ph * 6 + v) * 2, 186 - ph * 16, 2, 3); }
+    /* стул */
     c.fillStyle = '#2d3e50'; c.fillRect(236, 222, 46, 8); c.fillRect(232, 176, 10, 52); c.fillStyle = '#1f2b38'; c.fillRect(256, 230, 6, 22); c.fillRect(242, 248, 34, 4);
-    /* герой */
     if (A && A.drawHero) {
-      if (sit) { A.drawHero(c, on ? 'idle' : 'idle', Math.floor(t / 450), 266, 232, 1.6); }
-      else A.drawHero(c, 'walk', Math.floor(t / 110), hx, 252, 1.6);
+      if (sit) A.drawHero(c, 'idle', Math.floor(t / 450), 266, 232, 1.6);
+      else if (B.hy != null) A.drawHero(c, 'walk', Math.floor(t / 110), hx, B.hy, 1.6);
+      else A.drawHero(c, B.walk ? 'walk' : 'idle', Math.floor(t / (B.walk ? 110 : 450)), hx, 252, 1.6);
     }
   }
-  function enterRoom(sid, done) {
-    PR.active = true;
-    room = el('<div class="prx-room" role="dialog" aria-label="Компьютерная комната"><canvas width="640" height="360"></canvas>' +
-      '<div class="prx-cap"><b>💻 Практика · ' + esc(SUBJ[sid].title) + '</b><span>садимся за компьютер…</span><button class="btn ghost sm" data-skip>Пропустить ⏭</button></div><div class="prx-flash"></div></div>');
+  /* sid — предмет; topic — сразу сесть в этой теме (книга); back — вернулись из-за компьютера */
+  function enterRoom(sid, done, back) {
+    PR.active = true; leaveRoom();
+    room = el('<div class="prx-room" role="dialog" aria-label="Подвал библиотеки: лабораторные"><canvas width="640" height="360"></canvas>' +
+      '<div class="prx-cap"><b>🕯 Подвал · ' + (sid === 'arch' ? 'лабы Архитектуры' : 'лабы C++') + '</b><span>спускаюсь…</span><button class="btn primary sm" data-pc>💻 За компьютер</button><button class="btn ghost sm" data-up>⬆ Наверх</button></div><div class="prx-flash"></div></div>');
     document.body.appendChild(room);
-    var cv = room.querySelector('canvas'), c = cv.getContext('2d'), t0 = performance.now(), ready = false, finished = false, ph = 0;
-    var dataP = load(sid).then(function () { ready = true; }, function (e) { ready = 'err'; room.querySelector('.prx-cap span').textContent = 'Ошибка загрузки: ' + e.message; });
-    var finish = function () { if (finished) return; finished = true; if (ready === true) done(); else dataP.then(function () { if (ready === true) done(); }); };
-    room.querySelector('[data-skip]').onclick = function () { ph = 9; finish(); };
+    var cv = room.querySelector('canvas'), c = cv.getContext('2d'), t0 = performance.now(), ready = false, finished = false, cap = room.querySelector('.prx-cap span');
+    var B = { sid: sid, prog: [], hv: null }, mode = back ? 'idle' : 'down', hx = back ? 266 : 10, tSit = 0, wantTopic = null, myRoom = room;
+    var dataP = load(sid).then(function () { ready = true; B.prog = topicProg(sid); idleCap(); }, function (e) { ready = 'err'; cap.textContent = 'Ошибка загрузки: ' + e.message; });
+    var idleCap = function () { if (mode !== 'idle' || !ready) return; var d = 0, n = 0; B.prog.forEach(function (b) { d += b.d; n += b.tot; }); cap.innerHTML = 'Решено <b>' + d + ' из ' + n + '</b>. Нажми на книгу темы или на компьютер.'; };
+    var sitDown = function (topic) { if (mode === 'sit' || mode === 'go') return; wantTopic = topic; mode = 'go'; B.walk = true; cap.textContent = 'иду к компьютеру…'; };
+    var finish = function () { if (finished) return; finished = true; var go = function () { if (wantTopic != null) view.topic = wantTopic; done(); }; if (ready === true) go(); else dataP.then(function () { if (ready === true) go(); }); };
+    room.querySelector('[data-pc]').onclick = function () { if (mode === 'sit') { finish(); return; } sitDown(null); };
+    room.querySelector('[data-up]').onclick = function () { leaveRoom(); PR.active = false; task = null; if (window.DGame && DGame.lib) DGame.lib(); };
+    var pt = function (e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * 640, y: (e.clientY - r.top) / r.height * 360 }; };
+    var hit = function (p) {
+      var rs = bookRects(B.prog.length); for (var i = 0; i < rs.length; i++) if (p.x >= rs[i].x - 2 && p.x <= rs[i].x + rs[i].w + 2 && p.y >= rs[i].y - 8 && p.y <= rs[i].y + rs[i].h) return i;
+      if (p.x >= 296 && p.x <= 480 && p.y >= 106 && p.y <= 262) return 'pc';
+      if (p.x < 120 && p.y > 110 && p.y < 252) return 'up';
+      return null;
+    };
+    cv.addEventListener('mousemove', function (e) { if (mode !== 'idle') return; var h = hit(pt(e)); B.hv = h; cv.style.cursor = h != null ? 'pointer' : '';
+      if (typeof h === 'number') { var b = B.prog[h]; cap.innerHTML = '📗 <b>Тема ' + b.n + '</b> · ' + esc(b.title || '') + ' — решено <b>' + b.d + ' из ' + b.tot + '</b>' + (b.d >= b.tot && b.tot ? ' ✨' : ''); }
+      else if (h === 'pc') cap.textContent = '💻 Сесть за компьютер — список лаб'; else if (h === 'up') cap.textContent = '⬆ Подняться в библиотеку'; else idleCap(); });
+    cv.addEventListener('click', function (e) { if (mode !== 'idle') { if (mode === 'down') { mode = 'idle'; hx = 120; idleCap(); } return; } var h = hit(pt(e)); if (typeof h === 'number') sitDown(B.prog[h].n); else if (h === 'pc') sitDown(null); else if (h === 'up') room.querySelector('[data-up]').click(); });
+    var last = t0;
     (function frame(now) {
-      if (!room || finished && ph === 9) return;
-      var t = now - t0, walk = Math.min(1, t / 1800), hx = 40 + walk * 226, sit = t > 1900, on = t > 2300;
-      drawRoom(c, t, hx, sit, on);
-      var cap = room.querySelector('.prx-cap span');
-      if (t > 1900 && t < 2300) cap.textContent = 'включаю компьютер…'; else if (t >= 2300 && t < 3000) cap.textContent = 'загружается ' + SUBJ[sid].title + '…';
-      if (t > 3000) { var k = Math.min(1, (t - 3000) / 1100), s = 1 + k * k * 5.2; cv.style.transformOrigin = '56% 43%'; cv.style.transform = 'scale(' + s + ')'; room.querySelector('.prx-flash').style.opacity = Math.max(0, (k - .55) / .45); }
-      if (t > 4200) { finish(); if (ready === true) return; }
+      if (room !== myRoom || !room) return;
+      var t = now - t0, dt = Math.min(50, now - last); last = now;
+      if (mode === 'down') { var k = Math.min(1, t / 1400); hx = 10 + k * 100; B.hy = 120 + k * 132; B.walk = true; if (k >= 1) { mode = 'idle'; B.hy = null; B.walk = false; hx = 120; idleCap(); } }
+      else if (mode === 'go') { hx += dt * 0.2 * (hx < 266 ? 1 : -1); if (Math.abs(hx - 266) < 4) { hx = 266; mode = 'sit'; B.walk = false; tSit = t; B.hv = null; } }
+      var sit = mode === 'sit', on = sit && t - tSit > 350;
+      drawRoom(c, t, hx, sit, on, B);
+      if (sit) {
+        if (t - tSit > 350 && t - tSit < 900) cap.textContent = 'включаю ' + SUBJ[sid].title + '…';
+        if (t - tSit > 900) { var z = Math.min(1, (t - tSit - 900) / 900), s = 1 + z * z * 5.2; cv.style.transformOrigin = '56% 43%'; cv.style.transform = 'scale(' + s + ')'; room.querySelector('.prx-flash').style.opacity = Math.max(0, (z - .55) / .45); }
+        if (t - tSit > 1850) { finish(); if (ready === true) return; }
+      }
       requestAnimationFrame(frame);
     })(t0);
   }
@@ -186,12 +240,14 @@
       (last ? '<button class="w2k primary" data-cont title="' + esc(last.t.name) + '">▶ Продолжить: ' + esc((last.l.short || '') + ' · ' + (last.t.name || '')) + '</button>' : '') +
       '<button class="w2k" data-rand title="Нерешённое задание из выбранной темы">🎲 Случайное задание</button>' +
       '<button class="w2k" data-free title="Как после запуска настоящей программы">' + (SUBJ[sid].site ? '⚡ Пустой EWB' : '🖥 Пустой Builder') + '</button>' +
+      (SUBJ[sid].site ? '<button class="w2k" data-asm title="Ассемблер x86 по шагам — как онлайн-компилятор MASM">⚙ ASM-студия</button>' : '') +
       '<label class="pk-chk"><input type="checkbox" data-only' + (view.only ? ' checked' : '') + '> только нерешённые</label>' +
       '<input class="pk-find" data-find placeholder="🔍 Найти: массив, switch, кнопка…" value="' + esc(view.q) + '"></div>' +
       '<div class="lb-wrap"><div class="lb-tree pk-tree">' + tree + '</div><div class="lb-right"></div></div>' +
       '<div class="prx-bar"><span class="pk-all">Решено ' + done + ' из ' + all.length + bar(done, all.length) + '</span><span class="grow"></span><button class="w2k" data-exit>🚪 Встать из-за компьютера</button></div>', { ico: '📁' });
     win.querySelector('[data-x]').onclick = exit; win.querySelector('[data-exit]').onclick = exit;
     win.querySelector('[data-free]').onclick = function () { openFree(sid); };
+    var ab = win.querySelector('[data-asm]'); if (ab) ab.onclick = function () { closeWin(); hideTask(); task = null; Promise.resolve().then(function () { var c = null; try { c = localStorage.getItem('dgAsm:free'); } catch (e) {} ASM.studio({ title: 'Source.asm', code: c, onTasks: function () { pickWin(sid); }, onChange: function (v) { try { localStorage.setItem('dgAsm:free', v); } catch (e) {} }, onClose: function () { openList(sid); } }); }); };
     var cb = win.querySelector('[data-cont]'); if (cb) cb.onclick = function () { openTask(sid, last.li, last.ti); };
     var right = win.querySelector('.lb-right');
     var card = function (x) {
@@ -235,7 +291,7 @@
 
   /* ---------- задание ---------- */
   var task = null, tw = null, vclBox = null;
-  function hideTask() { if (tw) { tw.remove(); tw = null; } if (vclBox) { vclBox.remove(); vclBox = null; } if (siteBox) { siteBox.remove(); siteBox = null; } var ide = window.CPP && CPP.ide && CPP.ide(); if (ide) ide.hide(); }
+  function hideTask() { if (window.ASM) ASM.close(); if (pb) { pb.remove(); pb = null; } if (pkw) { pkw.remove(); pkw = null; } if (tw) { tw.remove(); tw = null; } if (vclBox) { vclBox.remove(); vclBox = null; } if (siteBox) { siteBox.remove(); siteBox = null; } var ide = window.CPP && CPP.ide && CPP.ide(); if (ide) ide.hide(); }
   function startCode(t) {
     if (t.start) return t.start;
     return '#include <iostream.h>\n#include <conio.h>\n#include <math.h>\n\nint main()\n{\n  // ' + String(t.name || 'Задание') + ': напиши решение здесь\n\n  getch();\n  return 0;\n}\n';
@@ -245,8 +301,8 @@
     closeWin(); hideTask(); task = null; curSid = sid;
     if (SUBJ[sid].site) { openSite(sid, 't16', 'Electronics Workbench — свободная сборка'); return; }
     var p = CPP.IDE_TEST.newProject('vcl', 'Project1'); p.dgKeep = true;
-    CPP.openIDE(p);
-    if (window.DGame && DGame.toast) DGame.toast('💻 Пустой Builder. Лабу можно открыть: File → Open Project (Ctrl+F11)');
+    CPP.openIDE(p); pickBtn(sid);
+    if (window.DGame && DGame.toast) DGame.toast('💻 Пустой Builder. Задание — кнопка «📋 Задания» внизу слева (или File → Open Project)');
   }
   /* File → Open Project: окно открытия файла Windows с папками «Тема 01 … Тема 15» */
   function openDialog(sid) {
@@ -332,14 +388,104 @@
     var trb = tw.querySelector('[data-try]'); if (trb) trb.onclick = function () { TRY.open(tq, 'arch'); };
     if (steps.length) hints(tw.querySelector('.tk-hints'), { steps: steps.map(function (x, i) { return (i + 1) + '. ' + x.replace(/^\d+[.)]\s*/, ''); }).join('\n') });
   }
-  function openTask(sid, li, ti) {
-    closeWin(); hideTask(); curSid = sid;
+  /* ---------- ⚙ Архитектура: задания на ассемблер — в ASM-студии (с нуля → по шагам → эталон) ---------- */
+  function asmStart(t) { return '; ' + String(t.name || 'Задание') + '\n; ' + plainT(t.text).slice(0, 150).replace(/\n/g, ' ') + (plainT(t.text).length > 150 ? '…' : '') + '\n' + ASM.TEMPLATE; }
+  function asmTask(t, l, A, ks, keepCode) {
+    var key = 'dgAsm:' + t.id, mine = null; try { mine = localStorage.getItem(key); } catch (e) {}
+    var code = keepCode != null ? keepCode : mine != null ? mine : asmStart(t), sid = task.sid;
+    var ed = ASM.studio({ side: true, title: (l.short || '') + ' · ' + t.name, code: code, onTasks: function () { pickWin(sid); },
+      onChange: function (c) { try { localStorage.setItem(key, c); } catch (e) {} },
+      onRun: function () { PR._ran = true; },
+      onClose: function () { openList(sid, task ? task.li : undefined); } });
+    var refs = ks.map(function (k) { return { k: k, code: A.progs[k], title: A.titles[k] || k }; }).filter(function (x) { return x.code; });
+    var full = siteImg(t.text || ''), solved = save()[t.id];
+    var ref0 = refs[0] ? refs[0].code : '', steps = ref0.split('\n').map(function (x, i) { return { x: x, i: i }; }).filter(function (o) { var c = o.x.replace(/;.*/, '').trim(); return c && !/^(include|\.model|\.stack|\.data|\.code|end\b|main\s+(proc|endp)|start:)/i.test(c); });
+    tw = makeWin('prx-task asm-task', t.name + ' · ' + (l.short || ''), '<div class="tk-scroll">' +
+      '<p class="tk-brief">🎯 <b>Задача:</b> ' + esc(brief(t)) + '</p>' +
+      '<p class="tk-mini">Пиши код слева в ⚙ ASM-студии. <b>⏭ Шаг</b> (F10) — выполнить одну команду и увидеть, что она сделала с регистрами, флагами и памятью; <b>▶ Запуск</b> (F5) — всю программу.</p>' +
+      '<details class="tk-full"><summary>📖 Подробнее — полное условие из методички</summary><div class="tk-text">' + full + '</div></details>' +
+      (steps.length ? '<details class="tk-livebox"><summary>🧭 По шагам — как решать</summary><p class="tk-mini">Строки эталона по одной — с объяснением. Сначала попробуй сам, потом подглядывай.</p><div class="as-steps"></div></details>' : '') +
+      (refs.length ? '<details class="tk-ref"><summary>📄 Эталон — вставится в студию</summary><div class="as-refs"></div></details>' : '') +
+      (t.solution ? '<details class="tk-ref2"><summary>📝 Разбор из методички</summary><div class="tk-sol">' + siteImg(t.solution) + '</div></details>' : '') +
+      '<div class="tk-res">' + (solved ? '<p class="tk-ok">✓ Это задание ты уже сделал.</p>' : '') + '</div></div>' +
+      '<div class="prx-bar"><button class="w2k primary" data-done>' + (solved ? '✓ Сделано' : '✓ Я сделал задание') + '</button><span class="grow"></span><button class="w2k" data-site title="Это задание на учебном сайте">🌐 На сайте</button><button class="w2k" data-list>📁 К списку</button></div>', { ico: '⚙', min: true });
+    tw.querySelector('[data-x]').onclick = tw.querySelector('[data-list]').onclick = function () { openList(sid, task.li); };
+    tw.querySelector('[data-site]').onclick = function () { ASM.close(); openSite(sid, t.anchor, l.title); };
+    tw.querySelector('[data-done]').onclick = function () {
+      var e2 = ASM.editor(); if (e2 && refs.some(function (r) { return r.code.trim() === e2.get().trim(); })) { tw.querySelector('.tk-res').innerHTML = '<p class="tk-warn">В студии сейчас эталон — он работает. В прогресс не идёт: верни свой вариант или напиши сам.</p>'; return; }
+      if (e2 && !PR._ran) { tw.querySelector('.tk-res').innerHTML = '<p class="tk-warn">Сначала запусти свою программу в студии (▶ Запуск или ⏭ Шаг) — посмотри, что получилось.</p>'; return; }
+      markSolved(t, 'Задание по ассемблеру сделано!'); this.textContent = '✓ Сделано'; };
+    /* по шагам: строка эталона + что она делает (комментарий автора или разбор симулятора) */
+    var sb = tw.querySelector('.as-steps');
+    if (sb) {
+      var expl = {}; try { var P = ASM.assemble(ref0), st = ASM.initState(P), n = 0; while (!st.done && n++ < 3000) { var ln = P.code[st.pc] ? P.code[st.pc].line : null, m = ASM.execStep(P, st); if (ln != null && !expl[ln] && m && m.txt) expl[ln] = m.txt; } } catch (e) {}
+      var k = 0, draw = function () {
+        sb.innerHTML = steps.slice(0, k).map(function (o, i) { var c = o.x.split(';'), why = c.length > 1 ? c.slice(1).join(';').trim() : ''; return '<div class="tk-hint"><b>' + (i + 1) + '.</b> <code>' + esc(c[0].trim()) + '</code>' + (why ? ' — ' + esc(why) : '') + (expl[o.i] ? '<small>' + esc(expl[o.i]) + '</small>' : '') + '</div>'; }).join('') +
+          (k < steps.length ? '<button class="w2k" data-hint>💡 ' + (k ? 'Следующая строка' : 'Первая строка') + ' (' + (k + 1) + ' из ' + steps.length + ')</button> ' + (k ? '' : '') : '<p class="tk-mini">Это вся программа. Напиши её сама в студии и пройди «⏭ Шаг».</p>');
+        var b = sb.querySelector('[data-hint]'); if (b) b.onclick = function () { k++; draw(); };
+      };
+      draw();
+    }
+    var rb = tw.querySelector('.as-refs');
+    if (rb) {
+      var mineK = key + ':mine';
+      var drawR = function (ins) {
+        rb.innerHTML = (ins ? '<p class="tk-ok">✓ Эталон «' + esc(ins) + '» вставлен в студию — жми ⏭ Шаг и смотри, что делает каждая строка.</p>' : '') +
+          refs.map(function (r, i) { return '<button class="w2k" data-ref="' + i + '">⤵ ' + esc(r.title) + '</button> '; }).join('') +
+          (ins ? '<button class="w2k" data-mine>↩ Вернуть мой вариант</button>' : '');
+        rb.querySelectorAll('[data-ref]').forEach(function (b) { b.onclick = function () { var r = refs[+b.getAttribute('data-ref')], e2 = ASM.editor(); if (!e2) return; try { if (!rb._saved) { localStorage.setItem(mineK, e2.get()); rb._saved = 1; } } catch (e) {} e2.set(r.code); drawR(r.title); }; });
+        var mb = rb.querySelector('[data-mine]'); if (mb) mb.onclick = function () { var e2 = ASM.editor(); try { var j = localStorage.getItem(mineK); if (j != null && e2) e2.set(j); } catch (e) {} rb._saved = 0; drawR(null); };
+      };
+      drawR(null);
+      var dref = tw.querySelector('.tk-ref'); dref.addEventListener('toggle', function () { if (dref.open && !dref._ins && refs[0]) { dref._ins = 1; rb.querySelector('[data-ref="0"]').click(); } });
+    }
+  }
+  function openTask(sid, li, ti, keep) {
+    var keepAsm = keep && SUBJ[sid].site && window.ASM && ASM.isOpen() ? ASM.editor().get() : null;
+    closeWin(); curSid = sid;
+    if (keep && !SUBJ[sid].site) { if (tw) { tw.remove(); tw = null; } if (pkw) { pkw.remove(); pkw = null; } } else hideTask();
     var od = document.querySelector('.prx-open'); if (od) od.remove();
     var l = labs[sid][li], t = l.tasks[ti]; task = { sid: sid, li: li, ti: ti, t: t }; PR._ran = false;
     D.save.labLast = D.save.labLast || {}; D.save.labLast[sid] = t.id; try { D.persist(); } catch (e) {}
-    if (SUBJ[sid].site) { openSite(sid, t.anchor, l.title); siteTaskWin(t, l); return; }
-    if (t.kind === 'vcl' && t.vcl) openVcl(t); else openConsole(t);
-    taskWin(t, l);
+    if (SUBJ[sid].site) {
+      Promise.resolve().then(function () { return ASM.data(); }).then(function (A) {
+        if (!task || task.t !== t) return;
+        var ks = (A.tasks || {})[t.id];
+        if (ks) { asmTask(t, l, A, ks, keepAsm); return; }
+        openSite(sid, t.anchor, l.title); siteTaskWin(t, l);
+      }, function () { openSite(sid, t.anchor, l.title); siteTaskWin(t, l); });
+      return;
+    }
+    if (keep) { if (t.kind === 'vcl') ensureVclCheck(); }   /* выбрал задание в пустом Builder — твой проект остаётся, решаешь в нём */
+    else if (t.kind === 'vcl' && t.vcl) openVcl(t); else openConsole(t);
+    taskWin(t, l); pickBtn(sid);
+  }
+  /* ---------- «📋 Задания»: кнопка в Builder — окно выбора задания (тема → задание), Builder при этом не закрывается ---------- */
+  var pb = null, pkw = null;
+  function pickBtn(sid) {
+    if (SUBJ[sid].site) return;   /* в архитектуре кнопка «📋 Задания» — в самой ASM-студии */
+    if (!pb) { pb = el('<button class="w2k pk-dockbtn" title="Выбрать задание, не закрывая Builder">📋 Задания</button>'); document.body.appendChild(pb); }
+    pb.onclick = function () { pickWin(sid); };
+  }
+  function pickWin(sid) {
+    if (pkw) { pkw.remove(); pkw = null; return; }
+    var L = labs[sid] || [], s = save(), topics = byTopic(sid), cur = task ? +L[task.li].topic : (view.topic != null ? view.topic : (topics[0] || {}).n);
+    pkw = makeWin('prx-pick', 'Задания — выбери тему, потом задание', '<div class="pp-wrap"><div class="pp-top"></div><div class="pp-list"></div></div>' +
+      '<div class="prx-bar"><button class="w2k" data-rnd>🎲 Случайное</button><span class="grow"></span><label class="pk-chk"><input type="checkbox" data-keep checked> решать в моём проекте</label></div>', { ico: '📋' });
+    var top = pkw.querySelector('.pp-top'), list = pkw.querySelector('.pp-list');
+    pkw.querySelector('[data-x]').onclick = function () { pkw.remove(); pkw = null; };
+    var go = function (li, ti) { var k = pkw.querySelector('[data-keep]').checked; openTask(sid, li, ti, k); };
+    top.innerHTML = topics.map(function (g) { var n = 0, d = 0; g.labs.forEach(function (li) { L[li].tasks.forEach(function (t) { n++; if (s[t.id]) d++; }); }); return '<button class="pp-t" data-tp="' + g.n + '" title="' + esc(topicTitle(sid, g.n)) + '"><b>' + g.n + '</b> ' + esc(topicTitle(sid, g.n) || 'Тема ' + g.n) + ' <em>' + d + '/' + n + '</em></button>'; }).join('');
+    var draw = function () {
+      top.querySelectorAll('.pp-t').forEach(function (b) { b.classList.toggle('on', +b.getAttribute('data-tp') === cur); });
+      var g = topics.filter(function (x) { return x.n === cur; })[0], h = '';
+      if (g) g.labs.forEach(function (li) { var l = L[li]; h += '<h4>' + esc(l.short || l.title) + '</h4>' + l.tasks.map(function (t, ti) { var on = task && task.t === t; return '<button class="pp-it' + (s[t.id] ? ' ok' : '') + (on ? ' on' : '') + '" data-li="' + li + '" data-ti="' + ti + '"><b>' + (s[t.id] ? '✅ ' : t.kind === 'vcl' ? '🗔 ' : '📄 ') + esc(t.name || 'Задание') + '</b><span>' + esc(brief(t)) + '</span></button>'; }).join(''); });
+      list.innerHTML = h; list.scrollTop = 0;
+      list.querySelectorAll('[data-li]').forEach(function (b) { b.onclick = function () { go(+b.getAttribute('data-li'), +b.getAttribute('data-ti')); }; });
+    };
+    top.querySelectorAll('.pp-t').forEach(function (b) { b.onclick = function () { cur = view.topic = +b.getAttribute('data-tp'); draw(); }; });
+    pkw.querySelector('[data-rnd]').onclick = function () { var x = randomTask(sid, cur); if (x) go(x.li, x.ti); };
+    draw(); var on = top.querySelector('.pp-t.on'); if (on) on.scrollIntoView({ block: 'nearest' });
   }
   function openConsole(t) {
     var X = CPP.IDE_TEST, key = 'dgLab:' + t.id, prj = null;
@@ -515,14 +661,14 @@
     };
     var draw = function (done) {
       var has = (function () { try { return !!localStorage.getItem(mineKey); } catch (e) { return false; } })();
-      box.innerHTML = (done ? '<p class="tk-ok">✓ Эталон вставлен в Builder' + (vcl ? ': форма и код Unit1.cpp. Нажми F9 и посмотри, как работает; двойной щелчок по кнопке покажет её обработчик.' : '. Нажми F9 и разбери, как он устроен.') + '</p>' : '') +
+      box.innerHTML = (done ? '<p class="tk-ok">✓ Эталон вставлен в Builder' + (vcl ? ': форма и код Unit1.cpp. Нажми F9 и посмотри, как работает; двойной щелчок по кнопке покажет её обработчик.' : ' и уже запущен — посмотри, как работает. F9 — запустить ещё раз.') + '</p>' : '') +
         '<pre class="tk-code cpp-code">' + (CPP.highlight ? CPP.highlight(code.replace(/\s+$/, '')) : esc(code)) + '</pre>' +
         '<p>' + (done ? '' : '<button class="w2k" data-ins>⤵ Вставить эталон в Builder</button> ') + (has && done ? '<button class="w2k" data-mine>↩ Вернуть мой вариант</button>' : '') + '</p>';
       var a = box.querySelector('[data-ins]'); if (a) a.onclick = insert;
       var b = box.querySelector('[data-mine]'); if (b) b.onclick = function () { try { var j = localStorage.getItem(mineKey); if (j) { var p = CPP.IDE_TEST.prjLoad(JSON.parse(j)); p.dgKeep = true; CPP.openIDE(p); if (vcl) ensureVclCheck(); } } catch (e) {} draw(false); };
     };
     draw(false);
-    d.addEventListener('toggle', function () { if (d.open && (vcl || oop) && !d._ins) { d._ins = 1; insert(); } });
+    d.addEventListener('toggle', function () { if (d.open && !d._ins) { d._ins = 1; insert(); setTimeout(function () { var rb = document.querySelector('.bcbx [data-a="run"]'); if (rb && !vcl) rb.click(); }, 400); } });
   }
   function taskWin(t, l) {
     var tests = t.tests || [];
@@ -535,7 +681,7 @@
       '<details class="tk-livebox"><summary>🧭 По шагам</summary><p class="tk-mini">' + (vcl ? 'Как в настоящем Builder — шаги отмечаются сами:' : 'С нуля, как в настоящем Builder — шаги отмечаются сами:') + '</p><ol class="tk-live"></ol>' +
         (vcl ? '' : '<p class="tk-skip">Уже умеешь? <a href="#" data-auto>Создать консольный проект за меня</a></p>') +
         '<p class="tk-mini"><b>Как решать:</b></p><div class="tk-hints"></div></details>' +
-      '<details class="tk-ref"><summary>📄 Эталон' + (vcl ? ' — откроется готовая форма в Builder' : oop ? ' — код вставится в Builder' : ' — готовый код') + '</summary><div class="tk-refbox"></div></details>' +
+      '<details class="tk-ref"><summary>📄 Эталон' + (vcl ? ' — откроется готовая форма в Builder' : ' — готовый код вставится в Builder и запустится') + '</summary><div class="tk-refbox"></div></details>' +
       '<div class="tk-res" aria-live="polite"></div></div>' +
       '<div class="prx-bar">' + (t.kind === 'vcl' ? '<button class="w2k primary" data-checkv>✔ Проверить' + ((t.vcl && t.vcl.checks || []).length ? ' (' + t.vcl.checks.length + ')' : '') + '</button><span class="grow"></span>' : '<button class="w2k primary" data-check>✔ Проверить' + (tests.length ? ' (' + tests.length + ')' : '') + '</button><span class="grow"></span>') +
       '<button class="w2k" data-list>📁 К списку</button></div>', { ico: '📝', min: true });
@@ -591,8 +737,8 @@
     try { if (window.DA && DA.sfx) DA.sfx('ok'); } catch (e) {}
   }
   function exit() {
-    hideTask(); closeWin(); leaveRoom(); PR.active = false; task = null;
-    if (window.DGame && DGame.lib) DGame.lib();
+    var sid = curSid; hideTask(); closeWin(); task = null;
+    enterRoom(sid, function () { if (room) room.classList.add('desk'); openList(sid); }, true);   /* встал из-за компьютера — снова в подвале */
   }
   document.addEventListener('bcb-hide', function () { if (PR.active && !vclBox) openList(curSid, task ? task.li : undefined); });
 

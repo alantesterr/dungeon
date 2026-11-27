@@ -288,7 +288,21 @@
      настройки и отдельно — выйти в StudyPlay. */
   var BACK = { house: null, subject: 'house', exam: 'house', hall: 'house', path: 'hall', event: 'path', lake: 'house', floor: 'path', room: 'floor' };
   function backLabel(to) { return { sp: 'StudyPlay', house: 'Домик', hall: 'Зал', path: 'Библиотека', floor: 'Комнаты', level: 'Уровень' }[to] || 'Назад'; }
+  /* быстрый выход: из подземелья — сразу в библиотеку, из библиотеки/зала/озера — домой (рядом с «Назад») */
+  function homeTarget() { var sc = G.scene; if ((sc === 'room' && G.room && !G.room.f.exam) || sc === 'floor' || sc === 'event') return D.subj ? 'path' : 'house'; if (sc === 'path' || sc === 'hall' || sc === 'lake' || sc === 'subject') return 'house'; return null; }
+  function updHome() {
+    var b = $('hudHome'); if (!b) return; var to = homeTarget(), back = BACK[G.scene];
+    if (back === 'floor' && G.room && (G.room.f.rep || caveOn(G.room.f) || G.room.f.arena)) back = 'path';
+    b.hidden = !to || to === back; if (b.hidden) return;
+    b.innerHTML = to === 'path' ? '📚 <span>Библиотека</span>' : '🏠 <span>Домой</span>'; b.title = to === 'path' ? 'Сразу в библиотеку предмета' : 'Домой, в домик';
+    b.onclick = function () {
+      var goT = function () { G.ev = to === 'path' ? null : G.ev; if (G.scene === 'lake') G.ev = null; go(to); };
+      if (G.scene === 'room' && G.room && G.room.mon && !G.room.mon.dead) return confirmBox('Выйти в библиотеку?', 'Ответы уже сохранены. Вернуться можно в любой момент.', 'В библиотеку', goT);
+      goT();
+    };
+  }
   function updBack() {
+    updHome();
     var to = BACK[G.scene], b = $('hudBack'); if (to === 'floor' && G.room && (G.room.f.rep || caveOn(G.room.f))) to = 'path'; if (to === 'floor' && G.room && (G.room.f.exam || G.room.f.arena)) to = 'path'; if (to === 'floor' && G.room && G.room.f.drill) to = 'level';
     b.hidden = !to; if (!to) return;
     $('hudBackT').textContent = backLabel(to);
@@ -441,6 +455,7 @@
     });
     if (G.scene === 'path') return libSpots();
     if (G.scene === 'event') return evSpots();
+    if (G.scene === 'lake') return [{ x0: 8, x1: 62, y0: A.FLOOR_Y - 70, y1: A.FLOOR_Y + 10, fn: function () { G.ev = null; go('house'); } }];
     return [];
   }
   function sceneXY(e) { var r = $('scene').getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * A.W, y: (e.clientY - r.top) / r.height * A.H }; }
@@ -656,6 +671,7 @@
         out.push({ x0: R.x, x1: R.x + R.w, y0: R.y, y1: R.y + R.h + 6, hv: { x: cs.x, w: cs.w, r: r }, tip: { text: shelfLabel(row.f) + ' · ' + row.f.title, sub: '📗 ' + row.st.books + ' из ' + row.st.total + ' · ' + row.st.pct + '%' + (row.st.err ? ' · 📕 ' + row.st.err : ''), x: cs.x + cs.w / 2, y: R.y - 2 }, fn: function () { libWalk(cs.x + cs.w / 2, function () { openShelf(row.f); }); } });
       });
     });
+    if (window.PR && PR.has(D.subjId)) out.push({ x0: HATCH.x - 4, x1: HATCH.x + HATCH.w + 4, y0: HATCH.y - 8, y1: HATCH.y + HATCH.h + 4, hv: { hatch: true }, tip: { text: '🕯 Подвал · лабораторные', sub: 'компьютер и книги прогресса по темам лаб', x: HATCH.x + HATCH.w / 2, y: HATCH.y - 10 }, fn: function () { libWalk(HATCH.x + HATCH.w / 2, function () { PR.open(D.subjId); }); } });
     out.push({ x0: 390, x1: 420, y0: A.FLOOR_Y - 42, y1: A.FLOOR_Y, tip: { text: '📝 Мои записи', sub: 'вопрос, ответ и твои объяснения — по темам', x: 404, y: A.FLOOR_Y - 46 }, fn: function () { libWalk(384, openNotes); } });   /* кафедра со свечой */
     out.push({ x0: 436, x1: 476, y0: A.FLOOR_Y - 70, y1: A.FLOOR_Y, fn: function () { libWalk(458, function () { go('hall'); }); } });
     return out;
@@ -676,7 +692,7 @@
     });
     var nNotes = notesList(sid).length;
     labels([{ text: window.innerWidth < 600 ? '📕 ' + L.err.n : L.err.n ? '📕 Ошибки · ' + L.err.n : '📕 Ошибок нет', x: Math.max(L.err.x + L.err.w / 2, window.innerWidth < 600 ? 30 : 48), y: A.LIB.CASE_TOP - 22, color: L.err.n ? '#F09595' : '#9FE1CB' },
-      { text: '📝 ' + (window.innerWidth < 600 ? nNotes : 'Мои записи · ' + nNotes), x: 404, y: A.FLOOR_Y - 46, color: '#CECBF6' }].concat(caseLbl));
+      { text: '📝 ' + (window.innerWidth < 600 ? nNotes : 'Мои записи · ' + nNotes), x: 404, y: A.FLOOR_Y - 46, color: '#CECBF6' }].concat(caseLbl).concat(window.PR && PR.has(sid) ? [{ text: window.innerWidth < 600 ? '🕯 Лабы' : '🕯 Подвал · лабы ⬇', x: HATCH.x + HATCH.w / 2, y: HATCH.y + HATCH.h + 12, color: '#9FE1CB' }] : []));
     S.tips = S.tips || {};
     var chips = '<div class="lib-chips">' + '<button class="lchip err' + (L.err.n ? '' : ' ok') + '" data-sh="err">📕 Ошибки <b>' + L.err.n + '</b></button>' + '<button class="lchip notes" data-notes>📝 Мои записи <b>' + nNotes + '</b></button>' +
       (window.PR && PR.has(sid) ? (function (p) { return '<button class="lchip labs' + (p.pct >= 100 ? ' gold' : '') + '" data-prac title="Лабораторные работы за компьютером: решено ' + p.done + ' из ' + p.total + '"><span>💻 Лабораторные</span><i style="--p:' + p.pct + '%"></i><b>' + (p.total ? p.done + '/' + p.total : '…') + '</b></button>'; })(PR.progress(sid)) : '') +
@@ -816,8 +832,8 @@
       aft.innerHTML = '<div class="verdict ' + (ok && first ? 'ok' : 'bad') + '">' + (dunno ? '🤷 Не знаю — вот ответ. ' : '') + (o.verdict ? o.verdict(ok && first, first) : (ok ? 'Верно!' : 'Неверно.')) +
         (!first || !ok ? ' Правильно: <b>' + rightText(q) + '</b>. 📕 Книга — на полку ошибок.' : '') + (ok && first && cur.assisted ? ' С подсказкой — вопрос вернётся позже.' : '') + '</div>' +
         (dunno && q.ex ? '<div class="ex-text dunno-ex">' + exHtml(q.ex) + '</div>' : '') +
-        '<div class="row"><button class="btn ghost sm" data-evex>📖 Объясни</button></div>';
-      aft.querySelector('[data-evex]').onclick = function () { openExplain(q); };
+        '<div class="row"><button class="btn ghost sm" data-evex>📖 Объясни</button>' + (tryOk(q) ? '<button class="btn ghost sm" data-evtry>🧪 Попробовать</button>' : '') + '</div>';
+      aft.querySelector('[data-evex]').onclick = function () { openExplain(q); }; wireEvTry(aft, q);
       if (clean && cur.wasErr && !o.noKnow) evKnowBox(q, aft);
       o.done(ok && first, first, aft);
     };
@@ -856,6 +872,7 @@
     }).catch(function () { floater('Перевод недоступен — нет интернета?', 240, 60, '#F09595'); return false; });
   }
   function trHide(root) { root.querySelectorAll('.tr-under, .o-tr').forEach(function (e) { e.remove(); }); if (G.ev && G.ev.cur) { G.ev.cur.trText = null; flyAsk(G.ev.cur.q); } }
+  function wireEvTry(root, q) { var b = root.querySelector('[data-evtry]'); if (b) b.onclick = function () { openTry(q); }; }
   function evKnowBox(q, root) {
     root.insertAdjacentHTML('beforeend', '<div class="know-box"><span>📕 Этот вопрос лежит на <b>полке ошибок</b>. Точно запомнил?</span><button class="btn primary sm" data-kn>✓ Знаю — убрать</button><button class="btn ghost sm" data-kl>Оставить</button></div>');
     var box = root.querySelector('.know-box');
@@ -1325,8 +1342,8 @@
     else if (objected) msg = '🔨 Возражение верное, но ответ ты выбрал неправильно. Правильно: ' + right + '. Прокурору <b>+' + 2 * S2.mult + '</b>.';
     else msg = '🔨 Ты согласился с неправдой! Правильно: ' + right + '. Прокурор злорадствует: <b>+' + 2 * S2.mult + '</b>.';
     var aft = $('evAfter');
-    aft.innerHTML = '<div class="verdict ' + (ok ? 'ok' : 'bad') + '">' + msg + (ok ? '' : ' 📕 Книга — на полку ошибок.') + '</div><div class="row"><button class="btn ghost sm" data-evex>📖 Объясни</button></div>';
-    aft.querySelector('[data-evex]').onclick = function () { openExplain(q); };
+    aft.innerHTML = '<div class="verdict ' + (ok ? 'ok' : 'bad') + '">' + msg + (ok ? '' : ' 📕 Книга — на полку ошибок.') + '</div><div class="row"><button class="btn ghost sm" data-evex>📖 Объясни</button>' + (tryOk(q) ? '<button class="btn ghost sm" data-evtry>🧪 Попробовать</button>' : '') + '</div>';
+    aft.querySelector('[data-evex]').onclick = function () { openExplain(q); }; wireEvTry(aft, q);
     if (ok && !S2.assisted && S2.wasErr) evKnowBox(q, aft);
     var tg = panel.querySelector('.tug-wrap'); if (tg) { tg.outerHTML = tugHtml(E); }
     evButtons(aft, [btn(E.n >= COURT_N ? '⚖ Выслушать приговор' : 'Следующее заявление', 'primary', 'Enter', courtNext)]);
@@ -1391,9 +1408,9 @@
   }
 
   /* ---------- 🎭 ЛЖЕЦ: 4 утверждения «вопрос — ответ», одно ложное ---------- */
-  var LIAR_CHANCE = 0.22;
+  var LIAR_CHANCE = 0.035;   /* очень редко (просьба автора, ноябрь 2026) */
   function askLiar(head, it) {
-    var R = G.room, q = R.f.byId[it.id]; R.q = q; R.recent.push(q.id); if (R.recent.length > 6) R.recent.shift();
+    var R = G.room, q = R.f.byId[it.id]; R.q = q; R.liarOn = true; R.recent.push(q.id); if (R.recent.length > 6) R.recent.shift();
     var ri = q.opts.findIndex(function (o) { return o.right; }), wr = q.opts.map(function (_, i) { return i; }).filter(function (i) { return i !== ri; });
     var lie = { q: q, a: q.opts[wr[Math.floor(Math.random() * wr.length)]].t, lie: true };
     var others = R.f.pool.filter(function (x) { return x.id !== q.id && evOk(x) && x.q.length < 260; }).sort(function () { return Math.random() - 0.5; }).slice(0, 3)
@@ -1407,7 +1424,27 @@
     var bk = panel.querySelector('[data-ql="book"]'); if (bk) bk.onclick = openBookRoom;
     bubbleAt('<b>Найди мою ложь…</b> <small>одно из утверждений внизу — неправда</small>', R.mon, 'q');
     panel.querySelectorAll('.stmt').forEach(function (b) { b.onclick = function () { liarPick(+b.getAttribute('data-s')); }; });
+    var tb = panel.querySelector('[data-ico="tr"]'); if (tb) tb.onclick = function () { liarTr(R, tb); };
+    if (D.subjId === 'cpp' && (cppTrOn() || S.cfg.autoTr) && tb) liarTr(R, tb);
     G.buttons = [];
+  }
+  /* перевод у Лжеца: под каждым утверждением — перевод вопроса и ответа (код не трогаем) */
+  function liarTr(R, tb) {
+    if (tb.classList.contains('on')) { panel.querySelectorAll('.stmts .o-tr').forEach(function (e) { e.remove(); }); tb.classList.remove('on'); return; }
+    tb.classList.add('busy');
+    var lang = S.cfg.trLang || 'ru';
+    Promise.all(R.liar.map(function (s) { return X.trQuestion(s.q, lang).catch(function () { return null; }); })).then(function (all) {
+      tb.classList.remove('busy'); if (G.room !== R) return;
+      var any = false;
+      all.forEach(function (d, i) {
+        if (!d) return; var s = R.liar[i], b = panel.querySelector('.stmt[data-s="' + i + '"]'); if (!b || b.querySelector('.o-tr')) return;
+        var prose = s.q.q.replace(/```[\s\S]*?```/g, ' ').trim(), tq = String(d.q || '').replace(/```[\s\S]*?```/g, ' ').replace(/\n{2,}/g, '\n').trim();
+        var ai = s.q.opts.findIndex(function (o) { return o.t === s.a; }), ta = ai >= 0 && d.o ? d.o[ai] : '';
+        var h = (tq && tq !== prose ? '<small class="o-tr">🌐 ' + D.md(tq) + '</small>' : '') + (ta && ta !== s.a && !X.isCodeLike(s.a) ? '<small class="o-tr">→ ' + D.md(ta) + '</small>' : '');
+        if (h) { any = true; b.lastElementChild.insertAdjacentHTML('beforeend', h); }
+      });
+      if (any) tb.classList.add('on'); else floater('Тут уже всё по-русски', 240, 60, '#9FE1CB');
+    });
   }
   function liarPick(i) {
     var R = G.room, q = R.q; if (R.answered) return; R.answered = true;
@@ -1419,6 +1456,31 @@
     resolve(ok, 1, 'q');
   }
 
+  /* табличка «🏠 Домой» у озера: столбик со стрелкой — нажми, и ты в домике */
+  function homeSign(c, t) {
+    var x = 34, y = A.FLOOR_Y + 8, sw = Math.sin(t / 1100) * 0.03;
+    c.fillStyle = '#4a3018'; c.fillRect(x - 2, y - 58, 5, 58);
+    c.save(); c.translate(x, y - 52); c.rotate(sw);
+    c.fillStyle = '#9a6a3a'; c.beginPath(); c.moveTo(-26, 0); c.lineTo(20, 0); c.lineTo(28, 9); c.lineTo(20, 18); c.lineTo(-26, 18); c.closePath(); c.fill();
+    c.fillStyle = '#c08a50'; c.fillRect(-26, 0, 46, 2); c.fillStyle = '#5a3a1e'; c.fillRect(-26, 16, 46, 2);
+    c.fillStyle = '#fff6dc'; c.font = 'bold 9px system-ui,sans-serif'; c.textAlign = 'center'; c.fillText('ДОМОЙ', 0, 12);
+    c.restore();
+    c.fillStyle = '#f2e0b0'; c.fillRect(x - 12, y - 30, 22, 2);   /* перекладина */
+    var g = 0.5 + 0.5 * Math.sin(t / 500); c.fillStyle = 'rgba(250,199,117,' + (0.15 + g * 0.2).toFixed(2) + ')'; c.fillRect(x - 28, y - 54, 58, 22);
+  }
+  /* люк в подвал (лабы за компьютером) — на полу библиотеки у C++ и Архитектуры */
+  var HATCH = { x: 300, y: A.FLOOR_Y + 14, w: 56, h: 24 };
+  function libHatch(c, t) {
+    if (!(window.PR && PR.has(D.subjId))) return;
+    var H = HATCH, hv = G.lib && G.lib.hover && G.lib.hover.hatch;
+    c.fillStyle = '#1a120c'; c.fillRect(H.x - 2, H.y - 2, H.w + 4, H.h + 4);
+    c.fillStyle = hv ? '#7a5634' : '#5e4026'; c.fillRect(H.x, H.y, H.w, H.h);
+    for (var i = 1; i < 4; i++) { c.fillStyle = '#4a3220'; c.fillRect(H.x, H.y + i * 6, H.w, 1); }
+    c.fillStyle = '#9a9aa2'; c.fillRect(H.x + 4, H.y + 3, 6, H.h - 6); c.fillRect(H.x + H.w - 10, H.y + 3, 6, H.h - 6);   /* петли */
+    c.fillStyle = '#c9a24a'; c.fillRect(H.x + H.w / 2 - 6, H.y + H.h / 2 - 2, 12, 4);   /* кольцо */
+    var g = 0.5 + 0.5 * Math.sin(t / 420); c.fillStyle = 'rgba(120,200,255,' + (0.10 + g * 0.18).toFixed(2) + ')'; c.fillRect(H.x, H.y + H.h - 3, H.w, 3);   /* свет монитора снизу */
+    if (hv) { c.strokeStyle = '#FAC775'; c.lineWidth = 2; c.strokeRect(H.x - 3, H.y - 3, H.w + 6, H.h + 6); }
+  }
   /* ---------- 🎣 РЫБАЛКА: озеро у домика ---------- */
   var FISH = { carp: 'Карась', perch: 'Окунь', pike: 'Щука', roach: 'Плотва', gold: 'Золотая рыбка ⭐', ghost: 'Рыба-призрак' };
   /* табличка «к озеру» на стене домика: доска с удочкой и рыбкой */
@@ -1748,7 +1810,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     }
     /* 🎭 Лжец: 1–2 вопроса «найди ложь среди четырёх утверждений» (в теме и во «Всё подряд») */
     if ((f.arena || caveOn(f)) && qs.length >= 4 && target - out.length >= 2 && (G.liarForce || r() < LIAR_CHANCE)) {
-      var lq = qs.filter(function (x) { return evOk(f.byId[x.id]); }).slice(0, 1 + (r() < 0.4 ? 1 : 0)); G.liarForce = null;
+      var lq = qs.filter(function (x) { return evOk(f.byId[x.id]); }).slice(0, 1); G.liarForce = null;
       if (lq.length) { qs = qs.filter(function (x) { return lq.indexOf(x) < 0; }); out.push(mkMon('doc', lq.map(function (x) { return { t: 'l', id: x.id }; }), { liar: true })); }
     }
     var all = qs.concat(ts), n = Math.max(1, Math.min(all.length, target - out.length));
@@ -2159,7 +2221,7 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     var isTask = it.t === 't', t = isTask ? R.f.taskById[it.id] : null;
     focusOn(true);
     var head = '<div class="row"><span class="tag ' + (m.boss || m.strong || m.guard ? 'gold' : 'red') + '">' + esc(monName(m)) + (m.boss ? ' · босс' : m.guard ? ' · твои ошибки' : m.twin ? ' · похожие понятия' : m.sophist ? ' · вопрос наоборот' : m.strong ? ' · сильный' : '') + '</span><span class="tag">' + m.hp + ' ♥</span><span class="grow"></span>' + (isTask ? icoBtns(false) : trBtn()) + '</div>';
-    R.assisted = false; R.ggl = false; R.dunno = false; R.hold = false; R.holdFn = null; R.fiftyUsed = false; R.hinted = false; R.tr = null; R.answered = false;
+    R.assisted = false; R.ggl = false; R.dunno = false; R.hold = false; R.holdFn = null; R.fiftyUsed = false; R.hinted = false; R.tr = null; R.answered = false; R.liarOn = false;
     G.lastMonKey = m.key;
     if (it.t === 'l') return askLiar(head.replace(esc(monName(m)), '🎭 Лжец'), it);
     if (isTask) return askTask(head, t);
@@ -2777,6 +2839,7 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
   function wireTr() { var b = panel.querySelector('[data-ico="tr"]'); if (b) b.onclick = function () { toggleTr(); }; }
   function toggleTr() {
     var R = G.room; if (!R || !R.q || !R.mon) return;
+    if (R.liarOn) { var lb = panel.querySelector('[data-ico="tr"]'); if (lb && !R.answered) liarTr(R, lb); return; }
     if (R.tr && R.tr.shown) { showOriginal(); return; }
     if (R.tr && R.tr.data && R.tr.lang === S.cfg.trLang) { applyTr(R.tr.data); return; }
     var b = panel.querySelector('[data-ico="tr"]'); if (b) b.classList.add('busy');
@@ -3131,8 +3194,8 @@ $('setCppTr').onchange = function () { c2.cppTr = this.checked; D.persist(); };
     }
     if (G.scene === 'house') { A.bgHouse(c, t); c.fillStyle = 'rgba(0,0,0,.35)'; c.beginPath(); c.ellipse(SAGE_X, A.FLOOR_Y + 8, 16, 4, 0, 0, 7); c.fill(); A.drawMonster(c, 'sage', 'idle', t, SAGE_X, A.FLOOR_Y + 8); drawIntruder(c, t); lakeSign(c, t); }
     else if (G.scene === 'hall') A.bgHall(c, t);
-    else if (G.scene === 'path' && G.lib) { if (A.bgLib) A.bgLib(c, t, G.lib); else { A.bgHall(c, t); needArt(); } }
-    else if ((G.scene === 'event' || G.scene === 'lake') && G.ev) { if (A.bgEv) A.bgEv(c, t, G.ev); else { A.bgRoom(c, t, { theme: 'crypt' }); needArt(); } }   /* файл рисовки не загрузился — не застываем, а догружаем */
+    else if (G.scene === 'path' && G.lib) { if (A.bgLib) A.bgLib(c, t, G.lib); else { A.bgHall(c, t); needArt(); } libHatch(c, t); }
+    else if ((G.scene === 'event' || G.scene === 'lake') && G.ev) { if (A.bgEv) A.bgEv(c, t, G.ev); else { A.bgRoom(c, t, { theme: 'crypt' }); needArt(); } if (G.scene === 'lake') homeSign(c, t); }   /* файл рисовки не загрузился — не застываем, а догружаем */
     else if (G.scene === 'room' && G.room) A.bgRoom(c, t, { theme: themeOf(G.room.f), exit: true, exitOpen: G.room.objs.every(function (o) { return o.type !== 'mon' || o.dead; }), seed: G.room.k, goo: G.room.floor % 3 === 0, hole: G.room.floor % 2 === 0 });
     else return;
     var fy = A.FLOOR_Y + 8;

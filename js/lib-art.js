@@ -217,7 +217,7 @@
     if (lc) { var lx = lc.x + lc.w + 2; c.strokeStyle = P.woodL; c.lineWidth = 2; c.beginPath(); c.moveTo(lx, CASE_TOP + 10); c.lineTo(lx + 14, A.FLOOR_Y); c.moveTo(lx + 8, CASE_TOP + 8); c.lineTo(lx + 22, A.FLOOR_Y); c.stroke(); for (var st = 0; st < 7; st++) { var yy = CASE_TOP + 24 + st * 20, k = (yy - CASE_TOP) / (A.FLOOR_Y - CASE_TOP); px(c, lx + k * 14, yy, 9, 2, P.woodL); } }
     lectern(c, P, t, sid);
     /* подсветка полки под курсором */
-    var hv = L.hover;
+    var hv = L.hover && !L.hover.hatch ? L.hover : null;
     if (hv) { var rr = hv.err ? { x: E.x + 2, y: CASE_TOP - 2, w: E.w - 4, h: A.FLOOR_Y - CASE_TOP } : rowRect(hv.x, hv.w, hv.r); c.strokeStyle = 'rgba(' + (hv.err ? '255,120,120' : P.glow) + ',' + (0.7 + 0.3 * Math.sin(t / 150)).toFixed(2) + ')'; c.lineWidth = 2; c.strokeRect(rr.x - 1, rr.y - 1, rr.w + 2, rr.h + 1); }
     /* виньетка */
     var vg = c.createRadialGradient(W / 2, H * 0.55, H * 0.35, W / 2, H * 0.55, W * 0.72); vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.5)'); c.fillStyle = vg; c.fillRect(0, 0, W, H);
