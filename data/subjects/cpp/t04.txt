@@ -1,5 +1,266 @@
+<question> What is the primary purpose of a loop in C++ programming?
+<tr>Для чего в основном нужен цикл в программе на C++?</tr>
+<variantright> To execute a block of code multiple times. <tr>Чтобы выполнить блок кода много раз.</tr>
+<variant> To define a new function. <tr>Чтобы объявить новую функцию.</tr>
+<variant> To declare variables. <tr>Чтобы объявить переменные.</tr>
+<variant> To check a condition once. <tr>Чтобы проверить условие один раз.</tr>
+<variant> To include header files. <tr>Чтобы подключить заголовочные файлы.</tr>
+<explain>Почему верно: Цикл повторяет действия.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is an infinite loop in C++?
+<tr>Что такое бесконечный цикл в C++?</tr>
+<variantright> A loop whose termination condition is never met, causing it to run indefinitely. <tr>Цикл, условие выхода которого никогда не выполняется, и он работает бесконечно.</tr>
+<variant> A loop that executes only once. <tr>Цикл, который выполняется один раз.</tr>
+<variant> A loop that has no body. <tr>Цикл без тела.</tr>
+<variant> A loop that always stops after 10 iterations. <tr>Цикл, который всегда останавливается после 10 повторов.</tr>
+<variant> A loop that uses the break statement. <tr>Цикл с оператором break.</tr>
+<explain>Почему верно: Например while (true) без break.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> In a while loop, when is the loop condition checked?
+<tr>Когда проверяется условие цикла while?</tr>
+<variantright> Before the loop body is executed. <tr>Перед выполнением тела цикла.</tr>
+<variant> After the loop body is executed. <tr>После выполнения тела цикла.</tr>
+<variant> Only after the first iteration. <tr>Только после первого повтора.</tr>
+<variant> Only when the break statement is encountered. <tr>Только когда встретится break.</tr>
+<variant> Never. <tr>Никогда.</tr>
+<explain>Почему верно: while — цикл с предусловием.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which of the following is the correct syntax for a simple while loop in C++?
+<tr>Какой правильный синтаксис простого цикла while в C++?</tr>
+<variantright> while (condition) { // body }
+<variant> while { // body } (condition);
+<variant> loop (condition) { // body }
+<variant> for (condition) { // body }
+<variant> do (condition) { // body }
+<explain>Почему верно: while (условие) { тело }.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> If the condition of a while loop is false initially, how many times will its body execute?
+<tr>Если условие цикла while сразу ложно, сколько раз выполнится тело?</tr>
+<variantright> Zero times. <tr>Ноль раз.</tr>
+<variant> At least once. <tr>Хотя бы один раз.</tr>
+<variant> Exactly once. <tr>Ровно один раз.</tr>
+<variant> It will result in a compilation error. <tr>Будет ошибка компиляции.</tr>
+<variant> It will run infinitely. <tr>Бесконечно.</tr>
+<explain>Почему верно: Условие проверяется до тела, поэтому тело может не выполниться ни разу.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which type of loop in C++ guarantees that the body of the loop will be executed at least once?
+<tr>Какой цикл в C++ гарантирует, что тело выполнится хотя бы один раз?</tr>
+<variantright> do-while loop <tr>цикл do-while</tr>
+<variant> while loop <tr>цикл while</tr>
+<variant> for loop <tr>цикл for</tr>
+<variant> Range-based for loop <tr>цикл for по диапазону</tr>
+<variant> Any loop with a break statement. <tr>Любой цикл с break.</tr>
+<explain>Почему верно: do-while сначала выполняет тело, потом проверяет условие.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Where is the condition checked in a do-while loop?
+<tr>Где проверяется условие в цикле do-while?</tr>
+<variantright> At the end of the loop, after the body is executed. <tr>В конце цикла, после выполнения тела.</tr>
+<variant> At the beginning of the loop, before the body is executed. <tr>В начале цикла, до выполнения тела.</tr>
+<variant> In the middle of the loop body. <tr>В середине тела цикла.</tr>
+<variant> Only during the first iteration. <tr>Только при первом повторе.</tr>
+<variant> It is never checked. <tr>Никогда не проверяется.</tr>
+<explain>Почему верно: do-while — цикл с постусловием.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which of the following is the correct syntax for a simple do-while loop in C++?
+<tr>Какой правильный синтаксис простого цикла do-while в C++?</tr>
+<variantright> do { // body } while (condition);
+<variant> while (condition) { // body }
+<variant> do (condition) { // body } while;
+<variant> for { // body } while (condition);
+<variant> do { // body }; while (condition)
+<explain>Почему верно: do { тело } while (условие); — с точкой с запятой в конце.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which statement is used to immediately exit the innermost loop in C++?
+<tr>Какой оператор сразу выходит из самого внутреннего цикла в C++?</tr>
+<variantright> break;
+<variant> continue;
+<variant> exit;
+<variant> stop;
+<variant> return;
+<explain>Почему верно: break прерывает цикл.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which statement is used to skip the rest of the current iteration of a loop and proceed to the next iteration?
+<tr>Какой оператор пропускает остаток текущего повтора и переходит к следующему?</tr>
+<variantright> continue;
+<variant> break;
+<variant> goto;
+<variant> skip;
+<variant> return;
+<explain>Почему верно: continue — «дальше, к следующему шагу».
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> In a nested loop structure, the break statement will only terminate which loop?
+<tr>Какой цикл завершит break во вложенных циклах?</tr>
+<variantright> The innermost loop in which the break is located. <tr>Самый внутренний цикл, в котором стоит break.</tr>
+<variant> The outermost loop. <tr>Самый внешний цикл.</tr>
+<variant> All loops simultaneously. <tr>Все циклы сразу.</tr>
+<variant> Only while loops. <tr>Только циклы while.</tr>
+<variant> Only for loops. <tr>Только циклы for.</tr>
+<explain>Почему верно: break выходит только из того цикла, где он написан.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What happens when the continue statement is executed in a for loop?
+<tr>Что происходит при выполнении continue в цикле for?</tr>
+<variantright> The iteration (increment/decrement) part is executed next, followed by the condition check. <tr>Дальше выполняется изменение (инкремент/декремент), затем проверка условия.</tr>
+<variant> The loop immediately terminates. <tr>Цикл сразу заканчивается.</tr>
+<variant> The program exits. <tr>Программа завершается.</tr>
+<variant> The loop body is executed from the beginning. <tr>Тело цикла выполняется с начала.</tr>
+<variant> The condition is checked again without executing the iteration part. <tr>Условие проверяется снова без выполнения изменения.</tr>
+<explain>Почему верно: В for после continue всё равно выполняется i++.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> }
+```cpp
+What is the output of the following C++ code snippet?
+int i = 0;
+while (i < 3) {
+    std::cout << i;
+    i++;
+```
+<tr>Что выведет этот фрагмент на C++?</tr>
+<variantright> 012
+<variant> 123
+<variant> 0123
+<variant> 0
+<variant> Compilation Error <tr>Ошибка компиляции</tr>
+<explain>Почему верно: i = 0, 1, 2 — на 3 условие i < 3 ложно.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> } while (i < 0);
+```cpp
+What is the output of the following C++ code snippet?
+int i = 0;
+do {
+    std::cout << i;
+    i++;
+```
+<tr>Что выведет этот фрагмент на C++?</tr>
+<variantright> 0
+<variant> 1
+<variant> 01
+<variant> No output (Infinite loop) <tr>Ничего (бесконечный цикл)</tr>
+<variant> Compilation Error <tr>Ошибка компиляции</tr>
+<explain>Почему верно: do-while выполняет тело один раз до проверки: выводит 0, потом 1 < 0 — ложь.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which of the following conditions is most likely to cause an infinite loop in a while statement?
+<tr>Какое условие чаще всего приводит к бесконечному циклу while?</tr>
+<variantright> The variable used in the condition is never modified inside the loop body. <tr>Переменная из условия никогда не меняется в теле цикла.</tr>
+<variant> The condition is initially false. <tr>Условие сразу ложно.</tr>
+<variant> The condition uses the ++ operator. <tr>В условии есть операция ++.</tr>
+<variant> The loop uses a break statement. <tr>В цикле есть break.</tr>
+<variant> The loop uses a continue statement. <tr>В цикле есть continue.</tr>
+<explain>Почему верно: Если переменная не меняется, условие навсегда остаётся истинным.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the appropriate loop to use when the number of iterations is unknown and the loop must execute at least once?
+<tr>Какой цикл подходит, если число повторов неизвестно, а тело должно выполниться хотя бы раз?</tr>
+<variantright> do-while loop <tr>цикл do-while</tr>
+<variant> for loop <tr>цикл for</tr>
+<variant> while loop <tr>цикл while</tr>
+<variant> Range-based for loop <tr>цикл for по диапазону</tr>
+<variant> break loop <tr>цикл break</tr>
+<explain>Почему верно: do-while: тело сначала, проверка потом.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the term for a loop placed inside the body of another loop?
+<tr>Как называется цикл, размещённый внутри тела другого цикла?</tr>
+<variantright> Nested loop <tr>Вложенный цикл</tr>
+<variant> Infinite loop <tr>Бесконечный цикл</tr>
+<variant> Recursive loop <tr>Рекурсивный цикл</tr>
+<variant> Compound loop <tr>Составной цикл</tr>
+<variant> Inner loop <tr>Внутренний цикл</tr>
+<explain>Почему верно: Цикл в цикле — вложенный.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> How do you access the third element in an array named 'arr' in C++?
+<tr>Как обратиться к третьему элементу массива arr в C++?</tr>
+<variantright> arr[2]
+<variant> arr[3]
+<variant> arr[4]
+<variant> arr(2)
+<variant> There is no correct answer <tr>Нет правильного ответа</tr>
+<explain>Почему верно: Индексы с 0: первый — arr[0], третий — arr[2].
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What are multidimensional arrays in C++?
+<tr>Что такое многомерные массивы в C++?</tr>
+<variantright> Arrays with more than one dimension, like 2D or 3D arrays <tr>Массивы больше чем с одним измерением, например 2D или 3D</tr>
+<variant> Arrays with only one row or column <tr>Массивы только с одной строкой или столбцом</tr>
+<variant> Arrays containing elements of different data types <tr>Массивы с элементами разных типов</tr>
+<variant> Dynamic arrays <tr>Динамические массивы</tr>
+<variant> There is no correct answer <tr>Нет правильного ответа</tr>
+<explain>Почему верно: Двумерный массив — таблица: int a[3][4];
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> In C++, how can you initialize an array of integers named 'num' with the first four natural numbers?
+<tr>Как в C++ задать целочисленный массив num с первыми четырьмя натуральными числами?</tr>
+<variantright> int num[4] = {1, 2, 3, 4};
+<variant> float num[] = {1, 2, 3, 4};
+<variant> float num[4] = {1, 2, 3};
+<variant> int num[] = {1, 2, 3, 4, 5};
+<variant> There is no correct answer <tr>Нет правильного ответа</tr>
+<explain>Почему верно: int num[4] = {1, 2, 3, 4}; — целый тип, 4 элемента, все значения.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Spot the logical mistake:
+```cpp
+int nums[] = {1, 2, 3};
+for(int i = 0; i <= 3; i++) {
+std::cout << nums[i];
+}
+```
+<tr>Найди логическую ошибку:</tr>
+<variantright> Incorrect loop condition <tr>Неверное условие цикла</tr>
+<variant> Missing array initialization <tr>Не задан массив</tr>
+<variant> Syntax error in std::cout statement <tr>Синтаксическая ошибка в std::cout</tr>
+<variant> No error <tr>Ошибки нет</tr>
+<variant> There is no correct answer <tr>Нет правильного ответа</tr>
+<explain>Почему верно: В массиве 3 элемента (индексы 0–2), а i <= 3 обращается к nums[3] — за границу массива. Нужно i < 3.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> The statement structure that is NOT a looping is:
+<tr>Какая конструкция НЕ является циклом?</tr>
+<variantright> If
+<variant> For
+<variant> Do…While
+<variant> While
+<variant> There is no correct answer <tr>Нет правильного ответа</tr>
+<explain>Почему верно: if — условие, а не цикл.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Choose the type of loop in C++ which is guaranteed to execute at least once:
+<tr>Выбери цикл в C++, который гарантированно выполнится хотя бы один раз:</tr>
+<variantright> do-while loop <tr>цикл do-while</tr>
+<variant> for loop <tr>цикл for</tr>
+<variant> while loop <tr>цикл while</tr>
+<variant> infinite loop <tr>бесконечный цикл</tr>
+<variant> range-based for loop <tr>цикл for по диапазону</tr>
+<explain>Почему верно: do-while проверяет условие после тела.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Identify the correct syntax for declaring arrays in C++:
+<tr>Укажи правильный синтаксис объявления массива в C++:</tr>
+<variantright> int arr[10];
+<variant> int arr();
+<variant> int arr;
+<variant> array arr[10];
+<variant> int arr{};
+<explain>Почему верно: тип имя[размер]; — int arr[10];
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
 <question> What is an array?
 <tr>Что такое массив?</tr>
+<dop/>
 <variantright> a sequence of values of the same type under one name <tr>последовательность значений одного типа под одним именем</tr>
 <variant> data located in cells <tr>данные, расположенные в ячейках</tr>
 <variant> a type that defines the size <tr>тип, определяющий размер</tr>
@@ -8,115 +269,11 @@
 <explain>Почему верно: массив — ряд значений одного типа под одним именем, к каждому обращаются по номеру: a[0], a[1]…
 Ловушки: «данные в ячейках» — слишком общее; «указатель на динамическую память» — это про new; «тип, определяющий размер» — обманка.
 По лекции: тема 4, раздел «Что такое массив?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which option correctly declares an array of 10 real numbers?
-<tr>Какой вариант правильно объявляет массив из 10 вещественных чисел?</tr>
-<variantright> float a[10];
-<variant> int a[10];
-<variant> float a(10);
-<variant> float a[1..10];
-<variant> int a[1..10];
-<explain>Почему верно: вещественные — float, 10 штук — в квадратных скобках: float a[10];.
-Ловушки: int — целые; a(10) — круглые скобки неверны; a[1..10] — синтаксис Pascal.
-По лекции: тема 4, раздел «Как объявить и инициализировать одномерный массив?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> The correct declaration of an array a of 12 integers:
-<tr>Правильное объявление массива a из 12 целых чисел:</tr>
-<variantright> int a[12];
-<variant> float a[12];
-<variant> char a[12];
-<variant> int a(12);
-<variant> float a[10];
-<explain>Почему верно: целые — int, 12 штук в квадратных скобках: int a[12];.
-Ловушки: float и char — другие типы; a(12) — неверные скобки; a[10] — не 12 элементов.
-По лекции: тема 4, раздел «Как объявить и инициализировать одномерный массив?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What does `float a[10];` mean?
-<tr>Что означает `float a[10];`?</tr>
-<variantright> declaration of an array a of 10 real numbers <tr>объявление массива a из 10 вещественных чисел</tr>
-<variant> declaration of a sequence of integers from 1 to 10 <tr>объявление последовательности целых чисел от 1 до 10</tr>
-<variant> declaration of a 10x10 matrix a <tr>объявление матрицы a размером 10x10</tr>
-<variant> declaration of a sequence of real numbers from 1 to 10 <tr>объявление последовательности вещественных чисел от 1 до 10</tr>
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: float — вещественные, [10] — десять штук. Это одномерный массив a из 10 вещественных чисел (индексы 0…9).
-Ловушки: «от 1 до 10» — не диапазон значений, а количество элементов; матрица 10x10 записывалась бы a[10][10].
-По лекции: тема 4, раздел «Как объявить и инициализировать одномерный массив?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> How many times will the loop repeat?
-```cpp
-x=2; while (x<10) {y=x*x; x=x+2;}
-```
-<tr>Сколько раз повторится цикл?</tr>
-<variantright> 4
-<variant> 5
-<variant> 10
-<variant> 3
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: x = 2, 4, 6, 8 — четыре повтора. Следующее 10 уже не меньше 10.
-Ловушки: 5 — посчитали и 10; 3 — потеряли значение; 10 — перепутали со значением.
-По лекции: тема 4, раздел «Что такое цикл с предусловием?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> How many times will the loop repeat?
-```cpp
-x=7; while (x <=10) { cout<<x; x++; }
-```
-<tr>Сколько раз повторится цикл?</tr>
-<variantright> 4
-<variant> 5
-<variant> 6
-<variant> 7
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: x = 7, 8, 9, 10 — четыре раза (10 входит, потому что x <= 10).
-Ловушки: 3 — забыли, что <= включает 10; 5, 6, 7 — обманки.
-По лекции: тема 4, раздел «Что такое цикл с предусловием?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> How many times will the loop repeat?
-```cpp
-x=7; while (x <10) { cout<<x; x++; }
-```
-<tr>Сколько раз повторится цикл?</tr>
-<variantright> 3
-<variant> 4
-<variant> 5
-<variant> 6
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: x = 7, 8, 9 — три раза. 10 уже не меньше 10.
-Ловушки: 4 — так было бы с <=10.
-По лекции: тема 4, раздел «Что такое цикл с предусловием?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> The loop with a precondition in C is written as:
-<tr>Запись цикла с предусловием в C:</tr>
-<variantright> while (condition) {loop body} <tr>while (условие) {тело цикла}</tr>
-<variant> do {loop body} while (condition) <tr>do {тело цикла} while (условие)</tr>
-<variant> for <tr>initial value; final value; step — начальное значение; конечное значение; шаг</tr>
-<variant> for <tr>final value; initial value; step — конечное значение; начальное значение; шаг</tr>
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: «предусловие» — условие стоит ДО тела: while(условие){тело}. Если условие сразу ложно, тело не выполнится ни разу.
-Ловушки: do{…}while — постусловие; for — цикл со счётчиком.
-По лекции: тема 4, раздел «Что такое цикл с предусловием?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> The loop with a postcondition in C is written as:
-<tr>Запись цикла с постусловием в C:</tr>
-<variantright> do {loop body} while (condition) <tr>do {тело цикла} while (условие)</tr>
-<variant> while (condition) {loop body} <tr>while (условие) {тело цикла}</tr>
-<variant> for <tr>initial value; final value; step — начальное значение; конечное значение; шаг</tr>
-<variant> for <tr>final value; initial value; step — конечное значение; начальное значение; шаг</tr>
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: «постусловие» — условие ПОСЛЕ тела: do{тело}while(условие);. Тело выполнится хотя бы раз.
-Ловушки: while(условие){…} — предусловие; for — со счётчиком.
-По лекции: тема 4, раздел «Что такое цикл с постусловием?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> How many kinds of loop statements are there in C?
 <tr>Сколько видов операторов цикла в C?</tr>
+<dop/>
 <variantright> 3
 <variant> 2
 <variant> 1
@@ -125,10 +282,11 @@ x=7; while (x <10) { cout<<x; x++; }
 <explain>Почему верно: в C три цикла: for, while, do-while.
 Ловушки: 2 — забыли do-while; 4 — посчитали switch или goto, но это не циклы.
 По лекции: тема 4, раздел «Разница между while и do…while?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> An array in C is
 <tr>Массив в C — это</tr>
+<dop/>
 <variantright> a set of elements of the same type <tr>набор элементов одного типа</tr>
 <variant> a set of elements of different types <tr>набор элементов разных типов</tr>
 <variant> a sequence of variables <tr>последовательность переменных</tr>
@@ -137,43 +295,7 @@ x=7; while (x <10) { cout<<x; x++; }
 <explain>Почему верно: все элементы массива одного типа: только int или только float.
 Ловушки: разные типы вместе хранит структура (struct), а не массив; «последовательность переменных» и «любые элементы» — неточно.
 По лекции: тема 4, раздел «Что такое массив?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> In which loop statement does the loop end when the condition is true?
-<tr>В каком операторе цикла выход из цикла происходит, когда условие истинно?</tr>
-<variantright> do {} while(condition) <tr>do {} while(условие)</tr>
-<variant> while (condition) { } <tr>while (условие) { }</tr>
-<variant> for
-<variant> switch
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: так отмечено в ключе: пара «условие истинно → do-while», «условие не истинно → while».
-Ловушки: while — ответ для соседнего вопроса; for и switch не подходят.
-По лекции: тема 4, раздел «Что такое цикл с постусловием?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> In which loop statement does the loop end when the condition is not true?
-<tr>В каком операторе цикла выход из цикла происходит, когда условие не истинно?</tr>
-<variantright> while (condition) { } <tr>while (условие) { }</tr>
-<variant> do {} while(condition) <tr>do {} while(условие)</tr>
-<variant> for
-<variant> switch
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: while проверяет условие перед каждым шагом и выходит, как только оно стало ложным (не истинным).
-Ловушки: do-while в ключе связан с «истинным» условием (см. соседний вопрос); for и switch — другие операторы.
-По лекции: тема 4, раздел «Что такое цикл с предусловием?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What number do array indexes start from?
-<tr>С какого числа начинаются индексы массива?</tr>
-<variantright> 0
-<variant> 1
-<variant> 2
-<variant> -1
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: в C/C++ нумерация массива начинается с 0: первый элемент a[0], последний a[n-1].
-Ловушки: 1 — так в Pascal; -1 и 2 — обманки.
-По лекции: тема 4, раздел «Как обратиться к элементам массива?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What does the program give?
 ```cpp
@@ -187,6 +309,7 @@ s+=a[i][i];
 cout<<s;
 ```
 <tr>Что даёт программа?</tr>
+<dop/>
 <variantright> the sum of the elements of the main diagonal of the matrix <tr>сумму элементов главной диагонали матрицы</tr>
 <variant> the sum of the even elements of the array <tr>сумму чётных элементов массива</tr>
 <variant> the sum of all elements of the matrix <tr>сумму всех элементов матрицы</tr>
@@ -195,7 +318,7 @@ cout<<s;
 <explain>Почему верно: a[i][i] — элементы, где номер строки равен номеру столбца. Это главная диагональ, и s — их сумма.
 Ловушки: чётные/нечётные элементы проверялись бы через %2; сумма всех потребовала бы двойной цикл по i и j.
 По лекции: тема 4, раздел «Что такое двумерный массив?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What does the program calculate?
 ```cpp
@@ -207,6 +330,7 @@ printf("\ns=%i",s);
 getch();
 ```
 <tr>Что вычисляет программа?</tr>
+<dop/>
 <variantright> the sum of the elements below the main diagonal of the array <tr>сумму элементов ниже главной диагонали массива</tr>
 <variant> the sum of the elements above the main diagonal of the array <tr>сумму элементов выше главной диагонали массива</tr>
 <variant> the sum of the elements of the main diagonal of the array <tr>сумму элементов главной диагонали массива</tr>
@@ -215,7 +339,7 @@ getch();
 <explain>Почему верно: условие j < i — столбец меньше строки, это клетки ниже главной диагонали.
 Ловушки: выше диагонали — j > i; на диагонали — j == i; побочная — i + j == n-1.
 По лекции: тема 4, раздел «Как вложенные циклы обрабатывают двумерный массив?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What does the program fragment calculate?
 ```cpp
@@ -227,6 +351,7 @@ if (i %2== 0) s2=s2+a[i];
 cout<<s2;
 ```
 <tr>Что вычисляет фрагмент программы?</tr>
+<dop/>
 <variantright> the sum of only the elements with even numbers (indexes) <tr>сумму только элементов с чётными номерами</tr>
 <variant> the sum of only the elements with odd numbers (indexes) <tr>сумму только элементов с нечётными номерами</tr>
 <variant> the sum of all elements <tr>сумму всех элементов</tr>
@@ -235,7 +360,7 @@ cout<<s2;
 <explain>Почему верно: проверяется индекс i, а не значение: i%2==0 — элементы с чётными номерами (a[0], a[2]…).
 Ловушки: нечётные номера — i%2!=0; сумма всех — без условия; «количество нулей» — совсем другая задача.
 По лекции: тема 4, раздел «Как обратиться к элементам массива?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What does the program fragment calculate?
 ```cpp
@@ -247,6 +372,7 @@ if (i %2!= 0) s2=s2+a[i];
 cout<<s2;
 ```
 <tr>Что вычисляет фрагмент программы?</tr>
+<dop/>
 <variantright> the sum of only the elements with odd numbers (indexes) <tr>сумму только элементов с нечётными номерами</tr>
 <variant> the sum of only the elements with even numbers (indexes) <tr>сумму только элементов с чётными номерами</tr>
 <variant> the number of elements not equal to 0 <tr>количество элементов, не равных 0</tr>
@@ -255,10 +381,11 @@ cout<<s2;
 <explain>Почему верно: условие i%2!=0 — индекс нечётный. Значит, суммируются элементы с нечётными номерами (a[1], a[3]…).
 Ловушки: чётные — было бы i%2==0; «количество не равных 0» — это подсчёт по значению.
 По лекции: тема 4, раздел «Как обратиться к элементам массива?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which statement is NOT a loop statement in C++?
 <tr>Какой оператор НЕ является оператором цикла в C++?</tr>
+<dop/>
 <variantright> repeat until
 <variant> while
 <variant> do while
@@ -267,22 +394,11 @@ cout<<s2;
 <explain>Почему верно: repeat…until — цикл из Pascal, в C++ его нет.
 Ловушки: while, do-while, for — настоящие циклы C++.
 По лекции: тема 4, раздел «Разница между while и do…while?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What else is an array with two indexes called?
-<tr>Как ещё называют массив с двумя индексами?</tr>
-<variantright> matrix <tr>матрица</tr>
-<variant> one-dimensional array <tr>одномерный массив</tr>
-<variant> dynamic array <tr>динамический массив</tr>
-<variant> non-uniform array <tr>неоднородный массив</tr>
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: массив с двумя индексами — таблица из строк и столбцов, то есть матрица: a[i][j].
-Ловушки: одномерный — с одним индексом; динамический — про выделение памяти, а не про число индексов.
-По лекции: тема 4, раздел «Что такое двумерный массив?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The number used to access one element of an array is called ....
 <tr>Число, по которому обращаются к одному элементу массива, называется ....</tr>
+<dop/>
 <variantright> index <tr>индекс</tr>
 <variant> type <tr>тип</tr>
 <variant> matrix <tr>матрица</tr>
@@ -291,10 +407,11 @@ cout<<s2;
 <explain>Почему верно: номер элемента в квадратных скобках называется индексом: в a[3] индекс 3.
 Ловушки: тип — int/float; матрица — двумерный массив; среднее арифметическое — результат вычисления.
 По лекции: тема 4, раздел «Как обратиться к элементам массива?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The elements of an array are connected by having the same ...
 <tr>Элементы массива связаны тем, что у них одинаковые ...</tr>
+<dop/>
 <variantright> types <tr>типы</tr>
 <variant> sizes <tr>размеры</tr>
 <variant> names <tr>имена</tr>
@@ -303,10 +420,11 @@ cout<<s2;
 <explain>Почему верно: у всех элементов массива один и тот же тип. Это и связывает их в массив.
 Ловушки: значения у элементов разные; имя одно у всего массива, а не у каждого элемента; размеры элементов одинаковы, но только потому, что одинаков тип.
 По лекции: тема 4, раздел «Что такое массив?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The process of ordering the elements of an array is called ....
 <tr>Процесс упорядочивания элементов массива называется ....</tr>
+<dop/>
 <variantright> sorting <tr>сортировка</tr>
 <variant> searching <tr>поиск</tr>
 <variant> checking <tr>проверка</tr>
@@ -315,105 +433,4 @@ cout<<s2;
 <explain>Почему верно: расставить элементы по порядку (по возрастанию или убыванию) — сортировка.
 Ловушки: поиск только находит элемент; проверка и изменение — общие слова.
 По лекции: тема 4, раздел «Как обратиться к элементам массива?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What will the array elements be equal to after its declaration?
-```cpp
-char a[10];
-```
-<tr>Чему будут равны значения элементов массива после его объявления?</tr>
-<variantright> the array may contain random values <tr>в массиве могут быть какие-либо случайные значения</tr>
-<variant> the array will be empty <tr>массив будет пустым</tr>
-<variant> the array will store 10 random non-digit characters <tr>в массиве будут храниться 10 случайных нецифровых символов</tr>
-<variant> the array will store the number 10 <tr>в массиве будет храниться число 10</tr>
-<variant> all elements will be zero <tr>все элементы массива будут равны нулю</tr>
-<explain>Почему верно: массив объявлен, но ничем не заполнен. В ячейках остаётся «мусор» — то, что лежало в памяти раньше.
-Ловушки: «пустым» массив не бывает — 10 ячеек есть всегда. Нулями заполняются только глобальные массивы или массивы с ={...}.
-По лекции: тема 4, раздел «Как обратиться к элементам массива?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> What is the fifth element of the array char d[10]={1,2,3}?
-<tr>Чему будет равен пятый элемент массива char d[10]={1,2,3}?</tr>
-<variantright> 0
-<variant> 3
-<variant> 1
-<variant> 2
-<variant> there is no such element <tr>такого элемента нет в массиве</tr>
-<explain>Почему верно: заданы только первые 3 значения, а все остальные элементы при инициализации {…} автоматически становятся 0. Пятый элемент (d[4]) — 0.
-Ловушки: элемент есть — в массиве 10 ячеек; 3 — это третий элемент.
-По лекции: тема 4, раздел «Как объявить и инициализировать одномерный массив?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> How many elements will the array char d[10]={1,2,3} have?
-<tr>Сколько элементов будет в массиве, описанном следующим образом: char d[10]={1,2,3}?</tr>
-<variantright> 10
-<variant> 1
-<variant> 2
-<variant> 3
-<variant> 7
-<explain>Почему верно: размер задан в скобках — [10]. Значений в {…} может быть меньше, тогда остальные станут нулями, но элементов всё равно 10.
-Ловушки: 3 — сколько значений написано, а не сколько элементов; 7 — сколько получат 0.
-По лекции: тема 4, раздел «Как объявить и инициализировать одномерный массив?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The array is declared as float x[15]. The element indexes will be:
-<tr>Дано описание массива float x[15]. Индексы элементов будут равны следующим значениям:</tr>
-<variantright> 0..14
-<variant> 14
-<variant> 15
-<variant> 0..15
-<variant> 1..15
-<explain>Почему верно: в C++ счёт индексов начинается с 0. 15 элементов — это x[0], x[1], …, x[14].
-Ловушки: 1..15 — как в Pascal; 0..15 — это уже 16 элементов, x[15] выходит за массив.
-По лекции: тема 4, раздел «Как обратиться к элементам массива?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> Given the array int a[][]={{1,2,3},{5,9,1},{6,2,2},{0}}. What is a[2][0]?
-<tr>Дано объявление массива: int a[][]={{1,2,3},{5,9,1},{6,2,2},{0}}. Чему будет равен элемент а[2][0]?</tr>
-<variantright> 6
-<variant> 0
-<variant> 1
-<variant> 3
-<variant> 5
-<explain>Почему верно: первая скобка — строка, вторая — столбец, счёт с 0. Строка 2 — это третья {6,2,2}, столбец 0 — первое число: 6.
-Ловушки: 5 — это a[1][0] (если считать с 1).
-⚠ Сама запись int a[][] в C++ — ошибка компиляции: можно не писать только первый размер, правильно int a[][3]. На экзамене выбирай 6.
-По лекции: тема 4, раздел «Как обратиться к элементам массива?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The array is declared as int a[][]={{1,2,3},{5,9,1},{6,2,2},{0}}. Choose the correct statement:
-<tr>Массив объявлен следующим образом: int a[][]={{1,2,3},{5,9,1},{6,2,2},{0}}. Выберите правильное высказывание:</tr>
-<variantright> a is a two-dimensional array of 4 rows and 3 columns <tr>а – двумерный массив, состоящий из 4х строк и 3х столбцов</tr>
-<variant> a is a 4-dimensional array <tr>а – это 4хмерный массив</tr>
-<variant> a is a set containing the first element of the array <tr>а – это множество, содержащее первый элемент массива</tr>
-<variant> a is a one-dimensional array of 10 elements <tr>а – одномерный массив, состоящий из 10 элементов</tr>
-<variant> a is a two-dimensional array of 3 rows and 4 columns <tr>а – двумерный массив, состоящий из 3х строк и 4х столбцов</tr>
-<explain>Почему верно: внутренних скобок {…} четыре — это 4 строки; в самой длинной 3 числа — 3 столбца. Строка {0} дополняется нулями до {0,0,0}.
-Ловушки: «3 строки и 4 столбца» — перепутаны строки и столбцы; две пары [][] значат «двумерный», а не «4-мерный».
-⚠ Правильная запись — int a[][3]; int a[][] не скомпилируется.
-По лекции: тема 4, раздел «Как вложенные циклы обрабатывают двумерный массив?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> How many elements will be stored in the array int A[]={5,3,4,9,4}?
-<tr>Сколько элементов будет храниться в следующем массиве int A[]={5,3,4,9,4}?</tr>
-<variantright> 5
-<variant> 4
-<variant> 0..4
-<variant> 1..5
-<variant> {5,3,4,9,4}
-<explain>Почему верно: скобки [] пустые — компилятор считает значения в {…}: их 5.
-Ловушки: 0..4 — это индексы, а не количество; 4 — последний индекс.
-По лекции: тема 4, раздел «Как обратиться к элементам массива?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The correct declaration of an integer array of 15 elements:
-<tr>Правильное описание целочисленного массива из 15 элементов:</tr>
-<variantright> int a[15];
-<variant> int a=array[1..15];
-<variant> array int a=15;
-<variant> int a[1..15];
-<variant> int a[0..14];
-<explain>Почему верно: в C++ пишут «тип имя[размер];» — int a[15];
-Ловушки: [1..15], array — это синтаксис Pascal, в C++ его нет.
-По лекции: тема 4, раздел «Плюсы и ограничения массивов?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>

@@ -1,5 +1,6 @@
 <question> Which function determines the length of a string?
 <tr>Какая функция определяет длину строки?</tr>
+<dop/>
 <variantright> strlen
 <variant> strcpy
 <variant> strcat
@@ -8,10 +9,11 @@
 <explain>Почему верно: strlen = string length, «длина строки»; считает символы без завершающего \0.
 Ловушки: strcpy копирует, strcat склеивает, strcmp сравнивает.
 По лекции: тема 6, раздел «Как определить длину строки?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> In which header file is the prototype of the `strlen()` function?
 <tr>В каком заголовочном файле прототип функции `strlen()`?</tr>
+<dop/>
 <variantright> string.h
 <variant> conio.h
 <variant> iostream.h
@@ -20,10 +22,11 @@
 <explain>Почему верно: все str-функции (strlen, strcpy, strcat, strcmp) описаны в string.h.
 Ловушки: conio.h — консоль, iostream.h — cin/cout, stdlib.h — случайные числа.
 По лекции: тема 6, раздел «Как определить длину строки?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> string.h is a library of:
 <tr>string.h — это библиотека:</tr>
+<dop/>
 <variantright> string functions <tr>строковых функций</tr>
 <variant> basic input / output <tr>основного ввода / вывода</tr>
 <variant> graphics functions <tr>графических функций</tr>
@@ -32,10 +35,11 @@
 <explain>Почему верно: string.h = «строки»: библиотека функций для работы со строками.
 Ловушки: ввод-вывод — stdio.h/iostream.h, графика — graphics.h, математика — math.h.
 По лекции: тема 6, раздел «Какие основные операции со строками?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What does the function `strcat(stroka1, stroka2)` do?
 <tr>Что делает функция `strcat(stroka1, stroka2)`?</tr>
+<dop/>
 <variantright> joins the strings stroka1 and stroka2 and writes the result to stroka1 <tr>соединяет строки stroka1 и stroka2 и записывает результат в stroka1</tr>
 <variant> compares the strings stroka1 and stroka2 <tr>сравнивает строки stroka1 и stroka2</tr>
 <variant> searches the first string for any character of the second string <tr>ищет в первой строке любой символ второй строки</tr>
@@ -44,10 +48,11 @@
 <explain>Почему верно: cat = concatenate, «соединить»: strcat(s1, s2) дописывает s2 в конец s1, результат лежит в s1.
 Ловушки: сравнивает strcmp, ищет подстроку strstr, ищет символы из набора strpbrk.
 По лекции: тема 6, раздел «Как соединить две строки?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What does the function `strcmp(stroka1,stroka2)` do?
 <tr>Что делает функция `strcmp(stroka1,stroka2)`?</tr>
+<dop/>
 <variantright> compares two strings <tr>сравнивает две строки</tr>
 <variant> searches the first string for any character of the second string <tr>ищет в первой строке любой символ второй строки</tr>
 <variant> joins two strings <tr>соединяет две строки</tr>
@@ -56,13 +61,14 @@
 <explain>Почему верно: cmp = compare, «сравнить». strcmp возвращает 0, если строки равны.
 Ловушки: соединяет strcat, ищет подстроку strstr.
 По лекции: тема 6, раздел «Как сравнить строки?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is the result of the code?
 ```cpp
 main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
 ```
 <tr>Какой результат у кода?</tr>
+<dop/>
 <variantright> 0
 <variant> 1
 <variant> 2
@@ -71,10 +77,11 @@ main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
 <explain>Почему верно: строки "Salem" и "Salem" одинаковые, а strcmp для равных строк возвращает 0.
 Ловушки: 1 — так думают, если считать результат «истиной»; 5 — длина строки; 7 и 2 — обманки.
 По лекции: тема 6, раздел «Как сравнить строки?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What does the function `strcpy(str1,str2)` do?
 <tr>Что делает функция `strcpy(str1,str2)`?</tr>
+<dop/>
 <variantright> copies a string: the string from str2 is copied to str1 <tr>копирует строку: строка из str2 копируется в str1</tr>
 <variant> compares two strings <tr>сравнивает две строки</tr>
 <variant> joins two strings <tr>соединяет две строки</tr>
@@ -83,10 +90,11 @@ main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
 <explain>Почему верно: cpy = copy: strcpy(str1, str2) копирует str2 в str1 (как присваивание str1 = str2).
 Ловушки: сравнивает strcmp, соединяет strcat, ищет strstr.
 По лекции: тема 6, раздел «Какие основные операции со строками?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What does the function `strstr(str1, str2)` do?
 <tr>Что делает функция `strstr(str1, str2)`?</tr>
+<dop/>
 <variantright> searches for the second string inside the first <tr>ищет вторую строку внутри первой</tr>
 <variant> joins two strings <tr>соединяет две строки</tr>
 <variant> compares two strings <tr>сравнивает две строки</tr>
@@ -95,10 +103,11 @@ main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
 <explain>Почему верно: strstr = «строка в строке»: ищет вторую строку внутри первой и возвращает указатель на найденное место (или NULL).
 Ловушки: соединяет strcat, сравнивает strcmp, копирует strcpy.
 По лекции: тема 6, раздел «Какие основные операции со строками?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What does the function `strrev(str)` do?
 <tr>Что делает функция `strrev(str)`?</tr>
+<dop/>
 <variantright> reverses the string <tr>переворачивает строку задом наперёд</tr>
 <variant> copies a string <tr>копирует строку</tr>
 <variant> compares strings <tr>сравнивает строки</tr>
@@ -107,10 +116,11 @@ main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
 <explain>Почему верно: rev = reverse, «перевернуть»: "abc" станет "cba". Удобно для проверки палиндрома.
 Ловушки: копирует strcpy, сравнивает strcmp; удаляющей функции нет.
 По лекции: тема 6, раздел «Какие основные операции со строками?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The function `strncpy(S1,CS2,k)`:
 <tr>Функция `strncpy(S1,CS2,k)`:</tr>
+<dop/>
 <variantright> copies the first k characters of the string CS2 to S1 <tr>копирует первые k символов строки CS2 в S1</tr>
 <variant> deletes the first k characters of the string CS2 from S1 <tr>удаляет первые k символов строки CS2 из S1</tr>
 <variant> deletes k characters from the strings S1 and CS2 <tr>удаляет k символов из строк S1 и CS2</tr>
@@ -119,10 +129,11 @@ main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
 <explain>Почему верно: strncpy — это strcpy с буквой n («не больше n»): копирует только первые k символов CS2 в S1.
 Ловушки: удалять str-функции не умеют; «последние k» — неверно, берутся первые.
 По лекции: тема 6, раздел «Какие основные операции со строками?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The function `strnset(S,ch,k)`:
 <tr>Функция `strnset(S,ch,k)`:</tr>
+<dop/>
 <variantright> repeats the character ch k times in the string S <tr>повторяет символ ch k раз в строке S</tr>
 <variant> deletes the character ch k times in the string S <tr>удаляет символ ch k раз в строке S</tr>
 <variant> replaces the character ch in the string S with the character k <tr>заменяет символ ch в строке S на символ k</tr>
@@ -131,10 +142,11 @@ main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
 <explain>Почему верно: strnset = «установить n символов»: первые k позиций строки S заполняются символом ch (ch повторяется k раз).
 Ловушки: удалять и заменять «ch на k» функция не умеет.
 По лекции: тема 6, раздел «Какие основные операции со строками?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The function `strncat(S1,CS2,k)`:
 <tr>Функция `strncat(S1,CS2,k)`:</tr>
+<dop/>
 <variantright> appends the first k characters of the string CS2 to the string S1 <tr>добавляет первые k символов строки CS2 к строке S1</tr>
 <variant> appends the last k characters of the string CS2 to the string S1 <tr>добавляет последние k символов строки CS2 к строке S1</tr>
 <variant> appends k characters to the strings CS2 and S1 <tr>добавляет k символов к строкам CS2 и S1</tr>
@@ -143,10 +155,11 @@ main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
 <explain>Почему верно: strncat — strcat с n: дописывает в конец S1 первые k символов CS2.
 Ловушки: «последние k» — неверно; «к обеим строкам» — меняется только S1.
 По лекции: тема 6, раздел «Как соединить две строки?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The function `strlwr(S)`:
 <tr>Функция `strlwr(S)`:</tr>
+<dop/>
 <variantright> converts the characters of the string S to lowercase (small) letters <tr>переводит символы строки S в строчные (маленькие) буквы</tr>
 <variant> converts the characters of the string S to uppercase letters <tr>переводит символы строки S в заглавные буквы</tr>
 <variant> converts the characters of the string S to Roman numerals <tr>переводит символы строки S в римские цифры</tr>
@@ -155,10 +168,11 @@ main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
 <explain>Почему верно: lwr = lower, «нижний регистр»: все буквы становятся строчными.
 Ловушки: заглавными делает strupr.
 По лекции: тема 6, раздел «Какие основные операции со строками?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The function `strupr(S)`:
 <tr>Функция `strupr(S)`:</tr>
+<dop/>
 <variantright> converts the characters of the string S to uppercase letters <tr>переводит символы строки S в заглавные буквы</tr>
 <variant> converts the characters of the string S to lowercase letters <tr>переводит символы строки S в строчные буквы</tr>
 <variant> converts the characters of the string S to Roman numerals <tr>переводит символы строки S в римские цифры</tr>
@@ -167,10 +181,11 @@ main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
 <explain>Почему верно: strupr = upper, «верхний регистр»: все буквы строки становятся заглавными.
 Ловушки: строчными делает strlwr; в цифры строки не переводятся.
 По лекции: тема 6, раздел «Какие основные операции со строками?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is the function `strncmp(CS1,CS2,k)` for?
 <tr>Для чего нужна функция `strncmp(CS1,CS2,k)`?</tr>
+<dop/>
 <variantright> compares only the first k characters of the strings CS1 and CS2 <tr>сравнивает только первые k символов строк CS1 и CS2</tr>
 <variant> compares only the last k characters of the strings CS1 and CS2 <tr>сравнивает только последние k символов строк CS1 и CS2</tr>
 <variant> appends the first k characters of CS1 to CS2 <tr>добавляет первые k символов CS1 к CS2</tr>
@@ -179,10 +194,11 @@ main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
 <explain>Почему верно: strncmp — strcmp с n: сравнивает только первые k символов двух строк.
 Ловушки: «последние k» — неверно; добавлением занимается strncat.
 По лекции: тема 6, раздел «Как сравнить строки?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The function `stricmp(CS1,CS2)`:
 <tr>Функция `stricmp(CS1,CS2)`:</tr>
+<dop/>
 <variantright> ignores the difference between uppercase and lowercase letters when comparing <tr>при сравнении не учитывает разницу между заглавными и строчными буквами</tr>
 <variant> takes into account the difference between uppercase and lowercase letters when comparing <tr>при сравнении учитывает разницу между заглавными и строчными буквами</tr>
 <variant> compares two strings <tr>сравнивает две строки</tr>
@@ -191,10 +207,11 @@ main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
 <explain>Почему верно: буква i в stricmp = ignore case: сравнение без учёта регистра, "ABC" и "abc" будут равны.
 Ловушки: «с учётом регистра» — это обычный strcmp.
 По лекции: тема 6, раздел «Разница между символом и строкой?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The function `strchr(CS,ch)`:
 <tr>Функция `strchr(CS,ch)`:</tr>
+<dop/>
 <variantright> scans the string CS from left to right until it finds the character ch <tr>просматривает строку CS слева направо, пока не найдёт символ ch</tr>
 <variant> scans the string CS from the end to the beginning until it finds the character ch <tr>просматривает строку CS с конца к началу, пока не найдёт символ ch</tr>
 <variant> compares two strings <tr>сравнивает две строки</tr>
@@ -203,10 +220,11 @@ main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
 <explain>Почему верно: strchr = string char: ищет символ ch слева направо, находит первое вхождение.
 Ловушки: с конца ищет strrchr (лишняя r = reverse); сравнивает strcmp, соединяет strcat.
 По лекции: тема 6, раздел «Какие основные операции со строками?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The function `strrchr(CS,ch)`:
 <tr>Функция `strrchr(CS,ch)`:</tr>
+<dop/>
 <variantright> scans the string CS from the end to the beginning until it finds the character ch <tr>просматривает строку CS с конца к началу, пока не найдёт символ ch</tr>
 <variant> scans the string CS from left to right until it finds the character ch <tr>просматривает строку CS слева направо, пока не найдёт символ ch</tr>
 <variant> compares two strings <tr>сравнивает две строки</tr>
@@ -215,7 +233,7 @@ main() { printf("%d\n",strcmp("Salem","Salem")); getch(); }
 <explain>Почему верно: в strrchr лишняя r = reverse: поиск символа с конца строки к началу.
 Ловушки: слева направо ищет strchr.
 По лекции: тема 6, раздел «Какие основные операции со строками?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is the result of the code?
 ```cpp
@@ -225,6 +243,7 @@ char s3[ 50 ] , *sptr;
 cout << strlen( s1 ) + strlen( s2 ) << endl;
 ```
 <tr>Какой результат у кода?</tr>
+<dop/>
 <variantright> 8
 <variant> 7
 <variant> 9
@@ -233,173 +252,4 @@ cout << strlen( s1 ) + strlen( s2 ) << endl;
 <explain>Почему верно: strlen("jack") = 4 и strlen("jill") = 4 (без \0), сумма 8.
 Ловушки: 10 — посчитали \0 у каждой; 7 и 9 — ошибка счёта.
 По лекции: тема 6, раздел «Как определить длину строки?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> How many characters are in the following string?
-```cpp
-char s1[10]="Hello!";
-```
-<tr>Сколько символов в следующей строке?</tr>
-<variantright> 10
-<variant> 7
-<variant> 1
-<variant> 9
-<variant> 6
-<explain>Почему верно: в квадратных скобках прямо написан размер — [10]. Под строку выделено 10 ячеек-char, поэтому ключ ответа — 10.
-Ловушки: букв в "Hello!" 6, а с невидимым концом строки '\0' — 7. Но размер массива задан явно — 10, и в тесте спрашивают именно его.
-⚠ Вопрос сформулирован неточно: самих символов текста 6, а 10 — это размер массива. На экзамене выбирай 10.
-По лекции: тема 6, раздел «Как объявить и инициализировать строку?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> How many characters are in the following string?
-```cpp
-char s[]="Hello!";
-```
-<tr>Сколько символов в следующей строке?</tr>
-<variantright> 7
-<variant> 10
-<variant> 1
-<variant> 9
-<variant> 6
-<explain>Почему верно: скобки [] пустые — компилятор сам считает размер: 6 букв "Hello!" + 1 невидимый символ конца строки '\0' = 7.
-Ловушки: 6 — забыли про '\0'; 10 — это ответ на предыдущий вопрос, где размер был написан явно.
-По лекции: тема 6, раздел «Как объявить и инициализировать строку?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> What will be displayed?
-```cpp
-char c='Q'; cout<<(char)(c+2);
-```
-<tr>Что будет выведено на экран?</tr>
-<variantright> symbol “S” <tr>символ “S”</tr>
-<variant> ASCII code of “Q” plus 2 <tr>ASCII код символа “Q” плюс 2</tr>
-<variant> symbol “Q” <tr>символ “Q”</tr>
-<variant> Q+2
-<variant> nothing, the code has an error <tr>ничего, т.к. в коде ошибка</tr>
-<explain>Почему верно: символ — это число (его код). c+2 — код буквы на 2 дальше: Q → R → S. (char) превращает число обратно в символ, поэтому выводится S.
-Ловушки: без (char) вывелось бы число 83 (код). Ошибки в коде нет.
-По лекции: тема 6, раздел «Как символ представлен и хранится в памяти?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The function that returns the number of characters in a string declared as:
-```cpp
-string s;
-```
-<tr>Функция определения количества символов строки описанной следующим образом:</tr>
-<variantright> s.length();
-<variant> size(s);
-<variant> count(s);
-<variant> s.bitsize();
-<variant> for (i=0;i<100;i++) k=k+s[i];
-<explain>Почему верно: у string длина узнаётся «через точку»: s.length() (то же самое делает s.size()).
-Ловушки: size(s) и count(s) так не пишутся; strlen(s) — для char-строк, а не для string.
-По лекции: тема 6, раздел «Как определить длину строки?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> What will be written into s if the user types: 15df  326  678?
-```cpp
-string s;
-cin>>s;
-```
-<tr>Что будет записано в строку s, если пользователь введёт с клавиатуры: 15df  326  678?</tr>
-<variantright> 15df
-<variant> 15df  326  678
-<variant> 15df  326
-<variant> 678
-<variant> df
-<explain>Почему верно: cin >> читает только до первого пробела. Пробел после 15df обрывает ввод — в s попадает "15df".
-Ловушки: всю строку с пробелами читает getline(cin, s), а не cin >>.
-По лекции: тема 6, раздел «Как ввести и вывести строку?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The cin operator puts into a variable the value …
-<tr>Оператор cin заносит в переменную значение …</tr>
-<variantright> up to the first space or Enter <tr>до первого пробела или маркера Enter</tr>
-<variant> containing all characters entered, including spaces and Enter <tr>содержащее все символы введённые пользователем, включая пробелы и Enter</tr>
-<variant> containing all characters entered, including spaces <tr>содержащее все символы введённые пользователем, включая пробелы</tr>
-<variant> consisting only of Latin letters <tr>состоящее исключительно из букв латинского алфавита</tr>
-<variant> consisting of any characters except Russian letters <tr>состоящее из любых символов, кроме букв русского алфавита</tr>
-<explain>Почему верно: cin >> считает пробел и Enter концом значения — берёт одно «слово» или число.
-Ловушки: «включая пробелы» — это getline.
-По лекции: тема 6, раздел «Как ввести и вывести строку?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The command to delete part of a string (string s;)?
-<tr>Команда удаления из строки (string s;) её части?</tr>
-<variantright> erase
-<variant> delete
-<variant> del
-<variant> terminate
-<variant> clear
-<explain>Почему верно: s.erase(откуда, сколько) вырезает кусок строки.
-Ловушки: delete — удаляет динамическую память (new/delete), а не часть строки; clear() стирает ВСЮ строку, а не часть.
-По лекции: тема 6, раздел «Что такое класс string?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> What will be displayed after executing the following code?
-```cpp
-string s="1234abcdef";
-s.erase(2,3);
-cout<<s;
-```
-<tr>Что будет выведено на экран после выполнения следующего кода?</tr>
-<variantright> 12bcdef
-<variant> 1abcdef
-<variant> 12abcdef
-<variant> 123bcdef
-<variant> 14abcdef
-<explain>Почему верно: erase(2,3) = начиная с позиции 2 (счёт с 0) удалить 3 символа. Позиции: 0='1', 1='2', 2='3', 3='4', 4='a'. Удаляем "34a" → остаётся "12" + "bcdef" = 12bcdef.
-Ловушки: 12abcdef — удалили только 2 символа; 1abcdef — начали счёт с 1.
-По лекции: тема 6, раздел «Что такое класс string?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> What will be displayed after executing the following code?
-```cpp
-string s="1234abcdef";
-s.erase(2);
-cout<<s;
-```
-<tr>Что будет выведено на экран после выполнения следующего кода?</tr>
-<variantright> 12
-<variant> 134abcdef
-<variant> 34abcdef
-<variant> 1
-<variant> 1234
-<explain>Почему верно: erase(2) с одним числом = удалить всё, начиная с позиции 2 и до конца. Остаются позиции 0 и 1 — "12".
-Ловушки: 134abcdef — будто удалили один символ; 34abcdef — будто удалили первые 2.
-По лекции: тема 6, раздел «Что такое класс string?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> What will be displayed after executing the following code?
-```cpp
-string s="1234abcdef";
-s.insert(0,"ABC");
-cout<<s;
-```
-<tr>Что будет выведено на экран после выполнения следующего кода?</tr>
-<variantright> ABC1234abcdef
-<variant> ABC0
-<variant> 0ABC
-<variant> 1234000def
-<variant> 0000000000
-<explain>Почему верно: insert(0,"ABC") вставляет "ABC" в позицию 0 — в самое начало, ничего не удаляя.
-Ловушки: 0 — это место вставки, а не символ, который вставляют.
-По лекции: тема 6, раздел «Как объявить и инициализировать строку?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> What will be displayed after executing the following code?
-```cpp
-string s="1234abcdef";
-s.insert(10,"ABC");
-cout<<s;
-```
-<tr>Что будет выведено на экран после выполнения следующего кода?</tr>
-<variantright> 1234abcdefABC
-<variant> 1010abcdef
-<variant> 123410def
-<variant> 1010
-<variant> 1234ABC
-<explain>Почему верно: в строке 10 символов (позиции 0…9). Позиция 10 — сразу после последнего, то есть конец. "ABC" дописывается в конец.
-Ловушки: 10 — это место, а не текст; insert ничего не стирает.
-По лекции: тема 6, раздел «Для чего нужны escape-последовательности при работе с символами?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>

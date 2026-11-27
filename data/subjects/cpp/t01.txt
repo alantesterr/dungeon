@@ -1,53 +1,582 @@
-<question> What is an identifier?
-<tr>Что такое идентификатор?</tr>
-<variantright> the name of an object in a program <tr>имя объекта в программе</tr>
-<variant> dynamic memory <tr>динамическая память</tr>
-<variant> an array consisting of a set of elements <tr>массив, состоящий из набора элементов</tr>
-<variant> a way of passing a program <tr>способ передачи программы</tr>
-<variant> words intended for the compiler <tr>слова, предназначенные для компилятора</tr>
-<explain>Почему верно: идентификатор — это имя, которое программист даёт объекту программы: переменной, константе, функции, типу (x, summa, main).
-Ловушки: «слова для компилятора» — это ключевые слова (int, for), а не идентификаторы; динамическая память и массив к именам отношения не имеют.
-По лекции: тема 1, раздел «Алфавит, лексемы, идентификаторы, ключевые слова».
-Источник: база ФИК-211/МИК-211.</explain>
+<question> What is the correct way to declare an integer variable in C++?
+<tr>Как правильно объявить целую переменную в C++?</tr>
+<variantright> int x;
+<variant> integer x;
+<variant> var x: int;
+<variant> int: x;
+<variant> x int;
+<explain>Почему верно: Сначала тип, потом имя, в конце точка с запятой: int x; «integer» и «var x: int» — из Pascal.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
 
-<question> Which function does the execution of any C program start with?
-<tr>С какой функции начинается выполнение любой программы на C?</tr>
-<variantright> main()
-<variant> random
-<variant> randomize()
-<variant> clrscr()
-<variant> it is different in every program <tr>в каждой программе по-разному</tr>
-<explain>Почему верно: любая программа на C/C++ начинается с main() — её вызывает система при запуске.
-Ловушки: random(), randomize(), clrscr() — библиотечные функции, их вызывают из main.
-По лекции: тема 1, раздел «Структура программы: main, { }, #include, #define, комментарии».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> A sequence of Latin letters and digits that must start with a letter is called ...
-<tr>Последовательность символов из латинских букв и цифр, которая обязательно начинается с буквы, называется ...</tr>
-<variantright> identifier <tr>идентификатор</tr>
-<variant> constant <tr>константа</tr>
-<variant> function <tr>функция</tr>
-<variant> comment <tr>комментарий</tr>
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: правило «латинские буквы и цифры, первая — буква» — это и есть правило записи идентификатора (имени).
-Ловушки: константа — это значение (5, 3.14), функция — именованный кусок кода, комментарий — пояснение /* */. Ни одно из них не «правило записи имени».
-По лекции: тема 1, раздел «Алфавит, лексемы, идентификаторы, ключевые слова».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which keyword is used to declare constants in C?
-<tr>Какое ключевое слово используется для объявления констант в C?</tr>
-<variantright> const
-<variant> var
+<question> Which of the following is a valid variable name in C++?
+<tr>Какое из имён — допустимое имя переменной в C++?</tr>
+<variantright> my_variable
+<variant> 2variable
+<variant> my-variable
+<variant> class
 <variant> int
-<variant> procedure
-<variant> All of the above are correct <tr>Все перечисленные верны</tr>
-<explain>Почему верно: слово const перед типом запрещает менять значение: const int N = 10;.
-Ловушки: var и procedure — слова из Pascal/JavaScript, в C их нет; int — просто тип, он сам по себе константу не делает.
-По лекции: тема 1, раздел «Переменные и константы».
-Источник: база ФИК-211/МИК-211.</explain>
+<explain>Почему верно: Имя может содержать буквы, цифры и _, но не начинаться с цифры; дефис нельзя; class и int — ключевые слова.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What will be the output of the following code?
+```cpp
+int x = 10;
+int y = x + 5;
+cout << y;
+```
+<tr>Что выведет этот код?</tr>
+<variantright> 15
+<variant> 10
+<variant> 5
+<variant> 105
+<variant> Compilation error <tr>Ошибка компиляции</tr>
+<explain>Почему верно: y = 10 + 5 = 15.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the default value of an uninitialized integer variable in C++?
+<tr>Какое значение у неинициализированной целой переменной в C++ по умолчанию?</tr>
+<variantright> Undefined (garbage value) <tr>Не определено (мусор)</tr>
+<variant> 0
+<variant> -1
+<variant> NULL
+<variant> Depends on the compiler <tr>Зависит от компилятора</tr>
+<explain>Почему верно: Локальная переменная без начального значения содержит «мусор» — то, что было в памяти.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What keyword is used to define a constant variable in C++?
+<tr>Каким ключевым словом объявляют константу в C++?</tr>
+<variantright> const
+<variant> constant
+<variant> final
+<variant> var
+<variant> static
+<explain>Почему верно: const — значение нельзя менять после объявления. final — из Java.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What will happen if you try to use an undeclared variable in C++?
+<tr>Что будет, если использовать необъявленную переменную в C++?</tr>
+<variantright> Compilation error <tr>Ошибка компиляции</tr>
+<variant> Runtime error <tr>Ошибка во время выполнения</tr>
+<variant> The program will execute with default values <tr>Программа выполнится со значениями по умолчанию</tr>
+<variant> Undefined behavior <tr>Неопределённое поведение</tr>
+<variant> No error <tr>Ошибки не будет</tr>
+<explain>Почему верно: Каждую переменную нужно объявить до использования — иначе компилятор выдаст ошибку «undeclared identifier».
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the correct way to assign a value to a variable in C++?
+<tr>Как правильно присвоить значение переменной в C++?</tr>
+<variantright> x = 10;
+<variant> x == 10;
+<variant> x := 10;
+<variant> 10 = x;
+<variant> int x == 10;
+<explain>Почему верно: Присваивание — один знак =. == — сравнение, := — Pascal.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the size of an int variable (typically) in C++ on a 64-bit system?
+<tr>Какой размер (обычно) у переменной int в C++ на 64-битной системе?</tr>
+<variantright> 4 bytes <tr>4 байта</tr>
+<variant> 2 bytes <tr>2 байта</tr>
+<variant> 8 bytes <tr>8 байт</tr>
+<variant> 16 bytes <tr>16 байт</tr>
+<variant> It depends on the mood of programmer <tr>Зависит от настроения программиста</tr>
+<explain>Почему верно: На современных системах int — 4 байта (32 бита).
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What will happen if you assign a double value to an int variable in C++?
+<tr>Что будет, если присвоить значение double переменной int?</tr>
+<variantright> The fractional part will be truncated <tr>Дробная часть отбросится</tr>
+<variant> The value will be rounded to the nearest integer <tr>Значение округлится до ближайшего целого</tr>
+<variant> A compilation error will occur <tr>Будет ошибка компиляции</tr>
+<variant> The value will be stored as a float <tr>Значение сохранится как float</tr>
+<variant> The program will crash at runtime <tr>Программа упадёт во время выполнения</tr>
+<explain>Почему верно: Дробная часть просто отрезается (не округляется): 7.9 → 7.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What will be the value of x after the following code executes?
+```cpp
+int x;
+float y = 7.9;
+x = y;
+```
+<tr>Какое значение будет у x после выполнения кода?</tr>
+<variantright> 7
+<variant> 7.9
+<variant> Compilation error <tr>Ошибка компиляции</tr>
+<variant> Undefined behavior <tr>Неопределённое поведение</tr>
+<variant> 8
+<explain>Почему верно: x = y отбрасывает дробную часть: 7.9 → 7.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What will happen in the following code?
+```cpp
+bool flag;
+int num = -10;
+flag = num;
+```
+<tr>Что произойдёт в этом коде?</tr>
+<variantright> flag will be true <tr>flag будет true</tr>
+<variant> flag will be false <tr>flag будет false</tr>
+<variant> Compilation error <tr>Ошибка компиляции</tr>
+<variant> Undefined behavior <tr>Неопределённое поведение</tr>
+<variant> flag will be -10 <tr>flag будет -10</tr>
+<explain>Почему верно: Любое ненулевое число при переводе в bool даёт true, только 0 — false.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What happens when assigning a double to a float variable?
+```cpp
+double d = 3.1415926535;
+float f = d;
+```
+<tr>Что произойдёт при присваивании double переменной float?</tr>
+<variantright> f will contain a rounded version of d due to precision loss <tr>f будет содержать округлённое значение d из-за потери точности</tr>
+<variant> Compilation error <tr>Ошибка компиляции</tr>
+<variant> f will be exactly equal to d <tr>f будет точно равно d</tr>
+<variant> The program will crash <tr>Программа упадёт</tr>
+<variant> f will be 0 <tr>f будет 0</tr>
+<explain>Почему верно: float хранит меньше знаков (около 7), поэтому число округляется.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> A computer program that translates a program written in a given programming language into a functionally equivalent program in a computer language is…
+<tr>Программа, которая переводит программу на языке программирования в равносильную программу на языке компьютера, — это…</tr>
+<variantright> translator <tr>транслятор</tr>
+<variant> program development system <tr>система разработки программ</tr>
+<variant> application system <tr>прикладная система</tr>
+<variant> debugger <tr>отладчик</tr>
+<variant> assembler <tr>ассемблер</tr>
+<explain>Почему верно: Транслятор переводит программу на машинный язык. Его виды — компиляторы и интерпретаторы.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Translators could be:
+<tr>Трансляторы бывают:</tr>
+<variantright> interpreters and compilers <tr>интерпретаторы и компиляторы</tr>
+<variant> compilers and system tools <tr>компиляторы и системные утилиты</tr>
+<variant> compilers and notepads <tr>компиляторы и блокноты</tr>
+<variant> notepads and interpreters <tr>блокноты и интерпретаторы</tr>
+<variant> assemblers and program development systems <tr>ассемблеры и системы разработки программ</tr>
+<explain>Почему верно: Компилятор переводит всю программу сразу, интерпретатор — по строкам во время выполнения.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Computer programming language can be classified into two major categories:
+<tr>Языки программирования делятся на две основные группы:</tr>
+<variantright> high-level languages and low-level languages <tr>языки высокого и низкого уровня</tr>
+<variant> user’s language and machine language <tr>язык пользователя и машинный язык</tr>
+<variant> natural and developed languages <tr>естественные и искусственные языки</tr>
+<variant> pseudocode and flowcharts <tr>псевдокод и блок-схемы</tr>
+<variant> pseudocode and natural languages <tr>псевдокод и естественные языки</tr>
+<explain>Почему верно: Низкий уровень — близко к машине (машинный код, ассемблер); высокий — близко к человеку (C++, Pascal).
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> The languages which use only primitive operations of the computer are known as:
+<tr>Языки, которые используют только простейшие операции компьютера, называются:</tr>
+<variantright> low level languages <tr>языки низкого уровня</tr>
+<variant> high level languages <tr>языки высокого уровня</tr>
+<variant> pseudoformal languages <tr>псевдоформальные языки</tr>
+<variant> natural languages <tr>естественные языки</tr>
+<variant> Pascal programming language <tr>язык Pascal</tr>
+<explain>Почему верно: Языки низкого уровня работают прямо с командами процессора.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Procedure-oriented language that is intended to be machine independent:
+<tr>Процедурно-ориентированный язык, который не зависит от конкретной машины:</tr>
+<variantright> high level language <tr>язык высокого уровня</tr>
+<variant> low level languages <tr>языки низкого уровня</tr>
+<variant> machine code <tr>машинный код</tr>
+<variant> pseudo normal languages <tr>псевдонормальные языки</tr>
+<variant> assemblers <tr>ассемблеры</tr>
+<explain>Почему верно: Программу на языке высокого уровня можно перенести на другой компьютер — нужен только свой транслятор.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> In machine language program, the computation is based on …
+<tr>В программе на машинном языке вычисления основаны на…</tr>
+<variantright> binary numbers <tr>двоичных числах</tr>
+<variant> decimal numbers <tr>десятичных числах</tr>
+<variant> real numbers <tr>вещественных числах</tr>
+<variant> elementary pseudocode <tr>простейшем псевдокоде</tr>
+<variant> Latin numbers <tr>латинских числах</tr>
+<explain>Почему верно: Машинный код — это последовательности 0 и 1.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> A step-by-step method for solving a problem or doing a task is:
+<tr>Пошаговый способ решения задачи или выполнения работы — это:</tr>
+<variantright> an algorithm <tr>алгоритм</tr>
+<variant> a computer program written in high level language <tr>программа на языке высокого уровня</tr>
+<variant> a computer program written in low level language <tr>программа на языке низкого уровня</tr>
+<variant> a computer program written in machine code <tr>программа в машинном коде</tr>
+<variant> a program development tool <tr>средство разработки программ</tr>
+<explain>Почему верно: Алгоритм — точная последовательность шагов, ведущая к результату.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> An algorithm can be specified:
+<tr>Алгоритм можно записать:</tr>
+<variantright> by a pseudocode, a flowchart and a programming language <tr>псевдокодом, блок-схемой и языком программирования</tr>
+<variant> only by programming languages <tr>только языками программирования</tr>
+<variant> only by a pseudocode and a flowchart <tr>только псевдокодом и блок-схемой</tr>
+<variant> by a natural language or by a Latin number <tr>естественным языком или латинскими числами</tr>
+<variant> only by an English <tr>только по-английски</tr>
+<explain>Почему верно: Способов записи алгоритма три: словесно (псевдокод), графически (блок-схема) и на языке программирования.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> An algorithm that can be executed by a computer must be specified by:
+<tr>Алгоритм, который будет выполнять компьютер, должен быть записан на:</tr>
+<variantright> a programming language <tr>языке программирования</tr>
+<variant> a flowchart <tr>блок-схеме</tr>
+<variant> a natural language <tr>естественном языке</tr>
+<variant> an English <tr>английском</tr>
+<variant> a Russian <tr>русском</tr>
+<explain>Почему верно: Компьютер понимает только программу (после трансляции), а не блок-схему или текст.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Executor of the algorithm cannot be
+<tr>Исполнителем алгоритма не может быть</tr>
+<variantright> A Monitor <tr>Монитор</tr>
+<variant> A Human <tr>Человек</tr>
+<variant> A Robot <tr>Робот</tr>
+<variant> Automated devices <tr>Автоматические устройства</tr>
+<variant> A Computer <tr>Компьютер</tr>
+<explain>Почему верно: Монитор только показывает изображение и ничего не исполняет.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Translator is ...
+<tr>Транслятор — это…</tr>
+<variantright> a computer program that translates a program written in a given programming language into a functionally equivalent program in a computer language <tr>программа, которая переводит программу на языке программирования в равносильную программу на языке компьютера</tr>
+<variant> a computer that allows users to use the sources of a program development environment <tr>компьютер, который даёт пользователям ресурсы среды разработки</tr>
+<variant> a modern program language that is used to develop programs with artificial intelligence <tr>современный язык для программ с искусственным интеллектом</tr>
+<variant> a part of a program that is used to declare the constants and variables; usually placed in extern file <tr>часть программы для объявления констант и переменных, обычно во внешнем файле</tr>
+<variant> a computer device that makes all the actions and run the program to get the result <tr>устройство компьютера, которое выполняет все действия и запускает программу</tr>
+<explain>Почему верно: Транслятор = переводчик программы на машинный язык.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Interpreters and compilers are the types of ...
+<tr>Интерпретаторы и компиляторы — это виды…</tr>
+<variantright> translator <tr>транслятора</tr>
+<variant> editor <tr>редактора</tr>
+<variant> debuggers <tr>отладчиков</tr>
+<variant> assembler <tr>ассемблера</tr>
+<variant> program structures <tr>структур программы</tr>
+<explain>Почему верно: Оба переводят программу на машинный язык — значит, это трансляторы.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Low-level language is ...
+<tr>Язык низкого уровня — это…</tr>
+<variantright> language that uses only primitive operations of the computer <tr>язык, который использует только простейшие операции компьютера</tr>
+<variant> procedure-oriented language that is intended to be machine independent <tr>процедурно-ориентированный язык, не зависящий от машины</tr>
+<variant> programming language that contains instructions only in lower case letters <tr>язык, в котором команды пишутся только строчными буквами</tr>
+<variant> programming language that is used to develop programs only for Windows OS <tr>язык для программ только под Windows</tr>
+<variant> special type of software that manipulates the printers in a network <tr>особая программа, управляющая принтерами в сети</tr>
+<explain>Почему верно: Низкий уровень — близко к командам процессора.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> The valid identifier in C++:
+```cpp
+1) _12S
+2) int
+3) Float
+4) For
+5) unsigned
+```
+<tr>Допустимые идентификаторы в C++: 1) _12S 2) int 3) Float 4) For 5) unsigned</tr>
+<variantright> 1, 3, 4
+<variant> 1, 2, 5
+<variant> 2, 3, 5
+<variant> 1, 2
+<variant> none of them <tr>ни один из них</tr>
+<explain>Почему верно: _12S, Float, For — допустимы (Float и For отличаются регистром от float и for). int и unsigned — ключевые слова.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> The invalid identifier in C++:
+```cpp
+1) 1abc
+2) For
+3) Integer
+4) int
+5) break
+```
+<tr>Недопустимые идентификаторы в C++: 1) 1abc 2) For 3) Integer 4) int 5) break</tr>
+<variantright> 1, 4, 5
+<variant> 1, 2, 4, 5
+<variant> 4, 5
+<variant> 1, 2,3,4,5
+<variant> none of them <tr>ни один из них</tr>
+<explain>Почему верно: 1abc начинается с цифры; int и break — ключевые слова. For и Integer — допустимы.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> The syntax of declaration of a variable:
+<tr>Синтаксис объявления переменной:</tr>
+<variantright> [modifiers] type identifier; <tr>[модификаторы] тип идентификатор;</tr>
+<variant> type: identifier;
+<variant> type= identifier;
+<variant> identifier: type = value;
+<variant> type [modifier] value;
+<explain>Почему верно: Например: unsigned int count; — модификатор, тип, имя.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What part of a program all the types, constants, variables and functions must be declared in?
+<tr>В какой части программы нужно объявлять все типы, константы, переменные и функции?</tr>
+<variantright> Any place, before first use <tr>В любом месте, до первого использования</tr>
+<variant> At the beginning of the program, in a special section <tr>В начале программы, в специальном разделе</tr>
+<variant> At the very beginning of the unit, before connecting additional units <tr>В самом начале модуля, до подключения других модулей</tr>
+<variant> In the user data section <tr>В разделе пользовательских данных</tr>
+<variant> Any place, after first use <tr>В любом месте, после первого использования</tr>
+<explain>Почему верно: В C++ объявлять можно где угодно, главное — раньше, чем используешь.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> The range of values of type char:
+<tr>Диапазон значений типа char:</tr>
+<variantright> -128..+127
+<variant> 0..255
+<variant> ‘a’..’z’
+<variant> 0..256
+<variant> -32768..+32767
+<explain>Почему верно: char — 1 байт со знаком: от −128 до +127.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> How many bytes of memory the bool type occupies?
+<tr>Сколько байт памяти занимает тип bool?</tr>
+<variantright> 1
+<variant> 2
+<variant> 4
+<variant> 8
+<variant> 10
+<explain>Почему верно: bool занимает 1 байт.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> How many bytes of memory the char type occupies?
+<tr>Сколько байт памяти занимает тип char?</tr>
+<variantright> 1
+<variant> 2
+<variant> 4
+<variant> 8
+<variant> 10
+<explain>Почему верно: char занимает 1 байт.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> How many bytes of memory the float type occupies?
+<tr>Сколько байт памяти занимает тип float?</tr>
+<variantright> 4
+<variant> 1
+<variant> 2
+<variant> 8
+<variant> 10
+<explain>Почему верно: float занимает 4 байта, double — 8.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Initialization is...:
+<tr>Инициализация — это…</tr>
+<variantright> assigning the initial value to a variable during its declaration <tr>присваивание начального значения переменной при её объявлении</tr>
+<variant> memory allocation to storing the variables <tr>выделение памяти для хранения переменных</tr>
+<variant> destruction of previously allocated cells in a memory <tr>уничтожение ранее выделенных ячеек памяти</tr>
+<variant> Moving data from memory cells into variables <tr>перенос данных из ячеек памяти в переменные</tr>
+<variant> evaluation of expressions and operators <tr>вычисление выражений и операторов</tr>
+<explain>Почему верно: Например: int x = 5; — объявление сразу с начальным значением.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the typical minimum size of a C++ int data type, as guaranteed by the standard?
+<tr>Какой обычно минимальный размер типа int в C++ (по стандарту)?</tr>
+<variantright> typically 32 bits, but not less than16 bits <tr>обычно 32 бита, но не меньше 16 бит</tr>
+<variant> 8 bits <tr>8 бит</tr>
+<variant> 4 bits <tr>4 бита</tr>
+<variant> 64 bits <tr>64 бита</tr>
+<variant> 128 bits <tr>128 бит</tr>
+<explain>Почему верно: Стандарт гарантирует не меньше 16 бит, на практике int — 32 бита.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which of the following is the correct way to declare an unsigned integer variable in C++?
+<tr>Как правильно объявить беззнаковую целую переменную в C++?</tr>
+<variantright> unsigned int count = 0;
+<variant> u_int count = 0;
+<variant> int unsigned count: = 0;
+<variant> integer count = 0;
+<variant> signed count = 0;
+<explain>Почему верно: Беззнаковый тип — unsigned int.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What happens when an int variable is assigned a value that exceeds its maximum capacity (integer overflow)?
+<tr>Что произойдёт, если записать в переменную int значение больше её максимума (переполнение)?</tr>
+<orig>What happens when an int variable is assigned a value that exceeds its maximum capacity (integer overflow)?
+(в файле нет ни одного варианта ответа)</orig>
+<variantright> The value wraps around (e.g., INT_MAX + 1 usually becomes INT_MIN) <tr>Значение «перевалит» через край (например, INT_MAX + 1 обычно становится INT_MIN)</tr>
+<variant> The variable automatically becomes long <tr>Переменная автоматически станет long</tr>
+<variant> A compilation error always occurs <tr>Всегда будет ошибка компиляции</tr>
+<variant> The value stays at the maximum value <tr>Значение останется максимальным</tr>
+<variant> The value becomes 0 <tr>Значение станет 0</tr>
+<explain>Почему верно: Лишние биты не помещаются, и число «прокручивается» по кругу, как одометр. Для знакового int стандарт называет это неопределённым поведением, но на практике получается «перескок» на минимум.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> In C++, what is the purpose of the long specifier when used with int (e.g., long int)?
+<tr>Для чего в C++ спецификатор long вместе с int (например, long int)?</tr>
+<variantright> To guarantee the variable has at least 32 bits of storage. <tr>Чтобы переменная гарантированно имела не меньше 32 бит.</tr>
+<variant> To guarantee the variable is always 64 bits. <tr>Чтобы переменная всегда была 64-битной.</tr>
+<variant> To indicate the variable can only store positive numbers. <tr>Чтобы переменная хранила только положительные числа.</tr>
+<variant> To guarantee the variable has exactly 16 bits of storage. <tr>Чтобы переменная была ровно 16 бит.</tr>
+<variant> To make the variable a floating-point type. <tr>Чтобы переменная стала вещественной.</tr>
+<explain>Почему верно: long int — не меньше 32 бит.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the typical result of the expression sizeof(short int) compared to sizeof(int) on a modern 64-bit system?
+<tr>Какой обычно результат сравнения sizeof(short int) и sizeof(int) на современной 64-битной системе?</tr>
+<variantright> sizeof(short int) is less than sizeof(int). <tr>sizeof(short int) меньше, чем sizeof(int).</tr>
+<variant> sizeof(short int) is the same as sizeof(int). <tr>sizeof(short int) такой же, как sizeof(int).</tr>
+<variant> sizeof(short int) is greater than sizeof(int). <tr>sizeof(short int) больше, чем sizeof(int).</tr>
+<variant> sizeof(short int) is always 8 bytes, while sizeof(int) is 4 bytes. <tr>sizeof(short int) всегда 8 байт, а sizeof(int) — 4 байта.</tr>
+<variant> The comparison is undefined. <tr>Сравнение не определено.</tr>
+<explain>Почему верно: short — обычно 2 байта, int — 4 байта.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> When performing division between two int variables (e.g., 5 / 2), what is the resulting value in C++?
+<tr>Какой результат даёт деление двух переменных int (например, 5 / 2) в C++?</tr>
+<variantright> 2
+<variant> 2.5
+<variant> 3
+<variant> 0
+<variant> 1
+<explain>Почему верно: Целое / целое = целое: дробь отбрасывается, 5 / 2 = 2.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which of the following C++ data types is typically used to store a character (like 'A' or '7')?
+<tr>Какой тип данных C++ обычно хранит символ (например, 'A' или '7')?</tr>
+<variantright> char
+<variant> int
+<variant> short
+<variant> bool
+<variant> float
+<explain>Почему верно: char хранит один символ.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> In C++, which data type is generally used for higher precision floating-point numbers?
+<tr>Какой тип данных C++ обычно используют для вещественных чисел повышенной точности?</tr>
+<variantright> double
+<variant> float
+<variant> int
+<variant> long
+<variant> long int
+<explain>Почему верно: double — двойная точность (8 байт), float — одинарная (4 байта).
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the typical size of a C++ float data type in bytes?
+<tr>Какой обычно размер типа float в C++ в байтах?</tr>
+<variantright> 4 bytes <tr>4 байта</tr>
+<variant> 2 bytes <tr>2 байта</tr>
+<variant> 8 bytes <tr>8 байт</tr>
+<variant> 16 bytes <tr>16 байт</tr>
+<variant> 1 byte <tr>1 байт</tr>
+<explain>Почему верно: float — 4 байта.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the typical size of a C++ double data type in bytes?
+<tr>Какой обычно размер типа double в C++ в байтах?</tr>
+<variantright> 8 bytes <tr>8 байт</tr>
+<variant> 4 bytes <tr>4 байта</tr>
+<variant> 16 bytes <tr>16 байт</tr>
+<variant> 2 bytes <tr>2 байта</tr>
+<variant> 1 byte <tr>1 байт</tr>
+<explain>Почему верно: double — 8 байт.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the primary reason for avoiding direct comparison of two floating-point numbers for exact equality (e.g., if (a == b) in C++)?
+<tr>Главная причина не сравнивать два вещественных числа на точное равенство (например, if (a == b))?</tr>
+<variantright> Floating-point arithmetic introduces tiny precision errors. <tr>Вещественная арифметика даёт крошечные ошибки округления.</tr>
+<variant> double cannot be compared to float. <tr>double нельзя сравнивать с float.</tr>
+<variant> Only integers can be compared for equality. <tr>На равенство можно сравнивать только целые.</tr>
+<variant> It always causes a run-time crash. <tr>Это всегда вызывает падение программы.</tr>
+<variant> The comparison operator is overloaded for floats. <tr>Оператор сравнения перегружен для float.</tr>
+<explain>Почему верно: 0.1 + 0.2 в памяти не точно равно 0.3. Сравнивают через маленькую разницу: fabs(a − b) < 1e-9.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> How is the number 1.25 *10^(-3) typically represented in C++ floating-point scientific notation?
+<tr>Как записать число 1.25·10^(−3) в экспоненциальной форме C++?</tr>
+<variantright> 1.25e-3
+<variant> 1.25E-2^3
+<variant> 1.25^ -3
+<variant> 1.25-3e
+<variant> 1.25 * 10^-3
+<explain>Почему верно: e означает «умножить на 10 в степени»: 1.25e-3.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the output of the following C++ code snippet? double d = 10.0; int i = d; std::cout << i;
+<tr>Что выведет этот фрагмент на C++? double d = 10.0; int i = d; std::cout << i;</tr>
+<variantright> 10
+<variant> 10.0
+<variant> 0
+<variant> Compile-time error <tr>Ошибка компиляции</tr>
+<variant> 1
+<explain>Почему верно: В int дробная часть отбрасывается, 10.0 → 10.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What are the two possible values for a C++ bool data type?
+<tr>Какие два значения может принимать тип bool в C++?</tr>
+<variantright> true and false <tr>true и false</tr>
+<variant> 1 and 0 <tr>1 и 0</tr>
+<variant> True and False <tr>True и False</tr>
+<variant> 'T' and 'F' <tr>'T' и 'F'</tr>
+<variant> Yes and No <tr>Yes и No</tr>
+<explain>Почему верно: Ключевые слова true и false, строчными буквами.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> When a bool variable is converted to an integer (int), what is the resulting value for true?
+<tr>Какое значение получится для true при переводе bool в целое (int)?</tr>
+<variantright> 1
+<variant> Any non-zero value <tr>Любое ненулевое значение</tr>
+<variant> -1
+<variant> A compile-time error <tr>Ошибка компиляции</tr>
+<variant> 255
+<explain>Почему верно: true → 1.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> When a bool variable is converted to an integer (int), what is the resulting value for false?
+<tr>Какое значение получится для false при переводе bool в целое (int)?</tr>
+<variantright> 0
+<variant> -1
+<variant> 1
+<variant> A run-time error <tr>Ошибка во время выполнения</tr>
+<variant> The minimum int value <tr>Минимальное значение int</tr>
+<explain>Почему верно: false → 0.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the minimum memory size required to store a logical value, though it is often stored in a larger space for efficiency?
+<tr>Какой минимальный размер памяти нужен, чтобы хранить логическое значение (хотя его часто хранят в большем объёме ради скорости)?</tr>
+<nt>В C++ bool занимает минимум 1 байт (sizeof(bool) ≥ 1). «1 бит» — только теоретически, для хранения «да/нет». В другом вопросе этой же базы bool = 1 байт.</nt>
+<variantright> 1 bit <tr>1 бит</tr>
+<variant> 1 byte <tr>1 байт</tr>
+<variant> 4 bytes <tr>4 байта</tr>
+<variant> 2 bytes <tr>2 байта</tr>
+<variant> 8 bytes <tr>8 байт</tr>
+<explain>Почему верно: Теоретически для «да/нет» хватает 1 бита.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which of the following is a correct identifier in C++?
+<tr>Какой из идентификаторов в C++ правильный?</tr>
+<variantright> VAR_1234
+<variant> 7var_name
+<variant> 7VARNAME
+<variant> $var_name
+<variant> There is no correct answer <tr>Нет правильного ответа</tr>
+<explain>Почему верно: Нельзя начинать с цифры; $ в стандартном C++ не разрешён.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Identify the correct escape sequence used for the new line.
+<tr>Укажи правильную управляющую последовательность для новой строки.</tr>
+<variantright> \n
+<variant> \t
+<variant> \r
+<variant> \q
+<variant> There is no correct answer <tr>Нет правильного ответа</tr>
+<explain>Почему верно: \n — новая строка, \t — табуляция, \r — возврат каретки.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Identify the correct function from which the execution of a C++ program starts:
+<tr>Укажи функцию, с которой начинается выполнение программы на C++:</tr>
+<variantright> main()
+<variant> start()
+<variant> init()
+<variant> execute()
+<variant> run()
+<explain>Почему верно: Выполнение всегда начинается с main().
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
 
 <question> What is a variable?
 <tr>Что такое переменная?</tr>
+<dop/>
 <variantright> a named memory area that stores data of a certain type <tr>область памяти с определённым именем, в которой хранятся данные определённого типа</tr>
 <variant> storing data of an undefined type in memory <tr>хранение в памяти данных неопределённого типа</tr>
 <variant> dividing memory classes into several parts <tr>деление классов памяти на несколько частей</tr>
@@ -56,10 +585,12 @@
 <explain>Почему верно: переменная — именованная область памяти, в которой хранятся данные определённого типа (int x — 4 байта под целое с именем x).
 Ловушки: «неопределённого типа» — неверно, в C++ тип всегда указан; «выражение из операндов» — это определение выражения, а не переменной.
 По лекции: тема 1, раздел «Переменные и константы».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is the `#define` directive used for?
 <tr>Для чего используется директива `#define`?</tr>
+<dop/>
+<nt>#define задаёт и константы, и макросы — вариант «for macros» тоже верный.</nt>
 <variantright> to set the value of a constant <tr>чтобы задать значение константы</tr>
 <variant> for macros <tr>для макросов</tr>
 <variant> for a symbol that controls conditional compilation <tr>для символа, управляющего условной компиляцией</tr>
@@ -68,10 +599,11 @@
 <explain>Почему верно: #define N 10 — препроцессор до компиляции заменяет N на 10 по всему тексту, так задают значение константы.
 Ловушки: #define действительно умеет и макросы, и символы для условной компиляции, но в этом тесте ждут основной ответ — «задать значение константы».
 По лекции: тема 1, раздел «Структура программы: main, { }, #include, #define, комментарии».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is a variable?
 <tr>Что такое переменная?</tr>
+<dop/>
 <variantright> a value that takes different values while the program runs <tr>величина, которая принимает разные значения во время работы программы</tr>
 <variant> dividing a memory class into several areas <tr>деление класса памяти на несколько областей</tr>
 <variant> a sequence of programs <tr>последовательность программ</tr>
@@ -80,22 +612,11 @@
 <explain>Почему верно: «переменная» — от слова «меняться»: величина, значение которой меняется во время работы программы (x=1, потом x=5).
 Ловушки: «деление класса памяти», «последовательность программ», «выполнение условия» — бессмысленные варианты-обманки.
 По лекции: тема 1, раздел «Переменные и константы».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> The correct declaration of an integer variable a:
-<tr>Правильное объявление целой переменной a:</tr>
-<variantright> int a;
-<variant> a int;
-<variant> integer a;
-<variant> float a;
-<variant> char a;
-<explain>Почему верно: в C/C++ сначала пишут тип, потом имя и точку с запятой: int a;.
-Ловушки: a int; — порядок наоборот; integer — слово из Pascal; float a; и char a; объявляют переменную, но не целую.
-По лекции: тема 1, раздел «Переменные и константы».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which symbols enclose the body of a function?
 <tr>В какие символы заключается тело функции?</tr>
+<dop/>
 <variantright> { }
 <variant> / /
 <variant> ( )
@@ -104,10 +625,11 @@
 <explain>Почему верно: фигурные скобки { } отмечают начало и конец блока — тела функции, цикла, if.
 Ловушки: ( ) — для параметров функции, /* */ — для комментариев, / / и * * в C вообще ничего не обозначают.
 По лекции: тема 1, раздел «Структура программы: main, { }, #include, #define, комментарии».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Inside which symbols is a comment written in C?
 <tr>Внутри каких символов пишется комментарий в C?</tr>
+<dop/>
 <variantright> /* */
 <variant> < >
 <variant> (* *)
@@ -116,10 +638,11 @@
 <explain>Почему верно: в C комментарий пишут между /* и */ (может занимать несколько строк). В C++ есть ещё // — до конца строки.
 Ловушки: (* *) и { } — комментарии в Pascal; < > — угловые скобки для #include.
 По лекции: тема 1, раздел «Структура программы: main, { }, #include, #define, комментарии».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is a token (lexeme)?
 <tr>Что такое лексема?</tr>
+<dop/>
 <variantright> the smallest meaningful unit of the language <tr>наименьшая смысловая единица языка</tr>
 <variant> phrases <tr>словосочетания</tr>
 <variant> sentences <tr>предложения</tr>
@@ -128,22 +651,11 @@
 <explain>Почему верно: лексема — наименьшая смысловая единица языка, «кирпичик», который компилятор узнаёт целиком: int, x, 10, +.
 Ловушки: словосочетания, предложения и тело программы — это уже крупные куски, состоящие из многих лексем.
 По лекции: тема 1, раздел «Алфавит, лексемы, идентификаторы, ключевые слова».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What does `int n;` mean?
-<tr>Что означает запись `int n;`?</tr>
-<variantright> the variable n takes integer values <tr>переменная n принимает целые значения</tr>
-<variant> the specifier n is set <tr>задан спецификатор n</tr>
-<variant> the variable n takes real values <tr>переменная n принимает вещественные значения</tr>
-<variant> the body of the program <tr>тело программы</tr>
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: int = integer = целое. int n; создаёт переменную n для целых чисел.
-Ловушки: для вещественных был бы float/double; «спецификатор» — это %d в printf, а не объявление.
-По лекции: тема 1, раздел «Переменные и константы».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Uppercase and lowercase letters that denote the same character in C ...
 <tr>Заглавные и строчные буквы, обозначающие один и тот же символ, в C ...</tr>
+<dop/>
 <variantright> are considered different <tr>считаются разными</tr>
 <variant> are considered the same <tr>считаются одинаковыми</tr>
 <variant> depend on the compiler <tr>меняются в зависимости от компилятора</tr>
@@ -152,58 +664,11 @@
 <explain>Почему верно: C чувствителен к регистру: Sum, sum и SUM — три разных имени. Поэтому Main вместо main — ошибка.
 Ловушки: от компилятора и версии языка это не зависит — правило одно для всех.
 По лекции: тема 1, раздел «Алфавит, лексемы, идентификаторы, ключевые слова».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Names given to variables, constants, data types and functions are called ...
-<tr>Имена, которые дают переменным, константам, типам данных и функциям, называются ...</tr>
-<variantright> identifiers <tr>идентификаторы</tr>
-<variant> keywords <tr>ключевые слова</tr>
-<variant> directives <tr>директивы</tr>
-<variant> pointers <tr>указатели</tr>
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: все имена, которые придумывает программист (переменной, константы, типа, функции), — идентификаторы.
-Ловушки: ключевые слова придумал сам язык (int, for); директивы — команды препроцессора (#include); указатели — особый вид переменных.
-По лекции: тема 1, раздел «Алфавит, лексемы, идентификаторы, ключевые слова».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> How is a single-precision real type declared?
-<tr>Как объявляется вещественный тип одинарной точности?</tr>
-<variantright> float
-<variant> double
-<variant> char
-<variant> int
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: float — вещественное (дробное) число одинарной точности: 4 байта, около 7 значащих цифр.
-Ловушки: double — двойная точность (8 байт); char — символ; int — целое.
-По лекции: тема 1, раздел «Типы данных».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> How is a double-precision real type declared?
-<tr>Как объявляется вещественный тип двойной точности?</tr>
-<variantright> double
-<variant> float
-<variant> char
-<variant> int
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: double = «двойной»: вещественное число двойной точности, 8 байт, около 15 значащих цифр.
-Ловушки: float — одинарная точность; char и int — не вещественные типы.
-По лекции: тема 1, раздел «Типы данных».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> How is the character data type declared?
-<tr>Как объявляется символьный тип данных?</tr>
-<variantright> char
-<variant> double
-<variant> float
-<variant> int
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: char (от character — «символ») хранит один символ: char c = 'A';.
-Ловушки: double и float — дробные числа, int — целые.
-По лекции: тема 1, раздел «Типы данных».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What are keywords?
 <tr>Что такое ключевые слова?</tr>
+<dop/>
 <variantright> words from a special reserved set <tr>слова из специального зарезервированного набора</tr>
 <variant> ordinary identifiers <tr>обычные идентификаторы</tr>
 <variant> operations <tr>операции</tr>
@@ -212,10 +677,11 @@
 <explain>Почему верно: ключевые слова — слова из зарезервированного набора языка (int, if, for, return). Их нельзя использовать как имена.
 Ловушки: «обычные идентификаторы» — наоборот, имена программиста; операции (+, -) и функции — другие элементы языка.
 По лекции: тема 1, раздел «Алфавит, лексемы, идентификаторы, ключевые слова».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The first system software product written in C?
 <tr>Первый системный программный продукт, написанный на C?</tr>
+<dop/>
 <variantright> UNIX
 <variant> MS-DOS
 <variant> NC
@@ -224,46 +690,11 @@
 <explain>Почему верно: C создали в Bell Labs специально, чтобы переписать на нём операционную систему UNIX — первый большой системный продукт на C.
 Ловушки: MS-DOS, Norton Commander и Windows XP появились позже и писались не первыми на C.
 По лекции: тема 1, раздел «Языки программирования, история C и C++».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which fragment of variable declarations in C is correct?
-<tr>Какой фрагмент объявления переменных в C правильный?</tr>
-<variantright> main () { int x, y; float a, b; char c;}
-<variant> main ()  int x, y; {float a, b; char c;}
-<variant> {main ();  int x, y; float, a, b;  char c;}
-<variant> main ()  int x, y;  float a, b; char x;
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: объявления стоят внутри тела функции между { и }, каждый тип — со списком имён через запятую: main () { int x, y; float a, b; char c;}.
-Ловушки: в других вариантах объявления вынесены за фигурные скобки, стоит лишняя запятая (float, a) или имя x объявлено дважды.
-По лекции: тема 1, раздел «Переменные и константы».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> How is the logical (Boolean) type set in C?
-<tr>Как задаётся логический тип в C?</tr>
-<variantright> bool
-<variant> there is no logical type in C <tr>в C логический тип не задаётся</tr>
-<variant> char
-<variant> string
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: в C++ есть встроенный логический тип bool со значениями true и false.
-Ловушки: «в C логический тип не задаётся» — так было в старом C, но тест про C++Builder, где bool есть; char и string — символ и строка.
-По лекции: тема 1, раздел «Типы данных».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What values can a logical value take in C?
-<tr>Какие значения может принимать логическая величина в C?</tr>
-<variantright> true, false
-<variant> + and - <tr>+ и -</tr>
-<variant> 0 and 1 <tr>0 и 1</tr>
-<variant> 0, 255
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: тип bool принимает ровно два значения — true (истина) и false (ложь).
-Ловушки: 0 и 1 — их числовая запись, но сами значения называются true/false; + и - и 0…255 — не логические значения.
-По лекции: тема 1, раздел «Типы данных».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Who created the C language?
 <tr>Кто создал язык C?</tr>
+<dop/>
 <variantright> Dennis Ritchie <tr>Деннис Ритчи</tr>
 <variant> Bill Gates <tr>Билл Гейтс</tr>
 <variant> J. von Neumann <tr>Дж. Нейман</tr>
@@ -272,22 +703,11 @@
 <explain>Почему верно: язык C создал Деннис Ритчи в Bell Labs (1972).
 Ловушки: Бьёрн Страуструп создал C++, а не C — их часто путают; Билл Гейтс — основатель Microsoft; фон Нейман — архитектура компьютера.
 По лекции: тема 1, раздел «Языки программирования, история C и C++».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> The escape character `\n` in C:
-<tr>Управляющий символ `\n` в C:</tr>
-<variantright> go to a new line <tr>переход на новую строку</tr>
-<variant> go to the next page <tr>переход на следующую страницу</tr>
-<variant> write the \ character n times <tr>написать символ \ n раз</tr>
-<variant> space <tr>пробел</tr>
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: \n (n — new line) переводит курсор на новую строку. Обратная косая черта означает «следующая буква — команда, а не текст».
-Ловушки: на новую страницу переходит \f, пробел пишут просто пробелом, а «написать \ n раз» — обманка.
-По лекции: тема 1, раздел «Ввод-вывод и управляющие символы».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The escape character `\t` in C:
 <tr>Управляющий символ `\t` в C:</tr>
+<dop/>
 <variantright> horizontal tab <tr>горизонтальная табуляция</tr>
 <variant> go to a new line <tr>переход на новую строку</tr>
 <variant> go to the next page <tr>переход на следующую страницу</tr>
@@ -296,10 +716,11 @@
 <explain>Почему верно: \t (t — tab) — горизонтальная табуляция, отступ как от клавиши Tab.
 Ловушки: новая строка — это \n, а не \t.
 По лекции: тема 1, раздел «Ввод-вывод и управляющие символы».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is NOT part of the C alphabet?
 <tr>Что НЕ входит в алфавит языка C?</tr>
+<dop/>
 <variantright> uppercase letters of the Russian alphabet <tr>заглавные буквы русского алфавита</tr>
 <variant> special characters <tr>специальные символы</tr>
 <variant> lowercase and uppercase Latin letters <tr>строчные и заглавные буквы латинского алфавита</tr>
@@ -308,22 +729,11 @@
 <explain>Почему верно: алфавит C — латиница, цифры и спецсимволы. Русские буквы могут быть только внутри строк "…" и комментариев, но не в коде.
 Ловушки: спецсимволы, латинские буквы и цифры 0–9 как раз входят в алфавит.
 По лекции: тема 1, раздел «Алфавит, лексемы, идентификаторы, ключевые слова».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> The range of values of the `char` type in C:
-<tr>Диапазон значений типа `char` в C:</tr>
-<variantright> -128…127
-<variant> 0…65365
-<variant> -65365…65365
-<variant> -256…255
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: char занимает 1 байт = 8 бит = 256 значений. Со знаком это от -128 до 127.
-Ловушки: 0…65535 — это 2-байтовый беззнаковый тип; -256…255 — 512 значений, в 1 байт не поместятся.
-По лекции: тема 1, раздел «Типы данных».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Why is the phrase in quotes needed in the `cout<<` statement?
 <tr>Для чего в операторе `cout<<` нужна фраза в кавычках?</tr>
+<dop/>
 <variantright> for clarity, it can be omitted <tr>для наглядности, её можно и не писать</tr>
 <variant> so as not to go to the next line <tr>чтобы не переходить на следующую строку</tr>
 <variant> to go to the next line <tr>чтобы перейти на следующую строку</tr>
@@ -332,47 +742,14 @@
 <explain>Почему верно: текст в кавычках просто печатается на экран как подсказка («Введите x:»). Программа работает и без него, поэтому «для наглядности, можно не писать».
 Ловушки: на новую строку переводит endl или \n, а не сама фраза.
 По лекции: тема 1, раздел «Ввод-вывод и управляющие символы».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which function does the execution of any C program start with?
-<tr>С какой функции начинается выполнение любой программы на C?</tr>
-<variantright> main()
-<variant> random
-<variant> randomize()
-<variant> clrscr()
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Ответ: main() — с неё начинается выполнение любой программы на C/C++.
-По лекции: тема 1, раздел «Структура программы в Borland C++».</explain>
-
-<question> Which symbols enclose the body of a function?
-<tr>В какие символы заключается тело функции?</tr>
-<variantright> {}
-<variant> ()
-<variant> []
-<variant> <>
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: тело функции — между фигурными скобками {}.
-Ловушки: () — параметры, [] — размер или индекс массива, <> — имя библиотеки в #include.
-По лекции: тема 1, раздел «Структура программы: main, { }, #include, #define, комментарии».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> In which part of a C program are variables declared?
-<tr>В какой части программы на C объявляются переменные?</tr>
-<variantright> anywhere, but before the first use of the variable <tr>в любом месте, но до первого использования переменной</tr>
-<variant> at the end <tr>в конце</tr>
-<variant> only at the beginning <tr>только в начале</tr>
-<variant> nowhere <tr>нигде</tr>
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: в C++ переменную можно объявить в любом месте, но до её первого использования: компилятор читает текст сверху вниз.
-Ловушки: «только в начале» — правило старого C и Pascal; «в конце» и «нигде» — неверно.
-По лекции: тема 1, раздел «Переменные и константы».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What will the code print?
 ```cpp
 int const a = 5; a++; cout << a;
 ```
 <tr>Что выведет код?</tr>
+<dop/>
 <variantright> the code will give an error <tr>код выдаст ошибку</tr>
 <variant> 6
 <variant> 5
@@ -381,10 +758,11 @@ int const a = 5; a++; cout << a;
 <explain>Почему верно: a объявлена как константа (int const a = 5), а a++ пытается её изменить. Компилятор не даст это скомпилировать — ошибка.
 Ловушки: 6 получилось бы для обычной переменной; 5 и 0 — если бы строка a++ просто пропустилась, но так не бывает.
 По лекции: тема 1, раздел «Переменные и константы».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which data type does NOT belong to C++?
 <tr>Какой тип данных НЕ относится к C++?</tr>
+<dop/>
 <variantright> real
 <variant> int
 <variant> float
@@ -393,233 +771,4 @@ int const a = 5; a++; cout << a;
 <explain>Почему верно: real — тип вещественных чисел из Pascal, в C++ его нет. В C++ вещественные — float и double.
 Ловушки: int, float, double — настоящие типы C++.
 По лекции: тема 1, раздел «Типы данных».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Data initialization is:
-<tr>Инициализация данных – это:</tr>
-<variantright> assigning initial values to a variable when it is declared <tr>присвоение начальных значений переменной при её объявлении</tr>
-<variant> moving data from memory cells into variables <tr>перемещение данных из ячеек памяти в переменные</tr>
-<variant> destroying previously occupied memory cells <tr>уничтожение ранее занятых ячеек в памяти</tr>
-<variant> allocating memory to store the program <tr>выделение памяти для хранения программы</tr>
-<variant> executing expressions and statements <tr>исполнение выражений и операторов</tr>
-<explain>Почему верно: инициализация = дать переменной значение сразу при создании: int x = 5;
-Ловушки: «уничтожение» — наоборот; «выделение памяти» происходит при объявлении, но это не инициализация.
-По лекции: тема 1, раздел «Переменные и константы».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> A valid identifier in C++:
-<tr>Допустимый идентификатор в C++:</tr>
-<variantright> Summ_mass
-<variant> for
-<variant> int
-<variant> 1a
-<variant> unsigned
-<explain>Почему верно: Summ_mass — латинские буквы и подчёркивание, начинается с буквы, не ключевое слово.
-Ловушки: for, int, unsigned — ключевые слова, их нельзя брать именами; 1a начинается с цифры.
-По лекции: тема 1, раздел «Алфавит, лексемы, идентификаторы, ключевые слова».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> An invalid identifier in C++:
-<tr>Недопустимый идентификатор в C++:</tr>
-<variantright> 34Alphha
-<variant> summ
-<variant> Integer
-<variant> _a1
-<variant> For
-<explain>Почему верно: имя не может начинаться с цифры, а 34Alphha начинается с 3.
-Ловушки: For с большой буквы — НЕ ключевое слово (C++ различает регистр, ключевое — только for), поэтому допустимо. _a1 тоже можно — подчёркивание в начале разрешено.
-По лекции: тема 1, раздел «Алфавит, лексемы, идентификаторы, ключевые слова».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> An identifier may consist of:
-<tr>Идентификатор может состоять из:</tr>
-<variantright> Latin letters, digits, underscore <tr>латинских букв, цифр, знака подчёркивания</tr>
-<variant> Latin and Russian letters, digits and underscore <tr>букв латинского и русского алфавитов, цифр и знака подчёркивания</tr>
-<variant> only letters and digits <tr>только букв и цифр</tr>
-<variant> lowercase and uppercase letters, space, extra symbols <tr>малых и больших букв, пробела, дополнительных символов</tr>
-<variant> only capital letters <tr>только заглавных букв</tr>
-<explain>Почему верно: в имени можно использовать только A–Z, a–z, 0–9 и _.
-Ловушки: русские буквы нельзя; пробел нельзя; «только буквы и цифры» — забыли про _.
-По лекции: тема 1, раздел «Алфавит, лексемы, идентификаторы, ключевые слова».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> An identifier cannot start with:
-<tr>Идентификатор не может начинаться с:</tr>
-<variantright> a digit <tr>цифры</tr>
-<variant> a lowercase Latin letter <tr>малой латинской буквы</tr>
-<variant> an underscore <tr>знака подчёркивания</tr>
-<variant> a capital Latin letter <tr>заглавной латинской буквы</tr>
-<variant> a letter of the Latin alphabet <tr>буквы латинского алфавита</tr>
-<explain>Почему верно: если имя начинается с цифры, компилятор принимает его за число (1a — «число 1 и что-то ещё»).
-Ловушки: с подчёркивания начинать можно (_a1).
-По лекции: тема 1, раздел «Алфавит, лексемы, идентификаторы, ключевые слова».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The general form of a variable declaration:
-<tr>Общий вид объявления переменной:</tr>
-<variantright> type identifier; <tr>тип идентификатор;</tr>
-<variant> type = identifier; <tr>тип = идентификатор;</tr>
-<variant> type: identifier; <tr>тип: идентификатор;</tr>
-<variant> identifier: type = value; <tr>идентификатор: тип = значение;</tr>
-<variant> type value; <tr>тип значение;</tr>
-<explain>Почему верно: сначала тип, потом имя, в конце точка с запятой: int x;
-Ловушки: «имя: тип» — это Pascal (x: integer).
-По лекции: тема 1, раздел «Переменные и константы».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> How many type specifiers are there in C++?
-<tr>Сколько спецификаторов типов в С++?</tr>
-<variantright> 4
-<variant> 5
-<variant> 6
-<variant> 2
-<variant> there is no concept of type specifier in C++ <tr>в С++ не существует понятия спецификатора типа</tr>
-<explain>Почему верно: спецификаторов (уточнений к типу) четыре: short, long, signed, unsigned. Они уточняют размер (short/long) и знак (signed/unsigned): unsigned int, long double.
-Ловушки: не путай с самими типами (int, char, float, double, bool…).
-По лекции: тема 1, раздел «Типы данных».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> Where must all types, constants, variables and functions be declared?
-<tr>Где должны быть объявлены все типы, константы, переменные, функции?</tr>
-<variantright> Anywhere, before the first use <tr>В любом месте, до первого использования</tr>
-<variant> At the very beginning of the module, before connecting additional modules <tr>В самом начале модуля, до подключения дополнительных модулей</tr>
-<variant> At the beginning of the program, in a special section <tr>В начале программы, в специально отведенном разделе</tr>
-<variant> In the user data description section <tr>В разделе описания пользовательских данных</tr>
-<variant> Anywhere, after the first use <tr>В любом месте, после первого использования</tr>
-<explain>Почему верно: в C++ нет особого раздела для объявлений — объявлять можно где угодно, главное раньше, чем используешь.
-Ловушки: «специальный раздел» — это var в Pascal; «после использования» — компилятор не узнает имя и выдаст ошибку.
-По лекции: тема 1, раздел «Переменные и константы».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The short specifier indicates:
-<tr>Спецификатор short указывает на:</tr>
-<variantright> a short value <tr>короткое значение</tr>
-<variant> a signed value <tr>знаковое значение</tr>
-<variant> a binary value <tr>двоичное значение</tr>
-<variant> a long value <tr>длинное значение</tr>
-<variant> an unsigned value <tr>беззнаковое значение</tr>
-<explain>Почему верно: short по-английски «короткий» — меньше памяти (short int — 2 байта).
-Запомни 4 спецификатора: short — короткий, long — длинный, signed — со знаком, unsigned — без знака.
-По лекции: тема 1, раздел «Переменные и константы».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The long specifier indicates:
-<tr>Спецификатор long указывает на:</tr>
-<variantright> a long value <tr>длинное значение</tr>
-<variant> a short value <tr>короткое значение</tr>
-<variant> a signed value <tr>знаковое значение</tr>
-<variant> a binary value <tr>двоичное значение</tr>
-<variant> an unsigned value <tr>беззнаковое значение</tr>
-<explain>Почему верно: long — «длинный»: больше памяти, больше диапазон (long double — 10 байт в Borland).
-Ловушки: «двоичное» — такого спецификатора нет.
-По лекции: тема 1, раздел «Типы данных».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The signed specifier indicates:
-<tr>Спецификатор signed указывает на:</tr>
-<variantright> a signed value <tr>знаковое значение</tr>
-<variant> a long value <tr>длинное значение</tr>
-<variant> a short value <tr>короткое значение</tr>
-<variant> a binary value <tr>двоичное значение</tr>
-<variant> an unsigned value <tr>беззнаковое значение</tr>
-<explain>Почему верно: sign — «знак»; signed — число может быть с минусом.
-Ловушки: unsigned — наоборот, без знака.
-По лекции: тема 1, раздел «Алфавит, лексемы, идентификаторы, ключевые слова».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The unsigned specifier indicates:
-<tr>Спецификатор unsigned указывает на:</tr>
-<variantright> an unsigned value <tr>беззнаковое значение</tr>
-<variant> a signed value <tr>знаковое значение</tr>
-<variant> a long value <tr>длинное значение</tr>
-<variant> a short value <tr>короткое значение</tr>
-<variant> a binary value <tr>двоичное значение</tr>
-<explain>Почему верно: un- значит «не»: unsigned — «без знака», только 0 и положительные.
-Ловушки: signed — со знаком.
-По лекции: тема 1, раздел «Переменные и константы».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The range of values of the char type:
-<tr>Диапазон значений типа char:</tr>
-<variantright> -128..+127
-<variant> 0..255
-<variant> -32768..+32767
-<variant> 0..256
-<variant> 'a'..'z'
-<explain>Почему верно: char — 1 байт = 256 значений. Со знаком (по умолчанию в Borland) это от -128 до 127.
-Ловушки: 0..255 — это unsigned char; -32768..32767 — это short (2 байта); 0..256 — 257 значений, на одно больше, чем есть.
-По лекции: тема 1, раздел «Типы данных».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> How many bytes does a char variable take?
-<tr>Сколько байт памяти занимает переменная типа char?</tr>
-<variantright> 1
-<variant> 2
-<variant> 4
-<variant> 16
-<variant> 8
-<explain>Почему верно: char — один символ, 1 байт (8 бит).
-Ловушки: 2 — short; 4 — int и float; 8 — double.
-По лекции: тема 1, раздел «Типы данных».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The range of values of the unsigned char type:
-<tr>Диапазон значений типа unsigned char:</tr>
-<variantright> 0..255
-<variant> -128..+127
-<variant> -32768..+32767
-<variant> 0..256
-<variant> 'a'..'z'
-<explain>Почему верно: 1 байт = 256 значений, без знака они начинаются с нуля: 0…255.
-Ловушки: -128..127 — обычный char со знаком; 0..256 — лишнее значение.
-По лекции: тема 1, раздел «Типы данных».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> A feature of the unsigned type specifier is:
-<tr>Особенностью использования спецификатора типа unsigned является:</tr>
-<variantright> no negative values <tr>отсутствие отрицательных значений</tr>
-<variant> zero values cannot be stored <tr>невозможность хранения нулевых значений</tr>
-<variant> real values cannot be stored <tr>невозможность хранения вещественных значений</tr>
-<variant> only characters are stored <tr>хранение только символов</tr>
-<variant> no positive values <tr>отсутствие положительных значений</tr>
-<explain>Почему верно: «без знака» значит без минуса: хранятся только 0 и положительные числа.
-Ловушки: ноль хранить можно; положительные — тоже можно.
-По лекции: тема 1, раздел «Переменные и константы».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> How many bytes does the float type take?
-<tr>Сколько байт памяти занимает тип float?</tr>
-<variantright> 4
-<variant> 8
-<variant> 6
-<variant> 10
-<variant> 2
-<explain>Почему верно: float — дробное число обычной точности, 4 байта.
-Ловушки: 8 — double; 10 — long double в Borland; 6 — real в Pascal.
-По лекции: тема 1, раздел «Типы данных».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The syntax of a constant declaration:
-<tr>Синтаксис объявления константы:</tr>
-<variantright> const type identifier=value; <tr>const тип идентификатор=значение;</tr>
-<variant> type identifier=value; <tr>тип идентификатор=значение;</tr>
-<variant> const type identifier; <tr>const тип идентификатор;</tr>
-<variant> const type identifier:=value; <tr>const тип идентификатор:=значение;</tr>
-<variant> var type identifier=value; <tr>var тип идентификатор=значение;</tr>
-<explain>Почему верно: константа = const + тип + имя + значение сразу: const int N=10; Значение потом менять нельзя, поэтому его дают при объявлении.
-Ловушки: без const — это обычная переменная; без значения константа не скомпилируется; := и var — это Pascal.
-По лекции: тема 1, раздел «Переменные и константы».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> If the type of a constant is not specified in its declaration, by default the constant is of type:
-<tr>Если при объявлении константы её тип не указан, то константа по умолчанию считается типа:</tr>
-<variantright> int
-<variant> char
-<variant> short
-<variant> long double
-<variant> float
-<explain>Почему верно: старое правило C — «нет типа, значит int». const N=10; считается const int N=10.
-Ловушки: float/char сами не подставляются.
-⚠ В современном C++ тип писать обязательно (без него — ошибка), но по лекции и на экзамене ответ — int.
-По лекции: тема 1, раздел «Переменные и константы».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>

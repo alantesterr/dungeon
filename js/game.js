@@ -1629,7 +1629,7 @@
   function openNote(q, after) {
     var n = noteOf(q.id), answered = (G.room && G.room.q === q && G.room.answered) || (G.ev && G.ev.cur && G.ev.cur.q === q && G.ev.cur.done) || after;
     var h = '<header class="md-top"><b>📝 Моя запись</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body">' +
-      '<div class="ex-q">' + D.md(q.q) + '</div>' + (answered ? '<p class="ex-right"><b>Правильный ответ:</b> ' + rightText(q) + '</p>' : '<p class="hint">Ответ увидишь на полке «Мои записи» (кафедра со свечой в библиотеке) или после ответа.</p>') +
+      srcBadge(q) + '<div class="ex-q">' + D.md(q.q) + '</div>' + (q.tr ? '<div class="ex-tr">🌐 ' + D.md(q.tr) + '</div>' : '') + (answered ? '<p class="ex-right"><b>Правильный ответ:</b> ' + rightText(q) + '</p>' : '<p class="hint">Ответ увидишь на полке «Мои записи» (кафедра со свечой в библиотеке) или после ответа.</p>') +
       '<p class="hint">Объясни своими словами — так запоминается лучше. Запись появится под этим вопросом каждый раз, когда он попадётся, и на полке «Мои записи».</p>' +
       '<textarea id="noteTxt" class="note-ta" rows="5" placeholder="Например: аксиология — от «аксиос» = ценность. Запомнить: ценность → аксио…">' + esc(n ? n.t : '') + '</textarea>' +
       '<p class="note-min" id="noteMin"></p>' +
@@ -2221,11 +2221,23 @@ screenEl.querySelectorAll('[data-rep]').forEach(function (b) { b.onclick = funct
     if (/дополнительн/i.test(src) || (D.subjId === 'arch' && !/⭐/.test(ex))) return 'add';
     return '';
   }
+  /* маленькие значки над вопросом: ⭐ база / доп. · ✎ изменено (как было в файле) · ⚠ не точно (почему) — не мешают читать */
   function srcBadge(q) {
-    var k = srcKind(q);
-    return k === 'exam' ? '<span class="src-badge exam" title="Вопрос из базы преподавателя — такие будут на экзамене">⭐ экзамен</span>' :
-      k === 'add' ? '<span class="src-badge add" title="Дополнительный вопрос для тренировки (не из базы преподавателя)">дополнительный</span>' : '';
+    var k = q && q.dop ? 'add' : srcKind(q), h = '';
+    if (k === 'exam') h += '<span class="qm exam" title="Вопрос из базы преподавателя — такие будут на экзамене">⭐ база</span>';
+    else if (k === 'add') h += '<span class="qm add" title="Дополнительный вопрос для тренировки (не из базы преподавателя)">доп.</span>';
+    if (q && q.orig) h += '<button type="button" class="qm edit" data-qm="orig" title="Вопрос исправлен — показать, как было в файле">✎ изменено</button>';
+    if (q && q.nt) h += '<button type="button" class="qm nt" data-qm="nt" title="Ответ спорный — показать почему">⚠ не точно</button>';
+    if (!h) return '';
+    return '<div class="qmeta">' + h + '</div>' +
+      (q.orig ? '<div class="qm-box orig" data-box="orig" hidden><b>Как было в файле базы:</b><pre>' + esc(q.orig) + '</pre><small>Исправлено: опечатка, русская буква в коде, лишний текст или не было вариантов.</small></div>' : '') +
+      (q.nt ? '<div class="qm-box nt" data-box="nt" hidden><b>⚠ Почему не точно:</b> ' + esc(q.nt) + '<br><small>Ответ оставлен как в базе — на экзамене, скорее всего, ждут его.</small></div>' : '');
   }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-qm]'); if (!b) return;
+    var root = b.closest('.qmeta').parentNode, box = root.querySelector('[data-box="' + b.getAttribute('data-qm') + '"]');
+    if (box) { box.hidden = !box.hidden; b.classList.toggle('on', !box.hidden); }
+  });
   function wireBrief() { var R = G.room, det = panel.querySelector('details.brief'); if (det) det.ontoggle = function () { R.briefOpen = det.open; }; }
   function ask() {
     var R = G.room, m = R.mon, M = A.MON[m.key], it = m.items[0];
@@ -2932,7 +2944,7 @@ if (kill && m.guard) watchHit(tpms() + 300);   /* страж исчезает д
   function openExplain(q) {
     var R = G.room, f = R && R.f, brief = !q.ex && R && f && f.texts.length ? briefHtml(q.q + ' ' + plainText(rightText(q))) : '', ref = exRef(q, f);
     var h = '<header class="md-top"><b>📖 Объяснение</b><span class="grow"></span><button class="btn ghost" data-close>✕</button></header><div class="md-body ex-body">' +
-      '<div class="ex-q">' + D.md(q.q) + '</div><p class="ex-right"><b>Правильный ответ:</b> ' + rightText(q) + '</p>' +
+      srcBadge(q) + '<div class="ex-q">' + D.md(q.q) + '</div>' + (q.tr ? '<div class="ex-tr">🌐 ' + D.md(q.tr) + '</div>' : '') + '<p class="ex-right"><b>Правильный ответ:</b> ' + rightText(q) + '</p>' +
       (q.ex ? '<div class="ex-text">' + exHtml(q.ex) + '</div>' : '<p class="msg">Подробное пояснение к этому вопросу скоро появится.' + (brief ? ' А пока — кусок лекции по теме:' : '') + '</p>' + brief.replace('<details class="brief"', '<details class="brief" open')) +
       (ref ? '' : '<p class="hint">📍 ' + esc(refLine(f)) + '</p>') +
       '<div class="row"><button class="btn primary" data-close>Понятно — назад в игру</button>' + (ref ? '<button class="btn ghost" data-lec>📖 ' + esc((ref.f.lab ? 'Лабы' : 'Лекция ' + ref.f.n) + (ref.sec ? ': ' + ref.sec.title : '')) + '</button>' : '') + '<button class="btn ghost" data-ggl>🔎 Спросить в Google</button>' + (tryOk(q) ? '<button class="btn ghost" data-try>🧪 Попробовать вживую</button>' : '') + '</div></div>';

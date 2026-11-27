@@ -1,5 +1,6 @@
 <question> What is the return (expression) operation for?
 <tr>Для чего нужна операция return (выражение)?</tr>
+<dop/>
 <variantright> returns the value of the expression to the statement that called the function <tr>возвращает значение выражения в оператор, который вызвал функцию</tr>
 <variant> there is no such statement in C <tr>такого оператора в C нет</tr>
 <variant> used when the function does not return a value <tr>используется, когда функция не возвращает значения</tr>
@@ -8,10 +9,11 @@
 <explain>Почему верно: return(выражение) возвращает значение туда, где функцию вызвали.
 Ловушки: «такого оператора нет» и «по правилам в конце программы» — неверно; без значения return; используют в void-функциях.
 По лекции: тема 5, раздел «Назначение оператора return?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is a variable called that is declared inside a function and known only in it?
 <tr>Как называется переменная, которая объявлена внутри функции и известна только в ней?</tr>
+<dop/>
 <variantright> local variable <tr>локальная переменная</tr>
 <variant> global variable <tr>глобальная переменная</tr>
 <variant> unknown variable <tr>неизвестная переменная</tr>
@@ -20,10 +22,11 @@
 <explain>Почему верно: локальная («местная») переменная живёт только внутри своей функции, снаружи её не видно.
 Ловушки: глобальная видна везде; «неизвестная» и «рекурсивная» переменная — таких терминов нет.
 По лекции: тема 5, раздел «Что такое функция и зачем она нужна?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is a variable declared outside any block and function called?
 <tr>Как называется переменная, объявленная вне любого блока и функции?</tr>
+<dop/>
 <variantright> global variable <tr>глобальная переменная</tr>
 <variant> local variable <tr>локальная переменная</tr>
 <variant> base variable <tr>базовая переменная</tr>
@@ -32,10 +35,11 @@
 <explain>Почему верно: переменная, объявленная снаружи всех функций, видна везде — это глобальная переменная.
 Ловушки: локальная — внутри функции; «базовая», «унарная» — несуществующие термины.
 По лекции: тема 5, раздел «Что такое функция и зачем она нужна?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is the keyword `void` used for in a function header?
 <tr>Для чего в заголовке функции используется ключевое слово `void`?</tr>
+<dop/>
 <variantright> shows that the function does not return a value <tr>показывает, что функция не возвращает значения</tr>
 <variant> shows that the function returns a value <tr>показывает, что функция возвращает значение</tr>
 <variant> void is not used in a function header <tr>в заголовке функции void не используется</tr>
@@ -44,10 +48,11 @@
 <explain>Почему верно: void в заголовке — функция не возвращает значения.
 Ловушки: «возвращает значение» — наоборот; «хранит значение» — функции ничего не хранят.
 По лекции: тема 5, раздел «Назначение оператора return?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> A certain sequence of operations and descriptions that performs some actions is called ...?
 <tr>Определённая последовательность операций и описаний, выполняющая некоторые действия, называется ...?</tr>
+<dop/>
 <variantright> function <tr>функция</tr>
 <variant> procedure <tr>процедура</tr>
 <variant> recursion <tr>рекурсия</tr>
@@ -56,10 +61,11 @@
 <explain>Почему верно: именованный кусок кода, который выполняет действие и вызывается по имени, — функция. В C всё оформляется функциями.
 Ловушки: «процедура» — термин Pascal; рекурсия — функция, вызывающая сама себя; «код» — слишком общее слово.
 По лекции: тема 5, раздел «Что такое функция и зачем она нужна?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What are the parameters at the beginning of a function description called?
 <tr>Как называются параметры в начале описания функции?</tr>
+<dop/>
 <variantright> formal <tr>формальные</tr>
 <variant> actual <tr>фактические</tr>
 <variant> argument <tr>аргумент</tr>
@@ -68,10 +74,11 @@
 <explain>Почему верно: в заголовке функции стоят формальные параметры — «пустые места», в которые при вызове подставят значения.
 Ловушки: фактические параметры (аргументы) — это значения при вызове; глобальные — переменные вне функций.
 По лекции: тема 5, раздел «Что такое параметры и аргументы?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is a function that calls itself called?
 <tr>Как называется функция, которая вызывает сама себя?</tr>
+<dop/>
 <variantright> recursion <tr>рекурсия</tr>
 <variant> procedure <tr>процедура</tr>
 <variant> function <tr>функция</tr>
@@ -80,20 +87,11 @@
 <explain>Почему верно: функция, которая вызывает сама себя, — рекурсия (например, факториал: n! = n·(n-1)!).
 Ловушки: процедура, функция и оператор — общие понятия, не про вызов самой себя.
 По лекции: тема 5, раздел «Как вызывается функция?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What is the return (expression) operation for?
-<tr>Для чего нужна операция return (выражение)?</tr>
-<variantright> returns the value of the expression to the statement that called the function <tr>возвращает значение выражения в оператор, который вызвал функцию</tr>
-<variant> there is no such statement in C <tr>такого оператора в C нет</tr>
-<variant> used when the function does not return a value <tr>используется, когда функция не возвращает значения</tr>
-<variant> its purpose is not defined; by the rules it must be at the end of the program <tr>назначение не определено, по правилам должна стоять в конце программы</tr>
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Ответ: return выражение; возвращает значение выражения в оператор, который вызвал функцию.
-По лекции: тема 5, раздел «Что такое функция».</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> ..... helps the compiler determine the number and type of arguments passed to a function.
 <tr>..... помогает компилятору определить количество и тип аргументов, передаваемых в функцию.</tr>
+<dop/>
 <variantright> function prototype <tr>прототип функции</tr>
 <variant> function identifier <tr>идентификатор функции</tr>
 <variant> file prototype <tr>прототип файла</tr>
@@ -102,20 +100,11 @@
 <explain>Почему верно: прототип — объявление функции до её тела: int sum(int,int);. По нему компилятор проверяет количество и типы аргументов при каждом вызове.
 Ловушки: идентификатор функции — только имя; «прототип файла» и «локальный прототип» — несуществующие термины.
 По лекции: тема 5, раздел «Что такое прототип функции?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What is the keyword `void` used for in a function header?
-<tr>Для чего в заголовке функции используется ключевое слово `void`?</tr>
-<variantright> shows that the function does not return a value <tr>показывает, что функция не возвращает значения</tr>
-<variant> shows that the function returns a value <tr>показывает, что функция возвращает значение</tr>
-<variant> void is not used in a function header <tr>в заголовке функции void не используется</tr>
-<variant> shows that the function stores a value <tr>показывает, что функция хранит значение</tr>
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Ответ: void показывает, что функция не возвращает значения.
-По лекции: тема 5, раздел «Что такое функция».</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> If `return ;` is written at the end of the program, what type does the function return?
 <tr>Если в конце программы написано `return ;`, какой тип возвращает функция?</tr>
+<dop/>
 <variantright> void
 <variant> int
 <variant> float
@@ -124,7 +113,7 @@
 <explain>Почему верно: return; без значения означает, что возвращать нечего — функция типа void.
 Ловушки: int, float, char требуют return с значением.
 По лекции: тема 5, раздел «Назначение оператора return?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What does the function determine?
 ```cpp
@@ -135,6 +124,7 @@ else t=y;
 return t;}
 ```
 <tr>Что определяет функция?</tr>
+<dop/>
 <variantright> the smaller of two integers <tr>меньшее из двух целых чисел</tr>
 <variant> the larger of two integers <tr>большее из двух целых чисел</tr>
 <variant> whether two integers are equal <tr>равенство двух целых чисел</tr>
@@ -143,7 +133,7 @@ return t;}
 <explain>Почему верно: если x<y, берём x, иначе y — всегда выбирается меньшее. int — значит целые числа.
 Ловушки: большее было бы при x>y; равенство проверялось бы ==; «вещественных» — нет, параметры int.
 По лекции: тема 5, раздел «Назначение оператора return?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What does the function determine?
 ```cpp
@@ -153,6 +143,7 @@ return (x);
 else return (y);}
 ```
 <tr>Что определяет функция?</tr>
+<dop/>
 <variantright> the larger of two integers <tr>большее из двух целых чисел</tr>
 <variant> the smaller of two integers <tr>меньшее из двух целых чисел</tr>
 <variant> whether two integers are equal <tr>равенство двух целых чисел</tr>
@@ -161,7 +152,7 @@ else return (y);}
 <explain>Почему верно: если x>y, вернём x, иначе y — получаем большее из двух целых.
 Ловушки: меньшее — при x<y; равенство — через ==.
 По лекции: тема 5, раздел «Назначение оператора return?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is the value of the variable a after the function call?
 ```cpp
@@ -176,6 +167,7 @@ a=inc2(b);
 }
 ```
 <tr>Чему равна переменная a после вызова функции?</tr>
+<dop/>
 <variantright> 6
 <variant> 5
 <variant> 7
@@ -184,4 +176,4 @@ a=inc2(b);
 <explain>Почему верно: в функцию попадает копия b (5). Копию увеличили до 6 и вернули, a = 6. Сама b осталась 5 — передача по значению.
 Ловушки: 5 — забыли vv++; 7 и 8 — посчитали лишний инкремент.
 По лекции: тема 5, раздел «Что значит передача по значению?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>

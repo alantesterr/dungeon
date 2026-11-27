@@ -105,9 +105,14 @@
       /* картинка к вопросу (как в Тестере): <question_image>data:image/…</question_image> */
       var img = '', im = raw.match(/<(question_image|image_question|questionimage)>([\s\S]*?)<\/\1>/i);
       if (im) { img = im[2].trim(); raw = raw.replace(im[0], ''); if (!/^(data:image\/(png|jpe?g|gif|webp);base64,|https:\/\/)/i.test(img)) img = ''; }
+      /* пометки (C++, ноябрь 2026): <nt>почему не точно</nt>, <orig>как было в файле</orig>, <dop/> — дополнительный вопрос */
+      var meta = {};
+      raw = raw.replace(/<nt>([\s\S]*?)<\/nt>/i, function (_, s) { meta.nt = s.trim(); return ''; })
+        .replace(/<orig>([\s\S]*?)<\/orig>/i, function (_, s) { meta.orig = s.trim(); return ''; })
+        .replace(/<dop\s*\/>/i, function () { meta.dop = true; return ''; });
       /* перевод (C++: вопросы на английском): <tr>…</tr> после текста вопроса и после варианта */
       var trOf = function (s) { var mm = s.match(/<tr>([\s\S]*?)<\/tr>/i); return mm ? { t: s.replace(mm[0], '').trim(), tr: mm[1].trim() } : { t: s.trim(), tr: '' }; };
-      var parts = raw.split(/<(variantright|variant_keyboard|variant)>/i), q0 = trOf(parts[0]), q = { q: q0.t, tr: q0.tr, opts: [], type: 'choice', ex: ex, img: img };
+      var parts = raw.split(/<(variantright|variant_keyboard|variant)>/i), q0 = trOf(parts[0]), q = { q: q0.t, tr: q0.tr, opts: [], type: 'choice', ex: ex, img: img, nt: meta.nt, orig: meta.orig, dop: meta.dop };
       for (var k = 1; k < parts.length; k += 2) {
         var tag = parts[k].toLowerCase(), ot = trOf(parts[k + 1] || ''), t = ot.t;
         if (tag === 'variant_keyboard') { q.type = 'keyboard'; q.answer = t; } else if (t) q.opts.push(ot.tr ? { t: t, right: tag === 'variantright', tr: ot.tr } : { t: t, right: tag === 'variantright' });
@@ -154,6 +159,7 @@
             var it = { id: hash(sid + '|' + q.q + '|' + (q.answer || '') + q.opts.map(function (o) { return o.t; }).join('|')), q: q.q, opts: q.opts, type: q.type, answer: q.answer, ex: q.ex };
             if (q.tr) it.tr = q.tr;
             if (q.img) it.img = q.img;   /* картинка к вопросу (например, «какой элемент изображён») */
+            if (q.nt) it.nt = q.nt; if (q.orig) it.orig = q.orig; if (q.dop) it.dop = true;
             it.diff = diffOf(it); return it;
           }).filter(function (q) { if (seen[q.id]) return false; seen[q.id] = 1; return true; });
           /* комнаты — подряд по 10 вопросов (в файле вопросы идут по подтемам), последняя — босс темы */

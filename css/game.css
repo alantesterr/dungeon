@@ -1025,3 +1025,13 @@ details.my-note.drop{animation:briefDrop .8s cubic-bezier(.2,.8,.3,1),briefGlow 
 .ap-tip{background:#fff4c2;padding:6px 9px;border-radius:4px}.ap-read{max-height:none}.ap-side2{margin-top:8px;border-top:2px solid #d9d2bd;padding-top:6px}
 @media (max-width:900px){.apw-body{grid-template-columns:200px minmax(0,1fr)}.apw.noside .apw-body{grid-template-columns:minmax(0,1fr)}.ap-panel{grid-column:1/-1;max-height:45vh;border-left:0;border-top:1px solid #808080}.apw-body{grid-auto-rows:minmax(0,1fr) auto;overflow:auto}}
 @media (max-width:600px){.ap-row{grid-template-columns:1fr}.apw-b span{display:none}}
+/* v114: значки вопроса — база / доп. / изменено / не точно (маленькие, не мешают читать) */
+.qmeta{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 5px;align-items:center}
+.qm{display:inline-flex;align-items:center;gap:3px;padding:1px 8px;border-radius:999px;font:600 11px/1.6 system-ui,sans-serif;border:1px solid #5F5E5A;background:#26252b;color:#B4B2A9;opacity:.85}
+.qm.exam{background:#3d2f10;color:#FAC775;border-color:#7a5a1a}
+button.qm{cursor:pointer}button.qm:hover,button.qm.on{opacity:1}
+.qm.edit{color:#9FE1CB;border-color:#2f6b5a;background:#16302a}.qm.nt{color:#F5C77A;border-color:#8a6a1a;background:#33280f}
+.qm-box{margin:0 0 8px;padding:7px 10px;border-radius:8px;font-size:13px;line-height:1.45;background:#1c1b22;border:1px solid #3b3a44;color:#d8d5e8}
+.qm-box.nt{border-color:#8a6a1a;background:#2a210d}.qm-box.orig{border-color:#2f6b5a;background:#13261f}
+.qm-box pre{white-space:pre-wrap;margin:5px 0;font:12.5px/1.4 Consolas,monospace;color:#e8e4f8}.qm-box small{opacity:.75}
+.ex-tr{color:#b9b4d6;font-size:14px;margin:-2px 0 8px}

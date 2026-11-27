@@ -8,7 +8,7 @@
 <explain>Почему верно: форма — окно программы, главный элемент и «стол», на который кладут все остальные компоненты, видимые и невидимые.
 Ловушки: кнопка сама лежит на форме; модуль — файл кода; функция и событие — не контейнеры.
 По лекции: тема 10, раздел «Что такое форма?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What is the Timer component used for in C++ Builder?
 <tr>Для чего в C++ Builder компонент Timer?</tr>
@@ -20,7 +20,7 @@
 <explain>Почему верно: Timer «тикает» раз в Interval миллисекунд и каждый раз вызывает OnTimer — так действие выполняется периодически.
 Ловушки: анимация — только одно из применений; время работы программы и дату таймер сам не измеряет и не показывает.
 По лекции: тема 10, раздел «Доп.: таймер (Timer)».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What value for the Interval property of the Timer component means that the timer will fire every second?
 <tr>Какое значение свойства Interval у Timer означает, что таймер срабатывает каждую секунду?</tr>
@@ -32,7 +32,7 @@
 <explain>Почему верно: Interval задаётся в миллисекундах, а 1 секунда = 1000 мс.
 Ловушки: 1 и 100 — слишком часто (1 мс и 0.1 с); 60000 — раз в минуту; 1024 — «компьютерная» обманка.
 По лекции: тема 10, раздел «Доп.: таймер (Timer)».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> How do I prevent the user from resizing the application window?
 <tr>Как запретить пользователю менять размер окна приложения?</tr>
@@ -44,9 +44,10 @@
 <explain>Почему верно: BorderStyle = bsDialog делает рамку диалога, и окно нельзя растянуть мышкой.
 Ловушки: свойств Resizable и Sizeable у TForm нет (есть только значение bsSizeable у BorderStyle); AutoSize размер не запрещает.
 По лекции: тема 10, раздел «Как менять положение и размер компонента?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) What happens if I set the Enable property of the Timer component to False? (Что будет, если у компонента Timer поставить Enable (правильно — Enabled) = False?)
+<question> What happens if I set the Enable property of the Timer component to False?
+<tr>Что будет, если у компонента Timer поставить Enable (правильно — Enabled) = False?</tr>
 <variantright> The timer will be stopped <tr>Таймер остановится</tr>
 <variant> The timer will run at double speed <tr>Таймер будет работать в два раза быстрее</tr>
 <variant> The timer will only run when the application window is active <tr>Таймер будет работать, только когда окно приложения активно</tr>
@@ -56,7 +57,7 @@
 Ловушки: скорость меняет Interval; от активности окна и «один раз» Enabled не зависит.
 ⚠ В вопросе опечатка: свойство называется Enabled, а не Enable.
 По лекции: тема 10, раздел «Доп.: таймер (Timer)».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which event of a TForm or TPanel is triggered immediately after its dimensions are programmatically or manually changed?
 <tr>Какое событие TForm или TPanel возникает сразу после того, как его размеры изменили из кода или вручную?</tr>
@@ -68,7 +69,7 @@
 <explain>Почему верно: OnResize — событие «размер изменился», срабатывает и при изменении из кода, и мышкой.
 Ловушки: OnSizeChanged, OnBoundsChanged, OnAfterResize, OnSizeUpdate в VCL не существуют.
 По лекции: тема 10, раздел «Как менять положение и размер компонента?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> If you programmatically set the form's Width property, but the user has set the BorderStyle to bsSingle, what is the effect?
 <tr>Если из кода поменять Width формы, а у неё BorderStyle = bsSingle, что произойдёт?</tr>
@@ -80,7 +81,7 @@
 <explain>Почему верно: bsSingle запрещает менять размер только мышкой, а код всё равно может менять Width.
 Ловушки: «не изменится» и «будет исключение» — неверно; ClientWidth изменится вместе с Width.
 По лекции: тема 10, раздел «Как менять положение и размер компонента?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> How can you programmatically restore a maximized form to its previous size and position in C++Builder?
 <tr>Как из кода вернуть развёрнутую на весь экран форму к прежнему размеру и положению в C++Builder?</tr>
@@ -92,7 +93,7 @@
 <explain>Почему верно: состояние окна хранит WindowState: wsNormal — обычное, wsMaximized — развёрнуто, wsMinimized — свёрнуто.
 Ловушки: метода Restore() и значения wsRestored нет; SetState и Maximized — выдуманные.
 По лекции: тема 10, раздел «Как менять положение и размер компонента?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> When a button component's Align property is set to alBottom, how does its width and height behave when the parent form is resized?
 <tr>Если у кнопки Align = alBottom, как ведут себя её ширина и высота при изменении размера родительской формы?</tr>
@@ -104,10 +105,19 @@
 <explain>Почему верно: alBottom прижимает компонент к низу родителя и растягивает по всей ширине, а высота остаётся своей.
 Ловушки: на всю высоту растягивает alLeft/alRight; «размер не меняется» — неверно для ширины.
 По лекции: тема 10, раздел «Как менять положение и размер компонента?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> To make a component stretch both horizontally and vertically with its parent, you must programmatically set the Anchors property to include which combination?
 <tr>Чтобы компонент растягивался вместе с родителем и по горизонтали, и по вертикали, какой набор нужно поставить в свойство Anchors?</tr>
+<orig>To make a component stretch both horizontally and vertically with its parent, you must programmatically set the Anchors property to include which combination?
+✔ akLeft, akTop, akRight, and akBottom
+• akHorizontal and akVertical
+• akAll
+• akClient
+• akStretchX and akStretchY
+📝 30 Tests on Copying and Moving Text between Components in C++Builder (VCL/FMX)
+Here are 30 questions with 5 multiple-choice options about how to programmatically handle and transfer text between components like TEdit, TLabel, TMemo, and TButton. The correct answer is always listed first.
+1. Fundamental Text Properties</orig>
 <variantright> akLeft, akTop, akRight, and akBottom
 <variant> akHorizontal and akVertical
 <variant> akAll
@@ -116,7 +126,7 @@
 <explain>Почему верно: Anchors — «якоря» к четырём краям. Привязали ко всем четырём (akLeft, akTop, akRight, akBottom) — компонент тянется и по горизонтали, и по вертикали.
 Ловушки: akHorizontal, akAll, akClient, akStretchX не существуют (alClient — это значение Align, а не якорь).
 По лекции: тема 10, раздел «Как менять положение и размер компонента?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which C++ keyword is used to declare the form class in the .h file, typically inheriting from a base component?
 <tr>Каким ключевым словом C++ объявляют класс формы в файле .h (обычно он наследуется от базового компонента)?</tr>
@@ -128,7 +138,7 @@
 <explain>Почему верно: форма — это класс C++: class TForm1 : public TForm { … };.
 Ловушки: struct тоже бывает классом, но IDE пишет class; type, object, interface — не ключевые слова C++ для этого.
 По лекции: тема 10, раздел «Что такое форма?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which base VCL class do most standard forms inherit from in C++Builder?
 <tr>От какого базового класса VCL наследуется большинство обычных форм в C++Builder?</tr>
@@ -140,9 +150,11 @@
 <explain>Почему верно: обычная форма наследуется от TForm: class TForm1 : public TForm.
 Ловушки: TComponent, TObject, TWinControl — более дальние предки в дереве VCL; TApplication — само приложение.
 По лекции: тема 10, раздел «Что такое форма?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) In which section of the form class declaration are the visually created components (like TButton, TEdit) automatically declared by the IDE? (В какой секции объявления класса формы IDE сама объявляет компоненты, положенные на форму (TButton, TEdit и т. п.)?)
+<question> In which section of the form class declaration are the visually created components (like TButton, TEdit) automatically declared by the IDE?
+<tr>В какой секции объявления класса формы IDE сама объявляет компоненты, положенные на форму (TButton, TEdit и т. п.)?</tr>
+<nt>Компоненты, положенные на форму, IDE объявляет в секции __published, а не private. Вариант published в списке есть — скорее всего он и верный.</nt>
 <variantright> private
 <variant> public
 <variant> protected
@@ -151,7 +163,7 @@
 <explain>Почему верно (по ключу): в ключе — private.
 На самом деле IDE кладёт компоненты с формы в секцию __published (это вариант published). На экзамене выбирай private.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> By convention (Borland/Embarcadero), what is the typical prefix used for the names of VCL/FMX form classes (e.g., TForm1)?
 <tr>Какую приставку по традиции (Borland/Embarcadero) ставят в начале имён классов форм VCL/FMX (например, TForm1)?</tr>
@@ -163,7 +175,7 @@
 <explain>Почему верно: по традиции Borland все классы VCL начинаются с T (от Type): TForm, TButton, TEdit.
 Ловушки: C — приставка в библиотеке MFC (Microsoft); F и Win, Dlg — не используются.
 По лекции: тема 10, раздел «Что такое форма?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What type of variable (in terms of memory allocation) is used to declare a visual component within the form class?
 <tr>Каким видом переменной (с точки зрения памяти) объявляется визуальный компонент внутри класса формы?</tr>
@@ -175,7 +187,7 @@
 <explain>Почему верно: компоненты на форме объявлены как указатели: TButton *Button1;. Поэтому к ним обращаются через стрелку Button1->Caption.
 Ловушки: сам объект, ссылка, статический экземпляр — так VCL компоненты не хранит.
 По лекции: тема 10, раздел «Как добавить компоненты на форму?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which section of the form class usually contains the constructor and destructor declarations?
 <tr>В какой секции класса формы обычно объявляют конструктор и деструктор?</tr>
@@ -187,9 +199,10 @@
 <explain>Почему верно: конструктор и деструктор объявляют в public — их вызывает внешний код, который создаёт и удаляет форму.
 Ловушки: в private их нельзя было бы вызвать снаружи; published — для компонентов; friend — не секция.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) What is the purpose of the #pragma once directive often found at the beginning of a form's .h file? (Для чего директива #pragma once, которую часто пишут в начале файла .h формы?)
+<question> What is the purpose of the #pragma once directive often found at the beginning of a form's .h file?
+<tr>Для чего директива #pragma once, которую часто пишут в начале файла .h формы?</tr>
 <variantright> Ensures the header file is included only once during compilation <tr>Гарантирует, что заголовочный файл подключится при компиляции только один раз</tr>
 <variant> Specifies the C++ standard being used <tr>Задаёт используемый стандарт C++</tr>
 <variant> Forces the compiler to optimize the code <tr>Заставляет компилятор оптимизировать код</tr>
@@ -199,9 +212,10 @@
 Ловушки: стандарт C++, оптимизация, пакет и «только чтение» — другое.
 ⚠ В Builder 6 то же делают через #ifndef Unit1H / #define Unit1H / #endif.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) Which of the following classes is often included in the .h file to allow the use of TEdit components? (Какой из этих файлов часто подключают в .h, чтобы можно было использовать компоненты TEdit?)
+<question> Which of the following classes is often included in the .h file to allow the use of TEdit components?
+<tr>Какой из этих файлов часто подключают в .h, чтобы можно было использовать компоненты TEdit?</tr>
 <variantright> <VCL.StdCtrls.hpp>
 <variant> <System.hpp>
 <variant> <VCL.Controls.hpp>
@@ -210,10 +224,17 @@
 <explain>Почему верно: TEdit, TButton, TLabel описаны в StdCtrls (стандартные элементы управления). В новых версиях файл называется <VCL.StdCtrls.hpp>, в Builder 6 — <StdCtrls.hpp>.
 Ловушки: Forms.hpp — TForm; Controls.hpp — базовые TControl; System.hpp и Classes.hpp — общие классы.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) What is the fully qualified VCL class declaration for a component pointer named Memo1? (Как полностью объявить в VCL указатель на компонент с именем Memo1?)
-<variantright> *TMemo Memo1;
+<question> What is the fully qualified VCL class declaration for a component pointer named Memo1?
+<tr>Как полностью объявить в VCL указатель на компонент с именем Memo1?</tr>
+<orig>What is the fully qualified VCL class declaration for a component pointer named Memo1?
+✔ *TMemo Memo1;
+• TMemo Memo1;
+• Memo *Memo1;
+• TMemo &Memo1;
+• TMemo::Memo1;</orig>
+<variantright> TMemo *Memo1;
 <variant> TMemo Memo1;
 <variant> Memo *Memo1;
 <variant> TMemo &Memo1;
@@ -221,10 +242,18 @@
 <explain>Почему верно: компонент объявляется указателем: TMemo *Memo1;. В файле теста звёздочка стоит не на месте (*TMemo Memo1), но имеется в виду именно это.
 Ловушки: TMemo Memo1; — не указатель; Memo без T — нет такого класса; & — ссылка; :: — не объявление.
 По лекции: тема 10, раздел «Как добавить компоненты на форму?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) What is the mandatory argument that the form class constructor must accept? (Какой обязательный аргумент должен принимать конструктор класса формы?)
-<variantright> *TComponent Owner
+<question> What is the mandatory argument that the form class constructor must accept?
+<tr>Какой обязательный аргумент должен принимать конструктор класса формы?</tr>
+<orig>What is the mandatory argument that the form class constructor must accept?
+✔ *TComponent Owner
+• TForm *Parent
+• AnsiString Name
+• void *Data
+• TApplication *App
+2. Method and Event Handler Declarations</orig>
+<variantright> TComponent *Owner
 <variant> TForm *Parent
 <variant> AnsiString Name
 <variant> void *Data
@@ -232,7 +261,7 @@
 <explain>Почему верно: конструктор формы принимает владельца: __fastcall TForm1(TComponent* Owner). В файле звёздочка не на месте (*TComponent Owner).
 Ловушки: Parent, Name, Data, App — другие вещи.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which calling convention keyword is mandatory for declaring VCL/FMX event handler methods (like Button1Click)?
 <tr>Какое ключевое слово соглашения о вызове обязательно при объявлении методов-обработчиков событий VCL/FMX (например, Button1Click)?</tr>
@@ -244,10 +273,17 @@
 <explain>Почему верно: все методы VCL, включая обработчики событий, объявляются с __fastcall — так VCL их вызывает (параметры передаются через регистры).
 Ловушки: __stdcall и __cdecl — другие соглашения; static и virtual — не соглашения о вызове.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) How should an OnClick event handler for a button named Button1 be correctly declared in the form's .h file? (Как правильно объявить в файле .h формы обработчик OnClick для кнопки Button1?)
-<variantright> *void __fastcall Button1Click(TObject Sender);
+<question> How should an OnClick event handler for a button named Button1 be correctly declared in the form's .h file?
+<tr>Как правильно объявить в файле .h формы обработчик OnClick для кнопки Button1?</tr>
+<orig>How should an OnClick event handler for a button named Button1 be correctly declared in the form's .h file?
+✔ *void __fastcall Button1Click(TObject Sender);
+• void Button1Click(TObject *Sender);
+• void __fastcall OnClick(TObject *Sender);
+• void __fastcall Button1Click(void);
+• void Button1Click(Sender);</orig>
+<variantright> void __fastcall Button1Click(TObject *Sender);
 <variant> void Button1Click(TObject *Sender);
 <variant> void __fastcall OnClick(TObject *Sender);
 <variant> void __fastcall Button1Click(void);
@@ -255,10 +291,17 @@
 <explain>Почему верно: правильная запись — void __fastcall Button1Click(TObject *Sender); (в файле звёздочка сдвинута).
 Ловушки: без __fastcall — не подходит для VCL; OnClick — имя события, а не метода; (void) или (Sender) — неправильные параметры.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) Which parameter in a standard event handler method (like Button1Click) represents the component that triggered the event? (Какой параметр в обычном методе-обработчике события (например, Button1Click) обозначает компонент, который вызвал событие?)
-<variantright> *TObject Sender
+<question> Which parameter in a standard event handler method (like Button1Click) represents the component that triggered the event?
+<tr>Какой параметр в обычном методе-обработчике события (например, Button1Click) обозначает компонент, который вызвал событие?</tr>
+<orig>Which parameter in a standard event handler method (like Button1Click) represents the component that triggered the event?
+✔ *TObject Sender
+• TControl *Source
+• TForm *Parent
+• int EventID
+• void *Data</orig>
+<variantright> TObject *Sender
 <variant> TControl *Source
 <variant> TForm *Parent
 <variant> int EventID
@@ -266,7 +309,7 @@
 <explain>Почему верно: Sender (TObject *Sender) — «отправитель», компонент, который вызвал событие. В файле звёздочка не на месте.
 Ловушки: Source, Parent, EventID, Data — таких параметров у стандартного обработчика нет.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> In which section of the form class should you declare custom helper methods that will only be called internally by other methods of the same form?
 <tr>В какой секции класса формы нужно объявлять свои вспомогательные методы, которые вызываются только другими методами этой же формы?</tr>
@@ -278,7 +321,7 @@
 <explain>Почему верно: вспомогательные методы «для своих» кладут в private: снаружи их не видно, никто случайно не вызовет.
 Ловушки: public — видно всем; protected — ещё и наследникам; published — для свойств в Object Inspector.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which destructor declaration is correctly defined in the form's .h file?
 <tr>Какое объявление деструктора правильно записано в файле .h формы?</tr>
@@ -290,7 +333,7 @@
 <explain>Почему верно: деструктор — тильда ~ и имя класса, плюс __fastcall, как у всех методов VCL: __fastcall ~TForm1();.
 Ловушки: без ~ — это конструктор; void ~TForm1() — у деструктора нет типа; delete — оператор, а не объявление.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What is the purpose of declaring methods (like Button1Click) in the header file, even though their implementation is in the .cpp file?
 <tr>Зачем объявлять методы (например, Button1Click) в заголовочном файле, хотя их код находится в файле .cpp?</tr>
@@ -302,7 +345,7 @@
 <explain>Почему верно: объявление в .h сообщает компилятору имя, параметры и секцию метода. Тогда его можно вызвать и связать с кодом из .cpp.
 Lовушки: поведение задаёт тело в .cpp; библиотеки подключает #include; код сам не создаётся; inline тут ни при чём.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> If you want a custom method (CalculateResult) to be callable from code outside of the form (e.g., from another form), it must be declared in the...
 <tr>Если нужно, чтобы свой метод (CalculateResult) можно было вызвать из кода вне формы (например, из другой формы), он должен быть объявлен в ...</tr>
@@ -314,9 +357,11 @@ Lовушки: поведение задаёт тело в .cpp; библиот�
 <explain>Почему верно: вызывать метод снаружи (из другой формы) можно, только если он объявлен в public.
 Ловушки: private и protected закрыты для внешнего кода; глобальная функция — уже не метод формы.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) Which standard Windows/VCL message handler might you declare in the .h file to process low-level system messages? (Какой стандартный обработчик сообщений Windows/VCL можно объявить в файле .h, чтобы обрабатывать низкоуровневые системные сообщения?)
+<question> Which standard Windows/VCL message handler might you declare in the .h file to process low-level system messages?
+<tr>Какой стандартный обработчик сообщений Windows/VCL можно объявить в файле .h, чтобы обрабатывать низкоуровневые системные сообщения?</tr>
+<nt>Обработчик сообщения обычно называют, например, WMLButtonDown и подключают через MESSAGE_MAP / VCL_MESSAGE_HANDLER. Имя WM_LBUTTONDOWN — это сама константа сообщения.</nt>
 <variantright> void __fastcall WM_LBUTTONDOWN(TMessage &Message);
 <variant> void HandleMessage(TMessage &Message);
 <variant> void __fastcall OnMessage(TMessage &Message);
@@ -325,10 +370,17 @@ Lовушки: поведение задаёт тело в .cpp; библиот�
 <explain>Почему верно (по ключу): void __fastcall WM_LBUTTONDOWN(TMessage &Message);.
 ⚠ Спорно: в Builder 6 сообщения Windows обычно ловят через BEGIN_MESSAGE_MAP … END_MESSAGE_MAP. Просто запомни ответ.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> When manually adding an event handler declaration to the .h file, what is the best practice for its return type?
 <tr>Если вручную добавляешь объявление обработчика события в файл .h, какой тип возвращаемого значения правильно поставить?</tr>
+<orig>When manually adding an event handler declaration to the .h file, what is the best practice for its return type?
+✔ void
+• int
+• bool
+• TObject
+• THandle
+3. C++Builder Specifics and Macros</orig>
 <variantright> void
 <variant> int
 <variant> bool
@@ -337,9 +389,11 @@ Lовушки: поведение задаёт тело в .cpp; библиот�
 <explain>Почему верно: обработчик события ничего не возвращает: void __fastcall Button1Click(TObject *Sender);.
 Ловушки: int, bool, TObject, THandle — обработчики VCL так не объявляются.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) What is the essential VCL/FMX macro that must appear in the private section of the form class declaration to allow the IDE's streaming mechanism to link components? (Какой обязательный «макрос» VCL/FMX должен быть в секции private класса формы, чтобы механизм IDE мог связать компоненты?)
+<question> What is the essential VCL/FMX macro that must appear in the private section of the form class declaration to allow the IDE's streaming mechanism to link components?
+<tr>Какой обязательный «макрос» VCL/FMX должен быть в секции private класса формы, чтобы механизм IDE мог связать компоненты?</tr>
+<nt>Секция называется __published (это ключевое слово, а не макрос), и она не внутри private. Ответ «__published: __property» записан странно.</nt>
 <variantright> __published: __property
 <variant> __property
 <variant> __fastcall
@@ -348,9 +402,11 @@ Lовушки: поведение задаёт тело в .cpp; библиот�
 <explain>Почему верно (по ключу): «__published: __property».
 ⚠ Вопрос неудачный: такого «макроса» в private нет; компоненты IDE кладёт в секцию __published. Запомни ответ по ключу.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) What is the general name given to the component declarations in the private section of the form class (TButton *Button1; etc.)? (Как вообще называются объявления компонентов в секции private класса формы (TButton *Button1; и т. д.)?)
+<question> What is the general name given to the component declarations in the private section of the form class (TButton *Button1; etc.)?
+<tr>Как вообще называются объявления компонентов в секции private класса формы (TButton *Button1; и т. д.)?</tr>
+<nt>Название «Forward Pointers» не общепринятое. Это просто указатели на компоненты (поля класса формы) в секции __published.</nt>
 <variantright> Forward Pointers <tr>Опережающие указатели (Forward Pointers)</tr>
 <variant> Component References <tr>Ссылки на компоненты</tr>
 <variant> Object Handles <tr>Дескрипторы объектов</tr>
@@ -359,10 +415,17 @@ Lовушки: поведение задаёт тело в .cpp; библиот�
 <explain>Почему верно (по ключу): Forward Pointers.
 ⚠ Такого термина в VCL нет — это просто поля-указатели на компоненты. Запомни ответ по ключу.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) Which directive is used in the .h file to define a unique global identifier for the form instance, often used for external linking? (Какая директива используется в файле .h, чтобы задать единый глобальный идентификатор экземпляра формы, обычно для связи с другими файлами?)
-<variantright> *extern PACKAGE TForm1 Form1;
+<question> Which directive is used in the .h file to define a unique global identifier for the form instance, often used for external linking?
+<tr>Какая директива используется в файле .h, чтобы задать единый глобальный идентификатор экземпляра формы, обычно для связи с другими файлами?</tr>
+<orig>Which directive is used in the .h file to define a unique global identifier for the form instance, often used for external linking?
+✔ *extern PACKAGE TForm1 Form1;
+• global TForm1 *Form1;
+• static TForm1 *Form1;
+• public TForm1 *Form1;
+• define TForm1 *Form1;</orig>
+<variantright> extern PACKAGE TForm1 *Form1;
 <variant> global TForm1 *Form1;
 <variant> static TForm1 *Form1;
 <variant> public TForm1 *Form1;
@@ -370,9 +433,11 @@ Lовушки: поведение задаёт тело в .cpp; библиот�
 <explain>Почему верно: extern PACKAGE TForm1 *Form1; — объявление глобальной переменной формы, созданной в .cpp (в файле звёздочка не на месте).
 Ловушки: global, public, define — не так; static сделал бы её невидимой снаружи.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) If you are using FireMonkey (FMX), the form class will inherit from which class instead of TForm? (Если используется FireMonkey (FMX), от какого класса наследуется класс формы вместо TForm?)
+<question> If you are using FireMonkey (FMX), the form class will inherit from which class instead of TForm?
+<tr>Если используется FireMonkey (FMX), от какого класса наследуется класс формы вместо TForm?</tr>
+<nt>Вопрос про FireMonkey (FMX) — в C++Builder 6 такой библиотеки нет.</nt>
 <variantright> TForm (from the FMX namespace) <tr>TForm (из пространства имён FMX)</tr>
 <variant> TWinForm
 <variant> TFrame
@@ -381,9 +446,10 @@ Lовушки: поведение задаёт тело в .cpp; библиот�
 <explain>Почему верно (по ключу): в FireMonkey форма тоже наследуется от TForm, только из пространства имён FMX.
 ⚠ FMX в Builder 6 нет — просто запомни ответ.
 По лекции: тема 10, раздел «Что такое форма?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) What happens if you accidentally delete the declaration TEdit *Edit1; from the .h file and compile the project? (Что будет, если случайно удалить объявление TEdit *Edit1; из файла .h и скомпилировать проект?)
+<question> What happens if you accidentally delete the declaration TEdit *Edit1; from the .h file and compile the project?
+<tr>Что будет, если случайно удалить объявление TEdit *Edit1; из файла .h и скомпилировать проект?</tr>
 <variantright> Compilation will fail with an "Undeclared identifier" error when accessing Edit1 in the .cpp file. <tr>Компиляция не пройдёт: при обращении к Edit1 в файле .cpp будет ошибка «Undeclared identifier» (необъявленный идентификатор).</tr>
 <variant> The IDE will automatically recreate the declaration. <tr>IDE сама восстановит объявление.</tr>
 <variant> The program will crash at runtime when the form is created. <tr>Программа упадёт во время работы при создании формы.</tr>
@@ -392,10 +458,17 @@ Lовушки: поведение задаёт тело в .cpp; библиот�
 <explain>Почему верно: без объявления TEdit *Edit1; компилятор не знает имя Edit1 — компиляция упадёт с ошибкой «необъявленный идентификатор» (в Builder 6: Undefined symbol 'Edit1').
 Ловушки: IDE сама объявление не восстановит; до запуска дело не дойдёт; компоновщик тут ни при чём.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) Which statement correctly declares a pointer to a TLabel component named StatusLabel? (Какая строка правильно объявляет указатель на компонент TLabel с именем StatusLabel?)
-<variantright> *TLabel StatusLabel;
+<question> Which statement correctly declares a pointer to a TLabel component named StatusLabel?
+<tr>Какая строка правильно объявляет указатель на компонент TLabel с именем StatusLabel?</tr>
+<orig>Which statement correctly declares a pointer to a TLabel component named StatusLabel?
+✔ *TLabel StatusLabel;
+• TLabel StatusLabel;
+• Label *StatusLabel;
+• TLabel &StatusLabel;
+• StatusLabel: TLabel;</orig>
+<variantright> TLabel *StatusLabel;
 <variant> TLabel StatusLabel;
 <variant> Label *StatusLabel;
 <variant> TLabel &StatusLabel;
@@ -403,7 +476,7 @@ Lовушки: поведение задаёт тело в .cpp; библиот�
 <explain>Почему верно: указатель на метку объявляется TLabel *StatusLabel; (в файле звёздочка не на месте).
 Ловушки: без * — не указатель; Label без T — нет такого класса; & — ссылка; StatusLabel: TLabel — синтаксис Pascal.
 По лекции: тема 10, раздел «Как добавить компоненты на форму?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What is the purpose of the extern keyword used before the form instance declaration (e.g., extern PACKAGE TForm1 *Form1;)?
 <tr>Для чего ключевое слово extern перед объявлением экземпляра формы (например, extern PACKAGE TForm1 *Form1;)?</tr>
@@ -415,9 +488,10 @@ Lовушки: поведение задаёт тело в .cpp; библиот�
 <explain>Почему верно: extern говорит «переменная Form1 существует, но создана в другом файле (.cpp)». Так её видят все модули, которые подключили .h.
 Ловушки: static, константа, inline — другие слова с другим смыслом.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) Which included header file typically provides the base TForm declaration for VCL applications? (Какой подключаемый заголовочный файл обычно содержит объявление базового класса TForm для приложений VCL?)
+<question> Which included header file typically provides the base TForm declaration for VCL applications?
+<tr>Какой подключаемый заголовочный файл обычно содержит объявление базового класса TForm для приложений VCL?</tr>
 <variantright> <VCL.Forms.hpp>
 <variant> <System.hpp>
 <variant> <VCL.StdCtrls.hpp>
@@ -426,10 +500,19 @@ Lовушки: поведение задаёт тело в .cpp; библиот�
 <explain>Почему верно: TForm описан в Forms. В новых версиях — <VCL.Forms.hpp>, в Builder 6 — <Forms.hpp>.
 Ловушки: StdCtrls — Edit/Button; ExtCtrls — Panel/Timer/Image; System и Classes — базовые классы.
 По лекции: тема 10, раздел «Что такое форма?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> When manually adding a new event handler function declaration to the form's .h file, what is the best practice for ensuring parameter correctness?
 <tr>Если вручную добавляешь объявление нового обработчика события в файл .h формы, как лучше всего не ошибиться в параметрах?</tr>
+<orig>When manually adding a new event handler function declaration to the form's .h file, what is the best practice for ensuring parameter correctness?
+✔ Use the exact signature generated by the IDE when double-clicking the event in the Object Inspector.
+• Always use void __fastcall FunctionName(TObject *Sender, int Param1);
+• Copy the signature from the VCL documentation without the __fastcall keyword.
+• Use only void FunctionName();
+• Declare all parameters as void *.
+📋 30 Tests: Form Class Declaration in the .h File (C++Builder)
+These tests focus on the syntax, structure, and best practices for defining a Form class and its components within the C++Builder header file (.h), used for VCL or FMX applications.
+1. Header File Structure and Inheritance</orig>
 <variantright> Use the exact signature generated by the IDE when double-clicking the event in the Object Inspector. <tr>Взять точно тот заголовок, который создаёт IDE при двойном щелчке по событию в Object Inspector.</tr>
 <variant> Always use void __fastcall FunctionName(TObject *Sender, int Param1); <tr>Всегда писать void __fastcall FunctionName(TObject *Sender, int Param1);</tr>
 <variant> Copy the signature from the VCL documentation without the __fastcall keyword. <tr>Скопировать заголовок из документации VCL без слова __fastcall.</tr>
@@ -438,4 +521,4 @@ Lовушки: поведение задаёт тело в .cpp; библиот�
 <explain>Почему верно: надёжнее всего дать IDE сгенерировать заголовок: двойной щелчок по событию в Object Inspector — параметры будут ровно такими, как нужно.
 Ловушки: «всегда (TObject *Sender, int Param1)» — у разных событий разные параметры; без __fastcall и void* — ошибка.
 По лекции: тема 10, раздел «Связь формы и программного кода?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>

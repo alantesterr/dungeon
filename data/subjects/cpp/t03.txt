@@ -1,17 +1,611 @@
-<question> Which word is used to write the selection (switch) statement?
-<tr>Каким словом записывается оператор выбора?</tr>
+<question> Write a compound condition in C++: A belongs to the interval [-2,0]
+<tr>Запиши составное условие на C++: A принадлежит отрезку [-2, 0]</tr>
+<orig>Write a compound condition in C++: A belongs to the interval [-2,0]
+✔ (A>= -2) && (A<=0)
+• (A<=-2) || (A<=0)
+• (А>=-2) || (A<0)
+• (A>=-2) && (A>0)
+• (А>=2) & (A<=0)</orig>
+<variantright> (A>= -2) && (A<=0)
+<variant> (A<=-2) || (A<=0)
+<variant> (A>=-2) || (A<0)
+<variant> (A>=-2) && (A>0)
+<variant> (A>=2) & (A<=0)
+<explain>Почему верно: Отрезок [-2, 0] — оба конца включены и оба условия должны выполняться: (A >= -2) && (A <= 0).
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Syntax of a conditional statement in С++:
+<tr>Синтаксис условного оператора в С++:</tr>
+<variantright> if (condition) operator1; else operator2;
+<variant> if (condition) then operator1; else operator2;
+<variant> if (condition) operator1 else operator2;
+<variant> if (condition) then operator1 else operator2;
+<variant> if condition operator1; else operator2;
+<explain>Почему верно: Условие в скобках, без then, после каждого оператора точка с запятой.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> The simple (reduced) form of the conditional operator in С++:
+<tr>Простая (сокращённая) форма условного оператора в С++:</tr>
+<variantright> if (condition) operator1;
+<variant> if (condition) then operator1;
+<variant> if (condition) else operator1;
+<variant> if condition then operator1;
+<variant> if (condition): operator1;
+<explain>Почему верно: Без else: if (условие) оператор;
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> When describing a compound condition, the next logical operators are used:
+<tr>При записи составного условия используются логические операции:</tr>
+<variantright> &&, ||, !
+<variant> And, Or, +,- <tr>And, Or, +, -</tr>
+<variant> +, -, *, /, %
+<variant> +=, -=, *
+<variant> div, mod, sqr, sqrt <tr>div, mod, sqr, sqrt</tr>
+<explain>Почему верно: В C++ логические операции — && (И), || (ИЛИ), ! (НЕ).
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> The point belongs to the interval [-2,2]. Choose the correct description of the conditional statement:
+<tr>Точка принадлежит отрезку [-2, 2]. Выбери правильную запись условия:</tr>
+<variantright> if ((x>=-2) && (x<=2))
+<variant> if ((x>-2) && (x<2))
+<variant> if (-2<=M<=2)
+<variant> if ((x>=-2) OR (x<=2))
+<variant> if ((x>=-2) || (x<=2))
+<explain>Почему верно: Концы отрезка включены (>=, <=) и нужны оба условия сразу (&&). Запись -2<=M<=2 в C++ работает неправильно.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Find the analogue to the next command:  if ((x>=1) || (x<1))
+<tr>Найди аналог команды: if ((x>=1) || (x<1))</tr>
+<nt>Два верных варианта: (x>1)||(x==1)||(x<1) и (x>=1)||(x!=1) — оба всегда истинны, как и исходное условие.</nt>
+<variantright> if ((x>1) || (x==1) || (x<1))
+<variant> if ((x>1) && (x==1) || (x<1))
+<variant> if ((x>1) || (x=1) || (x<1))
+<variant> if ((x>1) && (x==1) && (x<1))
+<variant> if ((x>=1) || (x!=1))
+<explain>Почему верно: x>=1 — это x>1 или x==1, поэтому условие можно разложить на (x>1) || (x==1) || (x<1). Оба условия всегда истинны.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Find the analogue to the next command:  if (x>=1)
+<tr>Найди аналог команды: if (x>=1)</tr>
+<variantright> if (!(x<1))
+<variant> if (!(x>1))
+<variant> if (not(x=1))
+<variant> if (!(x==1))
+<variant> if ((x>=1) || (x!=1))
+<explain>Почему верно: «x не меньше 1» — то же, что «x больше или равно 1»: !(x<1).
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which operator is written with a syntax error?
+<tr>Какой оператор записан с синтаксической ошибкой?</tr>
+<variantright> if x>5 y=15; else y=10;
+<variant> if (x=5) y=15; else y=10;
+<variant> if (x-y) y=15; else y=10;
+<variant> if (true) y=x; else x++;
+<variant> if (5) x=y=10; else y++;
+<explain>Почему верно: Условие в C++ обязательно в скобках: if (x>5). Остальные варианты синтаксически правильные.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Select a similar operator to if (a-b) y=10;
+<tr>Выбери равносильный оператор для if (a-b) y=10;</tr>
+<variantright> if (a-b!=0) y=10;
+<variant> if (a<>b) y=10;
+<variant> if a!=b then y=10;
+<variant> if (a==b) y=10;
+<variant> if (a-b>0) y=10;
+<explain>Почему верно: Число в условии — истина, если оно не 0. a-b не 0 → a-b != 0.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> When the value of variable y will be equal to 10?
+```cpp
+int y=0; if ((x!=5) || (true)) y=5; else y=10;
+```
+<tr>Когда переменная y будет равна 10?</tr>
+<variantright> never <tr>никогда</tr>
+<variant> when x is not equal to 5 <tr>когда x не равен 5</tr>
+<variant> when x is equal to 5 <tr>когда x равен 5</tr>
+<variant> when y is not equal to 10 <tr>когда y не равен 10</tr>
+<variant> when y is equal to 5 <tr>когда y равен 5</tr>
+<explain>Почему верно: В условии стоит || true — оно всегда истинно, поэтому всегда выполняется y=5, а ветка else не выполнится никогда.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Multiple-choice operator in с++:
+<tr>Оператор множественного выбора в с++:</tr>
 <variantright> switch
-<variant> return
-<variant> for
+<variant> case
 <variant> if
-<variant> class
-<explain>Почему верно: switch («переключатель») выбирает одну ветку case по значению выражения — это оператор выбора.
-Ловушки: if — условие «да/нет»; for — цикл; return — выход из функции; class — объявление класса.
-По лекции: тема 3, раздел «Назначение оператора switch?».
-Источник: база ФИК-211/МИК-211.</explain>
+<variant> break
+<variant> array
+<explain>Почему верно: switch выбирает ветку case по значению выражения.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> In the multiple choice operator, the result of an expression is compared with the value placed after the reserved word:
+<tr>В операторе множественного выбора значение выражения сравнивается со значением после зарезервированного слова:</tr>
+<variantright> case
+<variant> switch
+<variant> if
+<variant> break
+<variant> default
+<explain>Почему верно: switch (выражение) { case значение: … } — сравнение идёт со значениями после case.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> In the multiple-choice operator, after the reserved word default is:
+<tr>В операторе множественного выбора после зарезервированного слова default стоит:</tr>
+<orig>In the multiple-choice operator, after the reserved word default is:
+✔ operator that will be executed if no matches with any value after the case keyword were found
+• exit condition for any commands and operators in loop
+• break keyword (to exit the execution of a program)
+• program termination operator
+• return х</orig>
+<variantright> operator that will be executed if no matches with any value after the case keyword were found <tr>оператор, который выполнится, если не нашлось совпадения ни с одним значением после case</tr>
+<variant> exit condition for any commands and operators in loop <tr>условие выхода из любых команд и операторов в цикле</tr>
+<variant> break keyword (to exit the execution of a program) <tr>слово break (выход из программы)</tr>
+<variant> program termination operator <tr>оператор завершения программы</tr>
+<variant> return x
+<explain>Почему верно: default — ветка «во всех остальных случаях».
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the purpose of the 'else' keyword in an if-else statement?
+<tr>Для чего в операторе if-else ключевое слово else?</tr>
+<variantright> To specify a block of code to be executed if the if condition is false. <tr>Чтобы указать блок кода, который выполнится, если условие if ложно.</tr>
+<variant> To introduce a new condition to be checked <tr>Чтобы задать новое условие для проверки</tr>
+<variant> To end the if statement <tr>Чтобы закончить оператор if</tr>
+<variant> To declare a variable <tr>Чтобы объявить переменную</tr>
+<variant> To print a message to the console <tr>Чтобы вывести сообщение в консоль</tr>
+<explain>Почему верно: else — ветка «иначе», когда условие ложно.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the correct syntax for an if-else statement
+<tr>Какой правильный синтаксис оператора if-else?</tr>
+<variantright> if (condition) { // code } else { // code}
+<variant> if condition { // code } else if { // code }
+<variant> if (condition) then { // code } else { // code}
+<variant> if condition then { // code } else { // code }
+<variant> if condition: { // code } else: { // code }
+<explain>Почему верно: Условие в круглых скобках, без then и двоеточий.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> In an if-else structure, how many 'else' statements can you have?
+<tr>Сколько else может быть в одной конструкции if-else?</tr>
+<variantright> One <tr>Один</tr>
+<variant> Zero <tr>Ноль</tr>
+<variant> More than one <tr>Больше одного</tr>
+<variant> Exactly two <tr>Ровно два</tr>
+<variant> It depends on the number of variables <tr>Зависит от числа переменных</tr>
+<explain>Почему верно: У одного if — не больше одного else.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What data types can be used in the condition of an if statement?
+<tr>Значения каких типов можно использовать в условии if?</tr>
+<variantright> Any data type that can be evaluated to a boolean (true or false). <tr>Любого типа, который можно вычислить как логическое (true или false).</tr>
+<variant> Only integers. <tr>Только целые.</tr>
+<variant> Only floating-point numbers. <tr>Только вещественные.</tr>
+<variant> Only strings. <tr>Только строки.</tr>
+<variant> Only characters. <tr>Только символы.</tr>
+<explain>Почему верно: Любое число или bool: 0 — ложь, остальное — истина.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What happens if the condition in an if statement is false and there is no 'else' block?
+<tr>Что будет, если условие if ложно и блока else нет?</tr>
+<variantright> The program continues to the next line of code after the if statement. <tr>Программа продолжит со следующей строки после if.</tr>
+<variant> The program crashes. <tr>Программа упадёт.</tr>
+<variant> The program enters an infinite loop. <tr>Программа зациклится.</tr>
+<variant> The code inside the if statement is executed. <tr>Код внутри if выполнится.</tr>
+<variant> An error message is displayed. <tr>Появится сообщение об ошибке.</tr>
+<explain>Почему верно: Тело if пропускается, и выполнение идёт дальше.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the output of the following code snippet?
+```cpp
+int x = 5;
+if (x > 10) {
+  std::cout << "x is greater than 10";
+} else {
+  std::cout << "x is not greater than 10";
+}
+```
+<tr>Что выведет этот фрагмент кода?</tr>
+<variantright> x is not greater than 10
+<variant> x is greater than 10
+<variant> The code will not compile <tr>Код не скомпилируется</tr>
+<variant> An error will occur at runtime <tr>Будет ошибка во время выполнения</tr>
+<variant> Nothing will be printed <tr>Ничего не выведется</tr>
+<explain>Почему верно: x = 5 не больше 10 — выполняется ветка else.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the output of the following code snippet?
+```cpp
+int y = 15;
+if (y >= 15) {
+  std::cout << "y is 15 or more";
+}
+```
+<tr>Что выведет этот фрагмент кода?</tr>
+<variantright> y is 15 or more
+<variant> The code will not compile <tr>Код не скомпилируется</tr>
+<variant> Nothing will be printed <tr>Ничего не выведется</tr>
+<variant> An error will occur at runtime <tr>Будет ошибка во время выполнения</tr>
+<variant> y is less than 15
+<explain>Почему верно: y = 15, условие y >= 15 истинно.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which of the following is a valid nested if statement?
+<tr>Какой из вариантов — правильный вложенный if?</tr>
+<variantright> if (x > 0) { if (y < 10) { /* code */ } }
+<variant> if (x > 0) { else if (y < 10) { /* code */ } }
+<variant> if (x > 0); if (y < 10) { /* code */ }
+<variant> if x > 0 { if y < 10 { /* code */ } }
+<variant> if (x > 0) { /* code */ } if (y < 10) { /* code */ }
+<explain>Почему верно: Вложенный — второй if внутри фигурных скобок первого.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the result of the following boolean expression:  ‘true && false’?
+<tr>Каков результат логического выражения true && false?</tr>
+<variantright> false
+<variant> true
+<variant> Error <tr>Ошибка</tr>
+<variant> Syntax error <tr>Синтаксическая ошибка</tr>
+<variant> Run-time error <tr>Ошибка во время выполнения</tr>
+<explain>Почему верно: И даёт истину только если оба истинны.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the result of the following boolean expression: ‘true || false’?
+<tr>Каков результат логического выражения true || false?</tr>
+<variantright> true
+<variant> false
+<variant> Error <tr>Ошибка</tr>
+<variant> Syntax error <tr>Синтаксическая ошибка</tr>
+<variant> Run-time error <tr>Ошибка во время выполнения</tr>
+<explain>Почему верно: ИЛИ истинно, если хотя бы одно истинно.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the output of the following code?
+```cpp
+int a = 5;
+int b = 10;
+if (a > 0 && b < 15) {
+  std::cout << "Both conditions are true";
+}
+```
+<tr>Что выведет этот код?</tr>
+<variantright> Both conditions are true
+<variant> The code will not compile <tr>Код не скомпилируется</tr>
+<variant> Nothing will be printed <tr>Ничего не выведется</tr>
+<variant> An error will occur at runtime <tr>Будет ошибка во время выполнения</tr>
+<variant> One condition is true <tr>One condition is true (одно условие истинно)</tr>
+<explain>Почему верно: a > 0 и b < 15 — оба верны.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the output of the following code?
+```cpp
+int x = 2;
+if (!(x > 5)) {
+  std::cout << "x is not greater than 5";
+}
+```
+<tr>Что выведет этот код?</tr>
+<variantright> x is not greater than 5
+<variant> The code will not compile <tr>Код не скомпилируется</tr>
+<variant> Nothing will be printed <tr>Ничего не выведется</tr>
+<variant> An error will occur at runtime <tr>Будет ошибка во время выполнения</tr>
+<variant> x is greater than 5
+<explain>Почему верно: x > 5 ложно, !ложь = истина — текст выводится.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> How can you write an if statement that checks if a variable ‘num’ is even?
+<tr>Как записать if, который проверяет, что переменная num чётная?</tr>
+<variantright> if (num % 2 == 0)
+<variant> if (num / 2 == 0)
+<variant> if (num * 2 == 0)
+<variant> if (num % 2 != 0)
+<variant> if (num & 2 == 0)
+<explain>Почему верно: Чётное делится на 2 без остатка: num % 2 == 0.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What does the modulo operator (%) do?
+<tr>Что делает операция % (modulo)?</tr>
+<orig>What does the modulo operator (%) do?
+✔ Returns the remainder of an integer  division
+• Performs division
+• Calculates the percentage
+• Multiplies two numbers
+• Returns the hole partr of an integer  division</orig>
+<variantright> Returns the remainder of an integer  division <tr>Возвращает остаток от целочисленного деления</tr>
+<variant> Performs division <tr>Выполняет деление</tr>
+<variant> Calculates the percentage <tr>Вычисляет проценты</tr>
+<variant> Multiplies two numbers <tr>Умножает два числа</tr>
+<variant> Returns the whole part of an integer  division <tr>Возвращает целую часть от целочисленного деления</tr>
+<explain>Почему верно: % — остаток: 7 % 3 = 1. Целую часть даёт /.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the output of the following code snippet?
+```cpp
+int score = 75;
+if (score <= 60) {
+  std::cout << "Pass";
+}
+```
+<tr>Что выведет этот фрагмент кода?</tr>
+<variantright> Nothing will be printed <tr>Ничего не выведется</tr>
+<variant> Pass
+<variant> Fail
+<variant> The code will not compile <tr>Код не скомпилируется</tr>
+<variant> An error will occur at runtime <tr>Будет ошибка во время выполнения</tr>
+<explain>Почему верно: 75 <= 60 — ложь, а else нет.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the output of the following code?
+```cpp
+int age = 17;
+if (age >= 18) {
+  std::cout << "Eligible";
+} else {
+  std::cout << "Not eligible";
+}
+```
+<tr>Что выведет этот код?</tr>
+<variantright> Not eligible
+<variant> Eligible
+<variant> The code will not compile <tr>Код не скомпилируется</tr>
+<variant> Nothing will be printed <tr>Ничего не выведется</tr>
+<variant> An error will occur at runtime <tr>Будет ошибка во время выполнения</tr>
+<explain>Почему верно: 17 >= 18 — ложь, выполняется else.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the output of the following code?
+```cpp
+int num = 3;
+if (num > 0) {
+  if (num % 2 == 0) {
+    std::cout << "Positive and even";
+  } else {
+    std::cout << "Positive and odd";
+  }
+}
+```
+<tr>Что выведет этот код?</tr>
+<variantright> Positive and odd
+<variant> Positive and even
+<variant> The code will not compile <tr>Код не скомпилируется</tr>
+<variant> Nothing will be printed <tr>Ничего не выведется</tr>
+<variant> An error will occur at runtime <tr>Будет ошибка во время выполнения</tr>
+<explain>Почему верно: 3 > 0, 3 % 2 = 1 — нечётное.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the output of the following code?
+```cpp
+int num = 0;
+if (num > 0) {
+  if (num % 2 == 0) {
+    std::cout << "Positive and even";
+  } else {
+    std::cout << "Positive and odd";
+  }
+}
+```
+<tr>Что выведет этот код?</tr>
+<variantright> Nothing will be printed <tr>Ничего не выведется</tr>
+<variant> Positive and odd
+<variant> Positive and even
+<variant> The code will not compile <tr>Код не скомпилируется</tr>
+<variant> An error will occur at runtime <tr>Будет ошибка во время выполнения</tr>
+<explain>Почему верно: 0 > 0 — ложь, внешний if не выполняется, а else у него нет.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which of the following is the ternary operator in C++?
+<tr>Какой из операторов — тернарный в C++?</tr>
+<variantright> (? :)
+<variant> if else
+<variant> &&
+<variant> ||
+<variant> !
+<explain>Почему верно: условие ? значение1 : значение2.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> How can you rewrite the following code using the ternary operator?
+```cpp
+int x = 10;
+int y;
+if (x > 5) {
+  y = 1;
+} else {
+  y = 0;
+}
+```
+<tr>Как переписать этот код с тернарным оператором?</tr>
+<variantright> y = (x > 5) ? 1 : 0;
+<variant> y = if (x > 5) ? 1 : 0;
+<variant> y = (x > 5) 1 : 0;
+<variant> y = x > 5 ? 1 else 0;
+<variant> y = (x > 5) ? 0 : 1;
+<explain>Почему верно: y = (условие) ? если_да : если_нет.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> The standard for loop in C++ combines which three essential components into its header?
+<tr>Какие три части объединяет заголовок стандартного цикла for в C++?</tr>
+<variantright> Initialization, Condition, and Iteration (Increment/Decrement). <tr>Инициализация, условие и изменение (инкремент/декремент).</tr>
+<variant> Declaration, Statement, and Function. <tr>Объявление, оператор и функция.</tr>
+<variant> Input, Process, and Output. <tr>Ввод, обработка и вывод.</tr>
+<variant> Start, Middle, and End. <tr>Начало, середина и конец.</tr>
+<variant> Boolean, Integer, and Character. <tr>Логический, целый и символьный.</tr>
+<explain>Почему верно: for (int i = 0; i < n; i++) — начало; условие; шаг.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What happens if the second component (the condition) of a standard for loop is omitted? E.g., for (int i = 0; ; i++)
+<tr>Что будет, если пропустить вторую часть (условие) цикла for? Например, for (int i = 0; ; i++)</tr>
+<variantright> The condition defaults to true, creating an infinite loop. <tr>Условие считается истинным — получится бесконечный цикл.</tr>
+<variant> It causes a compilation error. <tr>Будет ошибка компиляции.</tr>
+<variant> The loop will execute exactly once. <tr>Цикл выполнится ровно один раз.</tr>
+<variant> The condition defaults to i < 100. <tr>Условие по умолчанию станет i < 100.</tr>
+<variant> It defaults to a do-while loop. <tr>Цикл станет do-while.</tr>
+<explain>Почему верно: Пустое условие в for = true.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> In a standard for loop, which part is executed only once, before the loop begins?
+<tr>Какая часть стандартного цикла for выполняется только один раз, до начала цикла?</tr>
+<variantright> The Initialization part. <tr>Инициализация.</tr>
+<variant> The Condition part. <tr>Условие.</tr>
+<variant> The Iteration (Increment/Decrement) part. <tr>Изменение (инкремент/декремент).</tr>
+<variant> The loop body. <tr>Тело цикла.</tr>
+<variant> The break statement. <tr>Оператор break.</tr>
+<explain>Почему верно: Инициализация (int i = 0) выполняется один раз в самом начале.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> }
+```cpp
+What is the output of the following C++ code snippet?
+for (int i = 1; i < 5; i++) {
+    if (i == 3) continue;
+    std::cout << i;
+```
+<tr>Что выведет этот фрагмент на C++?</tr>
+<variantright> 124
+<variant> 1234
+<variant> 4321
+<variant> 12
+<variant> 123
+<explain>Почему верно: При i == 3 срабатывает continue — 3 пропускается: 1 2 4.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> }
+```cpp
+What is the output of the following C++ code snippet?
+for (int i = 0; i < 5; i++) {
+    if (i == 3) break;
+    std::cout << i;
+```
+<tr>Что выведет этот фрагмент на C++?</tr>
+<variantright> 012
+<variant> 01234
+<variant> 34
+<variant> 43210
+<variant> 0123
+<explain>Почему верно: При i == 3 срабатывает break: выведено 0 1 2.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> In a for loop, what is the effect of placing a semicolon (;) immediately after the loop header, like this: for (int i = 0; i < 5; i++);?
+<tr>Что будет, если поставить точку с запятой сразу после заголовка цикла: for (int i = 0; i < 5; i++);?</tr>
+<variantright> It creates a null statement loop body, meaning the loop runs but does nothing. <tr>Тело цикла станет пустым оператором — цикл прокрутится, но ничего не сделает.</tr>
+<variant> It causes a compilation error. <tr>Будет ошибка компиляции.</tr>
+<variant> It makes the loop an infinite loop. <tr>Цикл станет бесконечным.</tr>
+<variant> It is syntactically incorrect and ignored. <tr>Это синтаксически неверно и игнорируется.</tr>
+<variant> It forces the loop to execute only once. <tr>Цикл выполнится только один раз.</tr>
+<explain>Почему верно: ; — пустое тело. Код ниже выполнится один раз уже после цикла.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> }
+```cpp
+Consider the nested loops below. How many times will std::cout << "Hi"; execute?
+for (int i = 0; i < 2; i++) {
+    for (int j = 0; j < 3; j++) {
+        std::cout << "Hi";
+    }
+```
+<tr>Сколько раз выполнится std::cout << "Hi"; во вложенных циклах?</tr>
+<orig>Consider the nested loops below. How many times will std::cout &lt;&lt; &quot;Hi&quot;; execute?
+C++
+for (int i = 0; i < 2; i++) {
+    for (int j = 0; j < 3; j++) {
+        std::cout << “Hi”;
+    }
+}
+✔ 6 times
+• 5 times
+• 3 times
+• 2 times
+• 1 time</orig>
+<variantright> 6 times <tr>6 раз</tr>
+<variant> 5 times <tr>5 раз</tr>
+<variant> 3 times <tr>3 раза</tr>
+<variant> 2 times <tr>2 раза</tr>
+<variant> 1 time <tr>1 раз</tr>
+<explain>Почему верно: Внешний цикл 2 раза × внутренний 3 раза = 6.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is correct syntax of a for loop in C++?
+<tr>Какой правильный синтаксис цикла for в C++?</tr>
+<variantright> for(initialization;condition; increment/decrement) <tr>for(инициализация; условие; изменение)</tr>
+<variant> for(increment/decrement; initialization; condition) <tr>for(изменение; инициализация; условие)</tr>
+<variant> for[initialization, condition, increment/decrement] <tr>for[инициализация, условие, изменение]</tr>
+<variant> for|initialization, condition, increment/decrement| <tr>for|инициализация, условие, изменение|</tr>
+<variant> None of These <tr>Ничего из этого</tr>
+<explain>Почему верно: Порядок: начало; условие; шаг — через точку с запятой.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What should be output of below C++ program
+```cpp
+if user enters a = 5?
+int main()
+{
+    int a;
+    cin>>a; // user can enter any value
+	if (++a*5 <= 25)
+	{
+	    std::cout<<"Hello";
+	}
+	else
+	{
+	    std::cout<<"Bye";
+	}
+}
+```
+<tr>Что выведет программа, если пользователь введёт a = 5?</tr>
+<variantright> Bye
+<variant> Hello
+<variant> Runtime Error <tr>Ошибка во время выполнения</tr>
+<variant> Syntax Error <tr>Синтаксическая ошибка</tr>
+<variant> There is no correct answer <tr>Нет правильного ответа</tr>
+<explain>Почему верно: ++a = 6, 6·5 = 30, 30 <= 25 — ложь → Bye.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Find the output of below program.
+```cpp
+#include<iostream>
+int main()
+{
+for(int i=1;i<=2;i++)
+{
+for(int j=i;j<=2;j++)
+std::cout<<i<<'@';
+}
+}
+```
+<tr>Найди вывод программы.</tr>
+<orig>Find the output of below program.
+#include<iostream>
+int main()
+{
+for(int i=1;i<=2;i++)
+{
+for(int j=i;j<=2;j++)
+std::cout<<i<<’@’;
+}
+}
+✔ 1@1@2@
+• 1@2@1@
+• 1@2@
+• 1@2@2@
+• There is no correct answer</orig>
+<variantright> 1@1@2@
+<variant> 1@2@1@
+<variant> 1@2@
+<variant> 1@2@2@
+<variant> There is no correct answer <tr>Нет правильного ответа</tr>
+<explain>Почему верно: i = 1: j = 1, 2 → «1@1@»; i = 2: j = 2 → «2@». Итог 1@1@2@.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which loop in C++ is best suited when the number of iterations is known?
+<tr>Какой цикл в C++ лучше всего подходит, когда число повторов известно?</tr>
+<variantright> for loop <tr>цикл for</tr>
+<variant> while loop <tr>цикл while</tr>
+<variant> do-while loop <tr>цикл do-while</tr>
+<variant> infinite loop <tr>бесконечный цикл</tr>
+<variant> range-based for loop <tr>цикл for по диапазону</tr>
+<explain>Почему верно: for — цикл со счётчиком.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
 
 <question> Which statement is used to exit from switch?
 <tr>Какой оператор используется для выхода из switch?</tr>
+<dop/>
 <variantright> break
 <variant> do
 <variant> case
@@ -20,52 +614,14 @@
 <explain>Почему верно: break «ломает» switch и выходит из него. Без break выполнение провалится в следующий case.
 Ловушки: return выходит из всей функции, а не только из switch; case и default — метки веток; do — начало цикла.
 По лекции: тема 3, раздел «Для чего case, break и default?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which condition in C correctly checks that an array index is odd?
-<tr>Какое условие в C правильно проверяет, что индекс массива нечётный?</tr>
-<variantright> if (i%2==1)
-<variant> if (i%2=1)
-<variant> if (i%2==0)
-<variant> if (i%2!=1)
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: нечётное число при делении на 2 даёт остаток 1: i%2==1. Сравнение — двойное ==.
-Ловушки: i%2=1 — одинарное = (присваивание, ошибка); i%2==0 — это чётное; i%2!=1 — тоже чётное.
-По лекции: тема 3, раздел «Разница между if, if…else и вложенным if?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> The correct condition in C to check that an array index is even:
-<tr>Правильное условие в C для проверки, что индекс массива чётный:</tr>
-<variantright> if (i%2==0)
-<variant> if (a[i]%2==0)
-<variant> if (i%2==1)
-<variant> if (i%2=0)
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: чётное делится на 2 без остатка: i%2==0. Проверяем сам индекс i и сравниваем через ==.
-Ловушки: a[i]%2==0 проверяет чётность значения, а не номера; i%2==1 — нечётное; i%2=0 — присваивание вместо сравнения.
-По лекции: тема 3, раздел «Разница между if, if…else и вложенным if?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> How many times will the loop repeat?
-```cpp
-for (x=1; x <= 10; x=x+2)
-```
-<tr>Сколько раз повторится цикл?</tr>
-<variantright> 5
-<variant> 10
-<variant> 15
-<variant> 20
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: выписываем x: 1, 3, 5, 7, 9 — пять значений. 11 уже больше 10.
-Ловушки: 10 — посчитали шаг 1; 15 и 20 — обманки.
-По лекции: тема 3, раздел «Синтаксис и структура for?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What will k be equal to after the program runs?
 ```cpp
 k=0; for (x=1;x <=10; x++) if (x % 3==0) k++;
 ```
 <tr>Чему будет равно k после выполнения программы?</tr>
+<dop/>
 <variantright> 3
 <variant> 4
 <variant> 5
@@ -74,13 +630,14 @@ k=0; for (x=1;x <=10; x++) if (x % 3==0) k++;
 <explain>Почему верно: числа от 1 до 10, которые делятся на 3: 3, 6, 9. Три штуки, k = 3.
 Ловушки: 4 — добавили лишнее; 5 и 2 — обманки.
 По лекции: тема 3, раздел «Синтаксис и структура for?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What will k be equal to after the program runs?
 ```cpp
 k=0; for (x=1;x <=10; x++) if (x % 5==0) k++;
 ```
 <tr>Чему будет равно k после выполнения программы?</tr>
+<dop/>
 <variantright> 2
 <variant> 3
 <variant> 4
@@ -89,13 +646,14 @@ k=0; for (x=1;x <=10; x++) if (x % 5==0) k++;
 <explain>Почему верно: делятся на 5 числа 5 и 10 (10 входит, потому что x <= 10). k = 2.
 Ловушки: 3, 4, 5 — неверный подсчёт.
 По лекции: тема 3, раздел «Синтаксис и структура for?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What will k be equal to after the program runs?
 ```cpp
 k=0; for (x=1;x <=10; x++) if (x % 9==0) k++;
 ```
 <tr>Чему будет равно k после выполнения программы?</tr>
+<dop/>
 <variantright> 1
 <variant> 2
 <variant> 3
@@ -104,46 +662,11 @@ k=0; for (x=1;x <=10; x++) if (x % 9==0) k++;
 <explain>Почему верно: x идёт от 1 до 10; x%9==0 выполняется только при x=9 (18 уже не входит). Значит k++ сработал один раз: k=1.
 Ловушки: 2, 3, 4 — посчитали лишние числа; 0 не делится, потому что x начинается с 1.
 По лекции: тема 3, раздел «Синтаксис и структура for?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> The loop with a parameter in C is written as:
-<tr>Запись цикла с параметром в C:</tr>
-<variantright> for <tr>initial value; final value; step — начальное значение; конечное значение; шаг</tr>
-<variant> while (condition) {loop body} <tr>while (условие) {тело цикла}</tr>
-<variant> do {loop body} while (condition) <tr>do {тело цикла} while (условие)</tr>
-<variant> switch () {}
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: цикл с параметром (счётчиком) — for: начальное значение, условие продолжения и шаг записаны в одной строке.
-Ловушки: while и do-while — циклы с условием (пред- и постусловием); switch — оператор выбора, а не цикл.
-По лекции: тема 3, раздел «Что такое цикл со счётчиком?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which statement is conditional?
-<tr>Какой оператор условный?</tr>
-<variantright> if
-<variant> for
-<variant> while
-<variant> switch
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: if («если») — условный оператор: выполняет действие только при истинном условии.
-Ловушки: for и while — циклы; switch — оператор выбора (тоже ветвление, но называется иначе).
-По лекции: тема 3, раздел «Что такое условный оператор и зачем он нужен?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which statement is called the selection statement?
-<tr>Какой оператор называется оператором выбора?</tr>
-<variantright> switch
-<variant> for
-<variant> if
-<variant> while
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: switch называют оператором выбора: из многих case выбирается один.
-Ловушки: if — условный оператор; for и while — циклы.
-По лекции: тема 3, раздел «Назначение оператора switch?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is a branching statement?
 <tr>Что такое оператор ветвления?</tr>
+<dop/>
 <variantright> dividing an algorithm into several paths depending on whether a condition is true or not <tr>разделение алгоритма на несколько путей в зависимости от того, выполняется условие или нет</tr>
 <variant> a statement that checks only one condition <tr>оператор, проверяющий выполнение только одного условия</tr>
 <variant> a statement that checks that conditions are not true <tr>оператор, проверяющий невыполнение условий</tr>
@@ -152,55 +675,15 @@ k=0; for (x=1;x <=10; x++) if (x % 9==0) k++;
 <explain>Почему верно: ветвление — алгоритм раздваивается: условие истинно — идём одним путём, ложно — другим (if/else).
 Ловушки: «проверяет только одно условие» и «проверяет невыполнение» — неполные описания; «отвечает за выполнение программы» — это main.
 По лекции: тема 3, раздел «Что такое условный оператор и зачем он нужен?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What values does i take in `for(i=1;i<10;i+=2)`?
-<tr>Какие значения принимает i в `for(i=1;i<10;i+=2)`?</tr>
-<variantright> 1 3 5 7 9
-<variant> 2 4 6 8 10
-<variant> 1 2 3 4 5
-<variant> 1 3 5 7 9 10
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: старт 1, шаг +2: 1, 3, 5, 7, 9. Дальше 11 — уже не меньше 10, цикл кончается.
-Ловушки: 2 4 6 8 10 — неправильный старт; 1 2 3 4 5 — шаг 1; 1 3 5 7 9 10 — 10 при шаге 2 от единицы не получится.
-По лекции: тема 3, раздел «Что такое цикл со счётчиком?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What values does i take?
-```cpp
-for (int i=100; i>0; i-=10)
-```
-<tr>Какие значения принимает i?</tr>
-<variantright> 100,90,80,70,60,50,40,30,20,10
-<variant> 50,40,30,20,10
-<variant> 100,80,60,40,20
-<variant> 90,70,50,30,10
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: от 100 вниз с шагом 10, пока i>0: 100, 90, …, 10. Значение 0 уже не больше 0, поэтому не входит.
-Ловушки: 50… — неправильный старт; 100,80,… — шаг 20; 90,70,… — пропуск значений.
-По лекции: тема 3, раздел «Что такое выражения инициализации, условия и изменения в for?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What values does i take?
-```cpp
-for (int i=100; i<=150; i+=10)
-```
-<tr>Какие значения принимает i?</tr>
-<variantright> 100,110,120,130,140,150
-<variant> 110,120,130,140,150
-<variant> 100,110,120,130,140
-<variant> 110,110,120,130,140,160
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: от 100 вверх по 10, пока i<=150: 100, 110, …, 150. Знак <= включает 150.
-Ловушки: без 100 — забыли первое значение; без 150 — перепутали <= и <.
-По лекции: тема 3, раздел «Что такое выражения инициализации, условия и изменения в for?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is the value of the variable a after the code runs?
 ```cpp
 int a; for(a = 0; a < 10; a++) cout<<a;
 ```
 <tr>Чему равна переменная a после выполнения кода?</tr>
+<dop/>
+<nt>После цикла for(a=0; a<10; a++) переменная a равна 10 (последнее выведенное число — 9). В базе ответ 9.</nt>
 <variantright> 9
 <variant> 10
 <variant> 0
@@ -209,7 +692,7 @@ int a; for(a = 0; a < 10; a++) cout<<a;
 <explain>Почему верно: в ключе ответ 9 — последнее выведенное число. Строго говоря, после цикла a = 10, но на экзамене выбирай 9.
 Ловушки: 10 — правильно по C++, но не по ключу; 0 и 1 — первые значения.
 По лекции: тема 3, раздел «Что такое цикл со счётчиком?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> If int n=3, what will the result be?
 ```cpp
@@ -219,6 +702,7 @@ case 3: cout << "bbb"; break;
 default: cout << "vvv"; break; }
 ```
 <tr>Если int n=3, какой будет результат?</tr>
+<dop/>
 <variantright> bbb
 <variant> aaa
 <variant> vvv
@@ -227,7 +711,7 @@ default: cout << "vvv"; break; }
 <explain>Почему верно: n=3 — прыгаем в case 3, печатаем bbb, break выходит из switch.
 Ловушки: aaa — это case 2; vvv (default) срабатывает, только если ни один case не подошёл.
 По лекции: тема 3, раздел «Для чего case, break и default?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> If int n=45, what will the result be?
 ```cpp
@@ -238,6 +722,7 @@ default: cout << "vvv";
 break; }
 ```
 <tr>Если int n=45, какой будет результат?</tr>
+<dop/>
 <variantright> bbbvvv
 <variant> bbb
 <variant> vvv
@@ -246,4 +731,4 @@ break; }
 <explain>Почему верно: n=45 — прыгаем в case 45, печатаем bbb. После него нет break, поэтому выполнение «проваливается» в default и печатает vvv: bbbvvv.
 Ловушки: bbb — так было бы с break; vvv — если бы case 45 не было; aaa — это case 23.
 По лекции: тема 3, раздел «Для чего case, break и default?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>

@@ -1,5 +1,658 @@
+<question> What will be the value of x after the following code executes?
+```cpp
+int x = 10;
+x /= x + 2.5;
+```
+<tr>Какое значение будет у x после выполнения кода?</tr>
+<variantright> 0
+<variant> Compilation error <tr>Ошибка компиляции</tr>
+<variant> 1
+<variant> Undefined behavior <tr>Неопределённое поведение</tr>
+<variant> 10
+<explain>Почему верно: x = 10 / 12.5 = 0.8; при записи в int дробь отбрасывается → 0.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What will be the final value of x after executing the following code?
+```cpp
+int x = 8;
+x *= (x - 6) / 2;
+```
+<tr>Каким будет итоговое значение x после выполнения кода?</tr>
+<variantright> 8
+<variant> 4
+<variant> 0
+<variant> 16
+<variant> Compilation error <tr>Ошибка компиляции</tr>
+<explain>Почему верно: (8 − 6) / 2 = 1, x = 8 × 1 = 8.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the result of the following operation?
+```cpp
+double x = 5.0;
+x += (int)(x / 2) * 3;
+```
+<tr>Каков результат операции?</tr>
+<variantright> 11.0
+<variant> 7.5
+<variant> 5.0
+<variant> 12.5
+<variant> Compilation error <tr>Ошибка компиляции</tr>
+<explain>Почему верно: x / 2 = 2.5, (int)2.5 = 2, 2 × 3 = 6, x = 5 + 6 = 11.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the value of x after executing this code?
+```cpp
+int x = 7;
+x %= (x / 2) + 2;
+```
+<tr>Какое значение у x после выполнения кода?</tr>
+<variantright> 2
+<variant> 0
+<variant> 7
+<variant> Compilation error <tr>Ошибка компиляции</tr>
+<variant> Undefined behavior <tr>Неопределённое поведение</tr>
+<explain>Почему верно: 7 / 2 = 3 (целое), 3 + 2 = 5, 7 % 5 = 2.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What will be stored in x after this code runs?
+```cpp
+int x = 6;
+x /= (x - 5) * 2;
+```
+<tr>Что будет записано в x после выполнения кода?</tr>
+<variantright> 3
+<variant> 6
+<variant> 1
+<variant> Compilation error <tr>Ошибка компиляции</tr>
+<variant> Undefined behavior <tr>Неопределённое поведение</tr>
+<explain>Почему верно: (6 − 5) × 2 = 2, x = 6 / 2 = 3.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What will be the result of the following code?
+```cpp
+int x = 12, y = 3;
+x -= y *= 2;
+```
+<tr>Каким будет результат кода?</tr>
+<variantright> 6
+<variant> 12
+<variant> 3
+<variant> 9
+<variant> Compilation error <tr>Ошибка компиляции</tr>
+<explain>Почему верно: Справа налево: y *= 2 → y = 6, потом x -= 6 → x = 6.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the value of x after this sequence of operations?
+```cpp
+double x = 9;
+x /= (int)x % 4 + 1.5;
+```
+<tr>Какое значение у x после этих операций?</tr>
+<variantright> 3.6
+<variant> 4.5
+<variant> Compilation error <tr>Ошибка компиляции</tr>
+<variant> Undefined behavior <tr>Неопределённое поведение</tr>
+<variant> 2.25
+<explain>Почему верно: (int)9 % 4 = 1, 1 + 1.5 = 2.5, x = 9 / 2.5 = 3.6.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What will be the result of x after executing this code?
+```cpp
+int x = 20;
+x %= (x / 5) + (x / 10);
+```
+<tr>Каким будет x после выполнения кода?</tr>
+<variantright> 2
+<variant> 0
+<variant> 5
+<variant> Compilation error <tr>Ошибка компиляции</tr>
+<variant> Undefined behavior <tr>Неопределённое поведение</tr>
+<explain>Почему верно: 20 / 5 = 4, 20 / 10 = 2, 4 + 2 = 6, 20 % 6 = 2.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the final value of x?
+```cpp
+int x = 15;
+x += (x / 3) - (x / 5);
+```
+<tr>Какое итоговое значение x?</tr>
+<variantright> 17
+<variant> 15
+<variant> 12
+<variant> Compilation error <tr>Ошибка компиляции</tr>
+<variant> Undefined behavior <tr>Неопределённое поведение</tr>
+<explain>Почему верно: 15 / 3 = 5, 15 / 5 = 3, x = 15 + (5 − 3) = 17.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What happens after the following operations?
+```cpp
+bool flag = true;
+int x = 10;
+x *= flag + 2;
+```
+<tr>Что получится после этих операций?</tr>
+<variantright> 30
+<variant> 10
+<variant> 20
+<variant> Compilation error <tr>Ошибка компиляции</tr>
+<variant> Undefined behavior <tr>Неопределённое поведение</tr>
+<explain>Почему верно: true в арифметике = 1, 1 + 2 = 3, x = 10 × 3 = 30.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> (Comparison operations) “Logical and” operation in C++:
+<tr>(Операции сравнения) Операция «логическое И» в C++:</tr>
+<variantright> &&
+<variant> AND
+<variant> &
+<variant> ||
+<variant> !
+<explain>Почему верно: && — логическое И: истина, только если оба условия истинны. & — побитовое И.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> (Comparison operations) “Logical or” operation in C++:
+<tr>(Операции сравнения) Операция «логическое ИЛИ» в C++:</tr>
+<variantright> ||
+<variant> &&
+<variant> AND
+<variant> &
+<variant> OR
+<explain>Почему верно: || — логическое ИЛИ: истина, если хотя бы одно условие истинно.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> (Comparison operations) “Inversion” operation in C++:
+<tr>(Операции сравнения) Операция «отрицание» в C++:</tr>
+<variantright> !
+<variant> AND
+<variant> &
+<variant> ||
+<variant> OR
+<explain>Почему верно: ! меняет истину на ложь и наоборот.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Preprocessor directive for connecting external modules to the project:
+<tr>Директива препроцессора для подключения внешних модулей к проекту:</tr>
+<variantright> #include
+<variant> include
+<variant> uses
+<variant> add
+<variant> #insert
+<explain>Почему верно: #include подключает заголовочный файл, например #include <iostream.h>.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Prefix increment to the variable X:
+<tr>Префиксный инкремент переменной X:</tr>
+<variantright> ++X
+<variant> X++
+<variant> inc(X)
+<variant> ++x
+<variant> --X
+<explain>Почему верно: Префиксный — знак перед именем: ++X. ++x — это другая переменная (регистр важен).
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Postfix increment to the variable DC:
+<tr>Постфиксный инкремент переменной DC:</tr>
+<variantright> DC++
+<variant> ++DC
+<variant> inc(DC)
+<variant> ++Dc
+<variant> --Dc
+<explain>Почему верно: Постфиксный — знак после имени: DC++. ++Dc — другая переменная (регистр важен).
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Select a similar operator for x=x+7:
+<tr>Выбери равносильный оператор для x=x+7:</tr>
+<orig>Select a similar operator for x=x+7:
+✔ х+=7
+• X+=7
+• x++
+• x++*=7
+• x+=x+7</orig>
+<variantright> x+=7
+<variant> X+=7
+<variant> x++
+<variant> x++*=7
+<variant> x+=x+7
+<explain>Почему верно: x = x + 7 сокращённо пишется x += 7. X+=7 — другая переменная (заглавная X).
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the value of variable y?
+```cpp
+int x=15, y=25;
+y+=x;
+```
+<tr>int x=15, y=25; y+=x; Чему равна переменная y?</tr>
+<variantright> 40
+<variant> 15
+<variant> 25
+<variant> 26
+<variant> there is an error in a program block <tr>в программе ошибка</tr>
+<explain>Почему верно: y = 25 + 15 = 40.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the value of variable y?
+```cpp
+int x=15, y=25;
+y+=x++;
+```
+<tr>int x=15, y=25; y+=x++; Чему равна переменная y?</tr>
+<variantright> 40
+<variant> 41
+<variant> 25
+<variant> 26
+<variant> 15
+<explain>Почему верно: x++ сначала отдаёт старое значение 15, потом увеличивает x: y = 25 + 15 = 40.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the value of variable x?
+```cpp
+int x=15, y=25;
+y+=x++;
+```
+<tr>int x=15, y=25; y+=x++; Чему равна переменная x?</tr>
+<variantright> 16
+<variant> 40
+<variant> 41
+<variant> 26
+<variant> 15
+<explain>Почему верно: После x++ переменная x становится 16.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What are the values of variables x and y?
+```cpp
+int x=15, y=25;
+y+=++x;
+```
+<tr>int x=15, y=25; y+=++x; Чему равны переменные x и y?</tr>
+<variantright> 16 and 41 <tr>16 и 41</tr>
+<variant> 15 and 41 <tr>15 и 41</tr>
+<variant> 15 and 40 <tr>15 и 40</tr>
+<variant> 16 and 40 <tr>16 и 40</tr>
+<variant> 15 and 25 <tr>15 и 25</tr>
+<explain>Почему верно: ++x сначала увеличивает x до 16, потом y = 25 + 16 = 41.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Select a similar operator for x-=y;
+<tr>Выбери равносильный оператор для x-=y;</tr>
+<orig>Select a similar operator for x-=y;
+✔ x = х-y;
+• x = y*(-1);
+• y = -х;
+• x = -1;
+• x = -у;</orig>
+<variantright> x = x-y;
+<variant> x = y*(-1);
+<variant> y = -x;
+<variant> x = -1;
+<variant> x = -y;
+<explain>Почему верно: x -= y — то же, что x = x - y.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What happens to the next command?
+```cpp
+x-=7;
+```
+<tr>Что делает команда x-=7;?</tr>
+<variantright> Decreasing the value of variable x by seven; <tr>Уменьшает значение переменной x на семь</tr>
+<variant> Assigning the number 7 to the variable x; <tr>Присваивает переменной x число 7</tr>
+<variant> Increasing the value of variable x by seven; <tr>Увеличивает значение переменной x на семь</tr>
+<variant> Assigning the number (-7) to the variable x; <tr>Присваивает переменной x число (−7)</tr>
+<variant> There is an error in command; <tr>В команде ошибка</tr>
+<explain>Почему верно: x -= 7 то же, что x = x − 7.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> int x=5, y=2;
+```cpp
+  		float z=x/y;
+what is the value of the variable z?
+```
+<tr>int x=5, y=2; float z=x/y; Чему равна переменная z?</tr>
+<variantright> 2
+<variant> 2.5
+<variant> 0.25e+01
+<variant> 0.2e+01
+<variant> error <tr>ошибка</tr>
+<explain>Почему верно: x/y — деление целых: 5/2 = 2 (дробь отбрасывается ещё до записи в float).
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> int x=5, y=2;
+```cpp
+  		float z=x+y%3;
+what is the value of the variable z?
+```
+<tr>int x=5, y=2; float z=x+y%3; Чему равна переменная z?</tr>
+<variantright> 7
+<variant> 1
+<variant> 0
+<variant> 2.5
+<variant> error <tr>ошибка</tr>
+<explain>Почему верно: % выполняется раньше +: 2 % 3 = 2, z = 5 + 2 = 7.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which of the following is the correct way to express the logical OR operator in C++?
+<tr>Как правильно записать логическое ИЛИ в C++?</tr>
+<variantright> ||
+<variant> |
+<variant> &&
+<variant> OR
+<variant> +
+<explain>Почему верно: || — логическое ИЛИ; | — побитовое.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What will the value of the bool variable result be after the following C++ code? int x = 5; bool result = (x > 10);
+<tr>Какое значение будет у bool-переменной result? int x = 5; bool result = (x > 10);</tr>
+<variantright> false
+<variant> true
+<variant> 5
+<variant> 0
+<variant> The code will not compile. <tr>Код не скомпилируется.</tr>
+<explain>Почему верно: 5 > 10 — ложь, result = false.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> In a conditional statement, such as if (any_number), what value is treated as false?
+<tr>Какое значение в условии if (any_number) считается ложью?</tr>
+<variantright> Zero (0) <tr>Ноль (0)</tr>
+<variant> Any negative number <tr>Любое отрицательное число</tr>
+<variant> One (1) <tr>Единица (1)</tr>
+<variant> A character literal <tr>Символьная константа</tr>
+<variant> Only the boolean keyword false <tr>Только ключевое слово false</tr>
+<explain>Почему верно: Число в условии ложно только если оно 0, любое другое — истина.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the result of the logical NOT operator (!) on the value true?
+<tr>Что даёт логическое НЕ (!) от значения true?</tr>
+<variantright> false
+<variant> 0
+<variant> true
+<variant> 1
+<variant> Undefined <tr>Не определено</tr>
+<explain>Почему верно: !true = false.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the result of the integer division 10 / 3 in C++?
+<tr>Каков результат целочисленного деления 10 / 3 в C++?</tr>
+<variantright> 3
+<variant> 3.333...
+<variant> 1
+<variant> 4
+<variant> 0
+<explain>Почему верно: 10 / 3 = 3, дробь отбрасывается.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the result of the modulo operation 10 % 3 in C++?
+<tr>Каков результат операции 10 % 3 в C++?</tr>
+<variantright> 1
+<variant> 3
+<variant> 0
+<variant> 3.333...
+<variant> 10
+<explain>Почему верно: % — остаток: 10 = 3·3 + 1.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> If int a = 5; what will be the value of b after the execution of int b = a++;?
+<tr>Если int a = 5; чему будет равно b после int b = a++;?</tr>
+<variantright> 5 (and a becomes 6) <tr>5 (а a станет 6)</tr>
+<variant> 6 (and a becomes 6) <tr>6 (а a станет 6)</tr>
+<variant> 5 (and a remains 5) <tr>5 (а a останется 5)</tr>
+<variant> 6 (and a remains 5) <tr>6 (а a останется 5)</tr>
+<variant> A compile-time error occurs <tr>Будет ошибка компиляции</tr>
+<explain>Почему верно: a++ сначала отдаёт старое значение (5), потом увеличивает a.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> If int x = 5; what will be the value of y after the execution of int y = --x;?
+<tr>Если int x = 5; чему будет равно y после int y = --x;?</tr>
+<variantright> 4 (and x becomes 4) <tr>4 (а x станет 4)</tr>
+<variant> 5 (and x becomes 4) <tr>5 (а x станет 4)</tr>
+<variant> 4 (and x remains 5) <tr>4 (а x останется 5)</tr>
+<variant> 5 (and x remains 5) <tr>5 (а x останется 5)</tr>
+<variant> A run-time error occurs <tr>Будет ошибка во время выполнения</tr>
+<explain>Почему верно: --x сначала уменьшает x до 4, потом отдаёт 4.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the result of the expression 2 + 3 * 4 in C++, considering operator precedence?
+<tr>Каков результат выражения 2 + 3 * 4 в C++ с учётом приоритета операций?</tr>
+<variantright> 14
+<variant> 20
+<variant> 12
+<variant> 9
+<variant> 24
+<explain>Почему верно: Умножение раньше сложения: 3·4 = 12, 2 + 12 = 14.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the result of the expression 10 / 4.0 in C++?
+<tr>Каков результат выражения 10 / 4.0 в C++?</tr>
+<variantright> 2.5
+<variant> 2
+<variant> 2.0
+<variant> 3
+<variant> 4.0
+<explain>Почему верно: 4.0 — вещественное, поэтому деление вещественное: 2.5.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What does the unary minus operator (-) do to the value of a variable?
+<tr>Что делает унарный минус (-) со значением переменной?</tr>
+<variantright> Changes its sign (negates it). <tr>Меняет знак (делает противоположным).</tr>
+<variant> Decrements the value by one. <tr>Уменьшает значение на единицу.</tr>
+<variant> Multiplies the value by negative one and assigns it back. <tr>Умножает значение на −1 и записывает обратно.</tr>
+<variant> Converts it to an unsigned type. <tr>Переводит в беззнаковый тип.</tr>
+<variant> Always results in a negative value. <tr>Всегда даёт отрицательное значение.</tr>
+<explain>Почему верно: -x — число с противоположным знаком; сама переменная при этом не меняется.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the result of the logical expression (5 > 3) && (2 < 1) in C++?
+<tr>Каков результат логического выражения (5 > 3) && (2 < 1) в C++?</tr>
+<variantright> false
+<variant> true
+<variant> 1
+<variant> error <tr>ошибка</tr>
+<variant> Undefined <tr>Не определено</tr>
+<explain>Почему верно: 5 > 3 — истина, 2 < 1 — ложь; И даёт ложь.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the result of the logical expression (5 > 3) || (2 < 1) in C++?
+<tr>Каков результат логического выражения (5 > 3) || (2 < 1) в C++?</tr>
+<variantright> true
+<variant> false
+<variant> 0
+<variant> error <tr>ошибка</tr>
+<variant> Undefined <tr>Не определено</tr>
+<explain>Почему верно: Первое условие истинно, ИЛИ даёт истину.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the result of the combined logical expression !true && (false || true)?
+<tr>Каков результат составного выражения !true && (false || true)?</tr>
+<variantright> false
+<variant> true
+<variant> error <tr>ошибка</tr>
+<variant> any Boolean value <tr>любое логическое значение</tr>
+<variant> Undefined <tr>Не определено</tr>
+<explain>Почему верно: !true = false, а false && что угодно = false.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> if int a = 0; what boolean value does the condition if (a) evaluate to in C++?
+<tr>Если int a = 0; каким логическим значением будет условие if (a) в C++?</tr>
+<variantright> false
+<variant> true
+<variant> 1
+<variant> The condition is invalid <tr>Условие недопустимо</tr>
+<variant> Undefined <tr>Не определено</tr>
+<explain>Почему верно: 0 в условии — ложь.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the fundamental difference between the assignment operator (=) and the equality operator (==) in C++?
+<tr>В чём главное различие между присваиванием (=) и сравнением (==) в C++?</tr>
+<variantright> = assigns a value; == compares two values. <tr>= присваивает значение; == сравнивает два значения.</tr>
+<variant> = compares two values; == assigns a value. <tr>= сравнивает два значения; == присваивает значение.</tr>
+<variant> Both operators are identical and interchangeable. <tr>Оба оператора одинаковые и взаимозаменяемые.</tr>
+<variant> = is only for integers; == is only for booleans. <tr>= только для целых; == только для логических.</tr>
+<variant> = is a binary operator; == is a unary operator. <tr>= бинарный оператор; == унарный.</tr>
+<explain>Почему верно: = записывает значение, == проверяет равенство.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> If int x = 10; what is the value of x after the compound assignment expression x += 5;?
+<tr>Если int x = 10; чему равно x после составного присваивания x += 5;?</tr>
+<variantright> 15
+<variant> 5
+<variant> 10
+<variant> 50
+<variant> 2
+<explain>Почему верно: x = 10 + 5 = 15.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> If int x = 10; what is the value of x after the compound assignment expression x *= 2;?
+<tr>Если int x = 10; чему равно x после составного присваивания x *= 2;?</tr>
+<variantright> 20
+<variant> 12
+<variant> 5
+<variant> 2
+<variant> 100
+<explain>Почему верно: x = 10 × 2 = 20.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the effect of the assignment operator (=) in a chained assignment like a = b = 5;?
+<tr>Как работает присваивание (=) в цепочке a = b = 5;?</tr>
+<variantright> The value 5 is assigned to b, and then the result of that assignment (5) is assigned to a. <tr>Значение 5 присваивается b, а затем результат этого присваивания (5) присваивается a.</tr>
+<variant> Both a and b are compared to 5, resulting in a boolean value. <tr>a и b сравниваются с 5, получается логическое значение.</tr>
+<variant> The expression is evaluated from left to right: a gets 5, then b gets 5. <tr>Выражение выполняется слева направо: a получает 5, потом b получает 5.</tr>
+<variant> It is equivalent to a = 5; b = 5; but only when variables are of the same type. <tr>Это то же, что a = 5; b = 5; но только для переменных одного типа.</tr>
+<variant> This syntax causes a compile-time error. <tr>Такой синтаксис вызывает ошибку компиляции.</tr>
+<explain>Почему верно: Присваивание выполняется справа налево: сначала b = 5, потом a = (b = 5) = 5.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> If int x = 11; what is the final value of x after the compound assignment expression x /= 2; (integer division)?
+<tr>Если int x = 11; каким будет x после x /= 2; (целочисленное деление)?</tr>
+<variantright> 5
+<variant> 5.5
+<variant> 6
+<variant> 0
+<variant> 22
+<explain>Почему верно: 11 / 2 = 5, дробь отбрасывается.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> If int x = 10; what is the final value of x after the compound assignment expression x %= 3;?
+<tr>Если int x = 10; каким будет x после x %= 3;?</tr>
+<variantright> 1
+<variant> 3
+<variant> 10
+<variant> 0
+<variant> 30
+<explain>Почему верно: 10 % 3 = 1 (остаток).
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is the primary side effect of using the assignment operator (=)?
+<tr>Какой главный побочный эффект у оператора присваивания (=)?</tr>
+<variantright> It changes the value stored in the variable on the left side (L-value). <tr>Он меняет значение переменной слева (L-value).</tr>
+<variant> It returns a boolean value indicating equality. <tr>Он возвращает логическое значение равенства.</tr>
+<variant> It converts the variable on the left to the type of the value on the right. <tr>Он переводит переменную слева в тип значения справа.</tr>
+<variant> It creates a new variable with the assigned value. <tr>Он создаёт новую переменную с этим значением.</tr>
+<variant> It increments the value of the left-hand variable. <tr>Он увеличивает переменную слева.</tr>
+<explain>Почему верно: Присваивание записывает новое значение в переменную слева от =.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Which of the following is the compound assignment operator that is equivalent to x = x - y?
+<tr>Какой составной оператор присваивания равносилен x = x - y?</tr>
+<variantright> x -= y
+<variant> x =- y
+<variant> x -- y
+<variant> x =+ y
+<variant> x = y – x
+<explain>Почему верно: x -= y. Запись x =- y — это x = -y.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> What is output of the below C++ program?
+```cpp
+int main()
+{
+  int a=10;
+  int b,c;
+  b = a++;
+  c = a;
+  std::cout<<a<<b<<c;
+  return 0;
+}
+```
+<tr>Что выведет эта программа на C++?</tr>
+<variantright> 111011
+<variant> 111111
+<variant> 101011
+<variant> 101010
+<variant> There is no correct answer <tr>Нет правильного ответа</tr>
+<explain>Почему верно: b = a++ → b = 10, a = 11; c = 11. Вывод без пробелов: 11 10 11 → 111011.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Find output of below program
+```cpp
+#include<iostream>
+int main()
+{
+int c1,c2;
+int a = -8;
+int b = 3;
+c1 = --a + b;
+c2 = a-- + b;
+std::cout<<"c1="<<c1<<", "<<"c2="<<c2<<endl;
+return 0;
+}
+```
+<tr>Найди вывод программы</tr>
+<nt>endl без std:: (и без using namespace std) — строгий компилятор выдаст ошибку. В Borland C++Builder (iostream.h) работает. Числа в ответе верные.</nt>
+<variantright> c1=-6,c2=-6
+<variant> c1=-4,c1=b-3
+<variant> c1=-7,c2=-3
+<variant> c1=-7,c2=-4
+<variant> There is no correct answer <tr>Нет правильного ответа</tr>
+<explain>Почему верно: --a: a = −9, c1 = −9 + 3 = −6; a--: берётся −9, c2 = −9 + 3 = −6 (потом a = −10).
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Find the output of the following C++ program:
+```cpp
+main(){
+  int a, b = 10;
+  a = 95 / 10;
+  std::cout << a << endl;
+}
+```
+<tr>Найди вывод программы на C++:</tr>
+<nt>main() без int и endl без std:: — строгий компилятор выдаст ошибку, в Borland C++Builder работает. Ответ 9 верный.</nt>
+<variantright> 9
+<variant> 10
+<variant> 8
+<variant> 11
+<variant> 12
+<explain>Почему верно: 95 / 10 — целое деление: 9.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Find the output of the following C++ program:
+```cpp
+main(){
+  int a = 10, b, c;
+  b  = a++;
+  c = a;
+  std::cout << a << " " << b << " " << c << endl;
+}
+```
+<tr>Найди вывод программы на C++:</tr>
+<nt>main() без int и endl без std:: — строгий компилятор выдаст ошибку, в Borland C++Builder работает. Ответ верный.</nt>
+<variantright> 11 10 11
+<variant> 10 11 11
+<variant> 11 11 10
+<variant> 10 10 11
+<variant> 11 10 10
+<explain>Почему верно: b = a++ → b = 10, a = 11, c = 11 → «11 10 11».
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
+<question> Identify the correct example of a pre-increment operator in C++:
+<tr>Укажи правильный пример префиксного инкремента в C++:</tr>
+<variantright> ++a
+<variant> a++
+<variant> a--
+<variant> --a--
+<variant> a + 1
+<explain>Почему верно: Префиксный — знак перед именем: ++a.
+Источник: база преподавателя (с++2026 РК1) ⭐</explain>
+
 <question> Where are library functions located?
 <tr>Где находятся библиотечные функции?</tr>
+<dop/>
 <variantright> in library files <tr>в библиотечных файлах</tr>
 <variant> on a CD <tr>на компакт-диске</tr>
 <variant> on the Internet <tr>в Интернете</tr>
@@ -8,10 +661,11 @@
 <explain>Почему верно: библиотечные функции (sqrt, rand, printf) уже написаны и скомпилированы, они лежат в библиотечных файлах. #include подключает только их описания (заголовки).
 Ловушки: CD, интернет и оперативная память — не место хранения библиотек.
 По лекции: тема 2, раздел «Что такое директива препроцессора? Зачем #include?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which header file contains the prototype of the `rand()` function?
 <tr>В каком заголовочном файле находится прототип функции `rand()`?</tr>
+<dop/>
 <variantright> #include "stdlib.h"
 <variant> #include "conio.h"
 <variant> #include "math.h"
@@ -20,10 +674,11 @@
 <explain>Почему верно: rand(), random(), randomize() описаны в stdlib.h — «стандартной библиотеке».
 Ловушки: conio.h — экран и клавиатура (getch, clrscr), math.h — математика (sqrt, pow), iostream.h — cin/cout, stdio.h — printf и файлы.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> If you mix float and double types, what type is the result?
 <tr>Если смешать типы float и double, какой тип получится в результате?</tr>
+<dop/>
 <variantright> double
 <variant> float
 <variant> long
@@ -32,10 +687,11 @@
 <explain>Почему верно: при смешивании типов результат берёт более вместительный тип, чтобы не потерять точность. double (8 байт) вместительнее float (4 байта).
 Ловушки: float меньше double; long, int и short — целые типы, дробную часть они бы потеряли.
 По лекции: тема 2, раздел «Что такое приоритет и ассоциативность операций?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What extension do source (header) files with functions and defined data have, and what are they called?
 <tr>Какое расширение у исходных (заголовочных) файлов с функциями и определёнными данными и как они называются?</tr>
+<dop/>
 <variantright> ".h", ".h files" <tr>".h", ".h-файлы"</tr>
 <variant> ".htp", ".htp files" <tr>".htp", ".htp-файлы"</tr>
 <variant> ".c", ".c files" <tr>".c", ".c-файлы"</tr>
@@ -44,10 +700,11 @@
 <explain>Почему верно: заголовочные файлы имеют расширение .h (от header — «заголовок»). В них описания функций и данных, их подключают через #include.
 Ловушки: .c/.cpp — сам код программы, а не заголовки; .htp и .f не используются.
 По лекции: тема 2, раздел «Что такое директива препроцессора? Зачем #include?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> If you mix long and float types, what type is the result?
 <tr>Если смешать типы long и float, какой тип получится в результате?</tr>
+<dop/>
 <variantright> float
 <variant> char
 <variant> int
@@ -56,22 +713,11 @@
 <explain>Почему верно: long — целое, float — дробное. Чтобы не потерять дробную часть, результат становится float.
 Ловушки: int и char — целые, дробь бы пропала; double — тоже вместительный, но смешивание long+float даёт именно float.
 По лекции: тема 2, раздел «Что такое приоритет и ассоциативность операций?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> How is the remainder (modulo) operation written?
-<tr>Как записывается операция остатка от деления?</tr>
-<variantright> %
-<variant> /
-<variant> \
-<variant> &
-<variant> <<
-<explain>Почему верно: % — остаток от деления: 7 % 3 = 1.
-Ловушки: / — само деление; \ в C не операция; & — побитовое И (или взятие адреса); << — сдвиг (и вывод в cout).
-По лекции: тема 2, раздел «Какие арифметические операции есть в C++?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> In which option is `sizeof` written correctly?
 <tr>В каком варианте `sizeof` записан правильно?</tr>
+<dop/>
 <variantright> sizeof (type)
 <variant> sizeof type
 <variant> sizeof [type]
@@ -80,22 +726,11 @@
 <explain>Почему верно: sizeof пишут как функцию, тип — в круглых скобках: sizeof(int) даёт 4.
 Ловушки: квадратные скобки, двоеточие и подчёркивание — неправильный синтаксис.
 По лекции: тема 2, раздел «Что такое операции и операнды?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which option correctly denotes logical negation?
-<tr>Какой вариант правильно обозначает логическое отрицание?</tr>
-<variantright> ! (exclamation mark — восклицательный знак)
-<variant> = (equals sign — знак равенства)
-<variant> \ (backslash — обратная косая черта)
-<variant> & (ampersand — амперсанд)
-<variant> ? (question mark — вопросительный знак)
-<explain>Почему верно: ! — логическое «НЕ»: !true = false, !0 = 1. Поэтому «не равно» пишется !=.
-Ловушки: = — присваивание; \ — начало управляющего символа; & — побитовое И; ? — часть условной операции ?:.
-По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> If you mix short and int types, the result is ...
 <tr>Если смешать типы short и int, в результате получится ...</tr>
+<dop/>
 <variantright> int
 <variant> short
 <variant> char
@@ -104,22 +739,11 @@
 <explain>Почему верно: short (2 байта) меньше int (4 байта). При смешивании результат «повышается» до большего типа — int.
 Ловушки: short — меньший тип, в него результат не сжимается; char, float, double здесь не участвуют.
 По лекции: тема 2, раздел «Что такое приоритет и ассоциативность операций?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What does the `*=` operation mean?
-<tr>Что означает операция `*=`?</tr>
-<variantright> multiply and assign <tr>умножить и присвоить</tr>
-<variant> assignment <tr>присваивание</tr>
-<variant> multiplication <tr>умножение</tr>
-<variant> comment <tr>комментарий</tr>
-<variant> multiply each element <tr>умножить каждый элемент</tr>
-<explain>Почему верно: x *= 3 — короткая запись x = x * 3: сначала умножить, потом записать результат в ту же переменную.
-Ловушки: просто «присваивание» — это =, просто «умножение» — это *. Здесь обе операции сразу.
-По лекции: тема 2, раздел «Что такое присваивание и составное присваивание?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which `printf()` format prints a real number?
 <tr>Какой формат `printf()` выводит вещественное число?</tr>
+<dop/>
 <variantright> %f
 <variant> %u
 <variant> %o
@@ -128,82 +752,11 @@
 <explain>Почему верно: %f (от float) печатает вещественное (дробное) число: printf("%f", 3.5).
 Ловушки: %u — беззнаковое целое, %o — восьмеричное, %x — шестнадцатеричное.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What is the value of the expression `5/2` in C?
-<tr>Чему равно в C выражение `5/2`?</tr>
-<variantright> 2
-<variant> 2.5
-<variant> 1
-<variant> 5
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: 5 и 2 — целые, поэтому деление целочисленное и дробная часть отбрасывается: 5/2 = 2.
-Ловушки: 2.5 было бы при 5.0/2; 1 — это остаток 5%2; 5 — бессмыслица.
-По лекции: тема 2, раздел «Какие арифметические операции есть в C++?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What is the value of the expression `7/2` in C?
-<tr>Чему равно в C выражение `7/2`?</tr>
-<variantright> 3
-<variant> 2
-<variant> 3.5
-<variant> 5
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: целочисленное деление: 7/2 = 3 (3.5 без дробной части).
-Ловушки: 3.5 — обычное деление; 2 — неверно отброшено; 5 — бессмыслица.
-По лекции: тема 2, раздел «Какие арифметические операции есть в C++?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What is the value of the expression `7/3` in C?
-<tr>Чему равно в C выражение `7/3`?</tr>
-<variantright> 2
-<variant> 2.5
-<variant> 3
-<variant> 3.3
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: 7 и 3 — целые, значит деление целочисленное: дробная часть отбрасывается, 7/3 = 2 (а не 2.33).
-Ловушки: 2.5 и 3.3 получились бы только с дробными числами (7.0/3); 3 — неверное округление вверх.
-По лекции: тема 2, раздел «Какие арифметические операции есть в C++?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What is the value of the expression `5%2` in C?
-<tr>Чему равно в C выражение `5%2`?</tr>
-<variantright> 1
-<variant> 2
-<variant> 2.5
-<variant> 3
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: % — остаток: 5 = 2·2 + 1, остаток 1.
-Ловушки: 2 — это 5/2 (частное), 2.5 — обычное деление.
-По лекции: тема 2, раздел «Какие арифметические операции есть в C++?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What is the value of the expression `7%2` in C?
-<tr>Чему равно в C выражение `7%2`?</tr>
-<variantright> 1
-<variant> 3
-<variant> 3.5
-<variant> 4
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: % — остаток: 7 = 3·2 + 1, остаток 1.
-Ловушки: 3 — это 7/2 (частное), 3.5 — обычное деление, 4 — ошибка.
-По лекции: тема 2, раздел «Какие арифметические операции есть в C++?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which operation in C finds the integer part of dividing an integer by an integer (like div in Pascal)?
-<tr>Какая операция в C находит целую часть от деления целого на целое (как div в Pascal)?</tr>
-<variantright> /
-<variant> %
-<variant> \
-<variant> &
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: если оба числа целые, / сразу даёт целую часть (как div в Pascal): 7/2 = 3.
-Ловушки: % даёт остаток (как mod), а не целую часть; \ и & — не деление.
-По лекции: тема 2, раздел «Какие арифметические операции есть в C++?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which expression in C does NOT increase the value of a variable by 1?
 <tr>Какое выражение в C НЕ увеличивает значение переменной на 1?</tr>
+<dop/>
 <variantright> x*=1
 <variant> x++
 <variant> x=x+1
@@ -212,10 +765,12 @@
 <explain>Почему верно: x*=1 — это x = x*1, число не меняется.
 Ловушки: x++, x=x+1, x+=1 — три разные записи одного действия «прибавить 1».
 По лекции: тема 2, раздел «Что такое выражение в C++?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> How do you write a statement in C that gives a random integer in the range [-20, 50]?
 <tr>Как в C записать оператор, который даёт случайное целое число в диапазоне [-20, 50]?</tr>
+<dop/>
+<nt>random(70) даёт 0…69, значит random(70)-20 — от −20 до 49. Чтобы получить [−20, 50], нужно random(71)-20.</nt>
 <variantright> random(70)-20;
 <variant> random(50)-20;
 <variant> random(30)+20;
@@ -224,10 +779,12 @@
 <explain>Почему верно: random(N) даёт числа от 0 до N-1. Чтобы начинать с -20, вычитаем 20 (сдвиг = нижняя граница), ширина диапазона от -20 до 50 — 70. Получаем random(70)-20.
 Ловушки: random(50)-20 даст только до 29; random(30)+20 — от 20; random(50) — от 0.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> In what range will x be after `x = random(20)-5`?
 <tr>В каком диапазоне будет значение x после `x = random(20)-5`?</tr>
+<dop/>
+<nt>random(20) даёт 0…19, значит x — от −5 до 14, а не до 15.</nt>
 <variantright> [-5,15]
 <variant> [5,20]
 <variant> [-5,20]
@@ -236,10 +793,11 @@
 <explain>Почему верно: random(20) даёт 0…19, минус 5 — от -5 до 14. В тесте это записано как [-5,15]. Правило: левая граница = сдвиг (-5).
 Ловушки: [5,…] — потеряли знак минус; [-5,20] — забыли вычесть 5 из правой границы.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which statement in Borland C++ Builder starts the random number generator so that each run of the program gives different numbers?
 <tr>Какой оператор в Borland C++ Builder запускает генератор случайных чисел, чтобы при каждом запуске программы получались разные числа?</tr>
+<dop/>
 <variantright> randomize();
 <variant> time();
 <variant> getch();
@@ -248,46 +806,11 @@
 <explain>Почему верно: randomize() запускает генератор от текущего времени, поэтому каждый запуск даёт разные числа. Без него random() каждый раз выдаёт одну и ту же последовательность.
 Ловушки: time() только возвращает время, getch() ждёт клавишу, main() — главная функция программы.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What is x after `x=0; x++; x=x+1; x=x*x;`?
-<tr>Чему равно x после `x=0; x++; x=x+1; x=x*x;`?</tr>
-<variantright> 4
-<variant> 2
-<variant> 0
-<variant> 3
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: по шагам: x=0 → x++ даёт 1 → x=x+1 даёт 2 → x=x*x даёт 2·2 = 4.
-Ловушки: 2 — забыли последнюю строку, 3 — сложили вместо умножения, 0 — забыли x++.
-По лекции: тема 2, раздел «Что такое выражение в C++?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What is x after `x=0; x++; x=x*1; x=x*x;`?
-<tr>Чему равно x после `x=0; x++; x=x*1; x=x*x;`?</tr>
-<variantright> 1
-<variant> 2
-<variant> 0
-<variant> 4
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: считаем по шагам: x=0 → x++ даёт 1 → x=x*1 = 1 → x=x*x = 1.
-Ловушки: 2 и 4 получились бы, если перепутать *1 с +1; 0 — если забыть x++.
-По лекции: тема 2, раздел «Что такое выражение в C++?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which statement in C is equivalent to `n%=3`?
-<tr>Какому оператору в C равносильно `n%=3`?</tr>
-<variantright> n=n%3
-<variant> n=n/3
-<variant> n=n*3
-<variant> n=n\3
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: n %= 3 — сокращение n = n % 3, то есть остаток от деления на 3.
-Ловушки: /3 — деление, *3 — умножение, \ в C не операция.
-По лекции: тема 2, раздел «Что такое присваивание и составное присваивание?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Choose the correct program for calculating the volume of a cube with a given side:
 <tr>Укажите правильную программу для вычисления объёма куба с заданной стороной:</tr>
+<dop/>
 <variantright> v=pow (a,3);
 <variant> v=pow (a,4);
 <variant> v=pow (a,2);
@@ -296,10 +819,11 @@
 <explain>Почему верно: объём куба = сторона в кубе = a³ = pow(a,3).
 Ловушки: pow(a,2) и a*a — площадь грани, pow(a,4) — четвёртая степень.
 По лекции: тема 2, раздел «Что такое выражение в C++?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What does the program `{ float x=60, y; y=atan(x*3.14/180); cout<< y;}` calculate?
 <tr>Что вычисляет программа `{ float x=60, y; y=atan(x*3.14/180); cout<< y;}`?</tr>
+<dop/>
 <variantright> arctangent <tr>арктангенс</tr>
 <variant> arccotangent <tr>арккотангенс</tr>
 <variant> tangent <tr>тангенс</tr>
@@ -308,10 +832,11 @@
 <explain>Почему верно: atan — arc tangent, арктангенс. Буква a в начале (acos, asin, atan) означает «арк-». Перевод x*3.14/180 — градусы в радианы.
 Ловушки: тангенс — tan, котангенса в math.h нет (это 1/tan).
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> In which file is the standard function `pow(x,y);` defined?
 <tr>В каком файле определена стандартная функция `pow(x,y);`?</tr>
+<dop/>
 <variantright> math.h
 <variant> iostream.h
 <variant> stdlib.h
@@ -320,44 +845,11 @@
 <explain>Почему верно: pow — математическая функция, значит math.h (вместе с sqrt, sin, fabs).
 Ловушки: iostream.h — cin/cout, stdlib.h — случайные числа и abs, conio.h — консоль.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What will `cout<<sqrt(pow(5,4));` print?
-<tr>Что выведет `cout<<sqrt(pow(5,4));`?</tr>
-<variantright> 25
-<variant> 625
-<variant> 5
-<variant> 15
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Ответ: 25. pow(5,4) = 5⁴ = 625, а sqrt(625) = 25.
-По лекции: тема 2, раздел «Дополнительные библиотеки».</explain>
-
-<question> Specify the unary increment operation in C:
-<tr>Укажите унарную операцию инкремента в C:</tr>
-<variantright> ++
-<variant> --
-<variant> //
-<variant> /*
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: ++ — инкремент, «плюс один». Унарная — потому что нужен всего один операнд: x++.
-Ловушки: -- — декремент (минус один); // и /* — начало комментариев.
-По лекции: тема 2, раздел «Что такое операции и операнды?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Specify the unary decrement operation in C:
-<tr>Укажите унарную операцию декремента в C:</tr>
-<variantright> --
-<variant> ++
-<variant> */
-<variant> //
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: -- — декремент, «минус один»: x--.
-Ловушки: ++ — инкремент; */ и // — комментарии.
-По лекции: тема 2, раздел «Что такое операции и операнды?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> How do you write the decimal logarithm lg x in C?
 <tr>Как в C записать десятичный логарифм lg x?</tr>
+<dop/>
 <variantright> log10(x)
 <variant> ln (x)
 <variant> log (10x)
@@ -366,22 +858,11 @@
 <explain>Почему верно: log10(x) — логарифм по основанию 10 (lg). log(x) в C — натуральный (ln).
 Ловушки: функций lg и ln в C нет; log(10x) — логарифм от произведения.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> If x=2 at first, what is x after `x*=(x+1)`?
-<tr>Если сначала x=2, чему равно x после `x*=(x+1)`?</tr>
-<variantright> 6
-<variant> 5
-<variant> 4
-<variant> 3
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: x *= (x+1) — это x = x*(x+1). При x=2: 2·(2+1) = 6.
-Ловушки: 5 — сложили; 4 и 3 — неправильно раскрыли сокращение.
-По лекции: тема 2, раздел «Что такое присваивание и составное присваивание?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which function in C returns the modulus (absolute value) of a real argument?
 <tr>Какая функция в C возвращает модуль (абсолютное значение) вещественного аргумента?</tr>
+<dop/>
 <variantright> fabs (x)
 <variant> labs (x)
 <variant> absx (x)
@@ -390,10 +871,11 @@
 <explain>Почему верно: fabs — f(loat) abs: модуль вещественного (дробного) числа, лежит в math.h.
 Ловушки: abs — для int, labs — для long; absx и fabc не существуют.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which directive is included in C to use input-output commands?
 <tr>Какую директиву подключают в C, чтобы использовать команды ввода-вывода?</tr>
+<dop/>
 <variantright> # include "iostream.h"
 <variant> # include "conio.h"
 <variant> # include "stdio.h"
@@ -402,10 +884,11 @@
 <explain>Почему верно: cin и cout описаны в iostream.h (input-output stream — поток ввода-вывода).
 Ловушки: conio.h — getch/clrscr; stdio.h — printf/scanf (тоже ввод-вывод, но в стиле C); math.h — математика.
 По лекции: тема 2, раздел «Что такое директива препроцессора? Зачем #include?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The output statement in C:
 <tr>Оператор вывода в C:</tr>
+<dop/>
 <variantright> cout<<
 <variant> cin>>
 <variant> getch()
@@ -414,10 +897,11 @@
 <explain>Почему верно: cout << — вывод: стрелки «текут» в cout, то есть на экран.
 Ловушки: cin >> — ввод; getch() — ждёт клавишу; scanf() — ввод в стиле C.
 По лекции: тема 2, раздел «Что такое директива препроцессора? Зачем #include?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The input statement in C++:
 <tr>Оператор ввода в C++:</tr>
+<dop/>
 <variantright> cin>>
 <variant> cout<<
 <variant> printf()
@@ -426,10 +910,11 @@
 <explain>Почему верно: cin >> x — стрелки показывают, что данные текут из cin (клавиатура) в переменную x.
 Ловушки: cout << и printf() — вывод; getch() только ждёт нажатия.
 По лекции: тема 2, раздел «Что такое директива препроцессора? Зачем #include?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What does the `getch();` statement do?
 <tr>Что делает оператор `getch();`?</tr>
+<dop/>
 <variantright> waits for any key to be pressed but does not show it on the screen <tr>ждёт нажатия любой клавиши, но не выводит её на экран</tr>
 <variant> clears the screen <tr>очищает экран</tr>
 <variant> returns the value of a function <tr>возвращает значение функции</tr>
@@ -438,10 +923,11 @@
 <explain>Почему верно: getch() ждёт нажатия любой клавиши и не печатает её на экран. Поэтому её ставят в конце программы, чтобы окно не закрылось сразу.
 Ловушки: очищает экран clrscr(); возвращает значение return; конец программы — закрывающая } у main.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> In which header file is the `getch()` function defined?
 <tr>В каком заголовочном файле определена функция `getch()`?</tr>
+<dop/>
 <variantright> conio.h
 <variant> stdio.h
 <variant> iostream.h
@@ -450,10 +936,11 @@
 <explain>Почему верно: getch и clrscr — функции консоли (conio = console input-output), значит conio.h.
 Ловушки: stdio.h — printf/файлы, iostream.h — cin/cout, stdlib.h — случайные числа.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The screen clearing function in C:
 <tr>Функция очистки экрана в C:</tr>
+<dop/>
 <variantright> clrscr();
 <variant> clear screen();
 <variant> cls();
@@ -462,10 +949,11 @@
 <explain>Почему верно: clrscr = clear screen, «очистить экран».
 Ловушки: cls — команда Windows (в cmd), а не функция C; clear screen() с пробелом — неверное имя; clean() не существует.
 По лекции: тема 2, раздел «Что такое директива препроцессора? Зачем #include?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which header file is included to use the screen clearing function?
 <tr>Какой заголовочный файл подключают, чтобы использовать функцию очистки экрана?</tr>
+<dop/>
 <variantright> conio.h
 <variant> stdio.h
 <variant> iostream.h
@@ -474,10 +962,11 @@
 <explain>Почему верно: clrscr работает с консолью — conio.h.
 Ловушки: stdio.h, iostream.h, stdlib.h очистки экрана не содержат.
 По лекции: тема 2, раздел «Что такое директива препроцессора? Зачем #include?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which header file is included to use the random number function?
 <tr>Какой заголовочный файл подключают, чтобы использовать функцию случайных чисел?</tr>
+<dop/>
 <variantright> stdlib.h
 <variant> iostream.h
 <variant> stdio.h
@@ -486,58 +975,11 @@
 <explain>Почему верно: rand/random/randomize описаны в stdlib.h.
 Ловушки: iostream.h — cin/cout; stdio.h — printf; conio.h — getch/clrscr.
 По лекции: тема 2, раздел «Что такое директива препроцессора? Зачем #include?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which number corresponds to "false" in C?
-<tr>Какому числу в C соответствует «false» (ложь)?</tr>
-<variantright> 0
-<variant> 1
-<variant> it is not equal to any number <tr>ни одному числу не приравнивается</tr>
-<variant> -1
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: в C «ложь» — это 0. Всё, что не 0, считается истиной.
-Ловушки: 1 — истина; -1 — тоже истина (не ноль); «ни одному числу» — неверно, в C ложь — именно 0.
-По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which number corresponds to "true" in C?
-<tr>Какому числу в C соответствует «true» (истина)?</tr>
-<variantright> 1
-<variant> 0
-<variant> -1
-<variant> it is not equal to any number <tr>ни одному числу не приравнивается</tr>
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: истина в C — 1. Точнее, истиной считается любое не-ноль, но результат сравнения (5>3) равен именно 1.
-Ловушки: 0 — ложь.
-По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What does 1 mean as the result of evaluating a condition?
-<tr>Что означает 1 как результат вычисления условия?</tr>
-<variantright> true <tr>истина</tr>
-<variant> false <tr>ложь</tr>
-<variant> the result of correct compilation of the program <tr>результат правильной компиляции программы</tr>
-<variant> boolean
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: условие вроде (5>3) вычисляется в 1, а 1 — это истина (true).
-Ловушки: 0 — ложь; к компиляции результат условия отношения не имеет.
-По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What does 0 mean as the result of evaluating a condition?
-<tr>Что означает 0 как результат вычисления условия?</tr>
-<variantright> false <tr>ложь</tr>
-<variant> true <tr>истина</tr>
-<variant> the result of correct compilation of the program <tr>результат правильной компиляции программы</tr>
-<variant> boolean
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: условие вроде (5<3) вычисляется в 0, а 0 — это ложь (false).
-Ловушки: 1 — истина.
-По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Is the expression `(1 != 1)` in C true or false?
 <tr>Выражение `(1 != 1)` в C истинно или ложно?</tr>
+<dop/>
 <variantright> false <tr>ложно</tr>
 <variant> it makes no sense <tr>не имеет смысла</tr>
 <variant> true <tr>истинно</tr>
@@ -546,22 +988,11 @@
 <explain>Почему верно: != значит «не равно». 1 не равно 1? Нет, они равны, значит выражение ложно (0).
 Ловушки: «не имеет смысла» — выражение правильное; «истинно» — перепутали != и ==.
 По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> The expression equivalent to `s=s+x`:
-<tr>Выражение, равносильное `s=s+x`:</tr>
-<variantright> s+=x
-<variant> s=x++
-<variant> s=s++
-<variant> s=+x
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: s += x — короткая запись s = s + x: «прибавь x к s».
-Ловушки: s=x++ присваивает x и увеличивает x; s=s++ — бессмыслица; s=+x просто кладёт x в s (плюс — знак числа).
-По лекции: тема 2, раздел «Что такое присваивание и составное присваивание?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> How do you write the function arccos(x) in C?
 <tr>Как в C записать функцию arccos(x)?</tr>
+<dop/>
 <variantright> acos(x)
 <variant> cosa(x)
 <variant> acos[x]
@@ -570,49 +1001,14 @@
 <explain>Почему верно: арккосинус — acos(x): «a» = арк, аргумент в круглых скобках, как у любой функции.
 Ловушки: cosa не существует; [x] и {x} — неправильные скобки.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which logical operation is called "logical multiplication" (AND)?
-<tr>Какая логическая операция называется «логическое умножение» (И)?</tr>
-<variantright> &&
-<variant> ||
-<variant> !
-<variant> :
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: && — «И»: истина, только если обе части истинны. Это как умножение: 1·1=1, 1·0=0, поэтому «логическое умножение».
-Ловушки: || — ИЛИ (сумма), ! — НЕ, : — часть ?:.
-По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which logical operation is called "logical sum" (OR)?
-<tr>Какая логическая операция называется «логическая сумма» (ИЛИ)?</tr>
-<variantright> ||
-<variant> &&
-<variant> :
-<variant> !
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: || — «ИЛИ»: истина, если хоть одна часть истинна. Это как сложение (1+0 ≠ 0), поэтому «логическая сумма».
-Ловушки: && — И, ! — НЕ.
-По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What is the value of the expression `k=(3/2)*(3%2)`?
-<tr>Чему равно выражение `k=(3/2)*(3%2)`?</tr>
-<variantright> 1
-<variant> 2
-<variant> 0.5
-<variant> 3
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: обе скобки целые: 3/2 = 1 (дробь отброшена), 3%2 = 1 (остаток). 1·1 = 1.
-Ловушки: 0.5 и 2 — посчитали деление как дробное; 3 — перепутали операции.
-По лекции: тема 2, раздел «Что такое приоритет и ассоциативность операций?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Given the declarations below. What is the type of the expression `d+1`?
 ```cpp
 int a,b,c,n; float d,e;
 ```
 <tr>Даны объявления: Какого типа значение выражения `d+1`?</tr>
+<dop/>
 <variantright> float
 <variant> int
 <variant> char
@@ -621,10 +1017,11 @@ int a,b,c,n; float d,e;
 <explain>Почему верно: d объявлена как float, 1 — целое. При смешивании результат float, чтобы не потерять дробную часть.
 Ловушки: int — потеряли бы дробь; char и bool здесь ни при чём.
 По лекции: тема 2, раздел «Что такое приоритет и ассоциативность операций?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The statement for entering variable values into the computer:
 <tr>Оператор ввода значений переменных в компьютер:</tr>
+<dop/>
 <variantright> cin>>
 <variant> cout<<
 <variant> printf()
@@ -633,10 +1030,11 @@ int a,b,c,n; float d,e;
 <explain>Почему верно: ввод значений с клавиатуры — cin >> переменная.
 Ловушки: cout << и printf() — вывод; getch() только ждёт клавишу.
 По лекции: тема 2, раздел «Что такое директива препроцессора? Зачем #include?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is k in `k=ceil(3.226);`?
 <tr>Чему равно k в `k=ceil(3.226);`?</tr>
+<dop/>
 <variantright> 4
 <variant> 3
 <variant> 2
@@ -645,10 +1043,11 @@ int a,b,c,n; float d,e;
 <explain>Почему верно: ceil — «потолок», округляет вверх до целого: 3.226 → 4.
 Ловушки: 3 — это floor (вниз); 3.5 — не целое.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is k in `k=floor(3.63);`?
 <tr>Чему равно k в `k=floor(3.63);`?</tr>
+<dop/>
 <variantright> 3
 <variant> 4
 <variant> 2
@@ -657,10 +1056,11 @@ int a,b,c,n; float d,e;
 <explain>Почему верно: floor — «пол», округляет вниз: 3.63 → 3.
 Ловушки: 4 — это ceil (вверх) или обычное округление; 3.5 — не целое.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which function finds the square root?
 <tr>Какая функция находит квадратный корень?</tr>
+<dop/>
 <variantright> sqrt()
 <variant> sqr()
 <variant> pov()
@@ -669,10 +1069,11 @@ int a,b,c,n; float d,e;
 <explain>Почему верно: sqrt = square root, «квадратный корень» (math.h).
 Ловушки: sqr — функция из Pascal, в C её нет; pov и sgrt — опечатки-обманки.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> How do you write x to the power of y in C?
 <tr>Как в C записать x в степени y?</tr>
+<dop/>
 <variantright> pow(x,y)
 <variant> povv(x,y)
 <variant> sqr(x,y)
@@ -681,10 +1082,11 @@ int a,b,c,n; float d,e;
 <explain>Почему верно: pow = power, «степень»: pow(x,y) = x в степени y.
 Ловушки: povv — опечатка; sqr и sqrt берут один аргумент и делают не то.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> How do you write the 5th root of x?
 <tr>Как записать корень 5-й степени из x?</tr>
+<dop/>
 <variantright> pow(x,1/5.)
 <variant> sqrt(x,1/5)
 <variant> sqrt(x,5)
@@ -693,10 +1095,11 @@ int a,b,c,n; float d,e;
 <explain>Почему верно: корень 5-й степени = x в степени 1/5. Нужна точка: 1/5. — дробное число 0.2. Без точки 1/5 — целочисленное деление и даёт 0, а pow(x,0) = 1.
 Ловушки: pow(x,1/5) — из-за целочисленного деления всегда 1; sqrt берёт только один аргумент и всегда квадратный корень.
 По лекции: тема 2, раздел «Какие арифметические операции есть в C++?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which `printf()` format prints a string?
 <tr>Какой формат `printf()` выводит строку?</tr>
+<dop/>
 <variantright> %s
 <variant> %f
 <variant> %u
@@ -705,20 +1108,11 @@ int a,b,c,n; float d,e;
 <explain>Почему верно: %s (от string) печатает строку.
 Ловушки: %f — дробное, %u — беззнаковое, %o — восьмеричное.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Which `printf()` format prints a real number?
-<tr>Какой формат `printf()` выводит вещественное число?</tr>
-<variantright> %f
-<variant> %o
-<variant> %u
-<variant> %s
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Ответ: %f — вещественное число (float).
-По лекции: тема 2, раздел 7 — форматы printf.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The `printf()` format for printing an unsigned decimal integer:
 <tr>Формат `printf()` для вывода беззнакового десятичного целого:</tr>
+<dop/>
 <variantright> %u
 <variant> %s
 <variant> %o
@@ -727,10 +1121,11 @@ int a,b,c,n; float d,e;
 <explain>Почему верно: %u (от unsigned) — беззнаковое десятичное целое.
 Ловушки: %s — строка, %o — восьмеричное, %f — дробное.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The `printf()` format for printing an unsigned octal integer:
 <tr>Формат `printf()` для вывода беззнакового восьмеричного целого:</tr>
+<dop/>
 <variantright> %o
 <variant> %f
 <variant> %s
@@ -739,10 +1134,11 @@ int a,b,c,n; float d,e;
 <explain>Почему верно: %o (от octal) — восьмеричное.
 Ловушки: %f — дробное, %s — строка, %u — беззнаковое десятичное.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which `printf()` format prints an unsigned hexadecimal integer?
 <tr>Какой формат `printf()` выводит беззнаковое шестнадцатеричное целое?</tr>
+<dop/>
 <variantright> %x
 <variant> %u
 <variant> %s
@@ -751,10 +1147,11 @@ int a,b,c,n; float d,e;
 <explain>Почему верно: %x (от hex) — шестнадцатеричное.
 Ловушки: %u — десятичное, %s — строка, %f — дробное.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which `printf()` format prints a real number in exponential form?
 <tr>Какой формат `printf()` выводит вещественное число в экспоненциальной форме?</tr>
+<dop/>
 <variantright> %e
 <variant> %f
 <variant> %s
@@ -763,27 +1160,11 @@ int a,b,c,n; float d,e;
 <explain>Почему верно: %e (от exponent) печатает дробное в экспоненциальной записи: 1.5e+03.
 Ловушки: %f — обычная запись 1500.000000; %s — строка; %x — шестнадцатеричное.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What is the output?
-```cpp
-int i=10;
-cout <<  i++;
-cout  << ++i;
-```
-<tr>Какой получим ответ?</tr>
-<variantright> 10, 12
-<variant> 11, 12
-<variant> 10, 11
-<variant> 10, 10
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: i++ (постфикс) сначала выводит старое значение 10, потом i становится 11. ++i (префикс) сначала увеличивает до 12, потом выводит 12. Итого 10, 12.
-Ловушки: 11, 12 — перепутали постфикс с префиксом; 10, 11 — забыли, что i уже стало 11.
-По лекции: тема 2, раздел «Что такое операции и операнды?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which function reads a string from a file?
 <tr>Какая функция читает строку из файла?</tr>
+<dop/>
 <variantright> fgets()
 <variant> fgetc()
 <variant> fputs()
@@ -792,10 +1173,11 @@ cout  << ++i;
 <explain>Почему верно: fgets — file get string: читает строку из файла.
 Ловушки: fgetc читает один символ; fputs записывает строку; fread читает блок байтов.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which function writes a string to a file?
 <tr>Какая функция записывает строку в файл?</tr>
+<dop/>
 <variantright> fputs()
 <variant> fread()
 <variant> fgets()
@@ -804,10 +1186,11 @@ cout  << ++i;
 <explain>Почему верно: fputs = file put string: «положить строку в файл».
 Ловушки: fgets — наоборот, читает строку; fread/fwrite работают с блоками байтов.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Specify the correct way to calculate x to the 4th power.
 <tr>Укажите правильный способ вычислить x в 4-й степени.</tr>
+<dop/>
 <variantright> pow(x,4);
 <variant> pow(x/4);
 <variant> pow(x*4);
@@ -816,10 +1199,11 @@ cout  << ++i;
 <explain>Почему верно: степень — pow(основание, показатель), аргументы через запятую: pow(x,4).
 Ловушки: pow(x/4), pow(x*4) — один аргумент; pow(x;4) — точка с запятой вместо запятой.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which function writes data to a file?
 <tr>Какая функция записывает данные в файл?</tr>
+<dop/>
 <variantright> fprintf ()
 <variant> fread ()
 <variant> fscanf ()
@@ -828,10 +1212,11 @@ cout  << ++i;
 <explain>Почему верно: fprintf — это printf, но в файл (f = file): fprintf(f, "%d", x).
 Ловушки: fread и fscanf — чтение; fgets — чтение строки.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which function reads data from a file?
 <tr>Какая функция читает данные из файла?</tr>
+<dop/>
 <variantright> fscanf()
 <variant> fprintf ()
 <variant> fgets ()
@@ -840,10 +1225,11 @@ cout  << ++i;
 <explain>Почему верно: fscanf — это scanf, но из файла: читает данные по формату.
 Ловушки: fprintf и fwrite — запись; fgets читает строку, а не данные по формату (в этом тесте ждут fscanf).
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Which function closes a file after you finish working with it?
 <tr>Какая функция закрывает файл после окончания работы с ним?</tr>
+<dop/>
 <variantright> fclose()
 <variant> fexit()
 <variant> fgets()
@@ -852,10 +1238,11 @@ cout  << ++i;
 <explain>Почему верно: fclose = file close. После работы файл закрывают, чтобы данные точно записались.
 Ловушки: fexit не существует; fgets и fgetc — чтение.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Specify the file opening function in C.
 <tr>Укажите функцию открытия файла в C.</tr>
+<dop/>
 <variantright> fopen()
 <variant> fclose()
 <variant> fexit()
@@ -864,10 +1251,11 @@ cout  << ++i;
 <explain>Почему верно: fopen = file open: FILE *f = fopen("a.txt","r");.
 Ловушки: fclose — закрыть; fexit и fnew не существуют.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What is the name of the math library of standard arithmetic functions?
 <tr>Как называется математическая библиотека стандартных арифметических функций?</tr>
+<dop/>
 <variantright> math.h
 <variant> match.h
 <variant> matem.h
@@ -876,10 +1264,11 @@ cout  << ++i;
 <explain>Почему верно: математическая библиотека — math.h (math = математика).
 Ловушки: match.h и matem.h — обманки с похожими словами; stdlib.h — случайные числа и abs.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The function that finds the modulus of an integer:
 <tr>Функция, находящая модуль целого числа:</tr>
+<dop/>
 <variantright> abs(x)
 <variant> abc(x)
 <variant> fabs(x)
@@ -888,10 +1277,11 @@ cout  << ++i;
 <explain>Почему верно: abs(x) — модуль целого числа (stdlib.h).
 Ловушки: fabs — для дробных (f = float); abc и fabc не существуют.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> How is the arccosine written in C++?
 <tr>Как записывается арккосинус в C++?</tr>
+<dop/>
 <variantright> acos(x)
 <variant> asin[x]
 <variant> atan(x)
@@ -900,10 +1290,11 @@ cout  << ++i;
 <explain>Почему верно: арккосинус — acos(x) с круглыми скобками.
 Ловушки: asin — арксинус, atan — арктангенс, {x} — неправильные скобки.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The function for rounding a number up:
 <tr>Функция округления числа вверх:</tr>
+<dop/>
 <variantright> ceil(x)
 <variant> floor(x)
 <variant> fabs(x)
@@ -912,10 +1303,11 @@ cout  << ++i;
 <explain>Почему верно: ceil — «потолок», округление вверх: ceil(2.1) = 3.
 Ловушки: floor — вниз; fabs — модуль; log — логарифм.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The function for rounding a number down:
 <tr>Функция округления числа вниз:</tr>
+<dop/>
 <variantright> floor(x)
 <variant> ceil(x)
 <variant> exp(x)
@@ -924,22 +1316,11 @@ cout  << ++i;
 <explain>Почему верно: floor = «пол»: округляет вниз (2.7 → 2).
 Ловушки: ceil = «потолок», вверх; exp — экспонента; fabs — модуль.
 По лекции: тема 2, раздел «Что такое дополнительные библиотеки и зачем они нужны?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> What is NOT a comparison sign?
-<tr>Что НЕ является знаком сравнения?</tr>
-<variantright> =
-<variant> ==
-<variant> <
-<variant> !=
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: = — это присваивание (записать значение), а не сравнение. Сравнение на равенство — ==.
-Ловушки: ==, <, != — настоящие знаки сравнения.
-По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> The increment operation is applied:
 <tr>Операция инкремента применяется:</tr>
+<dop/>
 <variantright> to variables <tr>к переменным</tr>
 <variant> to constants <tr>к константам</tr>
 <variant> to expressions <tr>к выражениям</tr>
@@ -948,46 +1329,11 @@ cout  << ++i;
 <explain>Почему верно: ++ меняет значение, поэтому нужна переменная: x++. Константу 5++ или выражение (a+b)++ увеличить нельзя.
 Ловушки: константы, выражения и строки менять через ++ нельзя.
 По лекции: тема 2, раздел «Что такое операции и операнды?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> To which numbers is the `%` operation applied?
-<tr>К каким числам применяется операция `%`?</tr>
-<variantright> to integers <tr>к целым</tr>
-<variant> to real numbers <tr>к вещественным</tr>
-<variant> to fractions <tr>к дробным</tr>
-<variant> to integers and real numbers <tr>к целым и вещественным</tr>
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: % — остаток от деления, он есть только у целых чисел. Для дробных есть отдельная функция fmod().
-Ловушки: «к вещественным», «к дробным», «к целым и вещественным» — неверно, 7.5 % 2 — ошибка компиляции.
-По лекции: тема 2, раздел «Какие арифметические операции есть в C++?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Logical "and" is denoted as:
-<tr>Логическое «и» обозначается так:</tr>
-<variantright> &&
-<variant> &
-<variant> |
-<variant> ||
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: логическое И — двойной амперсанд &&.
-Ловушки: одинарный & — побитовое И; | и || — ИЛИ.
-По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> Logical "or" is denoted as:
-<tr>Логическое «или» обозначается так:</tr>
-<variantright> ||
-<variant> &&
-<variant> &
-<variant> |
-<variant> No correct answer <tr>Нет правильного ответа</tr>
-<explain>Почему верно: логическое ИЛИ — две вертикальные черты ||.
-Ловушки: одна | — побитовое ИЛИ; && и & — И.
-По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> Logical "not equal" is denoted as:
 <tr>Логическое «не равно» обозначается так:</tr>
+<dop/>
 <variantright> !=
 <variant> |=
 <variant> =!
@@ -996,9 +1342,11 @@ cout  << ++i;
 <explain>Почему верно: «не равно» — != (восклицательный знак «НЕ» плюс «равно»).
 Ловушки: |=, =!, =| — неправильные записи (|= вообще побитовое присваивание).
 По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: база ФИК-211/МИК-211.</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>
 
 <question> What will `cout<<sqrt(pow(5,4));` print? (Что выведет `cout<<sqrt(pow(5,4));`?)
+<tr>Что выведет `cout<<sqrt(pow(5,4));`?</tr>
+<dop/>
 <variantright> 25
 <variant> 625
 <variant> 5
@@ -1007,197 +1355,4 @@ cout  << ++i;
 <explain>Почему верно: изнутри наружу: pow(5,4) = 5⁴ = 625, потом sqrt(625) = 25.
 Ловушки: 625 — забыли корень; 5 — посчитали корень 4-й степени; 15 — обманка.
 По лекции: тема 2, раздел «Что такое выражение в C++?».
-Источник: база ФИК-211/МИК-211.</explain>
-
-<question> The logical AND operator in C++:
-<tr>Логический оператор И в C++:</tr>
-<variantright> &&
-<variant> ||
-<variant> !
-<variant> Or
-<variant> And
-<explain>Почему верно: «И» в C++ — два амперсанда &&: (a>0 && b>0) — оба условия верны.
-Ловушки: || — это ИЛИ, ! — НЕ; слова And/Or — это Pascal.
-По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The logical OR operator in C++:
-<tr>Логический оператор ИЛИ в C++:</tr>
-<variantright> ||
-<variant> &&
-<variant> !
-<variant> Or
-<variant> And
-<explain>Почему верно: «ИЛИ» — две вертикальные черты ||: (a>0 || b>0) — хотя бы одно верно.
-Ловушки: && — И; ! — НЕ.
-По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> Inversion (NOT) in C++:
-<tr>Инверсия в C++:</tr>
-<variantright> !
-<variant> ||
-<variant> &&
-<variant> Or
-<variant> And
-<explain>Почему верно: инверсия = «НЕ», переворачивает условие: !true → false. Знак — восклицательный !.
-Ловушки: && и || соединяют два условия, а ! работает с одним.
-По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> How is the assignment operator written in C++?
-<tr>Как записывается оператор присваивания в C++?</tr>
-<variantright> =
-<variant> ==
-<variant> :=
-<variant> is
-<variant> !=
-<explain>Почему верно: присвоить = «положить значение в переменную»: x = 5; один знак =.
-Ловушки: == — это сравнение; := — присваивание в Pascal.
-По лекции: тема 2, раздел «Что такое присваивание и составное присваивание?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The operation of checking two expressions for equality:
-<tr>Операция проверки на равенство двух выражений:</tr>
-<variantright> ==
-<variant> =
-<variant> :
-<variant> compare
-<variant> !=
-<explain>Почему верно: сравнение «равно ли?» — два знака ==: if (x == 5).
-Ловушки: один = — это присваивание (частая ошибка: if (x = 5) всегда истинно).
-По лекции: тема 2, раздел «Какие операции сравнения и логические используются?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The operation of checking two expressions for inequality:
-<tr>Операция проверки на неравенство двух выражений:</tr>
-<variantright> !=
-<variant> ==
-<variant> =
-<variant> :
-<variant> < >
-<explain>Почему верно: «не равно» — ! (НЕ) + = : x != 0.
-Ловушки: <> — «не равно» в Pascal, в C++ так нельзя.
-По лекции: тема 2, раздел «Что такое выражение в C++?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> External modules are connected to a project using:
-<tr>Подключение внешних модулей к проекту осуществляется при помощи:</tr>
-<variantright> #include
-<variant> uses
-<variant> #insert
-<variant> include
-<variant> add
-<explain>Почему верно: #include <имя> подключает библиотеку: #include <iostream>, #include <math.h>.
-Ловушки: uses — это Pascal; без # (просто include) не работает — это команда препроцессора, она всегда с #.
-По лекции: тема 2, раздел «Что такое директива препроцессора? Зачем #include?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> Prefix increment of the variable Mass:
-<tr>Префиксный инкремент к переменной Mass:</tr>
-<variantright> ++Mass
-<variant> ++mass
-<variant> Mass++
-<variant> mass+
-<variant> inc(mass)
-<explain>Почему верно: префиксный = знак ++ стоит ПЕРЕД именем: ++Mass. Имя должно совпадать точно, с большой M.
-Ловушки: ++mass — другое имя (C++ различает регистр); Mass++ — постфиксный; inc() — Pascal.
-По лекции: тема 2, раздел «Что такое присваивание и составное присваивание?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> Postfix increment of the variable Arr:
-<tr>Постфиксный инкремент к переменной Arr:</tr>
-<variantright> Arr++
-<variant> arr++
-<variant> ++arr
-<variant> inc(arr)
-<variant> dec(add)
-<explain>Почему верно: постфиксный = ++ ПОСЛЕ имени: Arr++. Имя точно Arr, с большой A.
-Ловушки: arr++ — другая переменная (регистр); ++arr — префиксный.
-По лекции: тема 2, раздел «Что такое присваивание и составное присваивание?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> Prefix decrement of the variable Mass:
-<tr>Префиксный декремент к переменной Mass:</tr>
-<variantright> --Mass
-<variant> --mass
-<variant> Mass++
-<variant> Mass--
-<variant> mass-
-<explain>Почему верно: декремент = уменьшить на 1 (--), префиксный — знак перед именем: --Mass.
-Ловушки: Mass-- — постфиксный; Mass++ — это вообще увеличение; --mass — другое имя.
-По лекции: тема 2, раздел «Что такое присваивание и составное присваивание?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> The equivalent of the statement x=x+7 is:
-<tr>Аналогом оператора x=x+7 является оператор:</tr>
-<variantright> x+=7
-<variant> X+=7
-<variant> x++*=7
-<variant> x+=x+7
-<variant> x++
-<explain>Почему верно: x += 7 — короткая запись «x = x + 7».
-Ловушки: X+=7 — другая переменная (большая X); x+=x+7 — это x = x + x + 7; x++ прибавляет только 1.
-⚠ В оригинале базы правильный ответ набран русской буквой «х» — такой код не скомпилируется. Здесь исправлено на латинскую x.
-По лекции: тема 2, раздел «Что такое выражение в C++?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> Find the equivalent statement for x-=y;
-<tr>Найдите аналогичный оператор для x-=y;</tr>
-<variantright> x=x-y;
-<variant> x=y*(-1);
-<variant> x=-1;
-<variant> x=-y;
-<variant> y=-x;
-<explain>Почему верно: x -= y значит «из x вычесть y и положить обратно в x»: x = x - y.
-Ловушки: x=-y — «x равен минус y», старое значение x теряется.
-По лекции: тема 2, раздел «В чём разница между операциями & и *?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> With the prefix form of increment…
-<tr>При префиксной форме инкремента…</tr>
-<variantright> the variable is first increased by one, and then its new value is used in the expression <tr>переменная сначала увеличивается на единицу, а затем её новое значение используется в том выражении, где переменная встретилась</tr>
-<variant> the variable is first decreased by one, and then its new value is used in the expression <tr>переменная сначала уменьшается на единицу, а затем её новое значение используется в том выражении, где переменная встретилась</tr>
-<variant> the value is first used in the expression, and then the variable is decreased by one <tr>значение переменной сначала используется в выражении, в котором она встретилась, а затем значение переменной уменьшается на единицу</tr>
-<variant> the value is first used in the expression, and then the variable is increased by one <tr>значение переменной сначала используется в выражении, в котором она встретилась, а затем значение переменной увеличивается на единицу</tr>
-<variant> the variable is increased by the required amount <tr>переменная увеличивается на нужное количество</tr>
-<explain>Почему верно: ++x — знак впереди, значит СНАЧАЛА +1, ПОТОМ используем. x=5; y=++x; → x=6, y=6.
-Ловушки: «сначала используется, потом увеличивается» — это постфиксный x++; «уменьшается» — это декремент.
-По лекции: тема 2, раздел «Что такое выражение в C++?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> With the postfix form of increment…
-<tr>При постфиксной форме инкремента…</tr>
-<variantright> the value is first used in the expression, and then the variable is increased by one <tr>значение переменной сначала используется в выражении, в котором она встретилась, а затем значение переменной увеличивается на единицу</tr>
-<variant> the variable is first increased by one, and then its new value is used in the expression <tr>переменная сначала увеличивается на единицу, а затем её новое значение используется в том выражении, где переменная встретилась</tr>
-<variant> the value is first used in the expression, and then the variable is decreased by one <tr>значение переменной сначала используется в выражении, в котором она встретилась, а затем значение переменной уменьшается на единицу</tr>
-<variant> the variable is increased by the required amount <tr>переменная увеличивается на нужное количество</tr>
-<variant> the variable is first decreased by one, and then its new value is used in the expression <tr>переменная сначала уменьшается на единицу, а затем её новое значение используется в том выражении, где переменная встретилась</tr>
-<explain>Почему верно: x++ — знак сзади, значит СНАЧАЛА используем старое значение, ПОТОМ +1. x=5; y=x++; → y=5, x=6.
-Ловушки: «сначала увеличивается» — это префиксный ++x.
-По лекции: тема 2, раздел «Что такое выражение в C++?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> With the prefix form of decrement…
-<tr>При префиксной форме декремента…</tr>
-<variantright> the variable is first decreased by one, and then its new value is used in the expression <tr>переменная сначала уменьшается на единицу, а затем её новое значение используется в том выражении, где переменная встретилась</tr>
-<variant> the variable is first increased by one, and then its new value is used in the expression <tr>переменная сначала увеличивается на единицу, а затем её новое значение используется в том выражении, где переменная встретилась</tr>
-<variant> the value is first used in the expression, and then the variable is decreased by one <tr>значение переменной сначала используется в выражении, в котором она встретилась, а затем значение переменной уменьшается на единицу</tr>
-<variant> the value is first used in the expression, and then the variable is increased by one <tr>значение переменной сначала используется в выражении, в котором она встретилась, а затем значение переменной увеличивается на единицу</tr>
-<variant> the variable is increased by the required amount <tr>переменная увеличивается на нужное количество</tr>
-<explain>Почему верно: --x — знак впереди: СНАЧАЛА -1, ПОТОМ используем. x=5; y=--x; → x=4, y=4.
-Ловушки: «увеличивается» — это инкремент; «сначала используется» — постфиксный x--.
-По лекции: тема 2, раздел «Что такое выражение в C++?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
-
-<question> With the postfix form of decrement…
-<tr>При постфиксной форме декремента…</tr>
-<variantright> the value is first used in the expression, and then the variable is decreased by one <tr>значение переменной сначала используется в выражении, в котором она встретилась, а затем значение переменной уменьшается на единицу</tr>
-<variant> the variable is first decreased by one, and then its new value is used in the expression <tr>переменная сначала уменьшается на единицу, а затем её новое значение используется в том выражении, где переменная встретилась</tr>
-<variant> the variable is first increased by one, and then its new value is used in the expression <tr>переменная сначала увеличивается на единицу, а затем её новое значение используется в том выражении, где переменная встретилась</tr>
-<variant> the variable is increased by the required amount <tr>переменная увеличивается на нужное количество</tr>
-<variant> the value is first used in the expression, and then the variable is increased by one <tr>значение переменной сначала используется в выражении, в котором она встретилась, а затем значение переменной увеличивается на единицу</tr>
-<explain>Почему верно: x-- — знак сзади: СНАЧАЛА используем старое значение, ПОТОМ -1. x=5; y=x--; → y=5, x=4.
-Ловушки: последний вариант похож, но там «увеличивается» — это x++.
-По лекции: тема 2, раздел «Что такое выражение в C++?».
-Источник: экзамен C++ 2022 (ФИР-2к, рус.).</explain>
+Источник: дополнительный вопрос (190 вопросов ФИК-211/МИК-211)</explain>

@@ -8,7 +8,7 @@
 <explain>Почему верно: Hide() — «спрятать»: метод ставит Visible = false.
 Ловушки: Show() делает наоборот; Visible->False и TControl->Visible->On — это не методы и записано неверно.
 По лекции: тема 11, раздел «Что такое метод?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> A method of TControl class that sets the value of Visible property to True:
 <tr>Метод класса TControl, который устанавливает свойству Visible значение True:</tr>
@@ -20,7 +20,7 @@
 <explain>Почему верно: Show() — «показать»: ставит Visible = true.
 Ловушки: Hide() прячет; Visible->True и TControl::Visible — не вызов метода.
 По лекции: тема 11, раздел «Что такое метод?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> The component attributes which determine how a component displayed on the screen and how it operates:
 <tr>Атрибуты компонента, которые определяют, как компонент выглядит на экране и как он работает:</tr>
@@ -32,7 +32,7 @@
 <explain>Почему верно: то, как компонент выглядит и как работает, задают его свойства (Color, Width, Enabled…).
 Ловушки: события — что с ним случилось; методы — действия; функции и полиморфизм — не атрибуты.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What are the actions performed by the component (what a component can do)?
 <tr>Что такое действия, которые выполняет компонент (что компонент умеет делать)?</tr>
@@ -44,7 +44,7 @@
 <explain>Почему верно: то, что компонент умеет делать (Show, Hide, Clear), — методы, «глаголы» компонента.
 Ловушки: свойства — его характеристики; события — что с ним происходит.
 По лекции: тема 11, раздел «Что такое метод?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> A message which occurs at various points in the executable code when certain conditions are performed:
 <tr>Сообщение, которое возникает в разных местах выполняемого кода при выполнении определённых условий:</tr>
@@ -56,7 +56,7 @@
 <explain>Почему верно: событие — сообщение «что-то случилось» в определённый момент (OnClick, OnTimer).
 Ловушки: метод — действие, которое вызываешь сам; свойство и поле — данные.
 По лекции: тема 11, раздел «Что такое событие?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> A special procedure that is used to react at some actions (usually made by user):
 <tr>Специальная процедура, которая реагирует на какие-то действия (обычно пользователя):</tr>
@@ -68,7 +68,7 @@
 <explain>Почему верно: обработчик события — твоя функция, которая срабатывает в ответ на событие (Button1Click).
 Ловушки: событие — сам сигнал, а не реакция; метод — любое действие объекта.
 По лекции: тема 11, раздел «Что такое обработчик события?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> The main property of a component, which specifies the name of the component as referenced in code?
 <tr>Главное свойство компонента, которое задаёт имя компонента, по которому к нему обращаются в коде?</tr>
@@ -80,7 +80,7 @@
 <explain>Почему верно: Name — «имя в коде»: по нему пишут Button1->Caption.
 Ловушки: Caption — надпись, которую видит пользователь; Text — строка в Edit; Align и Width — расположение и размер.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What property of the form component stores the text in the title bar?
 <tr>Какое свойство формы хранит текст в строке заголовка?</tr>
@@ -92,7 +92,7 @@
 <explain>Почему верно: заголовок окна формы — Caption.
 Ловушки: у формы нет свойства Text; Label — отдельный компонент; String и AnsiString — типы строк.
 По лекции: тема 11, раздел «Основные свойства формы?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What type of data are the properties Width and Height?
 <tr>Какого типа данных свойства Width и Height?</tr>
@@ -104,7 +104,7 @@
 <explain>Почему верно: размеры в пикселях — целые числа, поэтому int.
 Ловушки: IntToStr/StrToInt — функции перевода, а не типы; float — дробное; AnsiString — строка.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What property stores the text size of the component?
 <tr>Какое свойство хранит размер текста (шрифта) компонента?</tr>
@@ -116,7 +116,7 @@
 <explain>Почему верно: размер текста — свойство шрифта: Font->Size.
 Ловушки: Size и Height — размеры самого компонента; Font.Height через точку — неверно; Text->Font — у Text нет шрифта.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What two properties do absolutely all components have?
 <tr>Какие два свойства есть абсолютно у всех компонентов?</tr>
@@ -128,7 +128,7 @@
 <explain>Почему верно: Name и Tag есть у всех компонентов, даже невизуальных (они объявлены в TComponent).
 Ловушки: Width/Height нет у Timer; Text есть не у всех; события — не свойства.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which components do not have a Width property?
 <tr>У каких компонентов нет свойства Width?</tr>
@@ -140,7 +140,7 @@
 <explain>Почему верно: невизуальные компоненты (Timer, диалоги) во время работы не видны, поэтому ширины у них нет.
 Ловушки: у Button, Label, Form, Memo Width есть.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> The main property of a control (and component), which specifies the name of the component as referenced in code?
 <tr>Главное свойство элемента управления (и компонента), которое задаёт имя, по которому к компоненту обращаются в коде?</tr>
@@ -152,7 +152,7 @@
 <explain>Почему верно: в коде к компоненту обращаются по Name.
 Ловушки: Caption — надпись; Text — строка в Edit; Align, Width — расположение и размер.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> One of the main properties of a component, which specifies a label (a text) on the control:
 <tr>Одно из главных свойств компонента, которое задаёт надпись (текст) на элементе:</tr>
@@ -164,7 +164,7 @@
 <explain>Почему верно: надпись на элементе (кнопке, метке, форме) — Caption.
 Ловушки: Name — имя в коде; Color, Height, Font — вид, а не текст.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> One of the main properties of a control, which is the horizontal size of a control in a pixels:
 <tr>Одно из главных свойств элемента: горизонтальный размер (ширина) в пикселях:</tr>
@@ -176,7 +176,7 @@
 <explain>Почему верно: Width — ширина, горизонтальный размер в пикселях.
 Ловушки: Height — высота; Left и Top — положение; Horizon не существует.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> One of the main properties of a component, which is the vertical size of a control in pixels?
 <tr>Одно из главных свойств компонента: вертикальный размер (высота) в пикселях?</tr>
@@ -188,7 +188,7 @@
 <explain>Почему верно: Height — высота, вертикальный размер.
 Ловушки: Width — ширина; Left/Top — положение; Align — прилипание к краю.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> One of the main properties of a component, which contains the string with characters associated with a control (in Edit, for examplle)?
 <tr>Одно из главных свойств компонента, которое содержит строку символов элемента (например, в Edit)?</tr>
@@ -200,9 +200,10 @@
 <explain>Почему верно: у полей ввода (Edit) содержимое — Text.
 Ловушки: Caption — у надписей; Name — имя в коде; Font и Color — вид.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) One of the main properties of a component, which manages the access to the control (accessible control or not)? (Одно из главных свойств компонента, которое управляет доступностью элемента (доступен или нет)?)
+<question> One of the main properties of a component, which manages the access to the control (accessible control or not)?
+<tr>Одно из главных свойств компонента, которое управляет доступностью элемента (доступен или нет)?</tr>
 <variantright> Enable
 <variant> Align
 <variant> Top
@@ -212,7 +213,7 @@
 Ловушки: Align — прилипание к краю; Top, Height — положение и размер; Color — цвет.
 ⚠ На экзамене выбирай Enable.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> One of the main properties of a component, which specifies the distance (the number of pixels) from the top of the form to the top of the visual component?
 <tr>Одно из главных свойств компонента: расстояние (в пикселях) от верха формы до верха визуального компонента?</tr>
@@ -224,7 +225,7 @@
 <explain>Почему верно: Top («верх») — отступ от верхнего края формы до верха компонента.
 Ловушки: Height — высота; Width — ширина; UpPix и TextAlign — выдуманные.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> One of the main properties of a component, which specifies the distance (the number of pixels from) from the left side of the form to the left side of the visual component?
 <tr>Одно из главных свойств компонента: расстояние (в пикселях) от левого края формы до левого края визуального компонента?</tr>
@@ -236,7 +237,7 @@
 <explain>Почему верно: Left («лево») — отступ от левого края формы до левого края компонента.
 Ловушки: Top — сверху; Width — ширина; Align.Left — не свойство.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What event occurs when a user clicks the control?
 <tr>Какое событие возникает, когда пользователь щёлкает по элементу?</tr>
@@ -248,7 +249,7 @@
 <explain>Почему верно: щелчок = click → OnClick.
 Ловушки: OnKeyDown — клавиша; OnChange — изменение текста; OnClose — закрытие; OnResize — размер.
 По лекции: тема 11, раздел «Как обрабатываются действия пользователя в визуальном приложении?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What event occurs when a user presses a mouse button (but does not release it) with the mouse pointer over a control?
 <tr>Какое событие возникает, когда пользователь нажимает (но не отпускает) кнопку мыши над элементом?</tr>
@@ -260,7 +261,7 @@
 <explain>Почему верно: Down — «вниз»: кнопку мыши только нажали и держат — OnMouseDown. Клик — это нажать и отпустить.
 Ловушки: OnClick — нажал и отпустил; OnKeyPress, OnKeyUp — клавиатура; OnMouse не существует.
 По лекции: тема 11, раздел «Как обрабатываются действия пользователя в визуальном приложении?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> How to check that Shift control key (on a keyboard) where pressed in MouseDown event handler?
 <tr>Как в обработчике MouseDown проверить, что была нажата клавиша Shift на клавиатуре?</tr>
@@ -272,7 +273,7 @@
 <explain>Почему верно: у обработчика MouseDown есть параметр Shift — набор зажатых клавиш. Проверяем, есть ли в нём ssShift.
 Ловушки: OnKeyPress и OnClick тут не помогут; «невозможно» — неверно.
 По лекции: тема 11, раздел «Как обрабатываются действия пользователя в визуальном приложении?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> How to check that Alt control key (on a keyboard) where pressed in MouseDown event handler?
 <tr>Как в обработчике MouseDown проверить, что была нажата клавиша Alt на клавиатуре?</tr>
@@ -284,7 +285,7 @@
 <explain>Почему верно: Shift — это множество (набор) клавиш, проверяют методом Contains: if (Shift.Contains(ssAlt)).
 Ловушки: Shift == ssAlt неверно — зажато может быть несколько клавиш сразу; остальные варианты — выдуманный синтаксис.
 По лекции: тема 11, раздел «Как обрабатываются действия пользователя в визуальном приложении?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What event occurs when the user releases a mouse button that was pressed earlier?
 <tr>Какое событие возникает, когда пользователь отпускает нажатую ранее кнопку мыши?</tr>
@@ -296,7 +297,7 @@
 <explain>Почему верно: Up — «вверх»: кнопку мыши отпустили — OnMouseUp.
 Ловушки: OnMouseDown — нажали; OnClick — нажали и отпустили; OnKeyUp — клавиатура; OnMouseKeyUp не существует.
 По лекции: тема 11, раздел «Как обрабатываются действия пользователя в визуальном приложении?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What event occurs when a user moves the mouse pointer while the mouse pointer is over a control?
 <tr>Какое событие возникает, когда пользователь двигает указатель мыши над элементом?</tr>
@@ -308,7 +309,7 @@
 <explain>Почему верно: Move — «двигать»: OnMouseMove срабатывает при каждом движении мыши над элементом.
 Ловушки: OnClick — щелчок; OnKeyUp и OnKeyPress — клавиатура; OnMousePress не существует.
 По лекции: тема 11, раздел «Как обрабатываются действия пользователя в визуальном приложении?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What event occurs when the key was pressed and released?
 <tr>Какое событие возникает, когда клавишу нажали и отпустили?</tr>
@@ -320,7 +321,7 @@
 <explain>Почему верно: OnKeyPress — клавишу нажали и отпустили, получился символ.
 Ловушки: OnKeyDown — только нажали; OnPress не существует; OnClick и OnMouseUp — мышь.
 По лекции: тема 11, раздел «Как обрабатываются действия пользователя в визуальном приложении?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What event occurs when the user releases a key that was pressed?
 <tr>Какое событие возникает, когда пользователь отпускает нажатую клавишу?</tr>
@@ -332,7 +333,7 @@
 <explain>Почему верно: Up — клавишу отпустили: OnKeyUp.
 Ловушки: OnKeyPress — получен символ; OnRelease не существует; OnMouseMove и OnClick — мышь.
 По лекции: тема 11, раздел «Как обрабатываются действия пользователя в визуальном приложении?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What event occurs when a user presses any key (on a keyboard), but does not release it?
 <tr>Какое событие возникает, когда пользователь нажимает любую клавишу на клавиатуре, но ещё не отпустил её?</tr>
@@ -344,7 +345,7 @@
 <explain>Почему верно: Down — клавишу только нажали (ещё не отпустили): OnKeyDown.
 Ловушки: OnKeyPressed не существует; OnMouseUp, OnClick, OnResize — не про клавиатуру.
 По лекции: тема 11, раздел «Как обрабатываются действия пользователя в визуальном приложении?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What event occurs when the form is created in a memory?
 <tr>Какое событие возникает, когда форма создаётся в памяти?</tr>
@@ -356,9 +357,10 @@
 <explain>Почему верно: Create = «создать»: OnCreate срабатывает при создании формы в памяти, ещё до показа.
 Ловушки: OnShow — при показе; OnActivate — при получении фокуса; OnMemorySet не существует.
 По лекции: тема 11, раздел «Типичные события формы?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) What event occurs when the form loses focus? (Какое событие возникает, когда форма теряет фокус?)
+<question> What event occurs when the form loses focus?
+<tr>Какое событие возникает, когда форма теряет фокус?</tr>
 <variantright> Deactivate
 <variant> Focus
 <variant> Activate
@@ -367,9 +369,10 @@
 <explain>Почему верно: форма теряет фокус — срабатывает Deactivate (в Object Inspector — OnDeactivate).
 Ловушки: Activate — получила фокус; Hide/Show — спрятать/показать; Focus — нет такого события.
 По лекции: тема 11, раздел «Типичные события формы?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) What event occurs when the sizes of a form are changed? (Какое событие возникает, когда меняются размеры формы?)
+<question> What event occurs when the sizes of a form are changed?
+<tr>Какое событие возникает, когда меняются размеры формы?</tr>
 <variantright> Resize
 <variant> ChangeHeight
 <variant> Move
@@ -378,7 +381,7 @@
 <explain>Почему верно: размер формы изменился — Resize (OnResize).
 Ловушки: ChangeHeight, Click(Size), FormChange не существуют; Move — перемещение.
 По лекции: тема 11, раздел «Типичные события формы?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Timer component has only one event …
 <tr>У компонента Timer только одно событие …</tr>
@@ -390,7 +393,7 @@
 <explain>Почему верно: таймер умеет только «тикать», поэтому у него одно событие — OnTimer.
 Ловушки: OnClock и OnExecute не существуют; OnClick и OnShow — у видимых компонентов.
 По лекции: тема 11, раздел «Типичные события формы?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of the TButton component defines the text displayed on the button itself?
 <tr>Какое свойство TButton задаёт текст на самой кнопке?</tr>
@@ -402,7 +405,7 @@
 <explain>Почему верно: текст на кнопке — Caption.
 Ловушки: Text — у полей ввода; Name — имя в коде; Hint — всплывающая подсказка; Title нет.
 По лекции: тема 11, раздел «Доп.: кнопка TButton — свойства и события».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which event of the TButton component must be handled to execute code when the button is pressed by the user?
 <tr>Какое событие TButton нужно обработать, чтобы выполнить код при нажатии кнопки пользователем?</tr>
@@ -414,7 +417,7 @@
 <explain>Почему верно: нажатие кнопки = щелчок → OnClick.
 Ловушки: OnEnter — получение фокуса; OnDblClick — двойной щелчок; OnChange — изменение; OnKeyPress — клавиша.
 По лекции: тема 11, раздел «Что такое обработчик события?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which Boolean property of TButton makes the button unavailable for clicking (it is usually displayed in gray)?
 <tr>Какое логическое свойство TButton делает кнопку недоступной для нажатия (обычно она становится серой)?</tr>
@@ -426,7 +429,7 @@
 <explain>Почему верно: Enabled = «включена»: false — кнопка серая и не нажимается, но видна.
 Ловушки: Visible прячет кнопку целиком; Checked — у флажков; Disabled и Active — нет таких свойств у TButton.
 По лекции: тема 11, раздел «Доп.: кнопка TButton — свойства и события».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of TButton is used to specify that the button should be activated when the user presses the Esc key on the form?
 <tr>Какое свойство TButton указывает, что кнопка срабатывает, когда пользователь нажимает Esc на форме?</tr>
@@ -438,7 +441,7 @@
 <explain>Почему верно: Cancel («отмена») привязывает кнопку к клавише Esc.
 Ловушки: Default привязывает к Enter; ModalResult — результат для модальной формы; CloseButton, EscKey — выдуманные.
 По лекции: тема 11, раздел «Доп.: кнопка TButton — свойства и события».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of TButton, like all VCL components, is used for uniquely identifying the component in code
 <tr>Какое свойство TButton, как и у всех компонентов VCL, служит для однозначного обозначения компонента в коде</tr>
@@ -450,7 +453,7 @@
 <explain>Почему верно: уникальное имя компонента в коде — Name.
 Ловушки: ClassName — имя класса (TButton), одинаковое у всех кнопок; Caption — надпись; Tag — число для своих целей; ID нет.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property determines whether the button will be displayed on the form?
 <tr>Какое свойство определяет, будет ли кнопка показана на форме?</tr>
@@ -462,7 +465,7 @@
 <explain>Почему верно: Visible («видимый»): true — показана, false — спрятана.
 Ловушки: Show — метод, а не свойство; Display, Hidden, Present — выдуманные.
 По лекции: тема 11, раздел «Доп.: кнопка TButton — свойства и события».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Through which property of TButton can you change the font family, size, and style (bold, italic) of the text on the button?
 <tr>Через какое свойство TButton можно изменить шрифт, размер и начертание (жирный, курсив) текста на кнопке?</tr>
@@ -474,7 +477,7 @@
 <explain>Почему верно: всё про шрифт (семейство, размер, жирность, курсив) лежит в свойстве Font.
 Ловушки: TextStyle, TextOptions, Layout, Format — не свойства TButton.
 По лекции: тема 11, раздел «Доп.: кнопка TButton — свойства и события».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of TButton, set to true, allows the button to inherit the font settings from its parent form or panel?
 <tr>Какое свойство TButton, если поставить true, позволяет кнопке взять настройки шрифта от родительской формы или панели?</tr>
@@ -486,7 +489,7 @@
 <explain>Почему верно: ParentFont («шрифт родителя») = true — кнопка берёт шрифт у формы или панели.
 Ловушки: InheritFont, GlobalFont, AutoFont, FormFont — выдуманные.
 По лекции: тема 11, раздел «Доп.: кнопка TButton — свойства и события».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of the TEdit component contains the actual text entered or displayed in the input field?
 <tr>Какое свойство TEdit содержит сам текст, введённый или показанный в поле ввода?</tr>
@@ -498,7 +501,7 @@
 <explain>Почему верно: введённый в Edit текст — свойство Text.
 Ловушки: Caption — у надписей; Value, Content, Entry — нет таких.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which Boolean property of TEdit, set to true, allows the content of the input field to be viewed but prevents the user from modifying it?
 <tr>Какое логическое свойство TEdit, если поставить true, позволяет смотреть содержимое поля, но не даёт пользователю его менять?</tr>
@@ -510,7 +513,7 @@
 <explain>Почему верно: ReadOnly («только чтение»): текст видно, но менять вручную нельзя.
 Ловушки: Enabled = false тоже не даст печатать, но делает поле серым; Disabled, Protected, Locked, NoInput — нет таких.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of TEdit sets the maximum number of characters that the user can enter?
 <tr>Какое свойство TEdit задаёт максимальное количество символов, которое может ввести пользователь?</tr>
@@ -522,7 +525,7 @@
 <explain>Почему верно: MaxLength — «максимальная длина» вводимого текста.
 Ловушки: MaxCount, Limit, SizeLimit, CharLimit — выдуманные.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of TEdit allows you to specify a special character (e.g., *) that will be displayed instead of the input characters (for password fields)?
 <tr>Какое свойство TEdit позволяет задать специальный символ (например, *), который показывается вместо вводимых символов (для паролей)?</tr>
@@ -534,7 +537,7 @@
 <explain>Почему верно: PasswordChar — «символ пароля», например *, показывается вместо букв.
 Ловушки: MaskChar, SecretChar, HideChar, EncryptionChar — выдуманные.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which event of TEdit occurs every time the content of the input field changes (e.g., when a new character is entered)?
 <tr>Какое событие TEdit возникает каждый раз, когда меняется содержимое поля (например, введён новый символ)?</tr>
@@ -546,7 +549,7 @@
 <explain>Почему верно: Change = «изменение»: OnChange срабатывает при каждом изменении текста.
 Ловушки: OnInput, OnUpdate, OnModify, OnValueChange — нет таких событий у TEdit.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which TEdit event should be used if you need to intercept and process the pressing of each individual key (e.g., to prevent the entry of numbers)?
 <tr>Какое событие TEdit нужно использовать, чтобы перехватывать и обрабатывать нажатие каждой отдельной клавиши (например, запретить ввод цифр)?</tr>
@@ -558,7 +561,7 @@
 <explain>Почему верно: OnKeyPress получает символ Key — его можно проверить и отменить (Key = 0), чтобы запретить ввод цифр.
 Ловушки: OnKeyDown/OnKeyUp получают код клавиши, а не символ; OnKey, OnChar не существуют.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which VCL component (TButton, TEdit, TLabel) has the ReadOnly property by default?
 <tr>У какого компонента VCL (TButton, TEdit, TLabel) есть свойство ReadOnly?</tr>
@@ -570,7 +573,7 @@
 <explain>Почему верно: ReadOnly нужен только там, где можно печатать, — у TEdit.
 Ловушки: кнопку и метку и так не редактируют, у них ReadOnly нет.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of TEdit defines the order in which the component will receive focus when the user presses the Tab key?
 <tr>Какое свойство TEdit задаёт порядок, в котором компонент получает фокус при нажатии Tab?</tr>
@@ -582,7 +585,7 @@
 <explain>Почему верно: TabOrder — порядок перехода фокуса по Tab (0, 1, 2…).
 Ловушки: TabStop — участвует ли компонент в переходе вообще; FocusOrder, TabIndex, Order — нет таких.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which VCL component (TButton, TEdit, TLabel) does not have the Text property, using Caption instead?
 <tr>У какого компонента VCL (TButton, TEdit, TLabel) нет свойства Text, а вместо него Caption?</tr>
@@ -594,7 +597,7 @@
 <explain>Почему верно: кнопка и метка только показывают надпись — у них Caption, а не Text. У Edit — Text.
 Ловушки: TEdit как раз с Text; «у всех Text» — неверно.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> If the Height property of the TEdit component is set to 100, what will be the actual height of the input field with standard styling?
 <tr>Если у TEdit поставить Height = 100, какой будет реальная высота поля при стандартном оформлении?</tr>
@@ -606,7 +609,7 @@
 <explain>Почему верно: однострочный TEdit держит высоту по шрифту, поэтому Height = 100 не сработает.
 Ловушки: «100 пикселей» — так было бы у Memo; Lines у Edit нет.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of the TLabel component contains the static text being displayed?
 <tr>Какое свойство TLabel содержит показываемый неизменяемый текст?</tr>
@@ -618,7 +621,7 @@
 <explain>Почему верно: текст метки — Caption.
 Ловушки: Text — у Edit; Value, LabelText, Content — нет таких.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of TLabel determines whether the label's background will be transparent, allowing the background of the form/panel underneath to be seen?
 <tr>Какое свойство TLabel определяет, будет ли фон надписи прозрачным, чтобы был виден фон формы/панели под ней?</tr>
@@ -630,7 +633,7 @@
 <explain>Почему верно: Transparent («прозрачный»): фон метки не рисуется, видно форму под ней.
 Ловушки: Color — цвет фона, а не прозрачность; Opaque, Background, Clear — нет таких у TLabel.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of TLabel determines the horizontal alignment of the text within the label's area (e.g., taLeftJustify, taRightJustify, taCenter)?
 <tr>Какое свойство TLabel задаёт горизонтальное выравнивание текста внутри надписи (например, taLeftJustify, taRightJustify, taCenter)?</tr>
@@ -642,7 +645,7 @@
 <explain>Почему верно: выравнивание текста — Alignment (taLeftJustify, taCenter, taRightJustify).
 Ловушки: Layout — вертикальное расположение; TextAlignment, Justify, Position — нет таких.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which Boolean property of TLabel, when set to true, automatically changes the label's width to exactly match the length of its text?
 <tr>Какое логическое свойство TLabel, если поставить true, автоматически меняет ширину надписи точно по длине её текста?</tr>
@@ -654,7 +657,7 @@
 <explain>Почему верно: AutoSize — ширина метки подгоняется точно под текст.
 Ловушки: AutoResize, Stretch, AutoWidth, FitToContent — нет у TLabel (Stretch — у TImage).
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What happens to the manually set Width and Height properties of a TLabel component if its AutoSize property is set to true?
 <tr>Что будет с вручную заданными Width и Height у TLabel, если AutoSize = true?</tr>
@@ -666,7 +669,7 @@
 <explain>Почему верно: при AutoSize = true размер считается по тексту Caption и шрифту, а ручные Width и Height не учитываются.
 Ловушки: «всегда держит Width/Height» — наоборот; «минимальный размер» — неверно.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of TButton, TEdit, and TLabel defines the distance from the left edge of the form to the component?
 <tr>Какое свойство TButton, TEdit и TLabel задаёт расстояние от левого края формы до компонента?</tr>
@@ -678,7 +681,7 @@
 <explain>Почему верно: отступ от левого края — Left.
 Ловушки: Top — сверху; Position, X, Indent — нет таких свойств.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of TButton, TEdit, and TLabel defines the distance from the top edge of the form to the component?
 <tr>Какое свойство TButton, TEdit и TLabel задаёт расстояние от верхнего края формы до компонента?</tr>
@@ -690,7 +693,7 @@
 <explain>Почему верно: отступ сверху — Top.
 Ловушки: Left — слева; Height — высота; Y и Position — нет таких.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> For which of the listed components (TButton, TEdit, TLabel) is the TabOrder property most critical for ensuring accessibility and usability?
 <tr>Для какого из компонентов (TButton, TEdit, TLabel) свойство TabOrder важнее всего для удобства работы?</tr>
@@ -702,7 +705,7 @@
 <explain>Почему верно: фокус по Tab получают те, с кем работают с клавиатуры: Edit и Button. Label фокус не получает.
 Ловушки: «TLabel» и «одинаково для всех» — неверно.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What is the purpose of the Caption property on a TButton component?
 <tr>Для чего свойство Caption у TButton?</tr>
@@ -714,7 +717,7 @@
 <explain>Почему верно: Caption — текст на самой кнопке.
 Ловушки: имя в коде — Name; текст пользователя — Text у Edit; подсказка — Hint; заголовок формы — Caption формы.
 По лекции: тема 11, раздел «Доп.: кнопка TButton — свойства и события».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What is the function of the OnClick event for a TButton component?
 <tr>Для чего событие OnClick у TButton?</tr>
@@ -726,7 +729,7 @@
 <explain>Почему верно: OnClick выполняет твой код в момент нажатия кнопки.
 Ловушки: фокус — OnEnter; двойное нажатие — OnDblClick; изменение — OnChange; клавиша — OnKeyPress.
 По лекции: тема 11, раздел «Что такое обработчик события?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What is the main role of the Enabled property on a TButton?
 <tr>Какова главная роль свойства Enabled у TButton?</tr>
@@ -738,7 +741,7 @@
 <explain>Почему верно: Enabled — логический флаг, доступна ли кнопка для нажатия (false — серая).
 Ловушки: видимость задаёт Visible; отметку — Checked; фокус — Focused; подгонку размера — AutoSize.
 По лекции: тема 11, раздел «Доп.: кнопка TButton — свойства и события».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What function does the Cancel property serve on a TButton?
 <tr>Для чего свойство Cancel у TButton?</tr>
@@ -750,7 +753,7 @@
 <explain>Почему верно: Cancel = true — кнопка срабатывает по Esc.
 Ловушки: для Enter — Default; число при закрытии формы — ModalResult; имя — Name; шрифт — Font.
 По лекции: тема 11, раздел «Доп.: кнопка TButton — свойства и события».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What is the function of the Name property, common to all VCL components?
 <tr>Для чего свойство Name, общее для всех компонентов VCL?</tr>
@@ -762,7 +765,7 @@
 <explain>Почему верно: Name — уникальное имя компонента в коде.
 Ловушки: тип — это класс; видимый текст — Caption; произвольное число — Tag; отступ — Left.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What is the main purpose of the Visible property?
 <tr>Какова главная задача свойства Visible?</tr>
@@ -774,7 +777,7 @@
 <explain>Почему верно: Visible — показан компонент или спрятан.
 Ловушки: ширина — Width; доступность для нажатия — Enabled; высота — Height; отступ — Top.
 По лекции: тема 11, раздел «Доп.: кнопка TButton — свойства и события».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What can be changed via the Font property of a TButton?
 <tr>Что можно изменить через свойство Font у TButton?</tr>
@@ -786,7 +789,7 @@
 <explain>Почему верно: Font — это шрифт: семейство, размер, начертание (и цвет текста).
 Ловушки: выравнивание — Alignment; текст — Caption; фон — Color; наследование шрифта — ParentFont.
 По лекции: тема 11, раздел «Доп.: кнопка TButton — свойства и события».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What is the effect of setting the ParentFont property of TButton to true?
 <tr>Что даёт ParentFont = true у TButton?</tr>
@@ -798,7 +801,7 @@
 <explain>Почему верно: ParentFont = true — шрифт берётся от родителя (формы или панели).
 Ловушки: «применить ко всем детям» — наоборот; «размер по кнопке» и «порядок Tab» — другое.
 По лекции: тема 11, раздел «Доп.: кнопка TButton — свойства и события».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What does the Text property of the TEdit component contain?
 <tr>Что содержит свойство Text у TEdit?</tr>
@@ -810,7 +813,7 @@
 <explain>Почему верно: Text у Edit — сама строка, которую ввели или показали.
 Ловушки: надпись рядом — отдельный Label; максимум — MaxLength; символ пароля — PasswordChar.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which component is used to enter text data?
 <tr>Какой компонент используется для ввода текстовых данных?</tr>
@@ -822,7 +825,7 @@
 <explain>Почему верно: для ввода текста служит Edit (поле ввода).
 Ловушки: Label только показывает; Button нажимают; Image — картинка; Form — окно.
 По лекции: тема 11, раздел «Доп.: поле TEdit и надпись TLabel».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which event handling method is used to respond to a button click?
 <tr>Какой метод обработки события используется, чтобы реагировать на нажатие кнопки?</tr>
@@ -834,7 +837,7 @@
 <explain>Почему верно: реакция на нажатие кнопки — onClick.
 Ловушки: onPress, onTouch, onSelect — из других библиотек; onMouseDown — только нажатие кнопки мыши.
 По лекции: тема 11, раздел «Что такое обработчик события?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What is the Caption property used for?
 <tr>Для чего используется свойство Caption?</tr>
@@ -846,9 +849,10 @@
 <explain>Почему верно: Caption — видимая надпись на компоненте.
 Ловушки: подсказка — Hint; имя в коде — Name; назначение компонента свойством не меняют.
 По лекции: тема 11, раздел «Что такое свойство объекта?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) What event is triggered when the user presses a mouse button while the pointer is over a control? (Какое событие возникает, когда пользователь нажимает кнопку мыши, пока указатель над элементом?)
+<question> What event is triggered when the user presses a mouse button while the pointer is over a control?
+<tr>Какое событие возникает, когда пользователь нажимает кнопку мыши, пока указатель над элементом?</tr>
 <variantright> OnMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer)
 <variant> OnClick
 <variant> OnMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer)
@@ -858,9 +862,10 @@
 Ловушки: OnClick — нажали и отпустили; OnMouseUp — отпустили; OnKeyDown — клавиатура; OnMouseMove — движение.
 ⚠ Заголовки в вопросе на языке Delphi, в C++ — (TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y).
 По лекции: тема 11, раздел «Как обрабатываются действия пользователя в визуальном приложении?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) Which event occurs when the user moves the mouse pointer over a control? (Какое событие возникает, когда пользователь двигает указатель мыши над элементом?)
+<question> Which event occurs when the user moves the mouse pointer over a control?
+<tr>Какое событие возникает, когда пользователь двигает указатель мыши над элементом?</tr>
 <variantright> OnMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer)
 <variant> OnMouseUp(Sender: TObject; Shift: TShiftState; X, Y: Integer)
 <variant> OnMouseDown(Sender: TObject; Shift: TShiftState; X, Y: Integer)
@@ -870,9 +875,10 @@
 Ловушки: OnMouseUp/Down — кнопки мыши; OnClick — щелчок; OnKeyPress — клавиатура.
 ⚠ Заголовок в вопросе на Delphi; в C++: (TObject *Sender, TShiftState Shift, int X, int Y).
 По лекции: тема 11, раздел «Как обрабатываются действия пользователя в визуальном приложении?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) Which event occurs when the user releases a key that has been pressed? (Какое событие возникает, когда пользователь отпускает нажатую клавишу?)
+<question> Which event occurs when the user releases a key that has been pressed?
+<tr>Какое событие возникает, когда пользователь отпускает нажатую клавишу?</tr>
 <variantright> OnKeyUp (Sender: TObject; var Key: Word; Shift: TShiftState)
 <variant> OnKeyPress (Sender: TObject; var Key: Char)
 <variant> OnKeyDown (Sender: TObject; var Key: Word; Shift: TShiftState)
@@ -881,9 +887,10 @@
 <explain>Почему верно: клавишу отпустили — OnKeyUp.
 Ловушки: OnKeyPress — получен символ; OnKeyDown — нажали; OnClick и OnMouseUp — мышь.
 По лекции: тема 11, раздел «Как обрабатываются действия пользователя в визуальном приложении?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) Which event occurs when a user presses any key while the control has focus? (Какое событие возникает, когда пользователь нажимает любую клавишу, пока элемент в фокусе?)
+<question> Which event occurs when a user presses any key while the control has focus?
+<tr>Какое событие возникает, когда пользователь нажимает любую клавишу, пока элемент в фокусе?</tr>
 <variantright> OnKeyDown (Sender: TObject; var Key: Word; Shift: TShiftState)
 <variant> OnKeyPress (Sender: TObject; var Key: Char)
 <variant> OnKeyUp (Sender: TObject; var Key: Word; Shift: TShiftState)
@@ -892,7 +899,7 @@
 <explain>Почему верно: клавишу нажали (любую, пока элемент в фокусе) — OnKeyDown.
 Ловушки: OnKeyPress — только для символьных клавиш, после нажатия; OnKeyUp — отпустили.
 По лекции: тема 11, раздел «Как обрабатываются действия пользователя в визуальном приложении?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of a VCL/FMX visual component (e.g., TButton, TEdit) is used to programmatically set its horizontal dimension?
 <tr>Какое свойство визуального компонента VCL/FMX (например, TButton, TEdit) задаёт из кода его горизонтальный размер?</tr>
@@ -904,7 +911,7 @@
 <explain>Почему верно: горизонтальный размер — Width.
 Ловушки: ClientWidth — только внутренняя область без рамок; SizeX, BoundWidth, HorizontalExtent — нет таких.
 По лекции: тема 11, раздел «Как менять свойства формы программно?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of a VCL/FMX visual component is used to programmatically set its vertical dimension?
 <tr>Какое свойство визуального компонента VCL/FMX задаёт из кода его вертикальный размер?</tr>
@@ -916,7 +923,7 @@
 <explain>Почему верно: вертикальный размер — Height.
 Ловушки: ClientHeight — внутренняя область; SizeY, VerticalExtent, Length — нет таких.
 По лекции: тема 11, раздел «Как менять свойства формы программно?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What is the correct C++Builder VCL code to set the width of a button named Button1 to 150 pixels?
 <tr>Какой код C++Builder VCL правильно ставит ширину кнопки Button1 в 150 пикселей?</tr>
@@ -928,7 +935,7 @@
 <explain>Почему верно: компоненты — указатели, поэтому стрелка: Button1->Width = 150;.
 Ловушки: точка (Button1.Width) — ошибка; SetWidth, SetSize, Size.X — нет таких в VCL.
 По лекции: тема 11, раздел «Как менять свойства формы программно?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What is the C++ code snippet to increase the current height of a label component named Label1 by 20 pixels?
 <tr>Какой код на C++ увеличивает текущую высоту надписи Label1 на 20 пикселей?</tr>
@@ -940,7 +947,7 @@
 <explain>Почему верно: += прибавляет к текущему значению: Label1->Height += 20; (через стрелку, потому что указатель).
 Ловушки: Height.Add и IncreaseHeight не существуют; через точку — ошибка.
 По лекции: тема 11, раздел «Как менять свойства формы программно?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which base class do all visual components, such as TButton and TPanel, inherit the Width and Height properties from?
 <tr>От какого базового класса все визуальные компоненты (например, TButton и TPanel) получают свойства Width и Height?</tr>
@@ -952,7 +959,7 @@
 <explain>Почему верно: Width, Height, Left, Top объявлены в TControl — общем предке всех визуальных компонентов.
 Ловушки: TComponent и TObject выше, у них размеров нет; TWinControl и TGraphicControl — ветки ниже TControl.
 По лекции: тема 11, раздел «Как менять свойства формы программно?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> When referring to a container control like TPanel, which property represents the usable area inside its borders, excluding any non-client areas?
 <tr>Какое свойство контейнера (например, TPanel) обозначает полезную область внутри рамок, без «неклиентских» частей?</tr>
@@ -964,7 +971,7 @@
 <explain>Почему верно: Client — «внутренняя» область без рамок — ClientWidth.
 Ловушки: Width — вместе с рамками; InnerSize, SurfaceWidth, ControlWidth — нет таких.
 По лекции: тема 11, раздел «Как менять свойства формы программно?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> In VCL applications, what is the default unit of measurement used by the Width and Height properties?
 <tr>В чём по умолчанию измеряются свойства Width и Height в приложениях VCL?</tr>
@@ -976,7 +983,7 @@
 <explain>Почему верно: в VCL все размеры и координаты в пикселях.
 Ловушки: DIP, пункты, твипы, миллиметры — единицы других систем.
 По лекции: тема 11, раздел «Как менять свойства формы программно?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property is primarily responsible for determining the horizontal position (X-coordinate) of a component relative to its parent?
 <tr>Какое свойство в основном задаёт горизонтальное положение (координату X) компонента относительно родителя?</tr>
@@ -988,7 +995,7 @@
 <explain>Почему верно: координата X компонента относительно родителя — Left.
 Ловушки: XPos, Horizontal, LocationX, PositionX — нет таких.
 По лекции: тема 11, раздел «Как менять свойства формы программно?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property is primarily responsible for determining the vertical position (Y-coordinate) of a component relative to its parent?
 <tr>Какое свойство в основном задаёт вертикальное положение (координату Y) компонента относительно родителя?</tr>
@@ -1000,7 +1007,7 @@
 <explain>Почему верно: координата Y — Top.
 Ловушки: Bottom — не свойство TControl; YPos, Vertical, LocationY — нет таких.
 По лекции: тема 11, раздел «Как менять свойства формы программно?».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which event handler is triggered repeatedly when the mouse cursor moves over a visual component in C++Builder?
 <tr>Какой обработчик события вызывается снова и снова, когда курсор мыши движется над визуальным компонентом в C++Builder?</tr>
@@ -1012,7 +1019,7 @@
 <explain>Почему верно: событие, которое срабатывает снова и снова при каждом сдвиге мыши, — OnMouseMove.
 Ловушки: OnMouseDown — один раз при нажатии; OnMouseEnter — один раз при входе; OnMouseHover, OnMouseClick — нет в Builder 6.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What are the two primary coordinates passed as arguments to the VCL OnMouseMove event handler?
 <tr>Какие две основные координаты передаются как аргументы в обработчик OnMouseMove (VCL)?</tr>
@@ -1024,7 +1031,7 @@
 <explain>Почему верно: в OnMouseMove приходят X и Y — где сейчас мышь (относительно компонента).
 Ловушки: Left/Top — свойства компонента; ScreenX, ClientX, DeltaX — нет таких параметров.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> In the VCL OnMouseMove event signature, what does the Shift parameter allow you to check?
 <tr>Что можно проверить с помощью параметра Shift в OnMouseMove (VCL)?</tr>
@@ -1036,9 +1043,10 @@
 <explain>Почему верно: Shift — какие клавиши-модификаторы зажаты (ssShift, ssCtrl, ssAlt); там же кнопки мыши.
 Ловушки: скорость, сдвиг и время движения мыши в Shift не передаются.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) Which component property must be set to true for the OnMouseMove event to reliably fire on a TLabel? (Какое свойство компонента должно быть true, чтобы событие OnMouseMove надёжно срабатывало у TLabel?)
+<question> Which component property must be set to true for the OnMouseMove event to reliably fire on a TLabel?
+<tr>Какое свойство компонента должно быть true, чтобы событие OnMouseMove надёжно срабатывало у TLabel?</tr>
 <variantright> Enabled
 <variant> MouseAware
 <variant> Visible
@@ -1047,7 +1055,7 @@
 <explain>Почему верно (по ключу): Enabled.
 ⚠ По умолчанию OnMouseMove у TLabel и так работает (Enabled = true с самого начала). На экзамене выбирай Enabled.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> To apply a visual change to the specific component being moved over, how do you access that component within a generic OnMouseMove handler shared by multiple controls?
 <tr>Как в общем обработчике OnMouseMove (одном на несколько элементов) обратиться к тому компоненту, над которым движется мышь, чтобы изменить его вид?</tr>
@@ -1059,7 +1067,7 @@
 <explain>Почему верно: Sender — тот, кто вызвал событие. Приводим его к нужному типу: dynamic_cast<TButton*>(Sender) — и работаем именно с этой кнопкой.
 Ловушки: FocusedControl — тот, у кого фокус, а не под мышью; имя, Tag и GetControlAt — ненадёжно или не существует.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> The X and Y coordinates passed to OnMouseMove are relative to the component itself. If a button's Width is 100, what is the maximum possible value for X?
 <tr>Координаты X и Y в OnMouseMove отсчитываются от самого компонента. Если ширина кнопки 100, какое наибольшее возможное значение X?</tr>
@@ -1071,9 +1079,11 @@
 <explain>Почему верно: отсчёт с 0, поэтому при ширине 100 X идёт от 0 до 99.
 Ловушки: 100 — уже за границей; 101 и 1 — обманки.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) In FireMonkey (FMX), which property of a control is often changed in OnMouseMove to provide visual feedback for button-like controls, instead of just Color? (Какое свойство элемента в FireMonkey (FMX) часто меняют в OnMouseMove вместо простого Color, чтобы показать отклик у элементов-кнопок?)
+<question> In FireMonkey (FMX), which property of a control is often changed in OnMouseMove to provide visual feedback for button-like controls, instead of just Color?
+<tr>Какое свойство элемента в FireMonkey (FMX) часто меняют в OnMouseMove вместо простого Color, чтобы показать отклик у элементов-кнопок?</tr>
+<nt>FireMonkey (FMX) — новая библиотека, в C++Builder 6 её нет. Fill->Color есть не у всех FMX-элементов.</nt>
 <variantright> Fill->Color
 <variant> BackgroundColor
 <variant> Brush->Style
@@ -1082,9 +1092,11 @@
 <explain>Почему верно (по ключу): Fill->Color.
 ⚠ Это FireMonkey (FMX) — другая библиотека, в Builder 6 и в нашем курсе её нет. Запомни ответ.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) To prevent the OnMouseMove event from causing constant screen flicker when changing a color, what VCL mechanism can you use to optimize redrawing? (Какой механизм VCL помогает убрать постоянное мерцание экрана при смене цвета в OnMouseMove (оптимизировать перерисовку)?)
+<question> To prevent the OnMouseMove event from causing constant screen flicker when changing a color, what VCL mechanism can you use to optimize redrawing?
+<tr>Какой механизм VCL помогает убрать постоянное мерцание экрана при смене цвета в OnMouseMove (оптимизировать перерисовку)?</tr>
+<nt>У формы VCL нет методов BeginUpdate/EndUpdate (они есть у списков строк). Против мерцания обычно ставят DoubleBuffered = true.</nt>
 <variantright> BeginUpdate() and EndUpdate() (on the parent form/control) <tr>BeginUpdate() и EndUpdate() (у родительской формы/элемента)</tr>
 <variant> SetRedraw(false)
 <variant> Repaint() only when necessary <tr>Repaint() только когда нужно</tr>
@@ -1093,7 +1105,7 @@
 <explain>Почему верно (по ключу): BeginUpdate() и EndUpdate().
 ⚠ В VCL от мерцания помогает DoubleBuffered = true, а BeginUpdate/EndUpdate нужны для списков (Lines, Items). На экзамене выбирай BeginUpdate/EndUpdate.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property of a TButton is typically changed in OnMouseMove to make the button look highlighted when the mouse is over it?
 <tr>Какое свойство TButton обычно меняют в OnMouseMove, чтобы кнопка подсвечивалась при наведении мыши?</tr>
@@ -1105,7 +1117,7 @@
 <explain>Почему верно: подсветка — смена цвета фона: Color.
 Ловушки: Caption — текст; Height — размер; TabOrder — порядок Tab; Bevel — у TButton нет.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> What is the correct C++ syntax to change the background color of a TButton named Button1 to yellow in the OnMouseMove event?
 <tr>Какой синтаксис C++ правильно меняет цвет фона кнопки Button1 на жёлтый в событии OnMouseMove?</tr>
@@ -1117,7 +1129,7 @@
 <explain>Почему верно: указатель — стрелка ->, цвета начинаются с cl: Button1->Color = clYellow;.
 Ловушки: точка — ошибка; SetColor и BackgroundColor нет; Style = csYellow — неверно.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> To change the text color of a TLabel named Label1 to red when the mouse moves over it, you must modify which nested property?
 <tr>Чтобы при наведении мыши цвет текста у Label1 стал красным, какое вложенное свойство нужно изменить?</tr>
@@ -1129,7 +1141,7 @@
 <explain>Почему верно: цвет текста — это цвет шрифта: Label1->Font->Color = clRed;.
 Ловушки: Label1->Color — фон, а не текст; TextColor и Caption->Color нет; Brush — у Canvas.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which property is used to temporarily change the mouse cursor appearance (e.g., to crHandPoint) when it moves over a component?
 <tr>Какое свойство используется, чтобы на время изменить вид курсора мыши (например, на crHandPoint), когда он над компонентом?</tr>
@@ -1141,7 +1153,7 @@
 <explain>Почему верно: вид курсора над компонентом — свойство Cursor (crHandPoint, crIBeam…).
 Ловушки: MouseShape, MouseIcon, MousePointer, HandCursor — нет таких.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> If you want a TButton to return to its default color when the mouse moves out of its area, which corresponding event must be implemented alongside OnMouseMove?
 <tr>Если нужно, чтобы TButton возвращал свой обычный цвет, когда мышь уходит с него, какое событие нужно сделать вместе с OnMouseMove?</tr>
@@ -1153,7 +1165,7 @@
 <explain>Почему верно: Leave = «уйти»: OnMouseLeave срабатывает, когда мышь покинула компонент — тут и возвращаем цвет.
 Ловушки: OnMouseUp/Down — кнопки мыши; OnMouseOut — из JavaScript; OnClick — щелчок.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> How do you programmatically display a custom tooltip hint (Hint) when the mouse is over a component, typically controlled in OnMouseMove?
 <tr>Как из кода показать свою всплывающую подсказку (Hint) при наведении мыши на компонент (обычно управляют в OnMouseMove)?</tr>
@@ -1165,7 +1177,7 @@
 <explain>Почему верно: текст подсказки — в Hint, а показывается она, только если ShowHint = true.
 Ловушки: ShowTooltip и HintVisible не существуют; Tag и crHelp подсказку не показывают.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> To make a TLabel appear to be depressed like a button when the left mouse button is held down while moving over it, which argument of OnMouseMove would you check?
 <tr>Чтобы TLabel выглядел «нажатым», как кнопка, когда двигаешь над ним мышь с зажатой левой кнопкой, какой аргумент OnMouseMove нужно проверить?</tr>
@@ -1177,9 +1189,11 @@
 <explain>Почему верно: левая кнопка зажата — значит в Shift есть ssLeft: Shift.Contains(ssLeft).
 Ловушки: ssDown и ssMouseLeft не существуют; X>0 && Y>0 — просто мышь над компонентом.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) In FMX, to modify the opacity of a control (making it slightly transparent) upon mouse move, which property would you change? (Какое свойство в FMX нужно изменить, чтобы при движении мыши элемент стал немного прозрачным?)
+<question> In FMX, to modify the opacity of a control (making it slightly transparent) upon mouse move, which property would you change?
+<tr>Какое свойство в FMX нужно изменить, чтобы при движении мыши элемент стал немного прозрачным?</tr>
+<nt>Opacity — свойство FMX; в C++Builder 6 (VCL) его нет.</nt>
 <variantright> Opacity
 <variant> AlphaChannel
 <variant> Transparency
@@ -1188,9 +1202,11 @@
 <explain>Почему верно (по ключу): Opacity (непрозрачность).
 ⚠ Opacity есть только в FireMonkey (FMX), в Builder 6 его нет. Запомни ответ.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) Which property of a TEdit would you change in OnMouseMove to provide visual feedback that the field is ready for user input (e.g., changing border appearance)? (Какое свойство TEdit нужно изменить в OnMouseMove, чтобы показать, что поле готово к вводу (например, изменить вид рамки)?)
+<question> Which property of a TEdit would you change in OnMouseMove to provide visual feedback that the field is ready for user input (e.g., changing border appearance)?
+<tr>Какое свойство TEdit нужно изменить в OnMouseMove, чтобы показать, что поле готово к вводу (например, изменить вид рамки)?</tr>
+<nt>У VCL TEdit нет свойства BorderColor. Ответ из новых версий со стилями.</nt>
 <variantright> BorderColor (or relevant Style property in FMX) <tr>BorderColor (или подходящее свойство Style в FMX)</tr>
 <variant> Text
 <variant> SelText
@@ -1199,7 +1215,7 @@
 <explain>Почему верно (по ключу): BorderColor.
 ⚠ У TEdit в VCL нет свойства BorderColor — ответ взят из FMX. Запомни ответ.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> If you are implementing a custom text selection highlighter using OnMouseMove on a TEdit, which two properties are essential for setting the selection range?
 <tr>Если делать своё выделение текста с помощью OnMouseMove у TEdit, какие два свойства нужны, чтобы задать диапазон выделения?</tr>
@@ -1211,7 +1227,7 @@
 <explain>Почему верно: выделение задают начало (SelStart) и длина (SelLength).
 Ловушки: X/Y и Left/Top — координаты; Start/End — нет таких свойств.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> To change the color of the text inside a TEdit based on mouse movement, you should access which property?
 <tr>Чтобы менять цвет текста внутри TEdit в зависимости от движения мыши, к какому свойству нужно обратиться?</tr>
@@ -1223,7 +1239,7 @@
 <explain>Почему верно: цвет текста в Edit — Font->Color.
 Ловушки: TextColor, EditColor, Style->FontColor — нет таких; Text — сама строка.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> In a VCL TEdit, if you want to visually indicate in OnMouseMove that the user is hovering over the first 5 characters of the input, how would you programmatically highlight those characters?
 <tr>Как в TEdit (VCL) из кода выделить первые 5 символов, чтобы показать в OnMouseMove, что мышь над ними?</tr>
@@ -1235,7 +1251,7 @@
 <explain>Почему верно: выделение с 0-го символа длиной 5: Edit1->SelStart = 0; Edit1->SelLength = 5;.
 Ловушки: Highlight, Select(0,5), Selection.SetRange — нет таких в VCL.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> To implement a floating tooltip over a TEdit that shows the current mouse coordinates (X, Y) relative to the TEdit, which function would you likely use inside OnMouseMove?
 <tr>Чтобы сделать над TEdit плавающую подсказку с текущими координатами мыши (X, Y) относительно TEdit, что скорее всего использовать в OnMouseMove?</tr>
@@ -1247,9 +1263,11 @@
 <explain>Почему верно: текст подсказки собирают через Format и показывают у курсора: Application->Hint = …; Application->ActivateHint(Screen->CursorPos);.
 Ловушки: ShowCoordinates и DisplayHint не существуют; ShowMessage открыл бы окно на каждое движение.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) Why might changing the TEdit->Color property in OnMouseMove appear to fail or cause unexpected results if the ParentBackground property is set to true? (Почему смена TEdit->Color в OnMouseMove может не сработать или работать странно, если ParentBackground = true?)
+<question> Why might changing the TEdit->Color property in OnMouseMove appear to fail or cause unexpected results if the ParentBackground property is set to true?
+<tr>Почему смена TEdit->Color в OnMouseMove может не сработать или работать странно, если ParentBackground = true?</tr>
+<nt>У TEdit в VCL ParentBackground почти ни на что не влияет; цвет поля задаёт Color (и ParentColor). Объяснение в ответе спорное.</nt>
 <variantright> ParentBackground = true means the control inherits the color of its parent, overriding the individual Color setting. <tr>ParentBackground = true значит, что элемент берёт цвет родителя, и это перекрывает его собственный Color.</tr>
 <variant> TEdit does not have a Color property. <tr>У TEdit нет свойства Color.</tr>
 <variant> The OnMouseMove event is not fired when ParentBackground is true. <tr>OnMouseMove не срабатывает, когда ParentBackground = true.</tr>
@@ -1258,7 +1276,7 @@
 <explain>Почему верно (по ключу): ParentBackground = true — компонент берёт цвет у родителя и перекрывает свой Color.
 ⚠ У TEdit в Builder 6 нет ParentBackground. Запомни ответ.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which method can be called inside OnMouseMove on any component to force an immediate redrawing of the control to reflect the visual changes made?
 <tr>Какой метод можно вызвать в OnMouseMove у любого компонента, чтобы сразу перерисовать элемент и показать изменения?</tr>
@@ -1270,7 +1288,7 @@
 <explain>Почему верно (по ключу): Repaint() перерисовывает элемент сразу.
 Ловушки: Invalidate() только просит перерисовать позже; Refresh почти то же, но по ключу — Repaint; Draw нет.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> Which code would you use to change the mouse cursor to a standard text I-beam (crIBeam) specifically when the mouse is over a TEdit in OnMouseMove?
 <tr>Каким кодом в OnMouseMove поменять курсор мыши на обычный текстовый курсор (crIBeam) именно над TEdit?</tr>
@@ -1282,9 +1300,11 @@
 <explain>Почему верно: курсор самого Edit — Edit1->Cursor = crIBeam;.
 Ловушки: Screen->Cursor поменял бы курсор во всём приложении; crText не существует; MouseShape и SetCursor — нет таких.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) If you want a visual change in OnMouseMove to be persistent across all components sharing the same style, which VCL mechanism should be manipulated instead of the individual Color property? (Если нужно, чтобы изменение вида в OnMouseMove действовало на все компоненты с одним стилем, каким механизмом VCL нужно управлять вместо отдельного свойства Color?)
+<question> If you want a visual change in OnMouseMove to be persistent across all components sharing the same style, which VCL mechanism should be manipulated instead of the individual Color property?
+<tr>Если нужно, чтобы изменение вида в OnMouseMove действовало на все компоненты с одним стилем, каким механизмом VCL нужно управлять вместо отдельного свойства Color?</tr>
+<nt>Ответ смешивает VCL и FMX (Style Hook, TStyleManager — из новых версий). Для C++Builder 6 вопрос не подходит.</nt>
 <variantright> Style Hook or TStyleManager (for FMX, or using Styles for VCL) <tr>Style Hook или TStyleManager (для FMX, или стили VCL)</tr>
 <variant> Application->VisualEffect
 <variant> GlobalColor
@@ -1293,7 +1313,7 @@
 <explain>Почему верно (по ключу): Style Hook / TStyleManager.
 ⚠ Стилей VCL в Builder 6 нет, они появились в новых версиях. Запомни ответ.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> To dynamically change the TButton's height based on the mouse's vertical position (Y coordinate) in OnMouseMove, which formula uses Y to decrease the height as the mouse moves down? (Assuming original Height is 50)
 <tr>Чтобы в OnMouseMove высота TButton уменьшалась, когда мышь опускается вниз (по координате Y), какая формула подходит? (Начальная высота — 50)</tr>
@@ -1305,7 +1325,7 @@
 <explain>Почему верно: чем больше Y (ниже мышь), тем меньше высота: 50 - Y.
 Ловушки: Y + 50 и 50 * Y увеличивают; Height = Y — растёт вниз; Height -= Y — уменьшалась бы при каждом движении всё сильнее.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> If multiple components share the same OnMouseMove event handler, what is the best practice for differentiating between a TEdit and a TLabel inside the function?
 <tr>Если один обработчик OnMouseMove общий для нескольких компонентов, как лучше всего отличить внутри функции TEdit от TLabel?</tr>
@@ -1317,9 +1337,11 @@
 <explain>Почему верно: dynamic_cast проверяет настоящий тип Sender: если это не TEdit, вернёт NULL. Это надёжнее, чем сравнивать имя или Tag.
 Ловушки: ClassName — строка, легко ошибиться; Tag надо заранее заполнять; Sender->Type нет; Sender == Edit1 работает только для одного Edit.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
-<question> (НЕ ТОЧНО) To ensure visual changes made in OnMouseMove are not overwritten by the operating system's default drawing, you might need to set the component's ParentBackground to false and potentially handle which event? (Чтобы изменения вида, сделанные в OnMouseMove, не затирались стандартной отрисовкой операционной системы, может понадобиться поставить ParentBackground = false и, возможно, обработать какое событие?)
+<question> To ensure visual changes made in OnMouseMove are not overwritten by the operating system's default drawing, you might need to set the component's ParentBackground to false and potentially handle which event?
+<tr>Чтобы изменения вида, сделанные в OnMouseMove, не затирались стандартной отрисовкой операционной системы, может понадобиться поставить ParentBackground = false и, возможно, обработать какое событие?</tr>
+<nt>У TEdit нет события OnPaint. Ответ взят из общих приёмов рисования, для TEdit неверен.</nt>
 <variantright> OnPaint
 <variant> OnRender
 <variant> OnUpdate
@@ -1328,7 +1350,7 @@
 <explain>Почему верно (по ключу): OnPaint.
 ⚠ У TButton, TEdit и TLabel нет события OnPaint, оно есть у формы и PaintBox. На экзамене выбирай OnPaint.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> How do you programmatically change the position of a component (Left and Top) within the OnMouseMove event relative to the mouse coordinates?
 <tr>Как из кода в событии OnMouseMove изменить положение компонента (Left и Top) относительно координат мыши?</tr>
@@ -1340,10 +1362,19 @@
 <explain>Почему верно: X и Y считаются от кнопки, поэтому прибавляем их к её текущим Left и Top.
 Ловушки: Move, Position, SetPos, Location — нет таких в VCL.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
 
 <question> When dragging a component using OnMouseMove (by checking if the left mouse button is down), the coordinates passed in the event are often used in conjunction with which property to ensure smooth dragging?
 <tr>При перетаскивании компонента через OnMouseMove (с проверкой, что левая кнопка мыши зажата) координаты из события часто используют вместе с каким свойством, чтобы перетаскивание было плавным?</tr>
+<orig>When dragging a component using OnMouseMove (by checking if the left mouse button is down), the coordinates passed in the event are often used in conjunction with which property to ensure smooth dragging?
+✔ Screen->CursorPos (or calculating the difference from the initial mouse down position)
+• ShiftState
+• ClientOrigin
+• Handle
+• Parent->Left
+📋 30 Tests: Form Class Declaration in the .h File (C++Builder)
+These tests focus on the syntax, structure, and best practices for defining a Form class and its components within the C++Builder header file (.h), used for VCL or FMX applications.
+1. Header File Structure and Inheritance</orig>
 <variantright> Screen->CursorPos (or calculating the difference from the initial mouse down position) <tr>Screen->CursorPos (или вычисление разницы с позицией, где мышь нажали)</tr>
 <variant> ShiftState
 <variant> ClientOrigin
@@ -1352,4 +1383,4 @@
 <explain>Почему верно: для плавного перетаскивания берут экранную позицию курсора (Screen->CursorPos) или разницу с точкой, где нажали мышь.
 Ловушки: ShiftState, ClientOrigin, Handle, Parent->Left сами по себе плавность не дают.
 По лекции: тема 11, раздел «Доп.: OnMouseMove — подсветка, курсор, перетаскивание».
-Источник: тест физиков «question_c++_OOP_2025».</explain>
+Источник: база преподавателя (question_c++_OOP_2025) ⭐</explain>
